@@ -7,22 +7,25 @@ Implementation of Eriantys board game
 
 ## Project progress:
 
-| __Fase__ | __Status__ | __Planned Deadline__ |
-| :---:    | :---:      | :---: |
-| Game model's initial UML class diagram | Making | 15/03 |
-| Sketch of Initial complete UML Class diagram | - | 22/03 |
-| Model Implementation | - | 29/03 |
-| *Model FA implementation and testing* | - | / |
-| Model Testing | - | 05/04 |
-| Control and Network Implementation | - | 03/05 |
-| Control and Network Testing | - | 10/05 |
-| *MCV FA implementation and testing* | - | / |
-| View Implementation | - | 17/05 |
-| View Testing | - | 31/05 |
-| Application Testing | - | 23/06 |
-| Delivery of "'deliveries' folder things" | - | 23/06 |
-| __Final delivery__ | - | 25/06 |
-| __Final deadline__ | - | 01/07 |
+| __Phase__ | __Status__ |
+| :---:    | :---:      |
+| Game model's initial UML class diagram | Done |
+| Model Implementation | Making |
+| *Model FA implementation and testing* | - |
+| Model Testing | - |
+| MCV server side implementation | - |
+| *MCV FA implementation and testing* | - |
+| Server side testing | - |
+| Communication protocol design | - |
+| Communication protocol Implementation | - |
+| CLI client Implementation and testing | - |
+| GUI client Implementation | - |
+| GUI client Testing | - |
+| Application Testing for the 31st of may| - |
+|||
+| Final Application Testing| - |
+| Delivery of "'deliveries' folder things" | - |
+| __Final delivery__ on 25th of june | - |
 
 *Tecnical Issues buffer time: 6 days*
 
