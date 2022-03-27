@@ -20,12 +20,12 @@ public Island (String id,int equivalentIsland,boolean noEntry,TowerColor towerCo
     this.tower=tower;
 }
 
-public Island(String id,Island is1,Island is2,int maxStudents,int maxStudentsColor)
+public Island(String id,Island is1,Island is2,boolean noEntry,int maxStudents,int maxStudentsColor)
 {
    super(maxStudents,maxStudentsColor);
    this.id=id;
    this.equivalentIsland=is1.equivalentIsland+is2.equivalentIsland;
-   this.noEntry=true;
+   this.noEntry=noEntry;
    this.towerColor=is1.towerColor;
    this.tower=is1.tower;
    addStudentfromSmallIsland(is1);
@@ -63,19 +63,9 @@ public void setEquivalentIsland(int weight)
     this.equivalentIsland=weight;
 }
 
-public int getEquivalentIsland()
-{
-    return equivalentIsland;
-}
-
 public void setNoEntry(boolean noEntry)
 {
     this.noEntry=noEntry;
-}
-
-public boolean getNoEntry()
-{
-    return noEntry;
 }
 
 public void setTowerColor(TowerColor towerColor)
@@ -93,8 +83,13 @@ public void setTower(boolean tower)
     this.tower=tower;
 }
 
-public boolean getTower()
+public String getId()
 {
-    return tower;
+    return id;
 }
+
+public void setId(String id)
+    {
+        this.id = id;
+    }
 }

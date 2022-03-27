@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.table;
 import it.polimi.ingsw.model.StudentsManager;
 
 public class Cloud extends StudentsManager {
-
     private String id;
     public Cloud(String id,int maxStudents,int maxStudentsColor)
     {
@@ -15,4 +14,15 @@ public class Cloud extends StudentsManager {
     {
 
     }
+
+    public void setId(String id)
+    {
+        this.id=id;
+    }
+
+    public String getId()
+    {
+        return id;
+    }
+
 }
