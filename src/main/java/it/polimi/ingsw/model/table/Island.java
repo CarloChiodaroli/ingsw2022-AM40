@@ -9,8 +9,7 @@ private int equivalentIsland;
 private boolean noEntry;
 private TowerColor towerColor;
 private boolean tower;
-
-public Island (String id,int equivalentIsland,boolean noEntry,TowerColor towerColor,boolean tower,int maxStudents,int maxStudentsColor )
+    public Island (String id,int equivalentIsland,boolean noEntry,TowerColor towerColor,boolean tower,int maxStudents,int maxStudentsColor )
 {
     super(maxStudents,maxStudentsColor);
     this.id=id;
@@ -20,7 +19,16 @@ public Island (String id,int equivalentIsland,boolean noEntry,TowerColor towerCo
     this.tower=tower;
 }
 
-public Island(String id,Island is1,Island is2,boolean noEntry,int maxStudents,int maxStudentsColor)
+    /**
+     *
+     * @param id New Island's ID
+     * @param is1   First Island to merge
+     * @param is2   Second Island to merge
+     * @param noEntry   Boolean value to Entry
+     * @param maxStudents   MaxStudents for island
+     * @param maxStudentsColor   MaxStudents for each color
+     */
+    public Island(String id,Island is1,Island is2,boolean noEntry,int maxStudents,int maxStudentsColor)
 {
    super(maxStudents,maxStudentsColor);
    this.id=id;
@@ -32,7 +40,7 @@ public Island(String id,Island is1,Island is2,boolean noEntry,int maxStudents,in
    addStudentfromSmallIsland(is2);
 }
 
-private void addStudentfromSmallIsland(Island island)
+    private void addStudentfromSmallIsland(Island island)
 {
     for (TeacherColor tc: TeacherColor.values())
     {
@@ -43,7 +51,7 @@ private void addStudentfromSmallIsland(Island island)
     }
 }
 
-public int howManyEquivalents()
+    public int howManyEquivalents()
 {
     return equivalentIsland;
 }

@@ -5,13 +5,20 @@ import it.polimi.ingsw.model.TeacherColor;
 import java.util.Arrays;
 
 public class Bag extends StudentsManager {
-
+    /**
+     *
+     * @param maxStudents
+     * @param maxStudentsColor
+     */
     public Bag(int maxStudents,int maxStudentsColor)
     {
         super(maxStudents,maxStudentsColor);
     }
 
-
+    /**
+     *
+     * @return
+     */
     public TeacherColor getAStudent()
     {
         int casualnumber;
