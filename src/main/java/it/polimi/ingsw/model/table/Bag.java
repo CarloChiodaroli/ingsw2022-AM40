@@ -2,13 +2,12 @@ package it.polimi.ingsw.model.table;
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.TeacherColor;
 
-import java.util.Arrays;
 
 public class Bag extends StudentsManager {
     /**
      *
-     * @param maxStudents
-     * @param maxStudentsColor
+     * @param maxStudents Max number of student
+     * @param maxStudentsColor Max number of student for each color
      */
     public Bag(int maxStudents,int maxStudentsColor)
     {
@@ -17,14 +16,11 @@ public class Bag extends StudentsManager {
 
     /**
      *
-     * @return
+     * @return TeacherColor It returns a casual color
      */
     public TeacherColor getAStudent()
     {
-        int casualnumber;
-        casualnumber= (int)(Math.random()*5);
-
-        return TeacherColor.values()[casualnumber];
+        return TeacherColor.values()[(int)(Math.random()*5)];
     }
 
 }

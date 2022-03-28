@@ -3,43 +3,51 @@ import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.TeacherColor;
 import it.polimi.ingsw.model.TowerColor;
 
+/**
+ * ISLAND'S ID : I_1, I_2 , MERGE(I_1,I_2) -> I_1_2
+ */
 public class Island extends StudentsManager {
-private String id;
+private final String id;
 private int equivalentIsland;
 private boolean noEntry;
 private TowerColor towerColor;
 private boolean tower;
-    public Island (String id,int equivalentIsland,boolean noEntry,TowerColor towerColor,boolean tower,int maxStudents,int maxStudentsColor )
+
+    /**
+     *
+     * @param id Island's Id
+     */
+    public Island (String id)
 {
-    super(maxStudents,maxStudentsColor);
+    super(130,130);
     this.id=id;
-    this.equivalentIsland=equivalentIsland;
-    this.noEntry=noEntry;
-    this.towerColor=towerColor;
-    this.tower=tower;
+    this.equivalentIsland=1;
+    this.noEntry=false;
+    this.towerColor=null;
+    this.tower=false;
 }
 
     /**
      *
-     * @param id New Island's ID
-     * @param is1   First Island to merge
-     * @param is2   Second Island to merge
-     * @param noEntry   Boolean value to Entry
-     * @param maxStudents   MaxStudents for island
-     * @param maxStudentsColor   MaxStudents for each color
+     * @param island1 First island to merge
+     * @param island2 Second island to merge
      */
-    public Island(String id,Island is1,Island is2,boolean noEntry,int maxStudents,int maxStudentsColor)
+    public Island(Island island1,Island island2)
 {
-   super(maxStudents,maxStudentsColor);
-   this.id=id;
-   this.equivalentIsland=is1.equivalentIsland+is2.equivalentIsland;
-   this.noEntry=noEntry;
-   this.towerColor=is1.towerColor;
-   this.tower=is1.tower;
-   addStudentfromSmallIsland(is1);
-   addStudentfromSmallIsland(is2);
+   super(130,130);
+   this.id=elaborationMergeIslandId(island1.id,island1.id);
+   this.equivalentIsland=island1.equivalentIsland+island1.equivalentIsland;
+   this.noEntry= (island1.noEntry && island2.noEntry);
+   this.towerColor=island1.towerColor;
+   this.tower=island1.tower;
+   addStudentfromSmallIsland(island1);
+   addStudentfromSmallIsland(island2);
 }
 
+    /**
+     * Move all to student from parameter to this island
+     * @param island Old Island
+     */
     private void addStudentfromSmallIsland(Island island)
 {
     for (TeacherColor tc: TeacherColor.values())
@@ -49,9 +57,21 @@ private boolean tower;
             this.addStudent(tc);
         }
     }
+
 }
 
-    public int howManyEquivalents()
+    /**
+     *
+     * @param id1 First Island's Id
+     * @param id2 Second Island's Id
+     * @return String Final Island's Id
+     */
+    private String elaborationMergeIslandId(String id1,String id2)
+{
+    return id1+""+id2.substring(2,id2.length()-1);
+}
+
+public int howManyEquivalents()
 {
     return equivalentIsland;
 }
@@ -96,8 +116,4 @@ public String getId()
     return id;
 }
 
-public void setId(String id)
-    {
-        this.id = id;
-    }
 }

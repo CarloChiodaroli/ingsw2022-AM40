@@ -15,6 +15,11 @@ public abstract class StudentsManager{
         this.maxStudents = maxStudents;
         this.maxStudentsColor = maxStudentsColor;
     }
+
+    public StudentsManager(int equalsStudents){
+        this.maxStudents = equalsStudents;
+        this.maxStudentsColor = equalsStudents;
+    }
     public boolean addStudent(TeacherColor color) {
         if (studentTot < maxStudents) { // check there aren't 130 students yet
             switch (color) {
