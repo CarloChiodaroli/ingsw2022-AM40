@@ -3,14 +3,17 @@ import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.TeacherColor;
 import it.polimi.ingsw.model.TowerColor;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
+
 /**
  * ISLAND'S ID : I_1, I_2 , MERGE(I_1,I_2) -> I_1_2
  */
 public class Island extends StudentsManager {
 private final String id;
-private int equivalentIsland;
+private final int equivalentIsland;
 private boolean noEntry;
-private TowerColor towerColor;
+private Optional<TowerColor> towerColor;
 private boolean tower;
 
     /**
@@ -86,22 +89,17 @@ public boolean hasTowers()
     return tower;
 }
 
-public void setEquivalentIsland(int weight)
-{
-    this.equivalentIsland=weight;
-}
-
 public void setNoEntry(boolean noEntry)
 {
     this.noEntry=noEntry;
 }
 
-public void setTowerColor(TowerColor towerColor)
+public void setTowerColor(Optional<TowerColor> towerColor)
 {
     this.towerColor=towerColor;
 }
 
-public TowerColor getTowerColor()
+public Optional<TowerColor> getTowerColor()
 {
     return towerColor;
 }
