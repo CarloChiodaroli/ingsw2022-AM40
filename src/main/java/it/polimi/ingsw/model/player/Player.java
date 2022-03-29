@@ -23,14 +23,13 @@ public class Player {
      * @param game the game in which the player is playing
      * @param name the name of the player, used to find two equal players
      * @param towerColor the color of the towers of the player
-     * @param numOfTowers the number of tower in the player's possession
      */
-    public Player(Game game, String name, TowerColor towerColor, int numOfTowers){
+    public Player(Game game, String name, TowerColor towerColor){
         this.game = game;
         this.name = name;
         this.personalDeck = new ArrayList<>();
         setPersonalDeck();
-        this.dashboard = new SchoolDashboard(towerColor, numOfTowers);
+        this.dashboard = new SchoolDashboard(game.isThreePlayerGame(), towerColor);
     }
 
     /**
@@ -52,6 +51,9 @@ public class Player {
         Optional<AssistantCard> result = personalDeck.stream()
                 .filter(which::equals)
                 .findAny();
+        if(!game.getPianificationFase().play(result, this)) {
+            return Optional.empty();
+        }
         result.ifPresent(personalDeck::remove);
         return result;
     }
@@ -93,11 +95,13 @@ public class Player {
      * @param student is the Teacher Color of the student to move
      * @param sourceId is the ID of the place to move the student from
      * @param destinationId is the ID of the place to move the student to
+     * @return true if success, false if not
      */
-    public void moveStudent(TeacherColor student, String sourceId, String destinationId){
-        StudentsManager from = getStudentsManagerById(sourceId, student);
-        StudentsManager to = getStudentsManagerById(destinationId, student);
-        game.getActionFase().request(student, from, to);
+    public boolean moveStudent(TeacherColor student, String sourceId, String destinationId){
+        Optional<StudentsManager> from = getStudentsManagerById(sourceId, student);
+        Optional<StudentsManager> to = getStudentsManagerById(destinationId, student);
+        if(from.isPresent() && to.isPresent()) return game.getActionFase().request(student, from.get(), to.get());
+        else return false;
     }
 
     /**
@@ -106,13 +110,13 @@ public class Player {
      * @param color is the color of the student which is moving
      * @return the wanted student manager
      */
-    private StudentsManager getStudentsManagerById(String id, TeacherColor color){
+    private Optional<StudentsManager> getStudentsManagerById(String id, TeacherColor color){
         switch(id){
             case "Room" -> {
-                return dashboard.getRoom().getTable(color);
+                return Optional.of((StudentsManager) dashboard.getRoom().getTable(color));
             }
             case "Entrance" -> {
-                return dashboard.getEntrance();
+                return Optional.of(dashboard.getEntranceAsStudentsManager());
             }
             default -> {
                 return game.getStudentsManagerById(id);
@@ -154,8 +158,8 @@ public class Player {
      * @return the color of the asked tower if the player has towers to place
      * @throws Exception sent when there are no more towers, in a normal play this scenario should be not possible
      */
-    public TowerColor getTower() throws Exception{
-        boolean result = dashboard.getTower();
+    public TowerColor getTower(int howManyTowers) throws Exception{
+        boolean result = dashboard.getTower(howManyTowers);
         if(result){
             return dashboard.getTowerColor();
         } else {
@@ -165,9 +169,10 @@ public class Player {
 
     /**
      * Utility used to give a tower back to a player
+     * @param howManyTowers is the number of towers to give to the player
      */
-    public void pushTower(){
-        dashboard.pushTower();
+    public void pushTower(int howManyTowers){
+        dashboard.pushTower(howManyTowers);
     }
 
     /**
