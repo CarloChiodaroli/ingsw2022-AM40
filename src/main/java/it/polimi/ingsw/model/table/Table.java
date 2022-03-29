@@ -10,7 +10,6 @@ public class Table {
 
     private List<Island> IslandList;
     private List<Cloud> CloudList;
-
     private Bag bag;
     private int coinsleft;
 
@@ -23,6 +22,7 @@ bag= new Bag(130,26);
 coinsleft=20;
 IslandList= new ArrayList<>();
 CloudList= new ArrayList<>();
+buildsIsland(12);
 }
 
     /**
@@ -41,7 +41,7 @@ CloudList= new ArrayList<>();
      *
      * @param howManyIslands number of islands to create
      */
-    public void buildsIsland(int howManyIslands)
+    private void buildsIsland(int howManyIslands)
 {
     String idIsland;
     for(int i=0;i<howManyIslands;i++)
