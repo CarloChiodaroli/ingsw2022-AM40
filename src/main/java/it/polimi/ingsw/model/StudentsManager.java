@@ -11,102 +11,117 @@ public abstract class StudentsManager{
     private final int maxStudents;
     private final int maxStudentsColor;
 
+    /**
+     * Class Constructor
+     * @param maxStudents max number of total students
+     * @param maxStudentsColor max number of students of one color
+     */
     public StudentsManager(int maxStudents, int maxStudentsColor){
         this.maxStudents = maxStudents;
         this.maxStudentsColor = maxStudentsColor;
     }
 
-    public StudentsManager(int equalsStudents){
-        this.maxStudents = equalsStudents;
-        this.maxStudentsColor = equalsStudents;
-    }
+    /**
+     * if it's allowed, add one student
+     * @param color color of the student to add
+     * @return true if the student has been added
+     */
     public boolean addStudent(TeacherColor color) {
-        if (studentTot < maxStudents) { // check there aren't 130 students yet
-            switch (color) {
-                case YELLOW:
-                    if (studentYellow < maxStudentsColor) {//check color and therearen't 26 students
-                        studentYellow++; //ofMcolor yet, if true add one student
-                        studentTot++;
-                        return true;
-                    }
-                    return false;
-                case PINK:
-                    if (studentPink < maxStudentsColor) {
-                        studentPink++;
-                        studentTot++;
-                        return true;
-                    }
-                    return false;
-                case RED:
-                    if (studentRed < maxStudentsColor) {
-                        studentRed++;
-                        studentTot++;
-                        return true;
-                    }
-                    return false;
-                case GREEN:
-                    if (studentGreen < maxStudentsColor) {
-                        studentGreen++;
-                        studentTot++;
-                        return true;
-                    }
-                    return false;
-                case BLUE:
-                    if (studentBlue < maxStudentsColor) {
-                        studentBlue++;
-                        studentTot++;
-                        return true;
-                    }
-                    return false;
-            }
+        boolean perm = false;
+        switch (color) {
+            case YELLOW:
+                perm = permissionAdd(studentYellow);
+                if(perm)
+                    studentYellow = indecrement(studentYellow,1);
+            case PINK:
+                perm = permissionAdd(studentPink);
+                if(perm)
+                    studentPink = indecrement(studentPink,1);
+            case RED:
+                perm = permissionAdd(studentRed);
+                if(perm)
+                    studentRed = indecrement(studentRed,1);
+            case GREEN:
+                perm = permissionAdd(studentGreen);
+                if(perm)
+                    studentGreen = indecrement(studentGreen,1);
+            case BLUE:
+                perm = permissionAdd(studentBlue);
+                if(perm)
+                    studentBlue = indecrement(studentBlue,1);
+        }
+        if(perm) {
+            studentTot = indecrement(studentTot, 1);
+            return true;
         }
         return false;
     }
+
+    /**
+     * if it's allowed, remove one student
+     * @param color color of the student to remove
+     * @return true if the student has been removed
+     */
     public boolean removeStudent(TeacherColor color){
-        if(studentTot > 0) {//check there's at least one student
-            switch (color) {
-                case YELLOW:
-                    if (studentYellow > 0) { //check color and if there's at least one student of that color
-                        studentYellow--; //if true, remove on student
-                        studentTot--;
-                        return true;
-                    }
-                    return false;
-                case PINK:
-                    if (studentPink > 0) {
-                        studentPink--;
-                        studentTot--;
-                        return true;
-                    }
-                    return false;
-                case RED:
-                    if (studentRed > 0) {
-                        studentRed--;
-                        studentTot--;
-                        return true;
-                    }
-                    return false;
-                case GREEN:
-                    if (studentGreen > 0) {
-                        studentGreen--;
-                        studentTot--;
-                        return true;
-                    }
-                    return false;
-                case BLUE:
-                    if (studentBlue > 0) {
-                        studentBlue--;
-                        studentTot--;
-                        return true;
-                    }
-                    return false;
-            }
+        boolean perm = false;
+        switch (color) {
+            case YELLOW:
+                perm = permissionRemove(studentYellow);
+                if(perm)
+                    studentYellow = indecrement(studentYellow,-1);
+            case PINK:
+                perm = permissionRemove(studentPink);
+                if(perm)
+                    studentPink = indecrement(studentPink,-1);
+            case RED:
+                perm = permissionRemove(studentRed);
+                if(perm)
+                    studentRed = indecrement(studentRed,-1);
+            case GREEN:
+                perm = permissionRemove(studentGreen);
+                if(perm)
+                    studentGreen = indecrement(studentGreen,-1);
+            case BLUE:
+                perm = permissionRemove(studentBlue);
+                if(perm)
+                    studentBlue = indecrement(studentBlue,-1);
+        }
+        if(perm) {
+            studentTot = indecrement(studentTot, -1);
+            return true;
         }
         return false;
     }
-    public int howManyStudents(TeacherColor color)
-    {
-        switch (color) {//check color and return how many students there are of that color
+
+    /**
+     * verify that the student can be added
+     * @param students number of students of the color want add
+     */
+    private boolean permissionAdd(int students){
+        return students < maxStudentsColor && studentTot < maxStudents;
+    }
+
+    /**
+     * verify that the student can be removed
+     * @param students number of students of the color want remove
+     */
+    private boolean permissionRemove(int students){
+        return students > 0 && studentTot > 0;
+    }
+
+    /**
+     *adder / remover
+     */
+    private int indecrement(int var, int val){
+        var += val;
+        return var;
+    }
+
+    /**
+     * @return how many students there are of the desired color
+     */
+    public int howManyStudents(TeacherColor color){
+        switch (color) {
             case YELLOW:
                 return studentYellow;
             case PINK:
@@ -117,11 +132,16 @@ public abstract class StudentsManager{
                 return studentGreen;
             case BLUE:
                 return studentBlue;
+            default:
+                return 0;
         }
-        return 0;
-
     }
-    public int howManyStudents(){ //return how many students there are
+
+    /**
+     * @return how many students there are
+     */
+    public int howManyTotStudents(){
         return studentTot;
     }
+
 }
