@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.phase.action.ActionFase;
-import it.polimi.ingsw.model.phase.pianification.PianificationFase;
+import it.polimi.ingsw.model.phase.PianificationFase;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Table;
 
@@ -146,5 +146,11 @@ public class Game {
 
     public boolean isThreePlayerGame() {
         return isThreePlayerGame;
+    }
+
+    public void buildClouds(){
+        if(isThreePlayerGame)
+            table.buildsCloud(3);
+        else table.buildsCloud(2);
     }
 }

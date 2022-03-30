@@ -32,7 +32,7 @@ buildsIsland(12);
      *
      * @param howManyClouds number of clouds to create
      */
-    public void buildsCloud(int howManyClouds)
+    public void buildsCloud(int howManyClouds) //to be changed according to new agreements, go and change Game as well
 {   String idCloud;
     for(int i=0;i<howManyClouds;i++)
     {
