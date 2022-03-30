@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.table;
 
 import it.polimi.ingsw.model.StudentsManager;
+import it.polimi.ingsw.model.TeacherColor;
 
 import java.util.*;
 
@@ -12,7 +13,7 @@ public class Table {
 
     private List<Island> IslandList;
     private List<Cloud> CloudList;
-    private Bag bag;
+    public static Bag bag;
     private int coinsleft;
 
 
@@ -44,7 +45,24 @@ public class Table {
 
     public void FillCInitialIslandWithStudent(int randomFirstIsland)
     {
+    int color;
+    int islandpointer=0;
+    int remainyellow=2;
+    int remainpink=2;
+    int remainred=2;
+    int remainblue=2;
+    int remaingreen=2;
+    int remainStudent=remaingreen+remainblue+remaingreen+remainpink+remainred+remainyellow;
+    while(remainStudent<10)
+        {
+        if(islandpointer!=randomFirstIsland&&islandpointer!=randomFirstIsland+6)
+            {
+                color=(int)(Math.random()*5);
 
+                islandpointer++;
+            }
+
+        }
     }
 
     /**

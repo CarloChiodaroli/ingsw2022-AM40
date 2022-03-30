@@ -3,12 +3,13 @@ package it.polimi.ingsw.model.table;
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.TeacherColor;
 
+
 /**
  * CLASS Cloud
  */
 public class Cloud extends StudentsManager {
     private final String id;
-
+    public static Bag bag;
     /**
      *
      * @param id Cloud's Id
@@ -30,8 +31,14 @@ public class Cloud extends StudentsManager {
         return id;
     }
 
-    private void buildClouds()
-    {
-            this.addStudent(TeacherColor.)
+    private void buildClouds(int equalsStudents)
+    {   int color;
+        for (int i = 0 ;i<equalsStudents;i++)
+        {
+            color=(int)(Math.random()*5);
+            this.addStudent(TeacherColor.values()[color]);
+            bag.removeStudent(TeacherColor.values()[color]);
+        }
+
     }
 }
