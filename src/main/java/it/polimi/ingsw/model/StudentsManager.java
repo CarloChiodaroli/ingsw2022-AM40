@@ -21,6 +21,11 @@ public abstract class StudentsManager{
         this.maxStudentsColor = maxStudentsColor;
     }
 
+    public StudentsManager(int maxStudents){
+        this.maxStudents = maxStudents;
+        this.maxStudentsColor = maxStudents;
+    }
+
     /**
      * if it's allowed, add one student
      * @param color color of the student to add

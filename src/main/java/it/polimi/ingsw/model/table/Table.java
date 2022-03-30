@@ -20,13 +20,14 @@ public class Table {
      * Constructor
      */
     public Table(int numberofplayer)
-    {
+    {   int randomFirstIsland=(int)(Math.random()*12);
         bag= new Bag(130,26);
         coinsleft=20;
         IslandList= new ArrayList<Island>();
         CloudList= new ArrayList<Cloud>();
         buildsIsland(12);
-        FillCInitialIslandWithStudent();
+        FillCInitialIslandWithStudent(randomFirstIsland);
+        MotherNature.getMotherNature().setPosition(IslandList.get(randomFirstIsland));
     }
 
     /**
@@ -41,7 +42,7 @@ public class Table {
         }
     }
 
-    public void FillCInitialIslandWithStudent()
+    public void FillCInitialIslandWithStudent(int randomFirstIsland)
     {
 
     }

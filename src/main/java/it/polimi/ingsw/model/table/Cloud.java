@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.table;
 
 import it.polimi.ingsw.model.StudentsManager;
+import it.polimi.ingsw.model.TeacherColor;
 
 /**
  * CLASS Cloud
@@ -17,6 +18,7 @@ public class Cloud extends StudentsManager {
     {
         super(equalsStudents);
         this.id=id;
+
     }
 
     /**
@@ -28,4 +30,8 @@ public class Cloud extends StudentsManager {
         return id;
     }
 
+    private void buildClouds()
+    {
+            this.addStudent(TeacherColor.)
+    }
 }
