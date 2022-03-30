@@ -12,7 +12,7 @@ public class PlayerTest {
 
     @Test
     public void assistantCardTest(){
-        Player player = new Player(new Game(), "Test", TowerColor.BLACK, 8);
+        Player player = new Player(new Game(), "Test", TowerColor.BLACK);
 
         assertEquals(Optional.of(new AssistantCard(4)), player.playAssistantCard(new AssistantCard(4)));
         assertTrue(player.canChangeAssistantCard());

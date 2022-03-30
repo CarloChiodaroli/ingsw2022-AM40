@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.table;
 
+import it.polimi.ingsw.model.StudentsManager;
+
 import java.util.*;
 
 /**
@@ -12,6 +14,7 @@ public class Table {
     private List<Cloud> CloudList;
     private Bag bag;
     private int coinsleft;
+
 
     /**
      * Constructor
@@ -75,9 +78,9 @@ buildsIsland(12);
      *
      * @return Bag status
      */
-    public Bag getBag()
+    public Optional<StudentsManager> getBag()
 {
-    return bag;
+    return Optional.of(bag);
 }
 
     /**
@@ -113,11 +116,12 @@ public List<Cloud> getCloudList()
      * @param id Cloud's Id
      * @return Cloud you are looking for
      */
-    public Optional<Cloud> getCloudById(String id)
+    public Optional<StudentsManager> getCloudById(String id)
     {
-        Optional<Cloud> result = CloudList.stream()
-                .filter(cloud -> cloud.getId()==id)
-                .findAny();
+        Optional<StudentsManager> result = CloudList.stream()
+                .filter(cloud -> cloud.getId().equals(id))
+                .findAny()
+                .map(manager -> (StudentsManager) manager);
         return result;
     }
     /**
@@ -125,11 +129,12 @@ public List<Cloud> getCloudList()
      * @param id Island's Id
      * @return Island you are looking for
      */
-    public Optional<Island> getIslandById(String id)
+    public Optional<StudentsManager> getIslandById(String id)
     {
-        Optional<Island> result = IslandList.stream()
+        Optional<StudentsManager> result = IslandList.stream()
                 .filter(island -> island.getId()==id)
-                .findAny();
+                .findAny()
+                .map(manager -> (StudentsManager) manager);
         return result;
     }
 

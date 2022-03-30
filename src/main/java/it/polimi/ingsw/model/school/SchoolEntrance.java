@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.school;
 
-public class SchoolEntrance {
+import it.polimi.ingsw.model.StudentsManager;
+
+public class SchoolEntrance extends StudentsManager {
 
     /**
      * class constructor

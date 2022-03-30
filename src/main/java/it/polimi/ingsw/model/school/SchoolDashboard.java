@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.school;
 
 import it.polimi.ingsw.model.TowerColor;
+import it.polimi.ingsw.model.StudentsManager;
 
 public class SchoolDashboard {
     private final TowerColor colorOfTowers;
@@ -82,7 +83,7 @@ public class SchoolDashboard {
     }
 
     public StudentsManager getEntranceAsStudentsManager() {
-        return entrance;
+        return (StudentsManager) entrance;
     }
 }
 

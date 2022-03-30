@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.school;
 
 
+import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.TeacherColor;
 
-public class RoomTable {
+public class RoomTable extends StudentsManager {
     private final TeacherColor teacherColor;
     private boolean teacherPresence;
 

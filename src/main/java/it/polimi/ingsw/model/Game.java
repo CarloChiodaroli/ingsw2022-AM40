@@ -40,7 +40,7 @@ public class Game {
     private void initializeOrder(){
         order.add(TowerColor.BLACK);
         order.add(TowerColor.WHITE);
-        order.add(TowerColor.GRAY);
+        order.add(TowerColor.GREY);
     }
 
     /**
@@ -49,17 +49,17 @@ public class Game {
     public void gameStarter(){
         if(numOfRegisteredPlayers < 2) return;
         table = new Table();
-        isThreePlayerGame = preGamePlayersList.get(TowerColor.GRAY) == null;
+        isThreePlayerGame = preGamePlayersList.get(TowerColor.GREY) == null;
         if(isThreePlayerGame){
-            players.add(new Player(this, preGamePlayersList.get(TowerColor.BLACK), TowerColor.BLACK, 8));
-            players.add(new Player(this, preGamePlayersList.get(TowerColor.WHITE), TowerColor.WHITE, 8));
+            players.add(new Player(this, preGamePlayersList.get(TowerColor.BLACK), TowerColor.BLACK));
+            players.add(new Player(this, preGamePlayersList.get(TowerColor.WHITE), TowerColor.WHITE));
         } else {
-            players.add(new Player(this, preGamePlayersList.get(TowerColor.BLACK), TowerColor.BLACK, 6));
-            players.add(new Player(this, preGamePlayersList.get(TowerColor.WHITE), TowerColor.WHITE, 6));
-            players.add(new Player(this, preGamePlayersList.get(TowerColor.GRAY), TowerColor.GRAY, 6));
+            players.add(new Player(this, preGamePlayersList.get(TowerColor.BLACK), TowerColor.BLACK));
+            players.add(new Player(this, preGamePlayersList.get(TowerColor.WHITE), TowerColor.WHITE));
+            players.add(new Player(this, preGamePlayersList.get(TowerColor.GREY), TowerColor.GREY));
         }
         actionFase = new ActionFase(isExpertVariant);
-        pianificationFase = new PianificationFase();
+        pianificationFase = new PianificationFase(this);
         isInitial = false;
     }
 
@@ -112,7 +112,7 @@ public class Game {
      * @param id the Id of the students manager
      * @return the students manager itself
      */
-    public StudentsManager getStudentsManagerById(String id){
+    public Optional<StudentsManager> getStudentsManagerById(String id){
         if(id.equals("Bag")) return table.getBag();
         if(id.contains("C")) return table.getCloudById(id);
         if(id.contains("I")) return table.getIslandById(id);
@@ -142,5 +142,9 @@ public class Game {
      */
     public boolean isExpertVariant(){
         return isExpertVariant;
+    }
+
+    public boolean isThreePlayerGame() {
+        return isThreePlayerGame;
     }
 }

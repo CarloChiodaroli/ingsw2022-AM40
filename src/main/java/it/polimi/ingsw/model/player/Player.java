@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.TeacherColor;
 import it.polimi.ingsw.model.TowerColor;
+import it.polimi.ingsw.model.school.SchoolDashboard;
 
 import java.util.*;
 
@@ -51,10 +52,8 @@ public class Player {
         Optional<AssistantCard> result = personalDeck.stream()
                 .filter(which::equals)
                 .findAny();
-        if(!game.getPianificationFase().play(result, this)) {
-            return Optional.empty();
-        }
-        result.ifPresent(personalDeck::remove);
+        game.getPianificationFase().play(result, this)
+                .ifPresent(personalDeck::remove);
         return result;
     }
 
@@ -97,11 +96,10 @@ public class Player {
      * @param destinationId is the ID of the place to move the student to
      * @return true if success, false if not
      */
-    public boolean moveStudent(TeacherColor student, String sourceId, String destinationId){
+    public void moveStudent(TeacherColor student, String sourceId, String destinationId){
         Optional<StudentsManager> from = getStudentsManagerById(sourceId, student);
         Optional<StudentsManager> to = getStudentsManagerById(destinationId, student);
-        if(from.isPresent() && to.isPresent()) return game.getActionFase().request(student, from.get(), to.get());
-        else return false;
+        if(from.isPresent() && to.isPresent()) game.getActionFase().request(student, from.get(), to.get());
     }
 
     /**
@@ -113,7 +111,7 @@ public class Player {
     private Optional<StudentsManager> getStudentsManagerById(String id, TeacherColor color){
         switch(id){
             case "Room" -> {
-                return Optional.of((StudentsManager) dashboard.getRoom().getTable(color));
+                return Optional.of(dashboard.getRoom().getTable(color));
             }
             case "Entrance" -> {
                 return Optional.of(dashboard.getEntranceAsStudentsManager());
