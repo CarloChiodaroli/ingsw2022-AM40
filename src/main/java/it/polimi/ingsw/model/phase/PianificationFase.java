@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.Game;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Models game round's pianification phase
@@ -12,7 +13,7 @@ import java.util.*;
 
 public class PianificationFase {
 
-    private AbstractMap<Player, AssistantCard> playiedCards;
+    private AbstractMap<Player, AssistantCard> playedCards;
     private List<Player> playersInOrder;
     private boolean activated;
     private boolean determinedOrder;
@@ -41,7 +42,7 @@ public class PianificationFase {
     public void activate(){
         activated = true;
         playersInOrder = new ArrayList<>();
-        playiedCards = new IdentityHashMap<>();
+        playedCards = new IdentityHashMap<>();
         actualPlayer = 0;
     }
 
@@ -61,21 +62,19 @@ public class PianificationFase {
      * @param applicantPlayer the players who does the move
      * @return true if the move was successful, else false
      */
-    public Optional<AssistantCard> play(Optional<AssistantCard> card, Player applicantPlayer){
-        if(!activated) return Optional.empty();
-        if(determinedOrder) return Optional.empty();
-        if(!isPlayerPresent(applicantPlayer)) return Optional.empty();
-        if(!acceptedPlayerCard(card.get(), applicantPlayer)) return Optional.empty();
-        for(Player player: playersInOrder){
-            if(playiedCards.get(player).compareTo(card.get()) > 0){
-                playersInOrder.add(playersInOrder.indexOf(player), applicantPlayer);
-            }
-        }
-        if(!playersInOrder.contains(applicantPlayer)){
-            playersInOrder.add(applicantPlayer);
-        }
+    public AssistantCard play(AssistantCard card, Player applicantPlayer){
+        if(!activated) return null;
+        if(determinedOrder) return null;
+        if(isPlayerPresent(applicantPlayer)) return null;
+        if(!acceptedPlayerCard(card, applicantPlayer)) return null;
+
+        playedCards.put(applicantPlayer, card);
+        playersInOrder =  playedCards.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
         endPhase();
-        playiedCards.put(applicantPlayer, card.get());
         return card;
     }
 
@@ -86,9 +85,9 @@ public class PianificationFase {
      * @return true if it can be played, else false
      */
     private boolean acceptedPlayerCard(AssistantCard card, Player player){
-        Set<Player> submittingPlayers = playiedCards.keySet();
+        Set<Player> submittingPlayers = playedCards.keySet();
         for(Player subPlayer: submittingPlayers){
-            if(playiedCards.get(subPlayer).equals(card)){
+            if(playedCards.get(subPlayer).equals(card)){
                 if(player.canChangeAssistantCard())
                     return false;
                 else return true; //I don't like it but it's more legible
@@ -116,6 +115,7 @@ public class PianificationFase {
         if(playersInOrder.size() == players){
             determinedOrder = true;
             game.buildClouds();
+            actualPlayer = 0;
         }
     }
 
@@ -138,8 +138,16 @@ public class PianificationFase {
         return playersInOrder.get(actualPlayer);
     }
 
+    public void nextPlayer(){
+        actualPlayer++;
+    }
+
     public int getMotherNatureHops(Player player){
-        return playiedCards.get(player).getNumOfMotherNatureMovements();
+        return playedCards.get(player).getNumOfMotherNatureMovements();
+    }
+
+    public List<Player> getPlayersInOrder(){
+        return new ArrayList<>(playersInOrder);
     }
 
     // End of Round
