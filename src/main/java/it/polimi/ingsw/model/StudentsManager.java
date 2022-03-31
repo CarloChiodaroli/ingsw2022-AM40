@@ -149,4 +149,9 @@ public abstract class StudentsManager{
         return studentTot;
     }
 
+
+    public int getMaxStudents()
+    {
+        return maxStudents;
+    }
 }

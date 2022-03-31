@@ -29,39 +29,51 @@ public class Table {
         buildsIsland(12);
         FillCInitialIslandWithStudent(randomFirstIsland);
         MotherNature.getMotherNature().setPosition(IslandList.get(randomFirstIsland));
+        buildsCloud(numberofplayer);
     }
+
+    public void FillCloudRound()
+    {
+        for (Cloud cloud: CloudList)
+            cloud.buildClouds(bag);
+    }
+
 
     /**
      *
-     * @param howManyClouds number of clouds to create
+     * @param numberofplayer number of player to create
      */
-    public void buildsCloud(int howManyClouds)
+    private void buildsCloud(int numberofplayer)
     {
-        for(int i=0;i<howManyClouds;i++)
+        for(int i=0;i<numberofplayer;i++)
         {
-            CloudList.add(new Cloud("C_:"+i+1,howManyClouds+1));
+            CloudList.add(new Cloud("C_:"+i+1,numberofplayer+1));
         }
     }
 
     public void FillCInitialIslandWithStudent(int randomFirstIsland)
     {
-    int color;
-    int islandpointer=0;
-    int remainyellow=2;
-    int remainpink=2;
-    int remainred=2;
-    int remainblue=2;
-    int remaingreen=2;
-    int remainStudent=remaingreen+remainblue+remaingreen+remainpink+remainred+remainyellow;
-    while(remainStudent<10)
+    int idisland;
+    ArrayList<Integer> array=new ArrayList<>();
+
+    for(int i=0;i<12;i++)
+        array.add(i);
+
+    for(TeacherColor tc: TeacherColor.values())
         {
-        if(islandpointer!=randomFirstIsland&&islandpointer!=randomFirstIsland+6)
-            {
-                color=(int)(Math.random()*5);
+            for (int i=0;i<2;i++)
+                {
+                    //Extract correct number
+                    idisland=(int)(Math.random()*12);
+                    while(!array.contains(idisland)||idisland==randomFirstIsland||idisland==randomFirstIsland+6);
+                    {
+                        idisland=(int)(Math.random()*12);
+                    }
 
-                islandpointer++;
-            }
-
+            IslandList.get(idisland).addStudent(tc);
+            bag.removeStudent(tc);
+                    array.remove(idisland);
+                }
         }
     }
 

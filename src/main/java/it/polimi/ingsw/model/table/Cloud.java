@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.TeacherColor;
  */
 public class Cloud extends StudentsManager {
     private final String id;
-    public static Bag bag;
     /**
      *
      * @param id Cloud's Id
@@ -31,13 +30,17 @@ public class Cloud extends StudentsManager {
         return id;
     }
 
-    private void buildClouds(int equalsStudents)
+    public void buildClouds(Bag bag)
     {   int color;
-        for (int i = 0 ;i<equalsStudents;i++)
+        for (int i = 0 ;i<this.getMaxStudents();i++)
         {
             color=(int)(Math.random()*5);
-            this.addStudent(TeacherColor.values()[color]);
+            while(!this.addStudent(TeacherColor.values()[color]));
+            {
+                color=(int)(Math.random()*5);
+            }
             bag.removeStudent(TeacherColor.values()[color]);
+
         }
 
     }
