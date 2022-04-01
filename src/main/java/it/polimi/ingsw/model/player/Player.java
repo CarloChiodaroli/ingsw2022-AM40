@@ -111,12 +111,16 @@ public class Player {
                 return Optional.of(dashboard.getRoom().getTable(color));
             }
             case "Entrance" -> {
-                return Optional.of(dashboard.getEntranceAsStudentsManager());
+                return Optional.of(getEntrance());
             }
             default -> {
                 return game.getStudentsManagerById(id);
             }
         }
+    }
+
+    public StudentsManager getEntrance(){
+        return dashboard.getEntranceAsStudentsManager();
     }
 
     /**
@@ -161,6 +165,12 @@ public class Player {
             throw new Exception("Player has no more Towers to give");
         }
     }
+
+    public TowerColor getTowerColor(){
+        return dashboard.getTowerColor();
+    }
+
+
 
     /**
      * Utility used to give a tower back to a player

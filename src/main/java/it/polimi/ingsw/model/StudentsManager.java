@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
 
+import java.util.Optional;
+
 public abstract class StudentsManager{
     private int studentYellow=0;
     private int studentPink=0;
@@ -123,5 +125,14 @@ public abstract class StudentsManager{
     }
     public int howManyStudents(){ //return how many students there are
         return studentTot;
+    }
+
+    public Optional<TeacherColor> getStudent(){
+        for(TeacherColor color: TeacherColor.values()){
+            if(removeStudent(color)){
+                return Optional.of(color);
+            }
+        }
+        return Optional.empty();
     }
 }
