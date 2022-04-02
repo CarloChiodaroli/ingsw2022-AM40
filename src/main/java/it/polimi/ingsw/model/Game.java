@@ -49,16 +49,15 @@ public class Game {
     public void gameStarter(){
         if(numOfRegisteredPlayers < 2) return;
         table = new Table();
-        isThreePlayerGame = preGamePlayersList.get(TowerColor.GREY) == null;
         if(isThreePlayerGame){
             players.add(new Player(this, preGamePlayersList.get(TowerColor.BLACK), TowerColor.BLACK));
             players.add(new Player(this, preGamePlayersList.get(TowerColor.WHITE), TowerColor.WHITE));
+            players.add(new Player(this, preGamePlayersList.get(TowerColor.GREY), TowerColor.GREY));
         } else {
             players.add(new Player(this, preGamePlayersList.get(TowerColor.BLACK), TowerColor.BLACK));
             players.add(new Player(this, preGamePlayersList.get(TowerColor.WHITE), TowerColor.WHITE));
-            players.add(new Player(this, preGamePlayersList.get(TowerColor.GREY), TowerColor.GREY));
         }
-        actionFase = new ActionFase(isExpertVariant);
+        actionFase = new ActionFase(this);
         pianificationFase = new PianificationFase(this);
         isInitial = false;
     }
@@ -72,6 +71,7 @@ public class Game {
         if(numOfRegisteredPlayers >= 3) return false;
         preGamePlayersList.put(order.get(numOfRegisteredPlayers), name);
         numOfRegisteredPlayers++;
+        isThreePlayerGame = numOfRegisteredPlayers == 3;
         return true;
     }
 
@@ -152,5 +152,9 @@ public class Game {
         if(isThreePlayerGame)
             table.buildsCloud(3);
         else table.buildsCloud(2);
+    }
+
+    public int getNumOfRegisteredPlayers(){
+        return numOfRegisteredPlayers;
     }
 }

@@ -46,15 +46,13 @@ public class Player {
     /**
      * Command for playing a card during the game
      * @param which to define which card we need to get from the deck
-     * @return an optional of a card with the chosen assistant card if found, otherwise empty.
      */
-    public Optional<AssistantCard> playAssistantCard(AssistantCard which){
-        Optional<AssistantCard> result = personalDeck.stream()
+    public void playAssistantCard(AssistantCard which){
+        personalDeck.stream()
                 .filter(which::equals)
-                .findAny();
-        game.getPianificationFase().play(result, this)
+                .findAny()
+                .map(card -> game.getPianificationFase().play(card, this)) //COMMENT FOR TEST
                 .ifPresent(personalDeck::remove);
-        return result;
     }
 
     /**
@@ -94,7 +92,6 @@ public class Player {
      * @param student is the Teacher Color of the student to move
      * @param sourceId is the ID of the place to move the student from
      * @param destinationId is the ID of the place to move the student to
-     * @return true if success, false if not
      */
     public void moveStudent(TeacherColor student, String sourceId, String destinationId){
         Optional<StudentsManager> from = getStudentsManagerById(sourceId, student);
@@ -114,12 +111,16 @@ public class Player {
                 return Optional.of(dashboard.getRoom().getTable(color));
             }
             case "Entrance" -> {
-                return Optional.of(dashboard.getEntranceAsStudentsManager());
+                return Optional.of(getEntrance());
             }
             default -> {
                 return game.getStudentsManagerById(id);
             }
         }
+    }
+
+    public StudentsManager getEntrance(){
+        return dashboard.getEntranceAsStudentsManager();
     }
 
     /**
@@ -134,7 +135,7 @@ public class Player {
      * Command that triggers the influence count
      */
     public void calcInfluence(){
-        game.getActionFase().request();
+        game.getActionFase().request(this, "MotherNature");
     }
 
     /**
@@ -164,6 +165,12 @@ public class Player {
             throw new Exception("Player has no more Towers to give");
         }
     }
+
+    public TowerColor getTowerColor(){
+        return dashboard.getTowerColor();
+    }
+
+
 
     /**
      * Utility used to give a tower back to a player

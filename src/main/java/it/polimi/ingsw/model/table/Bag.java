@@ -20,7 +20,31 @@ public class Bag extends StudentsManager {
      */
     public TeacherColor getAStudent()
     {
-        return TeacherColor.values()[(int)(Math.random()*5)];
+        int i = (int) (Math.random()*5);
+        boolean find = false;
+        while(!find) {
+            if (i == 0 && addStudent(TeacherColor.YELLOW))
+                return TeacherColor.YELLOW;
+            if (i == 0 && !addStudent(TeacherColor.YELLOW))
+                i = (int) (Math.random()*5);
+            if (i == 1 && addStudent(TeacherColor.PINK))
+                return TeacherColor.PINK;
+            if (i == 1 && !addStudent(TeacherColor.PINK))
+                i = (int) (Math.random() * 5);
+            if (i == 2 && addStudent(TeacherColor.RED))
+                return TeacherColor.RED;
+            if (i == 2 && !addStudent(TeacherColor.RED))
+                i = (int) (Math.random() * 5);
+            if (i == 3 && addStudent(TeacherColor.GREEN))
+                return TeacherColor.GREEN;
+            if (i == 3 && !addStudent(TeacherColor.GREEN))
+                i = (int) (Math.random() * 5);
+            if (i == 4 && addStudent(TeacherColor.BLUE))
+                return TeacherColor.BLUE;
+            if (i == 4 && !addStudent(TeacherColor.BLUE))
+                i = (int) (Math.random() * 5);
+        }
+        return null;
     }
 
 }
