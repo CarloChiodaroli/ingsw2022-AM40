@@ -24,6 +24,7 @@ public enum Character {
 
     private static Map<String, Integer> createBaseCharacterization(){
         Map<String, Integer> result = new HashMap<>();
+
         result.put("Price", 0); // Card Price
         result.put("Memory", 0); // Card memory size
         result.put("Usages", 0); // How many times the card is used
@@ -31,9 +32,8 @@ public enum Character {
         result.put("AddToMaxHops", 0); // How many hops to add to mother nature movement
         result.put("DecoratesNoExpert", 0); // Changes behaviour of the no expert art of the action phase
         result.put("TeacherBehaviour", 0); // Changes behaviour of the movement of teachers
-        result.put("EffectAllPlayers", 0); // Has effect to all players in this tur
-
-        // How many things the card works on
+        result.put("EffectAllPlayers", 0); // Has effect to all players in this turn
+        // On how many things the card works on
         result.put("Island", 0);
         result.put("Player", 0);
         result.put("Room",0);
@@ -87,7 +87,7 @@ public enum Character {
                 result.replace("Bidirectional", 1);
                 result.replace("Room", 1);
                 result.replace("Entrance", 1);
-                result.replace("Student", 1);
+                result.replace("Student", 2);
                 return result;
             }
             case MESSENGER -> {

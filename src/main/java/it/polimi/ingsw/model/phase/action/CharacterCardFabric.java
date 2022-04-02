@@ -3,25 +3,20 @@ package it.polimi.ingsw.model.phase.action;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CharacterCardManager {
+public class CharacterCardFabric {
 
-    private final List<CharacterCard> enabledCharacterCards;
-
-    public CharacterCardManager(ActionFase actionFase){
-        this.enabledCharacterCards = new ArrayList<>();
-        while(this.enabledCharacterCards.size() < 3){ // commented for making action phase testing
+    public static List<CharacterCard> getCards(ActionFase actionFase) {
+        List<CharacterCard> enabledCharacterCards = new ArrayList<>();
+        while(enabledCharacterCards.size() < 3) {
             Character character = Character.getRandomCharacter();
-            if(!alreadyCreated(character))
-                this.enabledCharacterCards.add(CharacterCardManager.createCard(character, actionFase));
+            if (!alreadyCreated(character, enabledCharacterCards))
+                enabledCharacterCards.add(CharacterCardFabric.createCard(character, actionFase));
         }
-    }
-
-    public List<CharacterCard> getCards() {
         return enabledCharacterCards;
     }
 
-    private boolean alreadyCreated(Character character){
-        for(CharacterCard card: enabledCharacterCards){
+    private static boolean alreadyCreated(Character character, List<CharacterCard> existent){
+        for(CharacterCard card: existent){
             if(card.getCharacter().equals(character)) return true;
         }
         return false;

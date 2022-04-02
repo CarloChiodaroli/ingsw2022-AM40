@@ -4,7 +4,7 @@ package it.polimi.ingsw.model.school;
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.TeacherColor;
 
-public class RoomTable extends StudentsManager {
+public class RoomTable extends StudentsManager implements Comparable<RoomTable> {
     private final TeacherColor teacherColor;
     private boolean teacherPresence;
 
@@ -49,4 +49,17 @@ public class RoomTable extends StudentsManager {
         super.addStudent(teacherColor);
     }
 
+    public boolean removeTeacher(){
+        if(teacherPresence){
+            teacherPresence = false;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int compareTo(RoomTable o) {
+        return howManyStudentsColor() - o.howManyStudentsColor();
+    }
 }

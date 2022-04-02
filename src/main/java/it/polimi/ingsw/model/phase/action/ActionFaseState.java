@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.TeacherColor;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
 
+import java.util.Optional;
+
 abstract class ActionFaseState{
 
     private final ActionFase actionFase;
@@ -13,7 +15,9 @@ abstract class ActionFaseState{
         this.actionFase = actionFase;
     }
 
-    protected void handle(TeacherColor color, StudentsManager from, StudentsManager to) {    };
+    protected void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) {    };
+
+    protected void handle(Player player, TeacherColor fromColor, TeacherColor toColor) {    };
 
     protected void handle(Player player, int steps, int maxSteps) {    };
 

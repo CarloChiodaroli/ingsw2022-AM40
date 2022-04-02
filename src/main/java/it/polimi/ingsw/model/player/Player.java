@@ -4,7 +4,9 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.TeacherColor;
 import it.polimi.ingsw.model.TowerColor;
+import it.polimi.ingsw.model.school.RoomTable;
 import it.polimi.ingsw.model.school.SchoolDashboard;
+import it.polimi.ingsw.model.phase.action.Character;
 
 import java.util.*;
 
@@ -17,6 +19,7 @@ public class Player {
     private final List<AssistantCard> personalDeck;
     private final Game game;
     private final SchoolDashboard dashboard;
+    private int money = 0;
 
 
     /**
@@ -31,6 +34,7 @@ public class Player {
         this.personalDeck = new ArrayList<>();
         setPersonalDeck();
         this.dashboard = new SchoolDashboard(game.isThreePlayerGame(), towerColor);
+        if(game.getTable().getCoin()) this.money++;
     }
 
     /**
@@ -96,7 +100,11 @@ public class Player {
     public void moveStudent(TeacherColor student, String sourceId, String destinationId){
         Optional<StudentsManager> from = getStudentsManagerById(sourceId, student);
         Optional<StudentsManager> to = getStudentsManagerById(destinationId, student);
-        if(from.isPresent() && to.isPresent()) game.getActionFase().request(student, from.get(), to.get());
+        game.getActionFase().request(student, from, to);
+    }
+
+    public void moveStudent(TeacherColor studentA,TeacherColor studentB){
+        game.getActionFase().request(this, studentA, studentB);
     }
 
     /**
@@ -170,6 +178,9 @@ public class Player {
         return dashboard.getTowerColor();
     }
 
+    public RoomTable getRoomTable(TeacherColor color){
+        return dashboard.getRoom().getTable(color);
+    }
 
 
     /**
@@ -194,6 +205,19 @@ public class Player {
      */
     public String getName(){
         return name;
+    }
+
+    public void playCharacterCard(Character character){
+        game.getActionFase().activateCard(character, this);
+    }
+
+    public boolean pay(int howMuch){
+        if(money >= howMuch){
+            money -= howMuch;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

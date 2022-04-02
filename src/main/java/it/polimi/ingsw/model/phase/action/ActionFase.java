@@ -41,7 +41,7 @@ public class ActionFase {
         this.states.add(new MergeIsland(this));
         this.states.add(new Finalize(this));
         if(expertVariant){
-            this.characterCards = new CharacterCardManager(this).getCards();
+            this.characterCards = CharacterCardFabric.getCards(this);
         } else {
             this.characterCards = null;
         }
@@ -74,9 +74,10 @@ public class ActionFase {
     }
 
     // Called to move students from a "from" place to a "to" place
-    public void request(TeacherColor teacherColor, StudentsManager from, StudentsManager to){
+    public void request(TeacherColor teacherColor, Optional<StudentsManager> from, Optional<StudentsManager> to){
         if(possibleStudentMovements <= 0 || chosenCloud) return;
         if(expertVariant && actualCard.isInUse()){
+
         } else {
             states.get(0).handle(teacherColor, from, to);
             possibleStudentMovements--;
@@ -98,6 +99,12 @@ public class ActionFase {
     public void request(){
         if(mergedIslands) return;
         states.get(3).handle();
+    }
+
+    public void request(Player player, TeacherColor studentA, TeacherColor studentB){
+        if(expertVariant && actualCard.isInUse()){
+            actualCard.handle(player, studentA, studentB);
+        }
     }
 
     // Character card management

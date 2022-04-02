@@ -125,7 +125,7 @@ public class Table {
      * @param island1 First island to merge
      * @param island2 Second island to merge
      */
-    public void MergeIsland(Island island1,Island island2)
+    public void mergeIsland(Island island1,Island island2)
     {
         Island IslandToAdd = new Island(island1,island2);
         int FirstPositionOfIslandToAdd = IslandList.indexOf(island1);

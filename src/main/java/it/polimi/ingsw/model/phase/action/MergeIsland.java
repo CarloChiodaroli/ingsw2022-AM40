@@ -20,7 +20,7 @@ class MergeIsland extends ActionFaseState{
             else valley = islands.get(i + 1);
             if(mount.hasTowers() && valley.hasTowers()){
                 if(mount.getTowerColor().equals(valley.getTowerColor())){
-                    super.getActionFase().getGame().getTable().MergeIsland(mount, valley);
+                    super.getActionFase().getGame().getTable().mergeIsland(mount, valley);
                     this.handle();
                     return;
                 }
