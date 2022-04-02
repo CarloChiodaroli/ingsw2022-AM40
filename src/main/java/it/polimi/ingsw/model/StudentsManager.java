@@ -36,26 +36,26 @@ public abstract class StudentsManager{
     public boolean addStudent(TeacherColor color) {
         boolean perm = false;
         switch (color) {
-            case YELLOW:
+            case YELLOW:{
                 perm = permissionAdd(studentYellow);
                 if(perm)
-                    studentYellow = indecrement(studentYellow,1);
-            case PINK:
+                    studentYellow = indecrement(studentYellow,1);break;}
+            case PINK:{
                 perm = permissionAdd(studentPink);
                 if(perm)
-                    studentPink = indecrement(studentPink,1);
-            case RED:
+                    studentPink = indecrement(studentPink,1);break;}
+            case RED:{
                 perm = permissionAdd(studentRed);
                 if(perm)
-                    studentRed = indecrement(studentRed,1);
-            case GREEN:
+                    studentRed = indecrement(studentRed,1);break;}
+            case GREEN:{
                 perm = permissionAdd(studentGreen);
                 if(perm)
-                    studentGreen = indecrement(studentGreen,1);
-            case BLUE:
+                    studentGreen = indecrement(studentGreen,1);break;}
+            case BLUE:{
                 perm = permissionAdd(studentBlue);
                 if(perm)
-                    studentBlue = indecrement(studentBlue,1);
+                    studentBlue = indecrement(studentBlue,1);break;}
         }
         if(perm) {
             studentTot = indecrement(studentTot, 1);
