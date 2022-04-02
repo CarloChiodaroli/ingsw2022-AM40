@@ -16,7 +16,7 @@ public class BagTest {
         int studentsGreen = bag.howManyStudents(TeacherColor.GREEN);
         int studentsBlue = bag.howManyStudents(TeacherColor.BLUE);
         int totStudents = bag.howManyTotStudents();
-        for(int i = 0; i < 119; i++) {
+        for(int i = 0; i < 129; i++) {
             TeacherColor color = bag.getAStudent();
 
             if (color.equals(TeacherColor.YELLOW)) {
