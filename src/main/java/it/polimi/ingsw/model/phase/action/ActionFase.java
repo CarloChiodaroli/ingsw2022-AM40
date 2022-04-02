@@ -13,18 +13,21 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ActionFase {
 
-    private CharacterCardFactory charCardManager;
+    // Variables
     private final Game game;
-    private Character actualCharacter;
-    private boolean expertVariant;
     private final List<ActionFaseState> states;
 
-    // Status variables
+    // Non expert Status variables
     private int possibleStudentMovements;
     private boolean movedMotherNature;
     private boolean calculatedInfluence;
     private boolean mergedIslands;
     private boolean chosenCloud;
+
+    // Expert variant attributes
+    private final boolean expertVariant;
+    private CharacterCard actualCard;
+    private final List<CharacterCard> characterCards;
 
     // building Action phase
     public ActionFase(Game game){
@@ -37,13 +40,15 @@ public class ActionFase {
         this.states.add(new Influence(this));
         this.states.add(new MergeIsland(this));
         this.states.add(new Finalize(this));
-
         if(expertVariant){
-            this.charCardManager = new CharacterCardFactory();
+            this.characterCards = new CharacterCardManager(this).getCards();
+        } else {
+            this.characterCards = null;
         }
     }
 
     public void resetStatus(){
+        // Non expert status variables
         possibleStudentMovements = 3;
         movedMotherNature = false;
         calculatedInfluence = false;
@@ -51,7 +56,7 @@ public class ActionFase {
         chosenCloud = false;
     }
 
-
+    // Commands
     // called for moving mother nature and for choosing a cloud
     public void request(Player player, String id){
         if(!expertVariant){
@@ -71,28 +76,34 @@ public class ActionFase {
     // Called to move students from a "from" place to a "to" place
     public void request(TeacherColor teacherColor, StudentsManager from, StudentsManager to){
         if(possibleStudentMovements <= 0 || chosenCloud) return;
-        if(!expertVariant){
+        if(expertVariant && actualCard.isInUse()){
+        } else {
             states.get(0).handle(teacherColor, from, to);
             possibleStudentMovements--;
         }
     }
 
+    // Called to move mother nature
     public void request(Player player, int motherNatureHops){
         if(movedMotherNature) return;
         int maxHops = game.getPianificationFase().getMotherNatureHops(player);
+        if(motherNatureHops > maxHops || motherNatureHops <= 0) return;
         if(!expertVariant){
             states.get(1).handle(player, motherNatureHops, maxHops);
             movedMotherNature = true;
         }
     }
 
+    // Called to merge islands
     public void request(){
         if(mergedIslands) return;
         states.get(3).handle();
     }
 
+    // Character card management
     private Optional<CharacterCard> getCard(Character character){
-        return charCardManager.getCards().stream()
+        if(!expertVariant) return Optional.empty();
+        return characterCards.stream()
                 .filter(card -> card.getCharacter().equals(character))
                 .findAny();
     }

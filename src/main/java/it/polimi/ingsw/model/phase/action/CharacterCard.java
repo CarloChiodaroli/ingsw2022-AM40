@@ -60,4 +60,8 @@ abstract class CharacterCard extends ActionFaseState{
         if(usedOneTime) return price + 1;
         else return price;
     }
+
+    public boolean isInUse(){
+        return using;
+    }
 }
