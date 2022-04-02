@@ -48,7 +48,7 @@ public class Game {
      */
     public void gameStarter(){
         if(numOfRegisteredPlayers < 2) return;
-        table = new Table();
+        table = new Table(numOfRegisteredPlayers);
         if(isThreePlayerGame){
             players.add(new Player(this, preGamePlayersList.get(TowerColor.BLACK), TowerColor.BLACK));
             players.add(new Player(this, preGamePlayersList.get(TowerColor.WHITE), TowerColor.WHITE));
@@ -149,8 +149,10 @@ public class Game {
     }
 
     public void buildClouds(){
-        if(isThreePlayerGame)
-            table.buildsCloud(3);
-        else table.buildsCloud(2);
+        table.FillCloudRound();
+    }
+
+    public int getNumOfRegisteredPlayers(){
+        return numOfRegisteredPlayers;
     }
 }

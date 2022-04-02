@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.phase.action;
 
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
 import it.polimi.ingsw.model.table.MotherNature;

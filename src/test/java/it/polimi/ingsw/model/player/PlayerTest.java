@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.TowerColor;
 import it.polimi.ingsw.model.phase.PianificationFase;
+import it.polimi.ingsw.model.Game;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

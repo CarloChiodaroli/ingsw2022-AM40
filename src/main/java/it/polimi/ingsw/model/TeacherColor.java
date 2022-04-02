@@ -1,10 +1,9 @@
 package it.polimi.ingsw.model;
 
-public enum TeacherColor {
-    YELLOW ,
-    PINK,
-    RED,
-    GREEN,
-    BLUE
 
-}
+public enum TeacherColor {
+    YELLOW, PINK, RED, GREEN, BLUE;
+
+
+    }
+

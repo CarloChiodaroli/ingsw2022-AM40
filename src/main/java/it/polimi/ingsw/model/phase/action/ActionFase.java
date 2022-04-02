@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.phase.action;
 
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.TeacherColor;
 import it.polimi.ingsw.model.player.Player;
@@ -10,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import it.polimi.ingsw.model.Game;
 
 public class ActionFase {
 
