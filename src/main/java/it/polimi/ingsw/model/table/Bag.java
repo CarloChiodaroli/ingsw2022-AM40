@@ -14,12 +14,12 @@ public class Bag extends StudentsManager {
         super(maxStudents,maxStudentsColor);
 
         for(TeacherColor color : TeacherColor.values()){
-            for(int i = 0; i < 26; i++){
+            for(int i = 0; i < 24; i++){
                 this.addStudent(color);
             }
         }
 
-        this.setStudentTot(130);
+        this.setStudentTot(120);
     }
 
     /**
