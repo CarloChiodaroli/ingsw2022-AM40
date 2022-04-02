@@ -12,6 +12,14 @@ public class Bag extends StudentsManager {
     public Bag(int maxStudents,int maxStudentsColor)
     {
         super(maxStudents,maxStudentsColor);
+
+        for(TeacherColor color : TeacherColor.values()){
+            for(int i = 0; i < 26; i++){
+                this.addStudent(color);
+            }
+        }
+
+        this.setStudentTot(130);
     }
 
     /**
@@ -23,25 +31,35 @@ public class Bag extends StudentsManager {
         int i = (int) (Math.random()*5);
         boolean find = false;
         while(!find) {
-            if (i == 0 && addStudent(TeacherColor.YELLOW))
+            if (i == 0 && howManyStudents(TeacherColor.YELLOW) > 0) {
+                removeStudent(TeacherColor.YELLOW);
                 return TeacherColor.YELLOW;
-            if (i == 0 && !addStudent(TeacherColor.YELLOW))
+            }
+            if (i == 0 && howManyStudents(TeacherColor.YELLOW) == 0)
                 i = (int) (Math.random()*5);
-            if (i == 1 && addStudent(TeacherColor.PINK))
+            if (i == 1 && howManyStudents(TeacherColor.PINK) > 0) {
+                removeStudent(TeacherColor.PINK);
                 return TeacherColor.PINK;
-            if (i == 1 && !addStudent(TeacherColor.PINK))
+            }
+            if (i == 1 && howManyStudents(TeacherColor.PINK) == 0)
                 i = (int) (Math.random() * 5);
-            if (i == 2 && addStudent(TeacherColor.RED))
+            if (i == 2 && howManyStudents(TeacherColor.RED) > 0) {
+                removeStudent(TeacherColor.RED);
                 return TeacherColor.RED;
-            if (i == 2 && !addStudent(TeacherColor.RED))
+            }
+            if (i == 2 && howManyStudents(TeacherColor.RED) == 0)
                 i = (int) (Math.random() * 5);
-            if (i == 3 && addStudent(TeacherColor.GREEN))
+            if (i == 3 && howManyStudents(TeacherColor.GREEN) > 0) {
+                removeStudent(TeacherColor.GREEN);
                 return TeacherColor.GREEN;
-            if (i == 3 && !addStudent(TeacherColor.GREEN))
+            }
+            if (i == 3 && howManyStudents(TeacherColor.GREEN) == 0)
                 i = (int) (Math.random() * 5);
-            if (i == 4 && addStudent(TeacherColor.BLUE))
+            if (i == 4 && howManyStudents(TeacherColor.BLUE) > 0) {
+                removeStudent(TeacherColor.BLUE);
                 return TeacherColor.BLUE;
-            if (i == 4 && !addStudent(TeacherColor.BLUE))
+            }
+            if (i == 4 && howManyStudents(TeacherColor.BLUE) == 0)
                 i = (int) (Math.random() * 5);
         }
         return null;
