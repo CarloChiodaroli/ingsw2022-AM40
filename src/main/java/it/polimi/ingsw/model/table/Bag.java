@@ -18,8 +18,6 @@ public class Bag extends StudentsManager {
                 this.addStudent(color);
             }
         }
-
-        this.setStudentTot(130);
     }
 
     /**

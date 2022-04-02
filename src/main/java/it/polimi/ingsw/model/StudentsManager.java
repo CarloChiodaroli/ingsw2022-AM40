@@ -184,8 +184,4 @@ public abstract class StudentsManager{
     {
         return maxStudents;
     }
-
-    public void setStudentTot(int studentTot) {
-        this.studentTot = studentTot;
-    }
 }
