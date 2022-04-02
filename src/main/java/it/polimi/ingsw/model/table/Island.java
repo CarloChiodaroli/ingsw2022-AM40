@@ -3,7 +3,6 @@ import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.TeacherColor;
 import it.polimi.ingsw.model.TowerColor;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 /**
