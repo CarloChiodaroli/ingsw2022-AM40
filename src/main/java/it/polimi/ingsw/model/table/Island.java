@@ -34,7 +34,7 @@ public class Island extends StudentsManager {
      */
     public Island(Island island1, Island island2) {
         super(130, 130);
-        this.id = elaborationMergeIslandId(island1.id, island1.id);
+        this.id = elaborationMergeIslandId(island1.id, island2.id);
         this.equivalentIsland = island1.equivalentIsland + island1.equivalentIsland;
         this.noEntry = (island1.noEntry && island2.noEntry);
         this.towerColor = island1.towerColor;
@@ -48,7 +48,7 @@ public class Island extends StudentsManager {
      *
      * @param island Old Island
      */
-    private void addStudentfromSmallIsland(Island island) {
+    public void addStudentfromSmallIsland(Island island) {
         for (TeacherColor tc : TeacherColor.values()) {
             for (int i = 0; i < island.howManyStudents(tc); i++) {
                 this.addStudent(tc);
@@ -62,8 +62,8 @@ public class Island extends StudentsManager {
      * @param id2 Second Island's Id
      * @return String Final Island's Id
      */
-    private String elaborationMergeIslandId(String id1, String id2) {
-        return id1 + "" + id2.substring(2, id2.length() - 1);
+    public String elaborationMergeIslandId(String id1, String id2) {
+        return id1 + "" + id2.substring(1, id2.length());
     }
 
     public void setInfluence(TowerColor color){
