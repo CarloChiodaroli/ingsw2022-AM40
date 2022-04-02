@@ -164,4 +164,24 @@ public abstract class StudentsManager{
     {
         return maxStudents;
     }
+
+    public int getStudentYellow() {
+        return studentYellow;
+    }
+
+    public int getStudentPink() {
+        return studentPink;
+    }
+
+    public int getStudentRed() {
+        return studentRed;
+    }
+
+    public int getStudentGreen() {
+        return studentGreen;
+    }
+
+    public int getStudentBlue() {
+        return studentBlue;
+    }
 }
