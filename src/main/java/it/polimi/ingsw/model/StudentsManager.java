@@ -4,12 +4,12 @@ package it.polimi.ingsw.model;
 import java.util.Optional;
 
 public abstract class StudentsManager{
-    private int studentYellow=0;
-    private int studentPink=0;
-    private int studentRed=0;
-    private int studentGreen=0;
-    private int studentBlue=0;
-    private int studentTot=0;
+    private int studentYellow = 0;
+    private int studentPink = 0;
+    private int studentRed = 0;
+    private int studentGreen = 0;
+    private int studentBlue = 0;
+    private int studentTot = 0;
     private final int maxStudents;
     private final int maxStudentsColor;
 
@@ -36,26 +36,36 @@ public abstract class StudentsManager{
     public boolean addStudent(TeacherColor color) {
         boolean perm = false;
         switch (color) {
-            case YELLOW:
+            case YELLOW: {
                 perm = permissionAdd(studentYellow);
-                if(perm)
-                    studentYellow = indecrement(studentYellow,1);
-            case PINK:
+                if (perm)
+                    studentYellow = indecrement(studentYellow, 1);
+                break;
+            }
+            case PINK: {
                 perm = permissionAdd(studentPink);
-                if(perm)
-                    studentPink = indecrement(studentPink,1);
-            case RED:
+                if (perm)
+                    studentPink = indecrement(studentPink, 1);
+                break;
+            }
+            case RED: {
                 perm = permissionAdd(studentRed);
-                if(perm)
-                    studentRed = indecrement(studentRed,1);
-            case GREEN:
+                if (perm)
+                    studentRed = indecrement(studentRed, 1);
+                break;
+            }
+            case GREEN: {
                 perm = permissionAdd(studentGreen);
-                if(perm)
-                    studentGreen = indecrement(studentGreen,1);
-            case BLUE:
+                if (perm)
+                    studentGreen = indecrement(studentGreen, 1);
+                break;
+            }
+            case BLUE: {
                 perm = permissionAdd(studentBlue);
-                if(perm)
-                    studentBlue = indecrement(studentBlue,1);
+                if (perm)
+                    studentBlue = indecrement(studentBlue, 1);
+                break;
+            }
         }
         if(perm) {
             studentTot = indecrement(studentTot, 1);
@@ -72,26 +82,36 @@ public abstract class StudentsManager{
     public boolean removeStudent(TeacherColor color){
         boolean perm = false;
         switch (color) {
-            case YELLOW:
+            case YELLOW: {
                 perm = permissionRemove(studentYellow);
-                if(perm)
-                    studentYellow = indecrement(studentYellow,-1);
-            case PINK:
+                if (perm)
+                    studentYellow = indecrement(studentYellow, -1);
+                break;
+            }
+            case PINK:{
                 perm = permissionRemove(studentPink);
                 if(perm)
                     studentPink = indecrement(studentPink,-1);
-            case RED:
+                break;
+            }
+            case RED:{
                 perm = permissionRemove(studentRed);
                 if(perm)
                     studentRed = indecrement(studentRed,-1);
-            case GREEN:
+                break;
+            }
+            case GREEN:{
                 perm = permissionRemove(studentGreen);
                 if(perm)
                     studentGreen = indecrement(studentGreen,-1);
-            case BLUE:
+                break;
+            }
+            case BLUE:{
                 perm = permissionRemove(studentBlue);
                 if(perm)
                     studentBlue = indecrement(studentBlue,-1);
+                break;
+            }
         }
         if(perm) {
             studentTot = indecrement(studentTot, -1);
@@ -165,23 +185,7 @@ public abstract class StudentsManager{
         return maxStudents;
     }
 
-    public int getStudentYellow() {
-        return studentYellow;
-    }
-
-    public int getStudentPink() {
-        return studentPink;
-    }
-
-    public int getStudentRed() {
-        return studentRed;
-    }
-
-    public int getStudentGreen() {
-        return studentGreen;
-    }
-
-    public int getStudentBlue() {
-        return studentBlue;
+    public void setStudentTot(int studentTot) {
+        this.studentTot = studentTot;
     }
 }

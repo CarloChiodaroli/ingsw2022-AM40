@@ -21,7 +21,8 @@ public class Table {
      * Constructor
      */
     public Table(int numberofplayer)
-    {   int randomFirstIsland=(int)(Math.random()*12);
+    {
+        int randomFirstIsland=(int)(Math.random()*12);
         bag= new Bag(130,26);
         coinsleft=20;
         IslandList= new ArrayList<Island>();
