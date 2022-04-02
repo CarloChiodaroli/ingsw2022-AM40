@@ -35,7 +35,7 @@ public class Island extends StudentsManager {
     public Island(Island island1, Island island2) {
         super(130, 130);
         this.id = elaborationMergeIslandId(island1.id, island2.id);
-        this.equivalentIsland = island1.equivalentIsland + island1.equivalentIsland;
+        this.equivalentIsland = island1.equivalentIsland + island2.equivalentIsland;
         this.noEntry = (island1.noEntry && island2.noEntry);
         this.towerColor = island1.towerColor;
         this.tower = island1.tower;

@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.table;
 public class MotherNature {
 
     private static MotherNature istance = null;
-    private Island island;
+    private Island island=null;
     /**
      * CLASS MOTHERNATURE
      * Design pattern : Singleton
@@ -23,7 +23,7 @@ public class MotherNature {
      *
      * @return Island Mothernature's Island
      */
-    public Island getPosition()
+    public <Optional> Island getPosition()
     {
         return this.island;
     }
