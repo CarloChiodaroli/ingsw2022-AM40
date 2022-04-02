@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.phase.action;
 
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.TeacherColor;
 import it.polimi.ingsw.model.player.Player;

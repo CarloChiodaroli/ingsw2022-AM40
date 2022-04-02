@@ -1,13 +1,10 @@
 package it.polimi.ingsw.model.phase.action;
 
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.TeacherColor;
-import it.polimi.ingsw.model.TowerColor;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 class Influence extends ActionFaseState{
 

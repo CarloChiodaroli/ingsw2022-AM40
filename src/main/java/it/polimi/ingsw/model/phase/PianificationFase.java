@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.phase;
 
 import it.polimi.ingsw.model.player.AssistantCard;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.Game;
 
 import java.util.*;
 import java.util.stream.Collectors;
