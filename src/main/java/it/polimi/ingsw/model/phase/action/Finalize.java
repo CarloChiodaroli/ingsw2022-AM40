@@ -13,7 +13,7 @@ class Finalize extends ActionFaseState{
     @Override
     public void handle(Player player, StudentsManager cloud) {
         StudentsManager destination = player.getEntrance();
-        for(int i = 0; i < cloud.howManyStudents(); i++){
+        for(int i = 0; i < cloud.howManyTotStudents(); i++){
             cloud.getStudent().ifPresent(destination::addStudent);
         }
     }

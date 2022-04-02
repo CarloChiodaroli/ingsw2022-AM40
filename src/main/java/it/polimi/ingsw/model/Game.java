@@ -153,4 +153,8 @@ public class Game {
             table.buildsCloud(3);
         else table.buildsCloud(2);
     }
+
+    public int getNumOfRegisteredPlayers(){
+        return numOfRegisteredPlayers;
+    }
 }

@@ -8,6 +8,7 @@ public class SchoolDashboard {
     private int numOfTowers;
     private final SchoolEntrance entrance;
     private final SchoolRoom room;
+    private boolean isThreePlayers;
 
     /**
      * class constructor
@@ -17,10 +18,12 @@ public class SchoolDashboard {
         if(!isThreePlayers){
             this.entrance = new SchoolEntrance(7);
             this.numOfTowers = 8;
+            this.isThreePlayers = false;
         }
         else{
             this.entrance = new SchoolEntrance(9);
             this.numOfTowers = 6;
+            this.isThreePlayers = true;
         }
         this.colorOfTowers = towerColor;
     }
@@ -52,8 +55,8 @@ public class SchoolDashboard {
      * add towers to the school dashboard
      * @param howManyTowers number of towers to be added
      */
-    public void pushTower(int howManyTowers){
-        modifyNumTowerOf(howManyTowers);
+    public boolean pushTower(int howManyTowers){
+        return modifyNumTowerOf(howManyTowers);
     }
 
     /**
@@ -62,15 +65,24 @@ public class SchoolDashboard {
      * @return true if successful, else false
      */
     private boolean modifyNumTowerOf(int howMany){
+        int oldNumOfTowers = numOfTowers;
         if(howMany > 0){
-            numOfTowers += howMany;
-            return true;
-        } else {
+            for(int i = 0; i < howMany; i++) {
+                if ((!isThreePlayers && numOfTowers < 8) || (isThreePlayers && numOfTowers < 6)) {
+                    numOfTowers++;
+                } else {
+                    numOfTowers = oldNumOfTowers;
+                    return false;
+                }
+            }
+        }
+        else {
             howMany = howMany * (-1);
             for(int i = 0; i < howMany; i++){
                 if(numOfTowers > 0){
                     numOfTowers--;
                 } else {
+                    numOfTowers = oldNumOfTowers;
                     return false;
                 }
             }
