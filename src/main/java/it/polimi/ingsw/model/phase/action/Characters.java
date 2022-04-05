@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.phase.action;
 
 import java.util.*;
 
-public enum Character {
+public enum Characters {
     FRIAR,
     HOST,
     CRIER,
@@ -16,10 +16,10 @@ public enum Character {
     QUEEN,
     THIEF;
 
-    public static Character getRandomCharacter(){
+    public static Characters getRandomCharacter(){
         Random random = new Random();
-        int range = Character.values().length;
-        return Character.values()[random.nextInt(range)];
+        int range = Characters.values().length;
+        return Characters.values()[random.nextInt(range)];
     }
 
     private static Map<String, Integer> createBaseCharacterization(){
@@ -29,10 +29,9 @@ public enum Character {
         result.put("Memory", 0); // Card memory size
         result.put("Usages", 0); // How many times the card is used
         result.put("Bidirectional", 0); // Has a bidirectional behaviour
-        result.put("AddToMaxHops", 0); // How many hops to add to mother nature movement
-        result.put("DecoratesNoExpert", 0); // Changes behaviour of the no expert art of the action phase
         result.put("TeacherBehaviour", 0); // Changes behaviour of the movement of teachers
         result.put("EffectAllPlayers", 0); // Has effect to all players in this turn
+        result.put("NoEntrySetter", 0); // Defines if it needs to set no entry tile
         // On how many things the card works on
         result.put("Island", 0);
         result.put("Player", 0);
@@ -44,14 +43,13 @@ public enum Character {
         return result;
     }
 
-    public static Map<String, Integer> getCharacterization(Character character){
+    public static Map<String, Integer> getCharacterization(Characters characters){
         Map<String, Integer> result = createBaseCharacterization();
-        switch(character){
+        switch(characters){
             case HOST -> {
                 result.replace("Price", 2);
                 result.replace("Usages", 3); // How many times is the card used
-                result.replace("DecorateNoExpert", 3);
-                result.replace("TeacherBehaviour", 3);
+                result.replace("TeacherBehaviour", 1);
                 return result;
             }
             case FRIAR -> {
@@ -66,6 +64,7 @@ public enum Character {
                 result.replace("Memory", 4);
                 result.replace("Usages", 1);
                 result.replace("Room", 1);
+                result.replace("Player", 1);
                 return result;
             }
             case THIEF -> {
@@ -79,12 +78,15 @@ public enum Character {
                 result.replace("Usages", 3);
                 result.replace("Bidirectional", 1);
                 result.replace("Entrance", 1);
+                result.replace("Student", 2);
+                result.replace("Player", 1);
                 return result;
             }
             case MINSTREL -> {
                 result.replace("Price", 1);
                 result.replace("Usages", 2);
                 result.replace("Bidirectional", 1);
+                result.replace("Player", 1);
                 result.replace("Room", 1);
                 result.replace("Entrance", 1);
                 result.replace("Student", 2);
@@ -92,7 +94,6 @@ public enum Character {
             }
             case MESSENGER -> {
                 result.replace("Price", 1);
-                result.replace("AddToMaxHops", 2);
                 return result;
             }
             case CRIER -> {
@@ -118,6 +119,7 @@ public enum Character {
             case SORCERESS -> {
                 result.replace("Price", 2);
                 result.replace("Memory", 4);
+                result.replace("Island", 1);
                 return result;
             }
             default -> {
@@ -126,7 +128,7 @@ public enum Character {
         }
     }
 
-    public static String getClassOfCard(Character type){
+    public static String getClassOfCard(Characters type){
         return switch (type) {
             case HOST, FRIAR, QUEEN, THIEF, JESTER, MINSTREL -> "StudentMovement";
             case MESSENGER -> "MotherNature";

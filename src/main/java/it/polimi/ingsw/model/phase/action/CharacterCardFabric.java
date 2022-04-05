@@ -8,26 +8,26 @@ public class CharacterCardFabric {
     public static List<CharacterCard> getCards(ActionFase actionFase) {
         List<CharacterCard> enabledCharacterCards = new ArrayList<>();
         while(enabledCharacterCards.size() < 3) {
-            Character character = Character.getRandomCharacter();
-            if (!alreadyCreated(character, enabledCharacterCards))
-                enabledCharacterCards.add(CharacterCardFabric.createCard(character, actionFase));
+            Characters characters = Characters.getRandomCharacter();
+            if (!alreadyCreated(characters, enabledCharacterCards))
+                enabledCharacterCards.add(CharacterCardFabric.createCard(characters, actionFase));
         }
         return enabledCharacterCards;
     }
 
-    private static boolean alreadyCreated(Character character, List<CharacterCard> existent){
+    private static boolean alreadyCreated(Characters characters, List<CharacterCard> existent){
         for(CharacterCard card: existent){
-            if(card.getCharacter().equals(character)) return true;
+            if(card.getCharacter().equals(characters)) return true;
         }
         return false;
     }
 
-    public static CharacterCard createCard(Character type, ActionFase actionFase){
-        String classOfCard = Character.getClassOfCard(type);
+    public static CharacterCard createCard(Characters type, ActionFase actionFase){
+        String classOfCard = Characters.getClassOfCard(type);
         return switch (classOfCard) {
-            case "StudentMovement"-> new StudentMovementCard(type, actionFase, Character.getCharacterization(type));
-            case "MotherNature" -> new MotherNatureCard(type, actionFase, Character.getCharacterization(type));
-            case "Influence" -> new InfluenceCard(type, actionFase, Character.getCharacterization(type));
+            case "StudentMovement"-> new StudentMovementCard(type, actionFase, Characters.getCharacterization(type));
+            case "MotherNature" -> new MotherNatureCard(type, actionFase, Characters.getCharacterization(type));
+            case "Influence" -> new InfluenceCard(type, actionFase, Characters.getCharacterization(type));
             default -> null;
         };
     }

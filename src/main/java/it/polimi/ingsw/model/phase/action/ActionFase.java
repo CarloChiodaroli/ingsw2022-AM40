@@ -107,25 +107,25 @@ public class ActionFase {
         }
     }
 
-    // Character card management
-    private Optional<CharacterCard> getCard(Character character){
+    // Characters card management
+    private Optional<CharacterCard> getCard(Characters characters){
         if(!expertVariant) return Optional.empty();
         return characterCards.stream()
-                .filter(card -> card.getCharacter().equals(character))
+                .filter(card -> card.getCharacter().equals(characters))
                 .findAny();
     }
 
-    public boolean canBeActivated(Character character){
-        return getCard(character).isPresent();
+    public boolean canBeActivated(Characters characters){
+        return getCard(characters).isPresent();
     }
 
-    public int getCardCost(Character character){
+    public int getCardCost(Characters characters){
         AtomicInteger result = new AtomicInteger(0);
-        getCard(character).ifPresent(card -> result.set(card.getPrice()));
+        getCard(characters).ifPresent(card -> result.set(card.getPrice()));
         return result.get();
     }
 
-    public void activateCard(Character character, Player player){
+    public void activateCard(Characters characters, Player player){
 
     }
 

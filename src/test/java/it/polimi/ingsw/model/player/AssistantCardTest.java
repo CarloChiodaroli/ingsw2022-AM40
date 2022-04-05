@@ -1,12 +1,15 @@
 package it.polimi.ingsw.model.player;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Assistant Card test")
 public class AssistantCardTest {
 
     @Test
+    @DisplayName("Control the correct functioning of the constructor")
     public void creationTest(){
         AssistantCard card = new AssistantCard(1);
         assertEquals(1, card.getWeight());
@@ -50,6 +53,7 @@ public class AssistantCardTest {
     }
 
     @Test
+    @DisplayName("Test of the compareTo function")
     public void compareTest(){
         AssistantCard card1;
         AssistantCard card2;
