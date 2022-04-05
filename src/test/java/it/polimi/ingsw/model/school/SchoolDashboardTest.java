@@ -8,8 +8,8 @@ public class SchoolDashboardTest {
     @Test
     public void schoolDashboardTest(){
         SchoolDashboard dashboard = new SchoolDashboard(false, TowerColor.WHITE);
-        assertEquals(dashboard.getNumOfTowers(), 8);
-        assertEquals(dashboard.getTowerColor(), TowerColor.WHITE);
+        assertEquals(8, dashboard.getNumOfTowers());
+        assertEquals(TowerColor.WHITE, dashboard.getTowerColor());
 
         dashboard = new SchoolDashboard(false, TowerColor.BLACK);
         assertEquals(dashboard.getNumOfTowers(), 8);

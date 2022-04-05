@@ -35,7 +35,7 @@ public class Cloud extends StudentsManager {
         for (int i = 0 ;i<this.getMaxStudents();i++)
         {
             color=(int)(Math.random()*5);
-            while(!this.addStudent(TeacherColor.values()[color]));
+            while(!this.addStudent(TeacherColor.values()[color]))
             {
                 color=(int)(Math.random()*5);
             }

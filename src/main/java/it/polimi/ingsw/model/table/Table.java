@@ -48,14 +48,25 @@ public class Table {
     {
         for(int i=0;i<numberofplayer;i++)
         {
-            CloudList.add(new Cloud("c_:"+i+1,numberofplayer+1));
+            CloudList.add(new Cloud("c_"+(i+1),numberofplayer+1));
         }
     }
 
     public void FillCInitialIslandWithStudent(int randomFirstIsland)
     {
     int idisland;
+    int emptyIsland1;
+    int emptyIsland2;
     ArrayList<Integer> array=new ArrayList<>();
+
+    if(randomFirstIsland >= 6){
+        emptyIsland1 = randomFirstIsland - 6;
+        emptyIsland2 = randomFirstIsland;
+    }
+    else{
+        emptyIsland1 = randomFirstIsland;
+        emptyIsland2 = randomFirstIsland + 6;
+    }
 
     for(int i=0;i<12;i++)
         array.add(i);
@@ -66,14 +77,14 @@ public class Table {
                 {
                     //Extract correct number
                     idisland=(int)(Math.random()*12);
-                    while(!array.contains(idisland)||idisland==randomFirstIsland||idisland==randomFirstIsland+6);
+                    while(!array.contains(idisland)||idisland==emptyIsland1 ||idisland==emptyIsland2)
                     {
                         idisland=(int)(Math.random()*12);
                     }
 
             IslandList.get(idisland).addStudent(tc);
             bag.removeStudent(tc);
-                    array.remove(idisland);
+            array.remove(new Integer(idisland));
                 }
         }
     }
@@ -86,7 +97,7 @@ public class Table {
     {
         for(int i=0;i<howManyIslands;i++)
         {
-            IslandList.add(new Island("i_:"+i+1));
+            IslandList.add(new Island("i_"+(i+1)));
         }
     }
 
@@ -96,7 +107,7 @@ public class Table {
      */
     public boolean getCoin()
     {
-        return coinsleft>0;
+        return coinsleft > 0;
     }
 
     public int getNumCoin(){
@@ -182,6 +193,5 @@ public class Table {
                 .map(manager -> (StudentsManager) manager);
         return result;
     }
-
 
 }
