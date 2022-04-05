@@ -15,41 +15,55 @@ class Influence extends ActionFaseState{
     @Override
     public void handle(Player player, Island island) {
         if(noEntryTile(island)) return;
-        // Initialization
         List<Player> players = this.getActionFase().getGame().getPlayers();
         Map<Player, Integer> influences = new HashMap<>();
         players.forEach(x -> influences.put(x, 0));
-        // Assign points for teacher color
-        Arrays.stream(TeacherColor.values()).sequential().forEach(color ->
-                players.stream()
-                        .filter(x -> x.getTeachers().contains(color))
-                        .findAny()
-                        .ifPresent(x -> influences.computeIfPresent(x, (k, v) -> v + island.howManyStudents(color))));
-        // Assign points for towers
+
+        teacherColorPointAssigner(players, influences, island);
+        towerColorPointAssigner(players, influences, island);
+        influenceSetter(players, island, winnerFinder(players, influences));
+    }
+
+    public void teacherColorPointAssigner(List<Player> players, Map<Player, Integer> influences, Island island){
+        Arrays.stream(TeacherColor.values()).sequential().forEach(color -> singularTeacherColorPointAssigner(players, influences, island, color));
+    }
+
+    public void singularTeacherColorPointAssigner(List<Player> players, Map<Player, Integer> influences, Island island, TeacherColor color){
+        players.stream()
+                .filter(x -> x.getTeachers().contains(color))
+                .findAny()
+                .ifPresent(x -> influences.computeIfPresent(x, (k, v) -> v + island.howManyStudents(color)));
+    }
+
+    public void towerColorPointAssigner(List<Player> players, Map<Player, Integer> influences, Island island){
         island.getTowerColor().flatMap(x -> players.stream()
                 .filter(y -> y.getTowerColor().equals(x))
                 .findAny()).ifPresent(y -> influences.computeIfPresent(y, (k, v) -> v + island.howManyEquivalents()));
-        // Get max influence value
+    }
+
+    public Player winnerFinder(List<Player> players, Map<Player, Integer> influences){
         int maxInfluence = players.stream().map(influences::get)
                 .mapToInt(influence -> influence).max().getAsInt();  //for how is written there will be always a value
-        // Get the player who has that value, ensures that is only one
         Player tmpMaxInfluencePlayer = null;
         for(Player iPlayer: players){
             if(influences.get(iPlayer) == maxInfluence){
                 if(tmpMaxInfluencePlayer == null){
                     tmpMaxInfluencePlayer = iPlayer;
                 } else {
-                    return;
+                    return null;
                 }
             }
         }
-        final Player maxInfluencePlayer = tmpMaxInfluencePlayer;
-        // Set the new influence on the island
+        return tmpMaxInfluencePlayer;
+    }
+
+    public void influenceSetter(List<Player> players, Island island, Player maxInfluencePlayer){
+        if(maxInfluencePlayer ==  null) return;
         if(island.getTowerColor().isPresent())
             island.getTowerColor().ifPresent(x -> possessionSwitcher(
-                island,
-                players.stream().filter(y -> y.getTowerColor().equals(island.getTowerColor().get())).findFirst(),
-                maxInfluencePlayer));
+                    island,
+                    players.stream().filter(y -> y.getTowerColor().equals(island.getTowerColor().get())).findFirst(),
+                    maxInfluencePlayer));
         else{
             possessionSwitcher(island, Optional.empty(), maxInfluencePlayer);
         }

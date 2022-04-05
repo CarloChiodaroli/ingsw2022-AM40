@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.phase.action;
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.TeacherColor;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.school.RoomTable;
 import it.polimi.ingsw.model.table.Island;
 
 import java.util.List;
@@ -16,8 +15,8 @@ class StudentMovementCard extends CharacterCard {
     private StudentsContainer students = null;
     private final int maxUsages;
 
-    StudentMovementCard(Character character, ActionFase actionFase, Map<String, Integer> args) {
-        super(args, character, actionFase);
+    StudentMovementCard(Characters characters, ActionFase actionFase, Map<String, Integer> args) {
+        super(args, characters, actionFase);
         if (args.get("Memory") > 0) this.students = new StudentsContainer(args.get("Memory"), actionFase);
         this.maxUsages = args.get("Usages");
     }
@@ -26,11 +25,11 @@ class StudentMovementCard extends CharacterCard {
     protected void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) {
         if (!isInUse()) return;
         if (from.isEmpty()) {
-            decorated.handle(color, Optional.of(students), to); // Needs client Control
+            decorated.handle(color, Optional.of(students), to); // Needs other control
         } else {
             decorated.handle(color, from, to);
         }
-        if (super.getCharacterization().get("DecoratesNoExpert") == 1) {
+        if (super.getCharacterization("TeacherBehaviour") > 0) {
             controlTeachers(super.getActualPlayer());
         }
     }
@@ -38,11 +37,11 @@ class StudentMovementCard extends CharacterCard {
     @Override
     protected void handle(Player player, TeacherColor fromColor, TeacherColor toColor) {
         if (!isInUse()) return;
-        if (super.getCharacterization().get("Room") != 1) {
+        if (super.getCharacterization("Room") != 1) {
             decorated.handle(fromColor, Optional.of(player.getEntrance()), Optional.of(player.getRoomTable(fromColor)));
             decorated.handle(toColor, Optional.of(player.getRoomTable(toColor)), Optional.of(player.getEntrance()));
             super.updateUse();
-        } else if (super.getCharacterization().get("Memory") == 6) {
+        } else if (super.getCharacterization("Memory") == 6) {
             decorated.handle(fromColor, Optional.of(player.getEntrance()), Optional.of(students));
             decorated.handle(toColor, Optional.of(students), Optional.of(player.getEntrance()));
             super.updateUse();
@@ -58,7 +57,7 @@ class StudentMovementCard extends CharacterCard {
         if (!playerPays(player)) return;
         this.decorated = decorated;
         super.activator(player, color);
-        if (this.getCharacterization().get("Usages") == 0) {
+        if (this.getCharacterization("Usages") == 0) {
             List<Player> players = super.getActionFase().getGame().getPlayers();
             for (Player player1 : players) {
                 for (int i = 0; i < 3; i++)

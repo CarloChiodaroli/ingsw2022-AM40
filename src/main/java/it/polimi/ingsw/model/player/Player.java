@@ -4,9 +4,9 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.TeacherColor;
 import it.polimi.ingsw.model.TowerColor;
+import it.polimi.ingsw.model.phase.action.Characters;
 import it.polimi.ingsw.model.school.RoomTable;
 import it.polimi.ingsw.model.school.SchoolDashboard;
-import it.polimi.ingsw.model.phase.action.Character;
 
 import java.util.*;
 
@@ -207,8 +207,8 @@ public class Player {
         return name;
     }
 
-    public void playCharacterCard(Character character){
-        game.getActionFase().activateCard(character, this);
+    public void playCharacterCard(Characters characters){
+        game.getActionFase().activateCard(characters, this);
     }
 
     public boolean pay(int howMuch){

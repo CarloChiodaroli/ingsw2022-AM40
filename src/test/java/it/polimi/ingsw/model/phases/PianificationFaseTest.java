@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.phase.PianificationFase;
 import it.polimi.ingsw.model.player.AssistantCard;
 import it.polimi.ingsw.model.player.Player;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PianificationFaseTest {
 
     @Test
+    @DisplayName("Controls the correct creation and activation of the Pianification Phase")
     public void activationTest(){
         Game game = new Game();
 
@@ -33,6 +35,7 @@ public class PianificationFaseTest {
     }
 
     @Test
+    @DisplayName("Control simple 2 player operations")
     public void simple2PlayerTest(){
         Game game = new Game();
 
@@ -73,6 +76,7 @@ public class PianificationFaseTest {
     }
 
     @Test
+    @DisplayName("Control simple 3 player operations")
     public void simple3PlayerTest(){
         Game game = new Game();
 
