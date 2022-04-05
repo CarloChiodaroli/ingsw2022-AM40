@@ -20,42 +20,42 @@ public class BagTest {
             TeacherColor color = bag.getAStudent();
 
             if (color.equals(TeacherColor.YELLOW)) {
-                assertEquals(bag.howManyStudents(TeacherColor.YELLOW), studentsYellow - 1);
-                assertEquals(bag.howManyTotStudents(), totStudents - 1);
+                assertEquals(studentsYellow - 1, bag.howManyStudents(TeacherColor.YELLOW));
+                assertEquals(totStudents - 1, bag.howManyTotStudents());
                 studentsYellow--;
                 totStudents--;
             }
 
             if (color.equals(TeacherColor.PINK)) {
-                assertEquals(bag.howManyStudents(TeacherColor.PINK), studentsPink - 1);
-                assertEquals(bag.howManyTotStudents(), totStudents - 1);
+                assertEquals(studentsPink - 1, bag.howManyStudents(TeacherColor.PINK));
+                assertEquals(totStudents - 1, bag.howManyTotStudents());
                 studentsPink--;
                 totStudents--;
             }
 
             if (color.equals(TeacherColor.RED)) {
-                assertEquals(bag.howManyStudents(TeacherColor.RED), studentsRed - 1);
-                assertEquals(bag.howManyTotStudents(), totStudents - 1);
+                assertEquals(studentsRed - 1, bag.howManyStudents(TeacherColor.RED));
+                assertEquals(totStudents - 1, bag.howManyTotStudents());
                 studentsRed--;
                 totStudents--;
             }
 
             if (color.equals(TeacherColor.GREEN)) {
-                assertEquals(bag.howManyStudents(TeacherColor.GREEN), studentsGreen - 1);
-                assertEquals(bag.howManyTotStudents(), totStudents - 1);
+                assertEquals(studentsGreen - 1, bag.howManyStudents(TeacherColor.GREEN));
+                assertEquals(totStudents - 1, bag.howManyTotStudents());
                 studentsGreen--;
                 totStudents--;
             }
 
             if (color.equals(TeacherColor.BLUE)) {
-                assertEquals(bag.howManyStudents(TeacherColor.BLUE), studentsBlue - 1);
-                assertEquals(bag.howManyTotStudents(), totStudents - 1);
+                assertEquals(studentsBlue - 1, bag.howManyStudents(TeacherColor.BLUE));
+                assertEquals(totStudents - 1, bag.howManyTotStudents());
                 studentsBlue--;
                 totStudents--;
             }
         }
 
-        assertEquals(bag.howManyTotStudents(), 1);
+        assertEquals(1, bag.howManyTotStudents());
     }
 
 }
