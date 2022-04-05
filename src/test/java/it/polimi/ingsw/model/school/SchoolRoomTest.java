@@ -8,11 +8,11 @@ public class SchoolRoomTest {
     @Test
     public void schoolRoomTest(){
         SchoolRoom room = new SchoolRoom();
-        assertEquals(room.getTable(TeacherColor.YELLOW).getTeacherColor(), TeacherColor.YELLOW);
-        assertEquals(room.getTable(TeacherColor.PINK).getTeacherColor(), TeacherColor.PINK);
-        assertEquals(room.getTable(TeacherColor.RED).getTeacherColor(), TeacherColor.RED);
-        assertEquals(room.getTable(TeacherColor.GREEN).getTeacherColor(), TeacherColor.GREEN);
-        assertEquals(room.getTable(TeacherColor.BLUE).getTeacherColor(), TeacherColor.BLUE);
+        assertEquals(TeacherColor.YELLOW, room.getTable(TeacherColor.YELLOW).getTeacherColor());
+        assertEquals(TeacherColor.PINK, room.getTable(TeacherColor.PINK).getTeacherColor());
+        assertEquals(TeacherColor.RED, room.getTable(TeacherColor.RED).getTeacherColor());
+        assertEquals(TeacherColor.GREEN, room.getTable(TeacherColor.GREEN).getTeacherColor());
+        assertEquals(TeacherColor.BLUE, room.getTable(TeacherColor.BLUE).getTeacherColor());
     }
 
 }
