@@ -23,10 +23,10 @@ public class Table {
     public Table(int numberofplayer)
     {
         int randomFirstIsland=(int)(Math.random()*12);
-        bag= new Bag(130,26);
-        coinsleft=20;
-        IslandList= new ArrayList<Island>();
-        CloudList= new ArrayList<Cloud>();
+        bag = new Bag(130,26);
+        coinsleft = 20;
+        IslandList = new ArrayList<Island>();
+        CloudList = new ArrayList<Cloud>();
         buildsIsland(12);
         FillCInitialIslandWithStudent(randomFirstIsland);
         MotherNature.getMotherNature().setPosition(IslandList.get(randomFirstIsland));
@@ -48,7 +48,7 @@ public class Table {
     {
         for(int i=0;i<numberofplayer;i++)
         {
-            CloudList.add(new Cloud("C_:"+i+1,numberofplayer+1));
+            CloudList.add(new Cloud("c_:"+i+1,numberofplayer+1));
         }
     }
 
@@ -86,7 +86,7 @@ public class Table {
     {
         for(int i=0;i<howManyIslands;i++)
         {
-            IslandList.add(new Island("I_:"+i+1));
+            IslandList.add(new Island("i_:"+i+1));
         }
     }
 
@@ -99,16 +99,18 @@ public class Table {
         return coinsleft>0;
     }
 
+    public int getNumCoin(){
+        return coinsleft;
+    }
+
     /**
      *
      * @throws Exception If there is not coin
      */
-    public void giveCoin() throws Exception
+    public void giveCoin()
     {
         if(getCoin())
             coinsleft--;
-        else
-            throw new Exception("Coins left : 0");
     }
 
     /**
