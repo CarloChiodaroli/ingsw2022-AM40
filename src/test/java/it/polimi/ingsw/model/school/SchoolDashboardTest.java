@@ -12,20 +12,20 @@ public class SchoolDashboardTest {
         assertEquals(TowerColor.WHITE, dashboard.getTowerColor());
 
         dashboard = new SchoolDashboard(false, TowerColor.BLACK);
-        assertEquals(dashboard.getNumOfTowers(), 8);
-        assertEquals(dashboard.getTowerColor(), TowerColor.BLACK);
+        assertEquals(8, dashboard.getNumOfTowers());
+        assertEquals(TowerColor.BLACK, dashboard.getTowerColor());
 
         dashboard = new SchoolDashboard(true, TowerColor.WHITE);
-        assertEquals(dashboard.getNumOfTowers(), 6);
-        assertEquals(dashboard.getTowerColor(), TowerColor.WHITE);
+        assertEquals(6, dashboard.getNumOfTowers());
+        assertEquals(TowerColor.WHITE, dashboard.getTowerColor());
 
         dashboard = new SchoolDashboard(true, TowerColor.BLACK);
-        assertEquals(dashboard.getNumOfTowers(), 6);
-        assertEquals(dashboard.getTowerColor(), TowerColor.BLACK);
+        assertEquals(6, dashboard.getNumOfTowers());
+        assertEquals(TowerColor.BLACK, dashboard.getTowerColor());
 
         dashboard = new SchoolDashboard(true, TowerColor.GREY);
-        assertEquals(dashboard.getNumOfTowers(), 6);
-        assertEquals(dashboard.getTowerColor(), TowerColor.GREY);
+        assertEquals(6, dashboard.getNumOfTowers());
+        assertEquals(TowerColor.GREY, dashboard.getTowerColor());
     }
 
     @Test
@@ -37,35 +37,35 @@ public class SchoolDashboardTest {
         assertTrue(dashboard.getTower(1));
         assertTrue(dashboard.getNumOfTowers() >= 0);
         assertFalse(dashboard.getTower(8));
-        assertEquals(dashboard.getNumOfTowers(), oldNumOfTowers - 1);
+        assertEquals(oldNumOfTowers - 1, dashboard.getNumOfTowers());
 
         dashboard = new SchoolDashboard(false, TowerColor.BLACK);
         oldNumOfTowers = dashboard.getNumOfTowers();
         assertTrue(dashboard.getTower(1));
         assertTrue(dashboard.getNumOfTowers() >= 0);
         assertFalse(dashboard.getTower(8));
-        assertEquals(dashboard.getNumOfTowers(), oldNumOfTowers - 1);
+        assertEquals(oldNumOfTowers - 1, dashboard.getNumOfTowers());
 
         dashboard = new SchoolDashboard(true, TowerColor.WHITE);
         oldNumOfTowers = dashboard.getNumOfTowers();
         assertTrue(dashboard.getTower(1));
         assertTrue(dashboard.getNumOfTowers() >= 0);
         assertFalse(dashboard.getTower(6));
-        assertEquals(dashboard.getNumOfTowers(), oldNumOfTowers - 1);
+        assertEquals(oldNumOfTowers - 1, dashboard.getNumOfTowers());
 
         dashboard = new SchoolDashboard(true, TowerColor.BLACK);
         oldNumOfTowers = dashboard.getNumOfTowers();
         assertTrue(dashboard.getTower(1));
         assertTrue(dashboard.getNumOfTowers() >= 0);
         assertFalse(dashboard.getTower(6));
-        assertEquals(dashboard.getNumOfTowers(), oldNumOfTowers - 1);
+        assertEquals(oldNumOfTowers - 1, dashboard.getNumOfTowers());
 
         dashboard = new SchoolDashboard(true, TowerColor.GREY);
         oldNumOfTowers = dashboard.getNumOfTowers();
         assertTrue(dashboard.getTower(1));
         assertTrue(dashboard.getNumOfTowers() >= 0);
         assertFalse(dashboard.getTower(6));
-        assertEquals(dashboard.getNumOfTowers(), oldNumOfTowers - 1);
+        assertEquals(oldNumOfTowers - 1, dashboard.getNumOfTowers());
 
     }
 
@@ -80,7 +80,7 @@ public class SchoolDashboardTest {
         assertFalse(dashboard.pushTower(4));
         assertTrue(dashboard.pushTower(3));
         assertTrue(dashboard.getNumOfTowers()<=8);
-        assertEquals(dashboard.getNumOfTowers(), oldNumOfTowers);
+        assertEquals(oldNumOfTowers, dashboard.getNumOfTowers());
 
         dashboard = new SchoolDashboard(false, TowerColor.BLACK);
         oldNumOfTowers = dashboard.getNumOfTowers();
@@ -89,7 +89,7 @@ public class SchoolDashboardTest {
         assertFalse(dashboard.pushTower(4));
         assertTrue(dashboard.pushTower(3));
         assertTrue(dashboard.getNumOfTowers()<=8);
-        assertEquals(dashboard.getNumOfTowers(), oldNumOfTowers);
+        assertEquals(oldNumOfTowers, dashboard.getNumOfTowers());
 
         dashboard = new SchoolDashboard(true, TowerColor.WHITE);
         oldNumOfTowers = dashboard.getNumOfTowers();
@@ -98,7 +98,7 @@ public class SchoolDashboardTest {
         assertFalse(dashboard.pushTower(4));
         assertTrue(dashboard.pushTower(3));
         assertTrue(dashboard.getNumOfTowers()<=6);
-        assertEquals(dashboard.getNumOfTowers(), oldNumOfTowers);
+        assertEquals(oldNumOfTowers, dashboard.getNumOfTowers());
 
         dashboard = new SchoolDashboard(true, TowerColor.BLACK);
         oldNumOfTowers = dashboard.getNumOfTowers();
@@ -107,7 +107,7 @@ public class SchoolDashboardTest {
         assertFalse(dashboard.pushTower(4));
         assertTrue(dashboard.pushTower(3));
         assertTrue(dashboard.getNumOfTowers()<=6);
-        assertEquals(dashboard.getNumOfTowers(), oldNumOfTowers);
+        assertEquals(oldNumOfTowers, dashboard.getNumOfTowers());
 
         dashboard = new SchoolDashboard(true, TowerColor.GREY);
         oldNumOfTowers = dashboard.getNumOfTowers();
@@ -116,7 +116,7 @@ public class SchoolDashboardTest {
         assertFalse(dashboard.pushTower(4));
         assertTrue(dashboard.pushTower(3));
         assertTrue(dashboard.getNumOfTowers()<=6);
-        assertEquals(dashboard.getNumOfTowers(), oldNumOfTowers);
+        assertEquals(oldNumOfTowers, dashboard.getNumOfTowers());
 
     }
 

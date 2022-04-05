@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class StudentsManagerTest {
     @Test
-    public void studentsManagerTest(){
+    public void addStudentsTest(){
         StudentsManagerIstance manager = new StudentsManagerIstance(130, 26);
         int studentsYellow = manager.howManyStudents(TeacherColor.YELLOW);
         int studentsPink = manager.howManyStudents(TeacherColor.PINK);
@@ -18,26 +18,21 @@ public class StudentsManagerTest {
             assertTrue(manager.addStudent(color));
         }
 
-        assertEquals(manager.howManyTotStudents(), 5);
-
-        assertEquals(manager.howManyStudents(TeacherColor.YELLOW), studentsYellow + 1);
-
-        assertEquals(manager.howManyStudents(TeacherColor.PINK), studentsPink + 1);
-
-        assertEquals(manager.howManyStudents(TeacherColor.RED), studentsRed + 1);
-
-        assertEquals(manager.howManyStudents(TeacherColor.GREEN), studentsGreen + 1);
-
-        assertEquals(manager.howManyStudents(TeacherColor.BLUE), studentsBlue + 1);
+        assertEquals(5, manager.howManyTotStudents());
+        assertEquals(studentsYellow + 1, manager.howManyStudents(TeacherColor.YELLOW));
+        assertEquals(studentsPink + 1, manager.howManyStudents(TeacherColor.PINK));
+        assertEquals(studentsRed + 1, manager.howManyStudents(TeacherColor.RED));
+        assertEquals(studentsGreen + 1, manager.howManyStudents(TeacherColor.GREEN));
+        assertEquals(studentsBlue + 1, manager.howManyStudents(TeacherColor.BLUE));
 
         for(TeacherColor color : TeacherColor.values()) {
             for (int i = 0; i < 25; i++) {
                 manager.addStudent(color);
             }
             assertFalse(manager.addStudent(color));
-            assertEquals(manager.howManyStudents(color), 26);
+            assertEquals(26, manager.howManyStudents(color));
         }
-        assertEquals(manager.howManyTotStudents(), 130);
+        assertEquals(130, manager.howManyTotStudents());
 
         studentsYellow = 26;
         studentsPink = 26;
@@ -49,29 +44,28 @@ public class StudentsManagerTest {
             assertTrue(manager.removeStudent(color));
         }
 
-        assertEquals(manager.howManyTotStudents(), 125);
-
-        assertEquals(manager.howManyStudents(TeacherColor.YELLOW), studentsYellow - 1);
-
-        assertEquals(manager.howManyStudents(TeacherColor.PINK), studentsPink - 1);
-
-        assertEquals(manager.howManyStudents(TeacherColor.RED), studentsRed - 1);
-
-        assertEquals(manager.howManyStudents(TeacherColor.GREEN), studentsGreen - 1);
-
-        assertEquals(manager.howManyStudents(TeacherColor.BLUE), studentsBlue - 1);
+        assertEquals(125, manager.howManyTotStudents());
+        assertEquals(studentsYellow - 1, manager.howManyStudents(TeacherColor.YELLOW));
+        assertEquals(studentsPink - 1, manager.howManyStudents(TeacherColor.PINK));
+        assertEquals(studentsRed - 1, manager.howManyStudents(TeacherColor.RED));
+        assertEquals(studentsGreen - 1, manager.howManyStudents(TeacherColor.GREEN));
+        assertEquals(studentsBlue - 1, manager.howManyStudents(TeacherColor.BLUE));
 
         for(TeacherColor color : TeacherColor.values()) {
             for (int i = 0; i < 25; i++) {
                 manager.removeStudent(color);
             }
             assertFalse(manager.removeStudent(color));
-            assertEquals(manager.howManyStudents(color), 0);
+            assertEquals(0, manager.howManyStudents(color));
         }
-        assertEquals(manager.howManyTotStudents(), 0);
+        assertEquals(0, manager.howManyTotStudents());
 
+    }
 
-
+    @Test
+    public void istanceManager2Test(){
+        StudentsManagerIstance2 manager = new StudentsManagerIstance2(26);
+        assertEquals(26, manager.getMaxStudents());
     }
 
 }

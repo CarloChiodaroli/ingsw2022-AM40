@@ -1,10 +1,7 @@
 package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.model.phase.action.Characters;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -21,12 +18,14 @@ public class CharactersTest {
     /**
      * Tests that the casual creation of characters gives a character
      */
+    /*
     @RepeatedTest(100)
     @DisplayName("Casual Character getter gives a character")
     public void casualCreationTest() {
         Characters character = Characters.getRandomCharacter();
         assertTrue(Arrays.stream(Characters.values()).toList().contains(character));
     }
+    */
 
     /**
      * Control if the right class of card is given
