@@ -19,16 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CharactersTest {
 
     /**
-     * Tests that the casual creation of characters gives a character
-     */
-    @RepeatedTest(100)
-    @DisplayName("Casual Character getter gives a character")
-    public void casualCreationTest() {
-        Characters character = Characters.getRandomCharacter();
-        assertTrue(Arrays.stream(Characters.values()).toList().contains(character));
-    }
-
-    /**
      * Control if the right class of card is given
      */
     @Test
@@ -113,8 +103,6 @@ public class CharactersTest {
             assertEquals(0, characterization.get("Memory"));
             assertEquals(0, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
-            assertEquals(0, characterization.get("AddToMaxHops"));
-            assertEquals(0, characterization.get("DecoratesNoExpert"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
 
@@ -138,8 +126,6 @@ public class CharactersTest {
             assertEquals(0, characterization.get("Memory"));
             assertEquals(0, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
-            assertEquals(2, characterization.get("AddToMaxHops"));
-            assertEquals(0, characterization.get("DecoratesNoExpert"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
 
@@ -163,8 +149,6 @@ public class CharactersTest {
             assertEquals(4, characterization.get("Memory"));
             assertEquals(0, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
-            assertEquals(0, characterization.get("AddToMaxHops"));
-            assertEquals(0, characterization.get("DecoratesNoExpert"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
 
@@ -188,8 +172,6 @@ public class CharactersTest {
             assertEquals(0, characterization.get("Memory"));
             assertEquals(0, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
-            assertEquals(0, characterization.get("AddToMaxHops"));
-            assertEquals(0, characterization.get("DecoratesNoExpert"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
 
@@ -213,16 +195,14 @@ public class CharactersTest {
             assertEquals(6, characterization.get("Memory"));
             assertEquals(3, characterization.get("Usages"));
             assertEquals(1, characterization.get("Bidirectional"));
-            assertEquals(0, characterization.get("AddToMaxHops"));
-            assertEquals(0, characterization.get("DecoratesNoExpert"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
 
             assertEquals(0, characterization.get("Island"));
-            assertEquals(0, characterization.get("Player"));
+            assertEquals(1, characterization.get("Player"));
             assertEquals(0, characterization.get("Room"));
             assertEquals(0, characterization.get("Tower"));
-            assertEquals(0, characterization.get("Student"));
+            assertEquals(2, characterization.get("Student"));
             assertEquals(1, characterization.get("Entrance"));
         }
 
@@ -238,8 +218,6 @@ public class CharactersTest {
             assertEquals(0, characterization.get("Memory"));
             assertEquals(0, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
-            assertEquals(0, characterization.get("AddToMaxHops"));
-            assertEquals(0, characterization.get("DecoratesNoExpert"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
 
@@ -263,8 +241,6 @@ public class CharactersTest {
             assertEquals(0, characterization.get("Memory"));
             assertEquals(0, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
-            assertEquals(0, characterization.get("AddToMaxHops"));
-            assertEquals(0, characterization.get("DecoratesNoExpert"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
 
@@ -288,13 +264,11 @@ public class CharactersTest {
             assertEquals(0, characterization.get("Memory"));
             assertEquals(2, characterization.get("Usages"));
             assertEquals(1, characterization.get("Bidirectional"));
-            assertEquals(0, characterization.get("AddToMaxHops"));
-            assertEquals(0, characterization.get("DecoratesNoExpert"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
 
             assertEquals(0, characterization.get("Island"));
-            assertEquals(0, characterization.get("Player"));
+            assertEquals(1, characterization.get("Player"));
             assertEquals(1, characterization.get("Room"));
             assertEquals(0, characterization.get("Tower"));
             assertEquals(2, characterization.get("Student"));
@@ -313,13 +287,11 @@ public class CharactersTest {
             assertEquals(4, characterization.get("Memory"));
             assertEquals(1, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
-            assertEquals(0, characterization.get("AddToMaxHops"));
-            assertEquals(0, characterization.get("DecoratesNoExpert"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
 
             assertEquals(0, characterization.get("Island"));
-            assertEquals(0, characterization.get("Player"));
+            assertEquals(1, characterization.get("Player"));
             assertEquals(1, characterization.get("Room"));
             assertEquals(0, characterization.get("Tower"));
             assertEquals(0, characterization.get("Student"));
@@ -338,8 +310,6 @@ public class CharactersTest {
             assertEquals(0, characterization.get("Memory"));
             assertEquals(0, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
-            assertEquals(0, characterization.get("AddToMaxHops"));
-            assertEquals(0, characterization.get("DecoratesNoExpert"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(1, characterization.get("EffectAllPlayers"));
 

@@ -8,7 +8,7 @@ public class MotherNatureTest {
     @Test
     public void motherNatureTest(){
         Island island = new Island("Position Test");
-        assertEquals(null,MotherNature.getMotherNature().getPosition());
+        assertNull(MotherNature.getMotherNature().getPosition());
 
         MotherNature.getMotherNature().setPosition(island);
         assertEquals(island,MotherNature.getMotherNature().getPosition());

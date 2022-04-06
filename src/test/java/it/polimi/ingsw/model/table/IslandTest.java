@@ -70,7 +70,7 @@ public class IslandTest {
     }
 
     @Test
-    public void MergeTest()
+    public void mergeTest()
     {
         // 2 Island
         Island island1= new Island("I_1");

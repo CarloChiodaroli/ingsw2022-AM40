@@ -18,7 +18,7 @@ public class PlayerTest {
 
     @Test
     @DisplayName("Control if the player manages assistant cards well")
-    @Disabled("Useful test during test development, to retest a line of code needs to be commented")
+    @Disabled("Useful test during first player class development, to retest a line of code needs to be commented")
     public void assistantCardManagementTest(){
 
         /*
