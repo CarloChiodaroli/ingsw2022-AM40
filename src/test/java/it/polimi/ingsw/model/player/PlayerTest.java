@@ -30,14 +30,6 @@ public class PlayerTest {
         was correctly developed, not if the game works correctly.
          */
 
-        boolean commented = false;
-
-        /*
-        Change commented to true to enable this test, after having commented what from above.
-         */
-
-        if(!commented) return;
-
         Game game = new Game();
 
         Player player = new Player(game, "Test", TowerColor.BLACK);

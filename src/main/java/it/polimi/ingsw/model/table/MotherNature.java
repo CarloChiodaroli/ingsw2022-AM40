@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.table;
 
+import java.util.Optional;
+
 public class MotherNature {
 
     private static MotherNature istance = null;
@@ -23,9 +25,9 @@ public class MotherNature {
      *
      * @return Island Mothernature's Island
      */
-    public <Optional> Island getPosition()
+    public Optional<Island> getPosition()
     {
-        return this.island;
+        return Optional.ofNullable(island);
     }
     /**
      *
@@ -34,5 +36,9 @@ public class MotherNature {
     public void setPosition(Island island)
     {
         this.island=island;
+    }
+
+    public void resetPosition(){
+        this.island = null;
     }
 }

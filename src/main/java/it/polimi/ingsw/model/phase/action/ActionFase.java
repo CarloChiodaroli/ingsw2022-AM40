@@ -62,7 +62,8 @@ public class ActionFase {
         if(!expertVariant){
             if(id.equals("MotherNature")){
                 if(calculatedInfluence) return;
-                states.get(2).handle(player, MotherNature.getMotherNature().getPosition());
+                if(MotherNature.getMotherNature().getPosition().isEmpty()) return;
+                states.get(2).handle(player, MotherNature.getMotherNature().getPosition().get());
                 movedMotherNature = true;
                 request();
             } else {
