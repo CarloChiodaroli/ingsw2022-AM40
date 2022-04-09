@@ -10,16 +10,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-class StudentMovement extends ActionFaseState {
+public class StudentMovement extends ActionFaseState {
 
-    StudentMovement(ActionFase actionFase) {
+    public StudentMovement(ActionFase actionFase) {
         super(actionFase);
     }
 
     @Override
-    protected void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) {
+    public void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) {
         if (from.isPresent() && to.isPresent())
-            if (from.get().removeStudent(color)) to.get().addStudent(color);
+            if (from.get().removeStudent(color))
+                to.get().addStudent(color);
         controlTeachers();
     }
 
