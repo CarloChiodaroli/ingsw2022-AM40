@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.table.Island;
 
 import java.util.Optional;
 
-abstract class ActionFaseState{
+public abstract class ActionFaseState{
 
     private final ActionFase actionFase;
 
@@ -27,7 +27,7 @@ abstract class ActionFaseState{
 
     protected void handle() {    }
 
-    protected ActionFase getActionFase(){
+    public ActionFase getActionFase(){
         return actionFase;
     }
 }
