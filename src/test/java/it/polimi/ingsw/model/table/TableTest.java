@@ -121,7 +121,7 @@ public class TableTest {
         table = new Table(3);
 
         table.mergeIsland(table.getIslandList().get(2), table.getIslandList().get(3));
-        assertEquals(table.getIslandList().size(), 11);
+        assertEquals(11, table.getIslandList().size());
 
 
     }

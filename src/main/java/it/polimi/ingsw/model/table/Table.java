@@ -141,13 +141,15 @@ public class Table {
     public void mergeIsland(Island island1,Island island2)
     {
         Island IslandToAdd = new Island(island1,island2);
-        int FirstPositionOfIslandToAdd = IslandList.indexOf(island1);
+        int i1 = IslandList.indexOf(island1);
+        int i2 = IslandList.indexOf(island2);
+        if(i1 > i2){
+            i1 = i2;
+        }
+        IslandList.add(i1, IslandToAdd);
         IslandList.remove(island1);
         IslandList.remove(island2);
-        IslandList.add(FirstPositionOfIslandToAdd,IslandToAdd);
-        for(int i=FirstPositionOfIslandToAdd+1;i<IslandList.size()-1;i++)
-            IslandList.add(i,IslandList.get(i+1));
-        IslandList.remove(IslandList.size()-1);
+
     }
 
     /**
