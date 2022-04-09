@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class StudentMovementTest {
     @Test
-    public void studentMovementTest(){
+    public void studentMovementToRoomTableTest(){
         Game game = new Game();
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
@@ -41,6 +41,36 @@ public class StudentMovementTest {
         }
         assertTrue(game.getPlayers().get(1).getRoomTable(TeacherColor.RED).hasTeacher());
         assertFalse(game.getPlayers().get(0).getRoomTable(TeacherColor.RED).hasTeacher());
+    }
+
+    @Test
+    public void studentMovementToIslandTest(){
+        Game game = new Game();
+        game.addPlayer("Camilla");
+        game.addPlayer("Anja");
+        game.gameStarter();
+        StudentMovement studentMovement = new StudentMovement(game.getActionFase());
+
+        for(int i = 0; i < 5; i++){
+            game.getPlayers().get(0).getEntrance().addStudent(TeacherColor.GREEN);
+        }
+        for(int i = 0; i < 4; i++) {
+            game.getPlayers().get(1).getEntrance().addStudent(TeacherColor.BLUE);
+        }
+        studentMovement.handle(TeacherColor.GREEN, Optional.of(game.getPlayers().get(0).getEntrance()),
+                Optional.of(game.getTable().getIslandList().get(4)));
+        for(int i = 0; i < 2; i++){
+            studentMovement.handle(TeacherColor.GREEN, Optional.of(game.getPlayers().get(0).getEntrance()),
+                    Optional.of(game.getTable().getIslandList().get(7)));
+        }
+        assertEquals(1, game.getTable().getIslandList().get(4).howManyStudents(TeacherColor.GREEN));
+        assertEquals(2, game.getTable().getIslandList().get(7).howManyStudents(TeacherColor.GREEN));
+        for(int i = 0; i < 2; i++){
+            studentMovement.handle(TeacherColor.BLUE, Optional.of(game.getPlayers().get(1).getEntrance()),
+                    Optional.of(game.getTable().getIslandList().get(7)));
+        }
+        assertEquals(2, game.getTable().getIslandList().get(7).howManyStudents(TeacherColor.BLUE));
+        assertEquals(4, game.getTable().getIslandList().get(7).howManyTotStudents());
     }
 }
 
