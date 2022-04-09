@@ -220,6 +220,10 @@ public class Player {
         }
     }
 
+    public Integer getNumCoin(){
+        return money;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
