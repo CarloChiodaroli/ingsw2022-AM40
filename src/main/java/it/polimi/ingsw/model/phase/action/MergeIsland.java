@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.table.Island;
 
 import java.util.List;
 
-class MergeIsland extends ActionFaseState{
+public class MergeIsland extends ActionFaseState{
 
     public MergeIsland(ActionFase actionFase){
         super(actionFase);
