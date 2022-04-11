@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.phase.action;
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.player.Player;
 
-class Finalize extends ActionFaseState{
+public class Finalize extends ActionFaseState{
 
     public Finalize(ActionFase actionFase){
         super(actionFase);

@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.table.MotherNature;
 
 import java.util.List;
 
-class MotherNatureState extends ActionFaseState{
+public class MotherNatureState extends ActionFaseState{
 
     public MotherNatureState(ActionFase actionFase){
         super(actionFase);

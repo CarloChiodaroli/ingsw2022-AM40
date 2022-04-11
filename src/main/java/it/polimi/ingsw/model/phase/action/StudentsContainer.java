@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.StudentsManager;
 
 public class StudentsContainer extends StudentsManager {
 
-    public StudentsContainer(int capacity, ActionFase actionFase){
+    public StudentsContainer(int capacity){
         super(capacity);
     }
 }

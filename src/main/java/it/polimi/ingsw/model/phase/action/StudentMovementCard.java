@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-class StudentMovementCard extends CharacterCard {
+public class StudentMovementCard extends CharacterCard {
 
     private StudentMovement decorated;
     private StudentsContainer students = null;
@@ -17,7 +17,7 @@ class StudentMovementCard extends CharacterCard {
 
     StudentMovementCard(Characters characters, ActionFase actionFase, Map<String, Integer> args) {
         super(args, characters, actionFase);
-        if (args.get("Memory") > 0) this.students = new StudentsContainer(args.get("Memory"), actionFase);
+        if (args.get("Memory") > 0) this.students = new StudentsContainer(args.get("Memory"));
         this.maxUsages = args.get("Usages");
     }
 

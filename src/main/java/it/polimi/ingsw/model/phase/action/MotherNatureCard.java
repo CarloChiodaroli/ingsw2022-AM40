@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.table.Island;
 
 import java.util.Map;
 
-class MotherNatureCard extends CharacterCard{
+public class MotherNatureCard extends CharacterCard{
 
     private MotherNatureState decorated;
 

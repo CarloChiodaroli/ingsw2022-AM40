@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class InfluenceCard extends CharacterCard{
+public class InfluenceCard extends CharacterCard{
 
     private Influence decorated;
     private int noEntryCounter = 0;
