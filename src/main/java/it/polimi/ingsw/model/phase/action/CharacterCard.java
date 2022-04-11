@@ -32,7 +32,7 @@ public abstract class CharacterCard extends ActionFaseState {
         this.interestingTower = null;
     }
 
-    protected boolean activator(Player player) {
+    public boolean activator(Player player) {
         if (!usedOneTime) usedOneTime = true;
         usesLeft = characterization.get("Usages");
         if (usesLeft > 0) using = true;
@@ -40,7 +40,7 @@ public abstract class CharacterCard extends ActionFaseState {
         return true;
     }
 
-    protected boolean activator(Player player, TeacherColor color) {
+    public boolean activator(Player player, TeacherColor color) {
         if (getCharacterization("Student") > 0) {
             activator(player);
             interestingColor = color;
@@ -49,7 +49,7 @@ public abstract class CharacterCard extends ActionFaseState {
         return false;
     }
 
-    protected boolean activator(Player player, Island island) {
+    public boolean activator(Player player, Island island) {
         if (getCharacterization("Island") > 0) {
             activator(player);
             interestingIsland = island;
@@ -58,7 +58,7 @@ public abstract class CharacterCard extends ActionFaseState {
         return false;
     }
 
-    protected boolean activator(Player player, TowerColor color) {
+    public boolean activator(Player player, TowerColor color) {
         if (getCharacterization("Tower") > 0) {
             activator(player);
             interestingTower = color;
@@ -67,7 +67,7 @@ public abstract class CharacterCard extends ActionFaseState {
         return false;
     }
 
-    protected void updateUse() {
+    public void updateUse() {
         usesLeft--;
         if (usesLeft == 0) {
             reset();
@@ -82,19 +82,19 @@ public abstract class CharacterCard extends ActionFaseState {
         actualPlayer = null;
     }
 
-    protected Island getInterestingIsland() {
+    public Island getInterestingIsland() {
         return interestingIsland;
     }
 
-    protected TeacherColor getInterestingTeacherColor() {
+    public TeacherColor getInterestingTeacherColor() {
         return interestingColor;
     }
 
-    protected Integer getCharacterization(String arg) {
+    public Integer getCharacterization(String arg) {
         return new HashMap<>(characterization).get(arg);
     }
 
-    Characters getCharacter() {
+    public Characters getCharacter() {
         return characters;
     }
 
@@ -107,7 +107,7 @@ public abstract class CharacterCard extends ActionFaseState {
         return using;
     }
 
-    protected Player getActualPlayer() {
+    public Player getActualPlayer() {
         return actualPlayer;
     }
 }

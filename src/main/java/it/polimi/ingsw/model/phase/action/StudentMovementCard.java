@@ -22,7 +22,7 @@ public class StudentMovementCard extends CharacterCard {
     }
 
     @Override
-    protected void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) {
+    public void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) {
         if (!isInUse()) return;
         if (from.isEmpty()) {
             decorated.handle(color, Optional.of(students), to); // Needs other control
@@ -35,7 +35,7 @@ public class StudentMovementCard extends CharacterCard {
     }
 
     @Override
-    protected void handle(Player player, TeacherColor fromColor, TeacherColor toColor) {
+    public void handle(Player player, TeacherColor fromColor, TeacherColor toColor) {
         if (!isInUse()) return;
         if (super.getCharacterization("Room") != 1) {
             decorated.handle(fromColor, Optional.of(player.getEntrance()), Optional.of(player.getRoomTable(fromColor)));
