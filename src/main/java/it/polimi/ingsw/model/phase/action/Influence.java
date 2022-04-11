@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.table.Island;
 
 import java.util.*;
 
-class Influence extends ActionFaseState{
+public class Influence extends ActionFaseState{
 
     public Influence(ActionFase actionFase){
         super(actionFase);

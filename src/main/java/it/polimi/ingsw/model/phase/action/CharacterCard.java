@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.table.Island;
 import java.util.HashMap;
 import java.util.Map;
 
-abstract class CharacterCard extends ActionFaseState {
+public abstract class CharacterCard extends ActionFaseState {
 
     private final int price;
     private boolean usedOneTime;
