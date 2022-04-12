@@ -36,9 +36,10 @@ public class Influence extends ActionFaseState{
     }
 
     public void towerColorPointAssigner(List<Player> players, Map<Player, Integer> influences, Island island){
-        island.getTowerColor().flatMap(x -> players.stream()
-                .filter(y -> y.getTowerColor().equals(x))
-                .findAny()).ifPresent(y -> influences.computeIfPresent(y, (k, v) -> v + island.howManyEquivalents()));
+        if(island.getTowerColor().isPresent())
+            island.getTowerColor().flatMap(x -> players.stream()
+                    .filter(y -> y.getTowerColor().equals(x))
+                    .findAny()).ifPresent(y -> influences.computeIfPresent(y, (k, v) -> v + island.howManyEquivalents()));
     }
 
     public Player winnerFinder(List<Player> players, Map<Player, Integer> influences){

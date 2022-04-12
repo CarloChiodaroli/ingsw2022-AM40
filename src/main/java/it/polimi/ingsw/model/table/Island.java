@@ -24,7 +24,7 @@ public class Island extends StudentsManager {
         this.id = id;
         this.equivalentIsland = 1;
         this.noEntry = false;
-        this.towerColor = null;
+        this.towerColor = Optional.empty();
         this.tower = false;
     }
 
