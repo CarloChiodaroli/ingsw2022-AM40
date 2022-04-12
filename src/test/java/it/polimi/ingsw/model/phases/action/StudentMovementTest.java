@@ -12,7 +12,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StudentMovementTest {
-    @RepeatedTest(300)
+
+    @Test
     public void studentMovementToRoomTableTest() {
         Game game = new Game();
         game.addPlayer("Camilla");
@@ -62,7 +63,7 @@ public class StudentMovementTest {
             assertFalse(game.getPlayers().get(0).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
         }
 
-        int delta = 0;
+        int delta;
         Player actualPlayer;
         if(total1 >= max){
             actualPlayer = game.getPlayers().get(1);
@@ -89,7 +90,7 @@ public class StudentMovementTest {
         }
     }
 
-    @RepeatedTest(300)
+    @Test
     public void studentMovementToIslandTest() {
         Game game = new Game();
         game.addPlayer("Camilla");

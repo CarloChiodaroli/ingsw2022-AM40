@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.phase.action;
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.TeacherColor;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.table.Bag;
 import it.polimi.ingsw.model.table.Island;
 
 import java.util.List;
@@ -17,7 +18,13 @@ public class StudentMovementCard extends CharacterCard {
 
     public StudentMovementCard(Characters characters, ActionFase actionFase, Map<String, Integer> args) {
         super(args, characters, actionFase);
-        if (args.get("Memory") > 0) this.students = new StudentsContainer(args.get("Memory"));
+        if (args.get("Memory") > 0) {
+            this.students = new StudentsContainer(args.get("Memory"));
+            Bag bag = (Bag) getActionFase().getGame().getTable().getBag().orElseThrow();
+            for (int i = 0; i < args.get("Memory"); i++) {
+                students.addStudent(bag.getAStudent());
+            }
+        }
         this.maxUsages = args.get("Usages");
     }
 
@@ -42,21 +49,34 @@ public class StudentMovementCard extends CharacterCard {
             decorated.handle(toColor, Optional.of(player.getRoomTable(toColor)), Optional.of(player.getEntrance()));
             super.updateUse();
         } else if (super.getCharacterization("Memory") == 6) {
+            TeacherColor tmp = null;
+            for (TeacherColor color : TeacherColor.values()) {
+                if (color != fromEntrance && color != toColor && students.howManyStudents(color) > 0) {
+                    tmp = color;
+                }
+            }
+            if (tmp == null) {
+                if (students.howManyStudents(fromEntrance) > 0) tmp = fromEntrance;
+                else tmp = toColor;
+            }
+            students.removeStudent(tmp);
             decorated.handle(fromEntrance, Optional.of(player.getEntrance()), Optional.of(students));
             decorated.handle(toColor, Optional.of(students), Optional.of(player.getEntrance()));
+            students.addStudent(tmp);
             super.updateUse();
         }
     }
 
-    public void activator(StudentMovement decorated, Player player) {
+    public boolean activator(StudentMovement decorated, Player player) {
+        if (!playerPays(player)) return false;
         this.decorated = decorated;
-        super.activator(player);
+        return super.activator(player);
     }
 
-    public void activator(StudentMovement decorated, Player player, TeacherColor color) {
-        if (!playerPays(player)) return;
+    public boolean activator(StudentMovement decorated, Player player, TeacherColor color) {
+        if (!playerPays(player)) return false;
         this.decorated = decorated;
-        super.activator(player, color);
+        if (!super.activator(player, color)) return false;
         if (this.getCharacterization("Usages") == 0) {
             List<Player> players = super.getActionFase().getGame().getPlayers();
             for (Player player1 : players) {
@@ -64,9 +84,11 @@ public class StudentMovementCard extends CharacterCard {
                     player1.getRoomTable(color).removeStudent(color);
             }
         }
+        return true;
     }
 
-    public void activator(StudentMovement decorated, Player player, Island island) {    }
+    public void activator(StudentMovement decorated, Player player, Island island) {
+    }
 
     private boolean playerPays(Player player) {
         return player.pay(super.getPrice());
@@ -86,5 +108,9 @@ public class StudentMovementCard extends CharacterCard {
                 player.getRoomTable(color).setTeacherPresence(maxPlayer.get().getRoomTable(color).removeTeacher());
             }
         }
+    }
+
+    public StudentsManager getStudents() {
+        return students;
     }
 }

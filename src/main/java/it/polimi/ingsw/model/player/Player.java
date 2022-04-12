@@ -220,6 +220,10 @@ public class Player {
         }
     }
 
+    public int getMoney(){
+        return money;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
