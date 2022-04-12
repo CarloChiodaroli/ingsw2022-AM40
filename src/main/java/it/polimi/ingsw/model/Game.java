@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.phase.action.ActionFase;
 import it.polimi.ingsw.model.phase.PianificationFase;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.table.Bag;
 import it.polimi.ingsw.model.table.Table;
 
 import java.util.*;
@@ -57,9 +58,17 @@ public class Game {
             players.add(new Player(this, preGamePlayersList.get(TowerColor.BLACK), TowerColor.BLACK));
             players.add(new Player(this, preGamePlayersList.get(TowerColor.WHITE), TowerColor.WHITE));
         }
+        players.forEach(this::initializePlayer);
         actionFase = new ActionFase(this);
         pianificationFase = new PianificationFase(this);
         isInitial = false;
+    }
+
+    private void initializePlayer(Player player){
+        Bag bag = (Bag) table.getBag().orElseThrow();
+        for(int i = 0; i < player.getEntrance().getMaxStudents(); i++){
+            player.getEntrance().addStudent(bag.getAStudent());
+        }
     }
 
     /**

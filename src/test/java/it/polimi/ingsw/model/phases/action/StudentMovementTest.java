@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.phases.action;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.TeacherColor;
 import it.polimi.ingsw.model.phase.action.StudentMovement;
+import it.polimi.ingsw.model.player.Player;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StudentMovementTest {
-    @Test
+    @RepeatedTest(300)
     public void studentMovementToRoomTableTest() {
         Game game = new Game();
         game.addPlayer("Camilla");
@@ -19,33 +20,76 @@ public class StudentMovementTest {
         game.gameStarter();
         StudentMovement studentMovement = new StudentMovement(game.getActionFase());
 
-        game.getPlayers().get(0).getEntrance().addStudent(TeacherColor.PINK);
-        studentMovement.handle(TeacherColor.PINK, Optional.of(game.getPlayers().get(0).getEntrance()),
-                Optional.of(game.getPlayers().get(0).getRoomTable(TeacherColor.PINK)));
-        assertTrue(game.getPlayers().get(0).getRoomTable(TeacherColor.PINK).hasTeacher());
+        int max = 0;
+        TeacherColor maxColor = TeacherColor.PINK;
 
-        for (int i = 0; i < 5; i++) {
-            game.getPlayers().get(0).getEntrance().addStudent(TeacherColor.RED);
-            studentMovement.handle(TeacherColor.RED, Optional.of(game.getPlayers().get(0).getEntrance()),
-                    Optional.of(game.getPlayers().get(0).getRoomTable(TeacherColor.RED)));
+        for(TeacherColor color: TeacherColor.values()){
+            if(game.getPlayers().get(0).getEntrance().howManyStudents(color) > max){
+                max = game.getPlayers().get(0).getEntrance().howManyStudents(color);
+                maxColor = color;
+            }
         }
-        for (int i = 0; i < 4; i++) {
-            game.getPlayers().get(1).getEntrance().addStudent(TeacherColor.RED);
-            studentMovement.handle(TeacherColor.RED, Optional.of(game.getPlayers().get(1).getEntrance()),
-                    Optional.of(game.getPlayers().get(1).getRoomTable(TeacherColor.RED)));
+
+        studentMovement.handle(maxColor, Optional.of(game.getPlayers().get(0).getEntrance()),
+                Optional.of(game.getPlayers().get(0).getRoomTable(maxColor)));
+        assertTrue(game.getPlayers().get(0).getRoomTable(maxColor).hasTeacher(), "" + max);
+
+        max = 0;
+        TeacherColor secondMaxColor = TeacherColor.RED;
+        for(TeacherColor color: TeacherColor.values()){
+            if(game.getPlayers().get(1).getEntrance().howManyStudents(color) > max && color != maxColor){
+                max = game.getPlayers().get(1).getEntrance().howManyStudents(color);
+                secondMaxColor = color;
+            }
         }
-        assertTrue(game.getPlayers().get(0).getRoomTable(TeacherColor.RED).hasTeacher());
-        assertFalse(game.getPlayers().get(1).getRoomTable(TeacherColor.RED).hasTeacher());
-        for (int i = 0; i < 2; i++) {
-            game.getPlayers().get(1).getEntrance().addStudent(TeacherColor.RED);
-            studentMovement.handle(TeacherColor.RED, Optional.of(game.getPlayers().get(1).getEntrance()),
-                    Optional.of(game.getPlayers().get(1).getRoomTable(TeacherColor.RED)));
+
+        int total1 = game.getPlayers().get(0).getEntrance().howManyStudents(secondMaxColor);
+        for (int i = 0; i < total1; i++) {
+            studentMovement.handle(secondMaxColor, Optional.of(game.getPlayers().get(0).getEntrance()),
+                    Optional.of(game.getPlayers().get(0).getRoomTable(secondMaxColor)));
         }
-        assertTrue(game.getPlayers().get(1).getRoomTable(TeacherColor.RED).hasTeacher());
-        assertFalse(game.getPlayers().get(0).getRoomTable(TeacherColor.RED).hasTeacher());
+
+        for (int i = 0; i < max; i++) {
+            studentMovement.handle(secondMaxColor, Optional.of(game.getPlayers().get(1).getEntrance()),
+                    Optional.of(game.getPlayers().get(1).getRoomTable(secondMaxColor)));
+        }
+
+        if(total1 >= max){
+            assertTrue(game.getPlayers().get(0).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
+            assertFalse(game.getPlayers().get(1).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
+        } else {
+            assertTrue(game.getPlayers().get(1).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
+            assertFalse(game.getPlayers().get(0).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
+        }
+
+        int delta = 0;
+        Player actualPlayer;
+        if(total1 >= max){
+            actualPlayer = game.getPlayers().get(1);
+            delta = total1-max;
+        } else  {
+            actualPlayer = game.getPlayers().get(0);
+            delta = max-total1;
+        }
+
+        delta += 2;
+
+        for (int i = 0; i < delta; i++) {
+            actualPlayer.getEntrance().addStudent(secondMaxColor);
+            studentMovement.handle(secondMaxColor, Optional.of(actualPlayer.getEntrance()),
+                    Optional.of(actualPlayer.getRoomTable(secondMaxColor)));
+        }
+
+        if(total1 >= max){
+            assertTrue(game.getPlayers().get(1).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
+            assertFalse(game.getPlayers().get(0).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
+        } else {
+            assertTrue(game.getPlayers().get(0).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
+            assertFalse(game.getPlayers().get(1).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
+        }
     }
 
-    @RepeatedTest(30)
+    @RepeatedTest(300)
     public void studentMovementToIslandTest() {
         Game game = new Game();
         game.addPlayer("Camilla");
@@ -53,42 +97,58 @@ public class StudentMovementTest {
         game.gameStarter();
         StudentMovement studentMovement = new StudentMovement(game.getActionFase());
 
-        for (int i = 0; i < 5; i++) {
-            game.getPlayers().get(0).getEntrance().addStudent(TeacherColor.GREEN);
-        }
+        int max = 0;
+        TeacherColor maxColor = TeacherColor.PINK;
 
-        for (int i = 0; i < 4; i++) {
-            game.getPlayers().get(1).getEntrance().addStudent(TeacherColor.BLUE);
+        for(TeacherColor color: TeacherColor.values()){
+            if(game.getPlayers().get(0).getEntrance().howManyStudents(color) > max){
+                max = game.getPlayers().get(0).getEntrance().howManyStudents(color);
+                maxColor = color;
+            }
         }
 
         int oldTot7 = game.getTable().getIslandList().get(7).howManyTotStudents();
         int oldTot4 = game.getTable().getIslandList().get(4).howManyTotStudents();
 
-        int beforeGreen7 = game.getTable().getIslandList().get(7).howManyStudents(TeacherColor.GREEN);
-        int beforeGreen4 = game.getTable().getIslandList().get(4).howManyStudents(TeacherColor.GREEN);
+        int beforeMaxColor7 = game.getTable().getIslandList().get(7).howManyStudents(maxColor);
+        int beforeMaxColor4 = game.getTable().getIslandList().get(4).howManyStudents(maxColor);
 
-        studentMovement.handle(TeacherColor.GREEN, Optional.of(game.getPlayers().get(0).getEntrance()),
+        studentMovement.handle(maxColor, Optional.of(game.getPlayers().get(0).getEntrance()),
                 Optional.of(game.getTable().getIslandList().get(4)));
 
-        for (int i = 0; i < 2; i++) {
-            studentMovement.handle(TeacherColor.GREEN, Optional.of(game.getPlayers().get(0).getEntrance()),
+        int howMany = game.getPlayers().get(0).getEntrance().howManyStudents(maxColor);
+
+        for (int i = 0; i < howMany; i++) {
+            studentMovement.handle(maxColor, Optional.of(game.getPlayers().get(0).getEntrance()),
                     Optional.of(game.getTable().getIslandList().get(7)));
         }
 
-        assertEquals(beforeGreen4 + 1, game.getTable().getIslandList().get(4).howManyStudents(TeacherColor.GREEN));
-        assertEquals(beforeGreen7 + 2, game.getTable().getIslandList().get(7).howManyStudents(TeacherColor.GREEN));
+        assertEquals(beforeMaxColor4 + 1, game.getTable().getIslandList().get(4).howManyStudents(maxColor));
+        assertEquals(beforeMaxColor7 + howMany, game.getTable().getIslandList().get(7).howManyStudents(maxColor));
 
-        int beforeBlue4 = game.getTable().getIslandList().get(4).howManyStudents(TeacherColor.BLUE);
-        int beforeBlue7 = game.getTable().getIslandList().get(7).howManyStudents(TeacherColor.BLUE);
+        max = 0;
+        maxColor = TeacherColor.PINK;
 
-        for (int i = 0; i < 2; i++) {
-            studentMovement.handle(TeacherColor.BLUE, Optional.of(game.getPlayers().get(1).getEntrance()),
+        for(TeacherColor color: TeacherColor.values()){
+            if(game.getPlayers().get(1).getEntrance().howManyStudents(color) > max){
+                max = game.getPlayers().get(1).getEntrance().howManyStudents(color);
+                maxColor = color;
+            }
+        }
+
+        int old = howMany;
+        beforeMaxColor4 = game.getTable().getIslandList().get(4).howManyStudents(maxColor);
+        beforeMaxColor7 = game.getTable().getIslandList().get(7).howManyStudents(maxColor);
+        howMany = game.getPlayers().get(1).getEntrance().howManyStudents(maxColor);
+
+        for (int i = 0; i < howMany; i++) {
+            studentMovement.handle(maxColor, Optional.of(game.getPlayers().get(1).getEntrance()),
                     Optional.of(game.getTable().getIslandList().get(7)));
         }
 
-        assertEquals(beforeBlue4, game.getTable().getIslandList().get(4).howManyStudents(TeacherColor.BLUE));
-        assertEquals(beforeBlue7 + 2, game.getTable().getIslandList().get(7).howManyStudents(TeacherColor.BLUE));
-        assertEquals(oldTot7 + 4, game.getTable().getIslandList().get(7).howManyTotStudents());
+        assertEquals(beforeMaxColor4, game.getTable().getIslandList().get(4).howManyStudents(maxColor));
+        assertEquals(beforeMaxColor7 + howMany, game.getTable().getIslandList().get(7).howManyStudents(maxColor));
+        assertEquals(oldTot7 + howMany + old, game.getTable().getIslandList().get(7).howManyTotStudents());
         assertEquals(oldTot4 + 1, game.getTable().getIslandList().get(4).howManyTotStudents());
     }
 }

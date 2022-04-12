@@ -35,14 +35,14 @@ public class StudentMovementCard extends CharacterCard {
     }
 
     @Override
-    public void handle(Player player, TeacherColor fromColor, TeacherColor toColor) {
+    public void handle(Player player, TeacherColor fromEntrance, TeacherColor toColor) {
         if (!isInUse()) return;
-        if (super.getCharacterization("Room") != 1) {
-            decorated.handle(fromColor, Optional.of(player.getEntrance()), Optional.of(player.getRoomTable(fromColor)));
+        if (super.getCharacterization("Room") != 0) {
+            decorated.handle(fromEntrance, Optional.of(player.getEntrance()), Optional.of(player.getRoomTable(fromEntrance)));
             decorated.handle(toColor, Optional.of(player.getRoomTable(toColor)), Optional.of(player.getEntrance()));
             super.updateUse();
         } else if (super.getCharacterization("Memory") == 6) {
-            decorated.handle(fromColor, Optional.of(player.getEntrance()), Optional.of(students));
+            decorated.handle(fromEntrance, Optional.of(player.getEntrance()), Optional.of(students));
             decorated.handle(toColor, Optional.of(students), Optional.of(player.getEntrance()));
             super.updateUse();
         }

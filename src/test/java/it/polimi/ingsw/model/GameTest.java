@@ -2,8 +2,7 @@ package it.polimi.ingsw.model;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
 
@@ -37,6 +36,10 @@ public class GameTest {
         assertFalse(game.isGameStarted());
         game.gameStarter();
         assertTrue(game.isGameStarted());
+
+        assertEquals(9, game.getPlayers().get(0).getEntrance().howManyTotStudents());
+        assertEquals(9, game.getPlayers().get(1).getEntrance().howManyTotStudents());
+        assertEquals(9, game.getPlayers().get(2).getEntrance().howManyTotStudents());
     }
 
 
