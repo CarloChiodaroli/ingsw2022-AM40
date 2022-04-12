@@ -14,7 +14,7 @@ public class InfluenceCard extends CharacterCard{
     private Influence decorated;
     private int noEntryCounter = 0;
 
-    InfluenceCard(Characters characters, ActionFase actionFase, Map<String, Integer> args){
+    public InfluenceCard(Characters characters, ActionFase actionFase, Map<String, Integer> args){
         super(args, characters, actionFase);
         if(super.getCharacterization("Memory") > 0){
             noEntryCounter = getCharacterization("Memory");

@@ -8,6 +8,4 @@ public class ActionFaseTest {
     public void getGameTest(){
 
     }
-
-
 }

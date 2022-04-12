@@ -11,15 +11,15 @@ public class ActionFaseStateTest {
     public void actionFaseStateTest(){
         Game game = new Game();
         ActionFase actionfase = new ActionFase(game);
-        ActionFaseStateIstance actionfasestate = new ActionFaseStateIstance(actionfase);
-        assertEquals(actionfase, actionfasestate.getActionFase());
+        ActionFaseStateInstance actionFaseState = new ActionFaseStateInstance(actionfase);
+        assertEquals(actionfase, actionFaseState.getActionFase());
     }
 
 
 }
 
-class ActionFaseStateIstance extends ActionFaseState {
-    ActionFaseStateIstance(ActionFase actionfase){
+class ActionFaseStateInstance extends ActionFaseState {
+    ActionFaseStateInstance(ActionFase actionfase){
         super(actionfase);
     }
 }

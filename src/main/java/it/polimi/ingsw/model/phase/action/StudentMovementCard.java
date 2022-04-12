@@ -15,7 +15,7 @@ public class StudentMovementCard extends CharacterCard {
     private StudentsContainer students = null;
     private final int maxUsages;
 
-    StudentMovementCard(Characters characters, ActionFase actionFase, Map<String, Integer> args) {
+    public StudentMovementCard(Characters characters, ActionFase actionFase, Map<String, Integer> args) {
         super(args, characters, actionFase);
         if (args.get("Memory") > 0) this.students = new StudentsContainer(args.get("Memory"));
         this.maxUsages = args.get("Usages");

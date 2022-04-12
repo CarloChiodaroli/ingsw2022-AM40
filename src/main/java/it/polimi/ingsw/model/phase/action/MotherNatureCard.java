@@ -10,7 +10,7 @@ public class MotherNatureCard extends CharacterCard{
 
     private MotherNatureState decorated;
 
-    MotherNatureCard(Characters characters, ActionFase actionFase, Map<String, Integer> args){
+    public MotherNatureCard(Characters characters, ActionFase actionFase, Map<String, Integer> args){
         super(args, characters, actionFase);
     }
 
