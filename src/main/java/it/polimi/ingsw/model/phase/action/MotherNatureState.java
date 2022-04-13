@@ -16,7 +16,7 @@ public class MotherNatureState extends ActionFaseState{
     public void handle(Player player, int steps, int maxSteps) {
         if(steps > maxSteps || steps == 0) return;
         List<Island> islands = super.getActionFase().getGame().getTable().getIslandList();
-        int actualIndex = islands.indexOf(MotherNature.getMotherNature().getPosition()) + steps;
+        int actualIndex = islands.indexOf(MotherNature.getMotherNature().getPosition().orElseThrow()) + steps;
         if(actualIndex > islands.size()) actualIndex -= islands.size();
         MotherNature.getMotherNature().setPosition(islands.get(actualIndex));
     }
