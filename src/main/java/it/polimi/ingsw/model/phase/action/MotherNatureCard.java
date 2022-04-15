@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.TeacherColor;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
 
+import java.security.InvalidParameterException;
 import java.util.Map;
 
 public class MotherNatureCard extends CharacterCard{
@@ -19,7 +20,8 @@ public class MotherNatureCard extends CharacterCard{
         decorated.handle(player, steps, maxSteps+2);
     }
 
-    public void activator(MotherNatureState decorated, Player player){
+    public void activator(MotherNatureState decorated, Player player) throws InvalidParameterException {
+        playerPays(player);
         this.decorated = decorated;
         super.activator(player);
     }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.TowerColor;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
 
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -109,5 +110,11 @@ public abstract class CharacterCard extends ActionFaseState {
 
     public Player getActualPlayer() {
         return actualPlayer;
+    }
+
+    public boolean playerPays(Player player) throws InvalidParameterException {
+        if(player.pay(getPrice())){
+            return true;
+        } else throw new InvalidParameterException("Player cannot pay for the card");
     }
 }

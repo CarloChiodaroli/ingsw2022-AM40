@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Bag;
 import it.polimi.ingsw.model.table.Island;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -67,14 +68,14 @@ public class StudentMovementCard extends CharacterCard {
         }
     }
 
-    public boolean activator(StudentMovement decorated, Player player) {
+    public boolean activator(StudentMovement decorated, Player player) throws InvalidParameterException {
         if (!playerPays(player)) return false;
         this.decorated = decorated;
         return super.activator(player);
     }
 
-    public boolean activator(StudentMovement decorated, Player player, TeacherColor color) {
-        if (!playerPays(player)) return false;
+    public boolean activator(StudentMovement decorated, Player player, TeacherColor color) throws InvalidParameterException {
+        playerPays(player);
         this.decorated = decorated;
         if (!super.activator(player, color)) return false;
         if (this.getCharacterization("Usages") == 0) {
@@ -87,11 +88,7 @@ public class StudentMovementCard extends CharacterCard {
         return true;
     }
 
-    public void activator(StudentMovement decorated, Player player, Island island) {
-    }
-
-    private boolean playerPays(Player player) {
-        return player.pay(super.getPrice());
+    public void activator(StudentMovement decorated, Player player, Island island) throws InvalidParameterException {
     }
 
     private void controlTeachers(Player player) {

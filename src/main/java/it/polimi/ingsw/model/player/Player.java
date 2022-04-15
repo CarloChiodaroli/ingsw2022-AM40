@@ -20,6 +20,7 @@ public class Player {
     private final Game game;
     private final SchoolDashboard dashboard;
     private int money = 0;
+    private boolean permit;
 
 
     /**
@@ -35,6 +36,7 @@ public class Player {
         setPersonalDeck();
         this.dashboard = new SchoolDashboard(game.isThreePlayerGame(), towerColor);
         if(game.getTable().getCoin()) this.money++;
+        permit = false;
     }
 
     /**
@@ -218,6 +220,14 @@ public class Player {
         } else {
             return false;
         }
+    }
+
+    public void givePermit(){
+        permit = true;
+    }
+
+    public void revokePermit(){
+        permit = false;
     }
 
     public int getMoney(){

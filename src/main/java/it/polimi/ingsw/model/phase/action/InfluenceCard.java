@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.TowerColor;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
 
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,15 +53,18 @@ public class InfluenceCard extends CharacterCard{
         decorated.influenceSetter(players, island, decorated.winnerFinder(players, influences));
     }
 
-    public void activator(Influence decorated, Player player){
+    public void activator(Influence decorated, Player player) throws InvalidParameterException{
+        playerPays(player);
         if(super.activator(player)) this.decorated = decorated;
     }
 
-    public void activator(Influence decorated, Player player, TeacherColor color){
+    public void activator(Influence decorated, Player player, TeacherColor color) throws InvalidParameterException{
+        playerPays(player);
         if(super.activator(player, color)) this.decorated = decorated;
     }
 
-    public void activator(Influence decorated, Player player,  Island island){
+    public void activator(Influence decorated, Player player,  Island island) throws InvalidParameterException {
+        playerPays(player);
         if(super.activator(player, island)) this.decorated = decorated;
         if(super.getCharacterization("Memory") > 0){
             if(!island.hasNoEntryTile()){
