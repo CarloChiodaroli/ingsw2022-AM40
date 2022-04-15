@@ -80,7 +80,7 @@ public class Influence extends ActionFaseState{
         }
     }
 
-    private boolean noEntryTile(Island island){
+    public boolean noEntryTile(Island island){
         if(!super.getActionFase().getGame().isExpertVariant()) return false;
         if(island.hasNoEntryTile()){
             island.removeNoEntryTile();

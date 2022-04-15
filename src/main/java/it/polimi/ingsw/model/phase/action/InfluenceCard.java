@@ -30,14 +30,8 @@ public class InfluenceCard extends CharacterCard{
     }
 
     private void decoratedCaller(Player player, Island island){
-        if(super.getCharacterization("Memory") > 0){
-            if(island.hasNoEntryTile()){
-                island.setNoEntry(false);
-                noEntryCounter++;
-            } else {
-                decoratingHandle(player, island);
-            }
-        }
+        if(decorated.noEntryTile(island)) return;
+        decoratingHandle(player, island);
     }
 
     private void decoratingHandle(Player player, Island island){
