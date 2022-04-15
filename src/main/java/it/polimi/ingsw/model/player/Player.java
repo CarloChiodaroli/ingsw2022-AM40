@@ -34,7 +34,7 @@ public class Player {
         this.personalDeck = new ArrayList<>();
         setPersonalDeck();
         this.dashboard = new SchoolDashboard(game.isThreePlayerGame(), towerColor);
-        if(game.getTable().getCoin()) this.money++;
+        //if(game.getTable().getCoin()) this.money++;
     }
 
     /**
@@ -165,12 +165,12 @@ public class Player {
      * @return the color of the asked tower if the player has towers to place
      * @throws Exception sent when there are no more towers, in a normal play this scenario should be not possible
      */
-    public TowerColor getTower(int howManyTowers) throws Exception{
+    public TowerColor getTower(int howManyTowers) {
         boolean result = dashboard.getTower(howManyTowers);
         if(result){
             return dashboard.getTowerColor();
         } else {
-            throw new Exception("Player has no more Towers to give");
+            return null;
         }
     }
 
@@ -245,5 +245,10 @@ public class Player {
                 ", game=" + game +
                 ", dashboard=" + dashboard +
                 '}';
+    }
+
+    public int getNumberTowersLeft()
+    {
+        return dashboard.getNumOfTowers();
     }
 }

@@ -72,12 +72,15 @@ public class Influence extends ActionFaseState{
 
     private void possessionSwitcher(Island island, Optional<Player> outgoing, Player ingoing){
         outgoing.ifPresent(x -> x.pushTower(island.howManyTowers()));
-        try {
-            island.setInfluence(ingoing.getTower(island.howManyTowers()));
-        }
-        catch(Exception e){
-            System.err.println("End of play case"); //Temporary
-        }
+            if(ingoing.getTower(island.howManyTowers())==null)
+            {
+                this.getActionFase().getGame().setEndgame(true);
+                this.getActionFase().getGame().setendplayer(ingoing);
+            }
+            else
+            {
+                island.setInfluence(ingoing.getTower(island.howManyTowers()));
+            }
     }
 
     private boolean noEntryTile(Island island){

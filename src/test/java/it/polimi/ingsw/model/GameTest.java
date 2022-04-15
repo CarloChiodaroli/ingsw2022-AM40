@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.player.Player;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,6 +42,5 @@ public class GameTest {
         assertEquals(9, game.getPlayers().get(1).getEntrance().howManyTotStudents());
         assertEquals(9, game.getPlayers().get(2).getEntrance().howManyTotStudents());
     }
-
 
 }

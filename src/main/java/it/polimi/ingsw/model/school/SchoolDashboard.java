@@ -97,5 +97,6 @@ public class SchoolDashboard {
     public StudentsManager getEntranceAsStudentsManager() {
         return (StudentsManager) entrance;
     }
+
 }
 

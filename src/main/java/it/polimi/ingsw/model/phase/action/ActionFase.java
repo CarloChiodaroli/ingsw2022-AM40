@@ -100,6 +100,11 @@ public class ActionFase {
     public void request(){
         if(mergedIslands) return;
         states.get(3).handle();
+        if(game.getTable().getIslandList().size()==3)
+            {
+                this.getGame().setEndgame(true);
+                this.getGame().setendplayer(game.SearchPlayerWithMostTower());
+            }
     }
 
     public void request(Player player, TeacherColor studentA, TeacherColor studentB){

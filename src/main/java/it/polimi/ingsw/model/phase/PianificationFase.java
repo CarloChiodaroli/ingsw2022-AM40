@@ -19,7 +19,7 @@ public class PianificationFase {
     private final int players;
     private int actualPlayer;
     private final Game game;
-
+    private int countround=0;
     /**
      * Class Constructor
      * @param game the game that uses this pianification phase
@@ -39,6 +39,11 @@ public class PianificationFase {
      * Starts the phase, reinitializing it in a clean state
      */
     public void activate(){
+        if(countround==10)
+        {
+            game.setEndgame(true);
+            game.setendplayer(game.SearchPlayerWithMostTower());
+        }
         activated = true;
         playersInOrder = new ArrayList<>();
         playedCards = new IdentityHashMap<>();
@@ -113,8 +118,17 @@ public class PianificationFase {
     private void endPhase(){
         if(playersInOrder.size() == players){
             determinedOrder = true;
-            game.buildClouds();
-            actualPlayer = 0;
+            if(game.getTable().getBag().get().howManyTotStudents()< game.getNumOfRegisteredPlayers()* game.getNumOfRegisteredPlayers()+1)
+            {
+                game.setEndgame(true);
+                game.setendplayer(game.SearchPlayerWithMostTower());
+            }
+            else
+            {
+                game.buildClouds();
+                actualPlayer = 0;
+                countround++;
+            }
         }
     }
 
