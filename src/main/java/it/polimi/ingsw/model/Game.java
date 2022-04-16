@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.phase.action.ActionFase;
 import it.polimi.ingsw.model.phase.PianificationFase;
+import it.polimi.ingsw.model.phase.action.ActionFase;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Bag;
 import it.polimi.ingsw.model.table.Table;
@@ -23,14 +23,14 @@ public class Game {
     private PianificationFase pianificationFase;
     private ActionFase actionFase;
     private int numOfRegisteredPlayers = 0;
-    private boolean endgame=false;
-    private Player endplayer=null;
+    private boolean endgame = false;
+    private Player endplayer = null;
 
 
     /**
      * Class Constructor, initializes core components for the game creation
      */
-    public Game(){
+    public Game() {
         this.players = new ArrayList<>();
         this.order = new ArrayList<>();
         initializeOrder();
@@ -40,7 +40,7 @@ public class Game {
     /**
      * Constructs the order of Tower color allocation
      */
-    private void initializeOrder(){
+    private void initializeOrder() {
         order.add(TowerColor.BLACK);
         order.add(TowerColor.WHITE);
         order.add(TowerColor.GREY);
@@ -49,10 +49,10 @@ public class Game {
     /**
      * Method which effectively starts the game creating all necessary objects
      */
-    public void gameStarter(){
-        if(numOfRegisteredPlayers < 2) return;
+    public void gameStarter() {
+        if (numOfRegisteredPlayers < 2) return;
         table = new Table(numOfRegisteredPlayers);
-        if(isThreePlayerGame){
+        if (isThreePlayerGame) {
             players.add(new Player(this, preGamePlayersList.get(TowerColor.BLACK), TowerColor.BLACK));
             players.add(new Player(this, preGamePlayersList.get(TowerColor.WHITE), TowerColor.WHITE));
             players.add(new Player(this, preGamePlayersList.get(TowerColor.GREY), TowerColor.GREY));
@@ -67,24 +67,25 @@ public class Game {
         startRound();
     }
 
-    private void startRound(){
+    private void startRound() {
         pianificationFase.activate();
     }
 
-    private void initializePlayer(Player player){
+    private void initializePlayer(Player player) {
         Bag bag = (Bag) table.getBag().orElseThrow();
-        for(int i = 0; i < player.getEntrance().getMaxStudents(); i++){
+        for (int i = 0; i < player.getEntrance().getMaxStudents(); i++) {
             player.getEntrance().addStudent(bag.getAStudent());
         }
     }
 
     /**
      * Used before starting the game, to add users to the list of players to be created
+     *
      * @param name is the name of the player
      * @return true if the addition was successful, false otherwise
      */
-    public boolean addPlayer(String name){
-        if(numOfRegisteredPlayers >= 3) return false;
+    public boolean addPlayer(String name) {
+        if (numOfRegisteredPlayers >= 3) return false;
         preGamePlayersList.put(order.get(numOfRegisteredPlayers), name);
         numOfRegisteredPlayers++;
         isThreePlayerGame = numOfRegisteredPlayers == 3;
@@ -93,30 +94,34 @@ public class Game {
 
     /**
      * Getter for the list of players
+     *
      * @return the list of players
      */
-    public List<Player> getPlayers(){
+    public List<Player> getPlayers() {
         return new ArrayList<>(players);
     }
 
     /**
      * Getter for the game table
+     *
      * @return the game table
      */
-    public Table getTable(){
+    public Table getTable() {
         return table;
     }
 
     /**
      * Getter for the pianification fase
+     *
      * @return the pianification fase
      */
-    public PianificationFase getPianificationFase(){
+    public PianificationFase getPianificationFase() {
         return pianificationFase;
     }
 
     /**
      * Getter for the action fase
+     *
      * @return the action fase
      */
     public ActionFase getActionFase() {
@@ -125,13 +130,14 @@ public class Game {
 
     /**
      * Getter of a students manager class for moving students by id
+     *
      * @param id the Id of the students manager
      * @return the students manager itself
      */
-    public Optional<StudentsManager> getStudentsManagerById(String id){
-        if(id.equals("Bag")) return table.getBag();
-        if(id.contains("C")) return table.getCloudById(id);
-        if(id.contains("I")) return table.getIslandById(id);
+    public Optional<StudentsManager> getStudentsManagerById(String id) {
+        if (id.equals("Bag")) return table.getBag();
+        if (id.contains("C")) return table.getCloudById(id);
+        if (id.contains("I")) return table.getIslandById(id);
         return null; //needs to be better reimplemented
     }
 
@@ -139,24 +145,26 @@ public class Game {
      * When in initial state switches the game between normal variant (default) and the expert one
      * When not in initial state doesn't do anything
      */
-    public void switchExpertVariant(){
-        if(isGameStarted()) return;
+    public void switchExpertVariant() {
+        if (isGameStarted()) return;
         isExpertVariant = !isExpertVariant;
     }
 
     /**
      * Shows if the game is in initial state or is already started
+     *
      * @return true if the game is already started
      */
-    public boolean isGameStarted(){
+    public boolean isGameStarted() {
         return !isInitial;
     }
 
     /**
      * Shows if the game is in Expert variant or not
+     *
      * @return true if is in expert variant
      */
-    public boolean isExpertVariant(){
+    public boolean isExpertVariant() {
         return isExpertVariant;
     }
 
@@ -164,58 +172,53 @@ public class Game {
         return isThreePlayerGame;
     }
 
-    public void buildClouds(){
+    public void buildClouds() {
         table.FillCloudRound();
     }
 
-    public int getNumOfRegisteredPlayers(){
+    public int getNumOfRegisteredPlayers() {
         return numOfRegisteredPlayers;
     }
 
-    public boolean getEndgame()
-    {
+    public boolean getEndgame() {
         return endgame;
     }
 
-    public void setEndgame(boolean endgame)
-    {
-        this.endgame=endgame;
+    public void setEndgame(boolean endgame) {
+        this.endgame = endgame;
     }
 
-    public Player getendplayer()
-    {
+    public Player getendplayer() {
         return endplayer;
     }
 
-    public void setendplayer(Player endgame)
-    {
-        this.endplayer=endplayer;
+    public void setendplayer(Player endgame) {
+        this.endplayer = endplayer;
     }
 
-    public Player SearchPlayerWithMostTower() {
+    public Player searchPlayerWithMostTower() {
         List<Player> PlayerWinner = new ArrayList<>();
-        int minimo=1000;
-        for (Player p: players)
-        if (minimo>=p.getNumberTowersLeft())
-            minimo=p.getNumberTowersLeft();
-        for(Player p: players)
-            if(minimo==p.getNumberTowersLeft())
+        int minimum = 1000;
+        for (Player p : players)
+            if (minimum >= p.getNumberTowersLeft())
+                minimum = p.getNumberTowersLeft();
+        for (Player p : players)
+            if (minimum == p.getNumberTowersLeft())
                 PlayerWinner.add(p);
-        if(PlayerWinner.size()==1)
+        if (PlayerWinner.size() == 1)
             return PlayerWinner.get(0);
         else
-            return SearchPlayerWithMostTeacher(PlayerWinner);
+            return searchPlayerWithMostTeacher(PlayerWinner);
     }
 
-    private Player SearchPlayerWithMostTeacher (List<Player> playerList)
-    {   int max=0;
-        Player maxPlayer=null;
-        for (Player p:playerList)
-        if(max<=p.getTeachers().size())
-        {
-            max=p.getTeachers().size();
-            maxPlayer=p;
-        }
+    private Player searchPlayerWithMostTeacher(List<Player> playerList) {
+        int max = 0;
+        Player maxPlayer = null;
+        for (Player p : playerList)
+            if (max <= p.getTeachers().size()) {
+                max = p.getTeachers().size();
+                maxPlayer = p;
+            }
         return maxPlayer;
     }
 

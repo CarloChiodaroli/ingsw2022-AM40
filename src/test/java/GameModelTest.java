@@ -13,17 +13,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GameModelTest {
 
-    public static void assertThrowsNoSNoSuchElementException(org.junit.jupiter.api.function.Executable executable){
+    public static void assertThrowsNoSNoSuchElementException(org.junit.jupiter.api.function.Executable executable) {
         assertThrows(NoSuchElementException.class, executable);
     }
 
-    public static void assertThrowsGameModelException(org.junit.jupiter.api.function.Executable executable){
+    public static void assertThrowsGameModelException(org.junit.jupiter.api.function.Executable executable) {
         assertThrows(GameModelException.class, executable);
     }
 
     @Test
     @DisplayName("'Player not found' exception")
-    public void noSuchElementTest(){
+    public void noSuchElementTest() {
         GameModel model = new GameModel();
 
         model.addPlayer("Aldo");
@@ -32,24 +32,24 @@ public class GameModelTest {
 
         model.startGame();
 
-        assertThrowsNoSNoSuchElementException( () -> model.playAssistantCard("Giacomo", 2) );
-        assertThrowsNoSNoSuchElementException( () -> model.moveStudent("Giacomo", TeacherColor.PINK, TeacherColor.BLUE));
-        assertThrowsNoSNoSuchElementException( () -> model.moveStudent("Giacomo", TeacherColor.PINK, "Pole", "Pole"));
-        assertThrowsNoSNoSuchElementException( () -> model.moveMotherNature("Giacomo", 7));
-        assertThrowsNoSNoSuchElementException( () -> model.calcInfluence("Giacomo"));
-        assertThrowsNoSNoSuchElementException( () -> model.chooseCloud("Giacomo", "C_1"));
-        assertThrowsNoSNoSuchElementException( () -> model.playCharacterCard("Giacomo", Characters.SORCERESS));
-        assertThrowsNoSNoSuchElementException( () -> model.getStudentsInEntrance("Giacomo"));
-        assertThrowsNoSNoSuchElementException( () -> model.getStudentsInRoom("Giacomo"));
+        assertThrowsNoSNoSuchElementException(() -> model.playAssistantCard("Giacomo", 2));
+        assertThrowsNoSNoSuchElementException(() -> model.moveStudent("Giacomo", TeacherColor.PINK, TeacherColor.BLUE));
+        assertThrowsNoSNoSuchElementException(() -> model.moveStudent("Giacomo", TeacherColor.PINK, "Pole", "Pole"));
+        assertThrowsNoSNoSuchElementException(() -> model.moveMotherNature("Giacomo", 7));
+        assertThrowsNoSNoSuchElementException(() -> model.calcInfluence("Giacomo"));
+        assertThrowsNoSNoSuchElementException(() -> model.chooseCloud("Giacomo", "C_1"));
+        assertThrowsNoSNoSuchElementException(() -> model.playCharacterCard("Giacomo", Characters.SORCERESS));
+        assertThrowsNoSNoSuchElementException(() -> model.getStudentsInEntrance("Giacomo"));
+        assertThrowsNoSNoSuchElementException(() -> model.getStudentsInRoom("Giacomo"));
     }
 
     @DisplayName("Player Moves Exception Test")
     @Nested
-    class playerIteractionTest{
+    class playerInteractionTest {
 
         @Test
         @DisplayName("Play Assistant Card")
-        public void playAssistantCardTest(){
+        public void playAssistantCardTest() {
             GameModel model = new GameModel();
 
             model.addPlayer("Aldo");
@@ -66,15 +66,10 @@ public class GameModelTest {
             assertDoesNotThrow(() -> model.playAssistantCard("Giovanni", 4));
         }
 
-        @Test
-        @DisplayName("Move Student")
-        public void moveStudent(){
-
-        }
     }
 
     @Test
-    public void expertVariantTest(){
+    public void expertVariantTest() {
         GameModel model = new GameModel();
 
         model.addPlayer("Aldo");
@@ -89,7 +84,7 @@ public class GameModelTest {
     }
 
     @Test
-    public void threePlayerTest(){
+    public void threePlayerTest() {
         GameModel model = new GameModel();
 
         model.addPlayer("Aldo");

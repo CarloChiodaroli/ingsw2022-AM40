@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.player.Player;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,6 +42,28 @@ public class GameTest {
         assertEquals(9, game.getPlayers().get(0).getEntrance().howManyTotStudents());
         assertEquals(9, game.getPlayers().get(1).getEntrance().howManyTotStudents());
         assertEquals(9, game.getPlayers().get(2).getEntrance().howManyTotStudents());
+    }
+
+    @Test
+    @DisplayName("Finding right winner")
+    public void winnerFinderTest(){
+        Game game = new Game();
+        game.addPlayer("Aldo");
+        game.addPlayer("Giovanni");
+        game.gameStarter();
+
+        Player aldo = game.getPlayers().get(0);
+        Player giovanni = game.getPlayers().get(1);
+
+        aldo.getTower(3);
+
+        assertEquals(aldo, game.searchPlayerWithMostTower());
+
+        giovanni.getTower(3);
+
+        aldo.getRoomTable(TeacherColor.BLUE).setTeacherPresence(true);
+
+        assertEquals(aldo, game.searchPlayerWithMostTower());
     }
 
 }

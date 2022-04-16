@@ -46,7 +46,7 @@ public class PianificationFase {
     public void activate() {
         if (countround == 10) {
             game.setEndgame(true);
-            game.setendplayer(game.SearchPlayerWithMostTower());
+            game.setendplayer(game.searchPlayerWithMostTower());
         }
         activated = true;
         playersInOrder = new ArrayList<>();
@@ -134,7 +134,7 @@ public class PianificationFase {
             determinedOrder = true;
             if (game.getTable().getBag().get().howManyTotStudents() < game.getNumOfRegisteredPlayers() * game.getNumOfRegisteredPlayers() + 1) {
                 game.setEndgame(true);
-                game.setendplayer(game.SearchPlayerWithMostTower());
+                game.setendplayer(game.searchPlayerWithMostTower());
             } else {
                 game.buildClouds();
                 actualPlayer = 0;

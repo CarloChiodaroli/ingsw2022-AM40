@@ -157,7 +157,7 @@ public class ActionFase {
         states.get(3).handle();
         if (game.getTable().getIslandList().size() == 3) {
             this.getGame().setEndgame(true);
-            this.getGame().setendplayer(game.SearchPlayerWithMostTower());
+            this.getGame().setendplayer(game.searchPlayerWithMostTower());
         }
         mergedIslands = true;
     }
