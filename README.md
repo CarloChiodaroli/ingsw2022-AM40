@@ -10,13 +10,13 @@ Implementation of Eriantys board game
 | __Phase__ | __Status__ |
 | :---:    | :---:      |
 | Game model's initial UML class diagram | Done |
-| Model Implementation | Making |
-| *Model FA implementation and testing* | - |
-| Model Testing | - |
-| MCV server side implementation | - |
+| Model Implementation | Almost Completed |
+| *Model FA implementation and testing* | Done |
+| Model Testing | 80% |
+| MCV server side implementation | Making (Controller Branch) |
 | *MCV FA implementation and testing* | - |
-| Server side testing | - |
-| Communication protocol design | - |
+| Server side testing | 80% (only model) |
+| Communication protocol design | Making |
 | Communication protocol Implementation | - |
 | CLI client Implementation and testing | - |
 | GUI client Implementation | - |
