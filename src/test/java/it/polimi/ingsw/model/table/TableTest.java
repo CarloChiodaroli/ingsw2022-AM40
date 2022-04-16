@@ -1,10 +1,13 @@
 package it.polimi.ingsw.model.table;
 
+import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.TeacherColor;
+import it.polimi.ingsw.model.phase.action.StudentMovement;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,11 +18,19 @@ public class TableTest {
         assertEquals("c_1", table.getCloudList().get(0).getId());
         assertEquals("c_2", table.getCloudList().get(1).getId());
 
+        assertEquals((StudentsManager) table.getCloudList().get(0), table.getCloudById("c_1").get());
+        assertEquals((StudentsManager) table.getCloudList().get(1), table.getCloudById("c_2").get());
+
         table = new Table(3);
         assertEquals("c_1", table.getCloudList().get(0).getId());
         assertEquals("c_2", table.getCloudList().get(1).getId());
         assertEquals("c_3", table.getCloudList().get(2).getId());
 
+        assertEquals((StudentsManager) table.getCloudList().get(0), table.getCloudById("c_1").get());
+        assertEquals((StudentsManager) table.getCloudList().get(1), table.getCloudById("c_2").get());
+        assertEquals((StudentsManager) table.getCloudList().get(2), table.getCloudById("c_3").get());
+        Table finalTable = table;
+        assertThrows(NoSuchElementException.class , () -> finalTable.getCloudById("c_4").orElseThrow());
     }
 
     @Test
@@ -226,6 +237,7 @@ public class TableTest {
         table.mergeIsland(table.getIslandList().get(2), table.getIslandList().get(3));
         assertEquals(table.getIslandList().size(), 11);
     }
+
 
 
 }
