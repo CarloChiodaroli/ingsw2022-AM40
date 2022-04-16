@@ -37,6 +37,7 @@ public class Player {
         this.dashboard = new SchoolDashboard(game.isThreePlayerGame(), towerColor);
         if(game.getTable().getCoin()) this.money++;
         permit = false;
+        //if(game.getTable().getCoin()) this.money++;
     }
 
     /**
@@ -259,5 +260,10 @@ public class Player {
                 ", game=" + game +
                 ", dashboard=" + dashboard +
                 '}';
+    }
+
+    public int getNumberTowersLeft()
+    {
+        return dashboard.getNumOfTowers();
     }
 }

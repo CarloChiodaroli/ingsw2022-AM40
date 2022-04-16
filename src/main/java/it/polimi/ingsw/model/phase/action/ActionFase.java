@@ -155,6 +155,11 @@ public class ActionFase {
         if (mergedIslands || !calculatedInfluence)
             throw new IllegalStateException("Cannot merge Islands now");
         states.get(3).handle();
+        if(game.getTable().getIslandList().size()==3)
+            {
+                this.getGame().setEndgame(true);
+                this.getGame().setendplayer(game.SearchPlayerWithMostTower());
+            }
         mergedIslands = true;
     }
 

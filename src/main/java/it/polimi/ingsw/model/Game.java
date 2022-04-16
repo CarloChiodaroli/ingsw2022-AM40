@@ -12,7 +12,6 @@ import java.util.*;
  * Class which represents the whole game model managing its components
  */
 public class Game {
-
     private final List<Player> players;
     private Player actualPlayer = null;
     private Table table;
@@ -24,6 +23,9 @@ public class Game {
     private PianificationFase pianificationFase;
     private ActionFase actionFase;
     private int numOfRegisteredPlayers = 0;
+    private boolean endgame=false;
+    private Player endplayer=null;
+
 
     /**
      * Class Constructor, initializes core components for the game creation
@@ -164,4 +166,53 @@ public class Game {
     public int getNumOfRegisteredPlayers(){
         return numOfRegisteredPlayers;
     }
+
+    public boolean getEndgame()
+    {
+        return endgame;
+    }
+
+    public void setEndgame(boolean endgame)
+    {
+        this.endgame=endgame;
+    }
+
+    public Player getendplayer()
+    {
+        return endplayer;
+    }
+
+    public void setendplayer(Player endgame)
+    {
+        this.endplayer=endplayer;
+    }
+
+    public Player SearchPlayerWithMostTower() {
+        List<Player> PlayerWinner = new ArrayList<>();
+        int minimo=1000;
+        for (Player p: players)
+        if (minimo>=p.getNumberTowersLeft())
+            minimo=p.getNumberTowersLeft();
+        for(Player p: players)
+            if(minimo==p.getNumberTowersLeft())
+                PlayerWinner.add(p);
+        if(PlayerWinner.size()==1)
+            return PlayerWinner.get(0);
+        else
+            return SearchPlayerWithMostTeacher(PlayerWinner);
+    }
+
+    private Player SearchPlayerWithMostTeacher (List<Player> playerList)
+    {   int max=0;
+        Player maxPlayer=null;
+        for (Player p:playerList)
+        if(max<=p.getTeachers().size())
+        {
+            max=p.getTeachers().size();
+            maxPlayer=p;
+        }
+        return maxPlayer;
+    }
+
+
 }
