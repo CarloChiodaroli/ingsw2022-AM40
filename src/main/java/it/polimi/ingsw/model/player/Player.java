@@ -117,7 +117,7 @@ public class Player {
      * @param color is the color of the student which is moving
      * @return the wanted student manager
      */
-    private Optional<StudentsManager> getStudentsManagerById(String id, TeacherColor color){
+    public Optional<StudentsManager> getStudentsManagerById(String id, TeacherColor color){
         switch(id){
             case "Room" -> {
                 return Optional.of(dashboard.getRoom().getTable(color));
@@ -222,14 +222,6 @@ public class Player {
         } else {
             return false;
         }
-    }
-
-    public void givePermit(){
-        permit = true;
-    }
-
-    public void revokePermit(){
-        permit = false;
     }
 
     public int getMoney(){

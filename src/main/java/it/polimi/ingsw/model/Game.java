@@ -64,6 +64,11 @@ public class Game {
         actionFase = new ActionFase(this);
         pianificationFase = new PianificationFase(this);
         isInitial = false;
+        startRound();
+    }
+
+    private void startRound(){
+        pianificationFase.activate();
     }
 
     private void initializePlayer(Player player){

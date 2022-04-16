@@ -3,14 +3,15 @@ package it.polimi.ingsw.model.player;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @DisplayName("Assistant Card test")
 public class AssistantCardTest {
 
     @Test
     @DisplayName("Control the correct functioning of the constructor")
-    public void creationTest(){
+    public void creationTest() {
         AssistantCard card = new AssistantCard(1);
         assertEquals(1, card.getWeight());
         assertEquals(1, card.getNumOfMotherNatureMovements());
@@ -54,15 +55,25 @@ public class AssistantCardTest {
 
     @Test
     @DisplayName("Test of the compareTo function")
-    public void compareTest(){
+    public void compareTest() {
         AssistantCard card1;
         AssistantCard card2;
-        for(int i = 1; i <= 10; i++){
+        for (int i = 1; i <= 10; i++) {
             card1 = new AssistantCard(i);
-            for(int j = i; j <= 10; j++){
+            for (int j = i; j <= 10; j++) {
                 card2 = new AssistantCard(j);
-                assertEquals(i-j, card1.compareTo(card2));
+                assertEquals(i - j, card1.compareTo(card2));
             }
         }
+    }
+
+    @Test
+    public void miscellaneousTest() {
+        AssistantCard card1 = new AssistantCard(5);
+        AssistantCard card2 = new AssistantCard(5);
+
+        assertEquals(card1.hashCode(), card2.hashCode());
+        assertEquals("AssistantCard{" + "weight=" + "5" + ", numOfMotherNatureMovements=" + "3" + '}', card1.toString());
+        assertEquals(card1.toString(), card2.toString());
     }
 }

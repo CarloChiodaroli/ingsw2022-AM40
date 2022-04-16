@@ -1,19 +1,70 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.model.TowerColor;
-import it.polimi.ingsw.model.phase.PianificationFase;
 import it.polimi.ingsw.model.Game;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
+import it.polimi.ingsw.model.StudentsManager;
+import it.polimi.ingsw.model.TeacherColor;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.security.InvalidParameterException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
-
 public class PlayerTest {
+
+    @Test
+    public void assistantCardTest() {
+        Game game = new Game();
+        game.addPlayer("Aldo");
+        game.addPlayer("Giovanni");
+        game.gameStarter();
+        game.getPianificationFase().activate();
+
+        Player aldo = game.getPlayers().get(0);
+        Player giovanni = game.getPlayers().get(1);
+
+        assertEquals(10, aldo.getPersonalDeck().size());
+        assertTrue(aldo.getPersonalDeck().contains(new AssistantCard(4)));
+        aldo.playAssistantCard(new AssistantCard(4));
+        assertEquals(9, aldo.getPersonalDeck().size());
+        assertFalse(aldo.getPersonalDeck().contains(new AssistantCard(4)));
+
+        assertEquals(10, giovanni.getPersonalDeck().size());
+        assertTrue(giovanni.getPersonalDeck().contains(new AssistantCard(4)));
+        assertThrows(IllegalArgumentException.class, () -> giovanni.playAssistantCard(new AssistantCard((4))));
+        assertEquals(10, giovanni.getPersonalDeck().size());
+        assertTrue(giovanni.getPersonalDeck().contains(new AssistantCard(4)));
+        giovanni.playAssistantCard(new AssistantCard((5)));
+        assertFalse(giovanni.getPersonalDeck().contains(new AssistantCard(5)));
+        giovanni.giveAssistantCard(new AssistantCard(5));
+        assertTrue(giovanni.getPersonalDeck().contains(new AssistantCard(5)));
+
+    }
+
+    @Test
+    public void miscellaneousTest() {
+        Game game = new Game();
+        game.addPlayer("Aldo");
+        game.addPlayer("Giovanni");
+        game.gameStarter();
+
+        Player aldo = game.getPlayers().get(0);
+        Player giovanni = game.getPlayers().get(1);
+
+        assertEquals("Aldo", aldo.getName());
+
+        assertThrows(InvalidParameterException.class, () -> aldo.getTower(10));
+
+        Optional<StudentsManager> expected = Optional.of(aldo.getEntrance());
+        assertEquals(expected, aldo.getStudentsManagerById("Entrance", TeacherColor.PINK));
+
+        expected = Optional.of(aldo.getRoomTable(TeacherColor.PINK));
+        assertEquals(expected, aldo.getStudentsManagerById("Room", TeacherColor.PINK));
+
+        expected = game.getStudentsManagerById("I_1");
+        assertEquals(expected, aldo.getStudentsManagerById("I_1", TeacherColor.PINK));
+
+    }
 
 }

@@ -26,10 +26,8 @@ public class PianificationFaseTest {
 
         PianificationFase phase = game.getPianificationFase();
 
-        assertFalse(phase.isActivated());
         assertFalse(phase.isInOrder());
 
-        phase.activate();
 
         assertTrue(phase.isActivated());
     }
@@ -46,9 +44,7 @@ public class PianificationFaseTest {
 
         PianificationFase phase = game.getPianificationFase();
 
-        assertFalse(phase.isActivated());
         assertFalse(phase.isInOrder());
-        phase.activate();
         assertTrue(phase.isActivated());
         assertFalse(phase.isInOrder());
 
@@ -88,9 +84,7 @@ public class PianificationFaseTest {
 
         PianificationFase phase = game.getPianificationFase();
 
-        assertFalse(phase.isActivated());
         assertFalse(phase.isInOrder());
-        phase.activate();
         assertTrue(phase.isActivated());
         assertFalse(phase.isInOrder());
 

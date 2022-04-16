@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.table.Cloud;
 import it.polimi.ingsw.model.table.Island;
 import it.polimi.ingsw.model.table.MotherNature;
 
+import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -55,16 +56,20 @@ public class GameModel {
      * @throws NoSuchElementException if no player with that name was found
      */
     private Player getPlayer(String playerName) throws NoSuchElementException {
-        return game.getPlayers().stream()
-                .filter(player -> player.getName().equals(playerName))
-                .findAny()
-                .orElseThrow();
+        try {
+            return game.getPlayers().stream()
+                    .filter(player -> player.getName().equals(playerName))
+                    .findAny()
+                    .orElseThrow();
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException(playerNotFoundMessage(playerName));
+        }
     }
 
     /**
      * Builds the message to send when a player was not found
      *
-     * @param playerName the name pf the not existing player
+     * @param playerName the name of the not existing player
      * @return the message
      */
     private static String playerNotFoundMessage(String playerName) {
@@ -77,20 +82,13 @@ public class GameModel {
      * @param playerName the name of the player who plays the card
      * @param cardWeight the weight of the card the player wants to play
      */
-    public void playAssistantCard(String playerName, int cardWeight) {
-        Player player;
-
-        try {
-            player = getPlayer(playerName);
-        } catch (NoSuchElementException e) {
-            System.err.println(playerNotFoundMessage(playerName));
-            return;
-        }
-
+    public void playAssistantCard(String playerName, int cardWeight)
+            throws GameModelException, NoSuchElementException {
+        Player player = getPlayer(playerName);
         try {
             player.playAssistantCard(new AssistantCard(cardWeight));
-        } catch (Exception e) {
-            return;
+        } catch (IllegalStateException | InvalidParameterException e) {
+            throw new GameModelException(e.getMessage());
         }
     }
 
@@ -102,18 +100,14 @@ public class GameModel {
      * @param sourceId      the id of the source of the movement of the student
      * @param destinationId the id og the destination of the movement of the student
      */
-    public void moveStudent(String playerName, TeacherColor color, String sourceId, String destinationId) {
-        Player player;
-        try {
-            player = getPlayer(playerName);
-        } catch (NoSuchElementException e) {
-            System.err.println(playerNotFoundMessage(playerName));
-            return;
-        }
+    public void moveStudent(String playerName, TeacherColor color, String sourceId, String destinationId)
+            throws GameModelException, NoSuchElementException{
+        Player player = getPlayer(playerName);
+
         try {
             player.moveStudent(color, sourceId, destinationId);
-        } catch (Exception e) {
-            return;
+        } catch (IllegalStateException | InvalidParameterException e) {
+            throw new GameModelException(e.getMessage());
         }
     }
 
@@ -125,13 +119,7 @@ public class GameModel {
      * @param otherStudent    the color of the student who is in the room or card
      */
     public void moveStudent(String playerName, TeacherColor entranceStudent, TeacherColor otherStudent) {
-        Player player;
-        try {
-            player = getPlayer(playerName);
-        } catch (NoSuchElementException e) {
-            System.err.println(playerNotFoundMessage(playerName));
-            return;
-        }
+        Player player = getPlayer(playerName);
         try {
             player.moveStudent(entranceStudent, otherStudent);
         } catch (Exception e) {
@@ -146,13 +134,7 @@ public class GameModel {
      * @param steps      the number of steps he wants to move her
      */
     public void moveMotherNature(String playerName, int steps) {
-        Player player;
-        try {
-            player = getPlayer(playerName);
-        } catch (NoSuchElementException e) {
-            System.err.println(playerNotFoundMessage(playerName));
-            return;
-        }
+        Player player = getPlayer(playerName);
         try {
             player.moveMotherNature(steps);
         } catch (Exception e) {
@@ -166,13 +148,7 @@ public class GameModel {
      * @param playerName the name of the player who makes the move
      */
     public void calcInfluence(String playerName) {
-        Player player;
-        try {
-            player = getPlayer(playerName);
-        } catch (NoSuchElementException e) {
-            System.err.println(playerNotFoundMessage(playerName));
-            return;
-        }
+        Player player = getPlayer(playerName);
         try {
             player.calcInfluence();
         } catch (Exception e) {
@@ -187,13 +163,7 @@ public class GameModel {
      * @param cloudId    the id of the chosen cloud
      */
     public void chooseCloud(String playerName, String cloudId) {
-        Player player;
-        try {
-            player = getPlayer(playerName);
-        } catch (NoSuchElementException e) {
-            System.err.println(playerNotFoundMessage(playerName));
-            return;
-        }
+        Player player = getPlayer(playerName);
         try {
             player.chooseCloud(cloudId);
         } catch (Exception e) {
@@ -208,13 +178,7 @@ public class GameModel {
      * @param character  the character of the card the player wants to use
      */
     public void playCharacterCard(String playerName, Characters character) {
-        Player player;
-        try {
-            player = getPlayer(playerName);
-        } catch (NoSuchElementException e) {
-            System.err.println(playerNotFoundMessage(playerName));
-            return;
-        }
+        Player player = getPlayer(playerName);
         try {
             player.playCharacterCard(character);
         } catch (Exception e) {
@@ -380,14 +344,7 @@ public class GameModel {
      * @return a map detailing the population of the entrance
      */
     public Map<TeacherColor, Integer> getStudentsInEntrance(String playerName) {
-        Player player;
-
-        try {
-            player = getPlayer(playerName);
-        } catch (NoSuchElementException e) {
-            System.err.println(playerNotFoundMessage(playerName));
-            return new HashMap<>();
-        }
+        Player player = getPlayer(playerName);
 
         Map<TeacherColor, Integer> studentContent = new HashMap<>();
         for (TeacherColor color : TeacherColor.values()) {
@@ -403,14 +360,7 @@ public class GameModel {
      * @return a map detailing the population of the room
      */
     public Map<TeacherColor, Integer> getStudentsInRoom(String playerName) {
-        Player player;
-
-        try {
-            player = getPlayer(playerName);
-        } catch (NoSuchElementException e) {
-            System.err.println(playerNotFoundMessage(playerName));
-            return new HashMap<>();
-        }
+        Player player = getPlayer(playerName);
 
         Map<TeacherColor, Integer> studentContent = new HashMap<>();
         for (TeacherColor color : TeacherColor.values()) {
