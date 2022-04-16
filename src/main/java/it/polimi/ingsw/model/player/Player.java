@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.phase.action.Characters;
 import it.polimi.ingsw.model.school.RoomTable;
 import it.polimi.ingsw.model.school.SchoolDashboard;
 
+import java.security.InvalidParameterException;
 import java.util.*;
 
 /**
@@ -166,14 +167,14 @@ public class Player {
     /**
      * Utility used for the influence count, represents the movement of the tower from the player Dashboard
      * @return the color of the asked tower if the player has towers to place
-     * @throws Exception sent when there are no more towers, in a normal play this scenario should be not possible
+     * @throws InvalidParameterException sent when there are no more towers, in a normal play this scenario should be not possible
      */
-    public TowerColor getTower(int howManyTowers) throws Exception{
+    public TowerColor getTower(int howManyTowers) throws InvalidParameterException{
         boolean result = dashboard.getTower(howManyTowers);
         if(result){
             return dashboard.getTowerColor();
         } else {
-            throw new Exception("Player has no more Towers to give");
+            throw new InvalidParameterException("Player has no more Towers to give");
         }
     }
 

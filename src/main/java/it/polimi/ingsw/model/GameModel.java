@@ -370,7 +370,7 @@ public class GameModel {
             System.err.println(playerNotFoundMessage(playerName));
             return -1;
         }
-        return player.getNumCoin();
+        return player.getMoney();
     }
 
     /**

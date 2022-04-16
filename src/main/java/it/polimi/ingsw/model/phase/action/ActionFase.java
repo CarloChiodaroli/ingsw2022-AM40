@@ -155,11 +155,10 @@ public class ActionFase {
         if (mergedIslands || !calculatedInfluence)
             throw new IllegalStateException("Cannot merge Islands now");
         states.get(3).handle();
-        if(game.getTable().getIslandList().size()==3)
-            {
-                this.getGame().setEndgame(true);
-                this.getGame().setendplayer(game.SearchPlayerWithMostTower());
-            }
+        if (game.getTable().getIslandList().size() == 3) {
+            this.getGame().setEndgame(true);
+            this.getGame().setendplayer(game.SearchPlayerWithMostTower());
+        }
         mergedIslands = true;
     }
 
@@ -306,6 +305,17 @@ public class ActionFase {
      */
     protected Game getGame() {
         return game;
+    }
+
+    /**
+     * Controls if, chosen a character, if it's card is playable
+     *
+     * @param character the intresting character
+     * @return true if it is, else false
+     */
+    public boolean canBeActivated(Characters character) {
+        return characterCards.stream()
+                .anyMatch(card -> card.getCharacter().equals(character));
     }
 
 }
