@@ -103,7 +103,7 @@ public enum Characters {
             }
             case KNIGHT -> {
                 result.replace("Price", 2);
-                result.replace("Player", 1);
+                result.replace("Player", 2);
                 return result;
             }
             case CENTAUR -> {
@@ -120,6 +120,7 @@ public enum Characters {
                 result.replace("Price", 2);
                 result.replace("Memory", 4);
                 result.replace("Island", 1);
+                result.replace("NoEntrySetter", 1);
                 return result;
             }
             default -> {

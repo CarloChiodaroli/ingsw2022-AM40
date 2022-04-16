@@ -234,6 +234,10 @@ public class Player {
         return money;
     }
 
+    public void giveMoney(int howMuch){
+        money += howMuch;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -217,7 +217,7 @@ public class CharactersTest {
             assertEquals(0, characterization.get("EffectAllPlayers"));
 
             assertEquals(0, characterization.get("Island"));
-            assertEquals(1, characterization.get("Player"));
+            assertEquals(2, characterization.get("Player"));
             assertEquals(0, characterization.get("Room"));
             assertEquals(0, characterization.get("Tower"));
             assertEquals(0, characterization.get("Student"));
