@@ -112,11 +112,17 @@ public class ActionFase {
         if (movedMotherNature)
             throw new IllegalStateException("Mother nature has been already moved once");
         int maxHops = game.getPianificationFase().getMotherNatureHops(player);
-        if (motherNatureHops > maxHops || motherNatureHops <= 0) return;
         if (!expertVariant) {
             states.get(1).handle(player, motherNatureHops, maxHops);
-            movedMotherNature = true;
+        } else {
+            if(actualCard.isInUse() &&
+                Characters.getClassOfCard(actualCard.getCharacter()).equals("MotherNature")){
+                actualCard.handle(player, motherNatureHops, maxHops);
+            } else {
+                states.get(1).handle(player, motherNatureHops, maxHops);
+            }
         }
+        movedMotherNature = true;
     }
 
     /**
@@ -126,7 +132,7 @@ public class ActionFase {
      * @param id     the id of the cloud, or "MotherNature" to calc the influence
      * @throws IllegalStateException is thrown when it's not the right moment to calc the influence nor to choose a cloud
      */
-    public void request(Player player, String id) throws IllegalStateException {
+    public void request(Player player, String id) throws IllegalStateException, NoSuchElementException {
         if (id.equals("MotherNature")) {
             if (!movedMotherNature || calculatedInfluence)
                 throw new IllegalStateException("Cannot calculate Influence now");
@@ -141,7 +147,8 @@ public class ActionFase {
         } else {
             if (!calculatedInfluence || chosenCloud)
                 throw new IllegalStateException("Cannot choose clouds now");
-            game.getTable().getCloudById(id).ifPresent(cloud -> states.get(4).handle(player, cloud));
+            states.get(4).handle(player, game.getTable().getCloudById(id)
+                    .orElseThrow(() -> new NoSuchElementException("Cloud not found")));
             chosenCloud = true;
         }
     }

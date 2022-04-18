@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Managing right phases and right players
+ */
 public class GameController {
 
     private final GameModel model;
@@ -52,13 +55,13 @@ public class GameController {
         this.playerNames.remove(name);
     }
 
-    public Map<String, Map<TeacherColor, Integer>> startGame() throws IllegalStateException {
+    public List<String> startGame() throws IllegalStateException {
         controlGameState(GameState.PREPARATION);
         if (playerNames.size() <= 1) throw new IllegalStateException("Not enough players");
         playerNames.forEach(model::addPlayer);
         model.startGame();
         gameState = GameState.next(gameState);
-        return getAllIslands();
+        return getAllIslandIds();
     }
 
     public String actualMotherNaturePosition() {
@@ -66,9 +69,9 @@ public class GameController {
         return model.getMotherNaturePosition();
     }
 
-    public Map<String, Map<TeacherColor, Integer>> getAllIslands() {
+    public List<String> getAllIslandIds() {
         excludeGameState(GameState.PREPARATION);
-        return model.getAllIslands();
+        return model.getAllIslandIds();
     }
 
     public void switchExpertVariant() {
@@ -167,8 +170,26 @@ public class GameController {
         return delta;
     }
 
-    public void moveMotherNature(String playerName, int steps) {
+    /* Working in it
+    public Map<String, Integer> moveStudent(String playerName, TeacherColor entranceStudent, TeacherColor otherStudent){
+        controlGameState(GameState.ACTION);
+        controlExpertVariant();
+        controlActualPlayer(playerName);
+        model.moveStudent(playerName, entranceStudent, otherStudent);
 
+    }
+    */
+    public String moveMotherNature(String playerName, int steps) {
+        controlGameState(GameState.ACTION);
+        controlActualPlayer(playerName);
+        model.moveMotherNature(playerName, steps);
+        return model.getMotherNaturePosition();
+    }
+
+    public void calcInfluence(String playerName){
+        controlGameState(GameState.ACTION);
+        controlActualPlayer(playerName);
+        model.calcInfluence(playerName);
     }
 
     public Map<TeacherColor, Integer> chooseCloud(String playerName, String cloudId) {

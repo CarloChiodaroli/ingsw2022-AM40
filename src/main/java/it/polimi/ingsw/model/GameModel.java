@@ -122,8 +122,10 @@ public class GameModel {
         Player player = getPlayer(playerName);
         try {
             player.moveStudent(entranceStudent, otherStudent);
-        } catch (Exception e) {
-            return;
+        } catch (IllegalStateException e) {
+            throw new GameModelException(e.getMessage());
+        } catch (InvalidParameterException e) {
+            throw new InvalidParameterException(e.getMessage());
         }
     }
 
@@ -137,8 +139,10 @@ public class GameModel {
         Player player = getPlayer(playerName);
         try {
             player.moveMotherNature(steps);
-        } catch (Exception e) {
-            return;
+        } catch (IllegalStateException e) {
+            throw new GameModelException(e.getMessage());
+        } catch (InvalidParameterException e) {
+            throw new InvalidParameterException(e.getMessage());
         }
     }
 
@@ -151,8 +155,10 @@ public class GameModel {
         Player player = getPlayer(playerName);
         try {
             player.calcInfluence();
-        } catch (Exception e) {
-            return;
+        } catch (IllegalStateException e) {
+            throw new GameModelException(e.getMessage());
+        } catch (InvalidParameterException e) {
+            throw new InvalidParameterException(e.getMessage());
         }
     }
 
@@ -166,8 +172,10 @@ public class GameModel {
         Player player = getPlayer(playerName);
         try {
             player.chooseCloud(cloudId);
-        } catch (Exception e) {
-            return;
+        } catch (IllegalStateException  e) {
+            throw new GameModelException(e.getMessage());
+        } catch (InvalidParameterException | NoSuchElementException e) {
+            throw new InvalidParameterException(e.getMessage());
         }
     }
 
@@ -368,4 +376,17 @@ public class GameModel {
         }
         return studentContent;
     }
+
+    public List<String> getAllIslandIds(){
+        return game.getTable().getIslandList().stream()
+                .map(Island::getId)
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getPlayersInOrder(){
+        return game.getPianificationFase().getPlayersInOrder().stream()
+                .map(Player::getName)
+                .collect(Collectors.toList());
+    }
+
 }
