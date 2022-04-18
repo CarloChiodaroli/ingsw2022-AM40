@@ -1,10 +1,13 @@
 package it.polimi.ingsw.controller;
 
+/**
+ * Used only in GameController to keep track of the general state of the game
+ */
 enum GameState {
-    PREPARATION, PIANIFICATION, ACTION;
+    INITIAL, PIANIFICATION, ACTION;
 
     static GameState next(GameState state) {
-        if (state.equals(PREPARATION) || state.equals(ACTION)) {
+        if (state.equals(INITIAL) || state.equals(ACTION)) {
             return PIANIFICATION;
         } else {
             return ACTION;

@@ -110,4 +110,8 @@ public class StudentMovementCard extends CharacterCard {
     public StudentsManager getStudents() {
         return students;
     }
+
+    public Optional<StudentsManager> getStudentContainer(){
+        return Optional.ofNullable(students);
+    }
 }

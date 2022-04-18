@@ -389,4 +389,21 @@ public class GameModel {
                 .collect(Collectors.toList());
     }
 
+    public Map<TeacherColor, Integer> getActualCardMemory(){
+        return getCardMemory(game.getActionFase().getActualCharacter()
+                .orElseThrow(() -> new IllegalStateException("No card has been activated")));
+    }
+
+    public Map<TeacherColor, Integer> getCardMemory(Characters character){
+        Map<TeacherColor, Integer> studentContent = new HashMap<>();
+        Optional<StudentsManager> tmp = game.getActionFase().getCardMemory(character);
+        for (TeacherColor color : TeacherColor.values()) {
+            if(tmp.isEmpty()){
+                studentContent.put(color, 0);
+            } else {
+                studentContent.put(color, tmp.get().howManyStudents(color));
+            }
+        }
+        return studentContent;
+    }
 }

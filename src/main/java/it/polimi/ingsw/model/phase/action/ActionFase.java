@@ -22,6 +22,7 @@ public class ActionFase {
     // Variables
     private final Game game;
     private final List<ActionFaseState> states;
+    private boolean activated;
 
     // Non expert Status variables
     private int possibleStudentMovements;
@@ -43,6 +44,7 @@ public class ActionFase {
     public ActionFase(Game game) {
         this.game = game;
         this.expertVariant = game.isExpertVariant();
+        this.activated = false;
 
         this.states = new ArrayList<>();
         this.states.add(new StudentMovement(this));
@@ -68,6 +70,7 @@ public class ActionFase {
         if (!chosenCloud) return;
         if (!game.getPianificationFase().getActualPlayer().equals(player)) return;
         // reset of action phase state
+        activated = true;
         possibleStudentMovements = 3;
         movedMotherNature = false;
         calculatedInfluence = false;
@@ -91,6 +94,7 @@ public class ActionFase {
      */
     public void request(TeacherColor teacherColor, Optional<StudentsManager> from, Optional<StudentsManager> to)
             throws IllegalStateException {
+        isStateActivated();
         if (possibleStudentMovements <= 0 || calculatedInfluence)
             throw new IllegalStateException("Cannot move any students");
         if (expertVariant && actualCard.isInUse()) {
@@ -109,6 +113,7 @@ public class ActionFase {
      * @throws IllegalStateException is thrown when it's not the right moment to move mother nature
      */
     public void request(Player player, int motherNatureHops) throws IllegalStateException {
+        isStateActivated();
         if (movedMotherNature)
             throw new IllegalStateException("Mother nature has been already moved once");
         int maxHops = game.getPianificationFase().getMotherNatureHops(player);
@@ -133,6 +138,7 @@ public class ActionFase {
      * @throws IllegalStateException is thrown when it's not the right moment to calc the influence nor to choose a cloud
      */
     public void request(Player player, String id) throws IllegalStateException, NoSuchElementException {
+        isStateActivated();
         if (id.equals("MotherNature")) {
             if (!movedMotherNature || calculatedInfluence)
                 throw new IllegalStateException("Cannot calculate Influence now");
@@ -150,6 +156,7 @@ public class ActionFase {
             states.get(4).handle(player, game.getTable().getCloudById(id)
                     .orElseThrow(() -> new NoSuchElementException("Cloud not found")));
             chosenCloud = true;
+            activated = false;
         }
     }
 
@@ -159,6 +166,7 @@ public class ActionFase {
      * @throws IllegalStateException is thrown when it's not the right moment to merge the islands
      */
     public void request() throws IllegalStateException {
+        isStateActivated();
         if (mergedIslands || !calculatedInfluence)
             throw new IllegalStateException("Cannot merge Islands now");
         states.get(3).handle();
@@ -180,6 +188,7 @@ public class ActionFase {
      * @throws IllegalStateException is thrown when it's not the right moment nor the right game mode to use this kind of student movement
      */
     public void request(Player player, TeacherColor studentA, TeacherColor studentB) throws IllegalStateException {
+        isStateActivated();
         if (!expertVariant) throw new IllegalStateException("Game is not in expert variant");
         if (actualCard == null) throw new IllegalStateException("No card has been activated");
         if (actualCard.isInUse()) {
@@ -268,6 +277,7 @@ public class ActionFase {
      */
     private CharacterCard coreActivateCard(Characters characters)
             throws NoSuchElementException, IllegalStateException {
+        isStateActivated();
         isCardPlayable(characters);
         try {
             return characterCards.stream()
@@ -325,4 +335,24 @@ public class ActionFase {
                 .anyMatch(card -> card.getCharacter().equals(character));
     }
 
+    public Optional<Characters> getActualCharacter(){
+        if(actualCard == null) return Optional.empty();
+        return Optional.of(actualCard.getCharacter());
+    }
+
+    public Optional<StudentsManager> getCardMemory(Characters character){
+        return characterCards.stream()
+                .filter(card -> card.getCharacter().equals(character))
+                .findAny()
+                .orElseThrow(() -> new InvalidParameterException("Card not in game"))
+                .getStudentContainer();
+    }
+
+    public boolean isActivated(){
+        return activated;
+    }
+
+    private void isStateActivated() throws IllegalStateException{
+        if(!isActivated()) throw new IllegalStateException("Action Phase is not Activated");
+    }
 }

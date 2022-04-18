@@ -59,8 +59,9 @@ public class Player {
         personalDeck.stream()
                 .filter(which::equals)
                 .findAny()
-                .map(card -> game.getPianificationFase().play(card, this)) //COMMENT FOR TEST
+                .map(card -> game.getPianificationFase().play(card, this))
                 .ifPresent(personalDeck::remove);
+        game.updateState();
     }
 
     /**

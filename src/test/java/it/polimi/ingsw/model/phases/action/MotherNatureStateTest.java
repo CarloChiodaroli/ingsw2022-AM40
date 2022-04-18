@@ -6,10 +6,10 @@ import it.polimi.ingsw.model.table.Island;
 import it.polimi.ingsw.model.table.MotherNature;
 import org.junit.jupiter.api.Test;
 
+import java.security.InvalidParameterException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MotherNatureStateTest {
     @Test
@@ -33,13 +33,13 @@ public class MotherNatureStateTest {
             assertEquals(firstposition + 5, secondposition);
         firstposition = secondposition;
 
-        motherNatureState.handle(game.getPlayers().get(0), 7, 5);
+        assertThrows(InvalidParameterException.class ,() -> motherNatureState.handle(game.getPlayers().get(1), 7, 5));
         secondpos = MotherNature.getMotherNature().getPosition();
         secpos = secondpos.get();
         secondposition = game.getTable().getIslandList().indexOf(secpos);
         assertEquals(firstposition, secondposition);
 
-        motherNatureState.handle(game.getPlayers().get(1), 0, 5);
+        assertThrows(InvalidParameterException.class ,() -> motherNatureState.handle(game.getPlayers().get(1), 0, 5));
         secondpos = MotherNature.getMotherNature().getPosition();
         secpos = secondpos.get();
         secondposition = game.getTable().getIslandList().indexOf(secpos);
@@ -78,13 +78,13 @@ public class MotherNatureStateTest {
             assertEquals(firstposition + 5, secondposition);
         firstposition = secondposition;
 
-        motherNatureState.handle(game.getPlayers().get(2), 7, 5);
+        assertThrows(InvalidParameterException.class ,() -> motherNatureState.handle(game.getPlayers().get(2), 7, 5));
         secondpos = MotherNature.getMotherNature().getPosition();
         secpos = secondpos.get();
         secondposition = game.getTable().getIslandList().indexOf(secpos);
         assertEquals(firstposition, secondposition);
 
-        motherNatureState.handle(game.getPlayers().get(2), 0, 5);
+        assertThrows(InvalidParameterException.class ,() -> motherNatureState.handle(game.getPlayers().get(2), 0, 5));
         secondpos = MotherNature.getMotherNature().getPosition();
         secpos = secondpos.get();
         secondposition = game.getTable().getIslandList().indexOf(secpos);

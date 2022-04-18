@@ -71,6 +71,12 @@ public class Game {
         pianificationFase.activate();
     }
 
+    public void updateState(){
+        if(pianificationFase.isInOrder()){
+            actionFase.startPhase(pianificationFase.getActualPlayer());
+        }
+    }
+
     private void initializePlayer(Player player) {
         Bag bag = (Bag) table.getBag().orElseThrow();
         for (int i = 0; i < player.getEntrance().getMaxStudents(); i++) {
@@ -136,9 +142,9 @@ public class Game {
      */
     public Optional<StudentsManager> getStudentsManagerById(String id) {
         if (id.equals("Bag")) return table.getBag();
-        if (id.contains("C")) return table.getCloudById(id);
-        if (id.contains("I")) return table.getIslandById(id);
-        return null; //needs to be better reimplemented
+        if (id.contains("c_")) return table.getCloudById(id);
+        if (id.contains("i_")) return table.getIslandById(id);
+        return Optional.empty(); //needs to be better reimplemented
     }
 
     /**
