@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.TeacherColor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -77,7 +78,7 @@ public class Table {
 
                 IslandList.get(idisland).addStudent(tc);
                 bag.removeStudent(tc);
-                array.remove(new Integer(idisland));
+                array.remove(idisland);
             }
         }
     }
@@ -150,24 +151,20 @@ public class Table {
      * @param id Cloud's Id
      * @return Cloud you are looking for
      */
-    public Optional<StudentsManager> getCloudById(String id) {
-        Optional<StudentsManager> result = CloudList.stream()
+    public Optional<Cloud> getCloudById(String id) {
+        return CloudList.stream()
                 .filter(cloud -> cloud.getId().equals(id))
-                .findAny()
-                .map(manager -> (StudentsManager) manager);
-        return result;
+                .findAny();
     }
 
     /**
      * @param id Island's Id
      * @return Island you are looking for
      */
-    public Optional<StudentsManager> getIslandById(String id) {
-        Optional<StudentsManager> result = IslandList.stream()
-                .filter(island -> island.getId() == id)
-                .findAny()
-                .map(manager -> (StudentsManager) manager);
-        return result;
+    public Optional<Island> getIslandById(String id) {
+        return IslandList.stream()
+                .filter(island -> island.getId().equals(id))
+                .findAny();
     }
 
 

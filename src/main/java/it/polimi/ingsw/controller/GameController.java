@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.TeacherColor;
+import it.polimi.ingsw.model.TowerColor;
 import it.polimi.ingsw.model.phase.action.Characters;
 
 import java.security.InvalidParameterException;
@@ -113,15 +114,15 @@ public class GameController {
         }
     }
 
-    private void controlActualPlayer(String actualPlayer) throws InvalidParameterException{
+    private void controlActualPlayer(String actualPlayer) throws InvalidParameterException {
         if (!playerNames.contains(actualPlayer))
             throw new InvalidParameterException("Player is not playing the game");
         if (!actualPlayer.equals(this.actualPlayer))
             throw new InvalidParameterException("Player is not the actual player");
     }
 
-    private void controlExpertVariant() throws IllegalStateException{
-        if(!expertVariant) throw new IllegalStateException("Game is not in Expert variant");
+    private void controlExpertVariant() throws IllegalStateException {
+        if (!expertVariant) throw new IllegalStateException("Game is not in Expert variant");
     }
 
     // Player Moves
@@ -182,7 +183,7 @@ public class GameController {
         return delta;
     }
 
-    public Map<String, Integer> moveStudent(String playerName, TeacherColor entranceStudent, TeacherColor otherStudent, String placeId){
+    public Map<String, Integer> moveStudent(String playerName, TeacherColor entranceStudent, TeacherColor otherStudent, String placeId) {
         controlExpertVariant();
         controlGameState(GameState.ACTION);
         controlActualPlayer(playerName);
@@ -193,33 +194,38 @@ public class GameController {
         Map<TeacherColor, Integer> beforeEntrance;
         Map<TeacherColor, Integer> afterEntrance;
 
-        if(placeId.equals("Room")){
+        // pre move state
+        if (placeId.equals("Room")) {
             beforeOther = model.getStudentsInRoom(playerName);
         } else if (placeId.equals("Card")) {
             beforeOther = model.getCardMemory(actualCharacter);
         } else {
             throw new InvalidParameterException("Wrong place ID for this move");
         }
-
         beforeEntrance = model.getStudentsInEntrance(playerName);
-        model.moveStudent(playerName, entranceStudent, otherStudent);
-        afterEntrance = model.getStudentsInEntrance(playerName);
 
-        if(placeId.equals("Room")){
+        // move
+        model.moveStudent(playerName, entranceStudent, otherStudent);
+
+        // After move state
+        afterEntrance = model.getStudentsInEntrance(playerName);
+        if (placeId.equals("Room")) {
             afterOther = model.getStudentsInRoom(playerName);
         } else {
             afterOther = model.getActualCardMemory();
         }
 
-        for(TeacherColor color: TeacherColor.values()){
-            if(afterEntrance.get(color).equals(beforeEntrance.get(color))){
+        // States Comparison
+        for (TeacherColor color : TeacherColor.values()) {
+            if (afterEntrance.get(color).equals(beforeEntrance.get(color))) {
                 delta.put("Entrance", beforeEntrance.get(color) - afterEntrance.get(color));
             }
-            if(afterOther.get(color).equals(beforeOther.get(color))){
+            if (afterOther.get(color).equals(beforeOther.get(color))) {
                 delta.put("Room", beforeOther.get(color) - afterOther.get(color));
             }
         }
 
+        // return differences
         return delta;
     }
 
@@ -230,7 +236,7 @@ public class GameController {
         return model.getMotherNaturePosition();
     }
 
-    public void calcInfluence(String playerName){
+    public void calcInfluence(String playerName) {
         controlGameState(GameState.ACTION);
         controlActualPlayer(playerName);
         model.calcInfluence(playerName);
@@ -244,7 +250,33 @@ public class GameController {
         return model.getStudentsInEntrance(playerName);
     }
 
-    public GameModel getModel(){
+    private void playCharacterCardPermit(String playerName){
+        controlExpertVariant();
+        controlGameState(GameState.ACTION);
+        controlActualPlayer(playerName);
+    }
+
+    public void playCharacterCard(String playerName, Characters character){
+        playCharacterCardPermit(playerName);
+        model.playCharacterCard(playerName, character);
+    }
+
+    public void playCharacterCard(String playerName, Characters character, TeacherColor color){
+        playCharacterCardPermit(playerName);
+        model.playCharacterCard(playerName, character, color);
+    }
+
+    public void playCharacterCard(String playerName, Characters character, String islandId){
+        playCharacterCardPermit(playerName);
+        model.playCharacterCard(playerName, character, islandId);
+    }
+
+    public void playCharacterCard(String playerName, Characters character, TowerColor color){
+        playCharacterCardPermit(playerName);
+        model.playCharacterCard(playerName, character, color);
+    }
+
+    public GameModel getModel() {
         return model;
     }
 

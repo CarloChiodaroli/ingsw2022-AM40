@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.TowerColor;
 import it.polimi.ingsw.model.phase.action.Characters;
 import it.polimi.ingsw.model.school.RoomTable;
 import it.polimi.ingsw.model.school.SchoolDashboard;
+import it.polimi.ingsw.model.table.Island;
 
 import java.security.InvalidParameterException;
 import java.util.*;
@@ -214,6 +215,18 @@ public class Player {
 
     public void playCharacterCard(Characters characters){
         game.getActionFase().activateCard(characters, this);
+    }
+
+    public void playCharacterCard(Characters characters, TeacherColor color){
+        game.getActionFase().activateCard(characters, this, color);
+    }
+
+    public void playCharacterCard(Characters characters, Island island){
+        game.getActionFase().activateCard(characters, this, island);
+    }
+
+    public void playCharacterCard(Characters characters, TowerColor color){
+        game.getActionFase().activateCard(characters, this, color);
     }
 
     public boolean pay(int howMuch){

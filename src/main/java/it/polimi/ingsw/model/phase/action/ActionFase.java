@@ -273,20 +273,16 @@ public class ActionFase {
      * @param characters the character represented by the character card
      * @throws NoSuchElementException    thrown when the requested card is not available for this game
      * @throws IllegalStateException     thrown when the actual context is not the right one to activate the card
-     * @throws InvalidParameterException thrown when the player has not enough money to pay the card activation fee
      */
     private CharacterCard coreActivateCard(Characters characters)
             throws NoSuchElementException, IllegalStateException {
         isStateActivated();
         isCardPlayable(characters);
-        try {
-            return characterCards.stream()
-                    .filter(card -> card.getCharacter().equals(characters))
-                    .findAny()
-                    .orElseThrow();
-        } catch (NoSuchElementException e) {
-            throw new NoSuchElementException("Requested card is not playable");
-        }
+        return characterCards.stream()
+                .filter(card -> card.getCharacter().equals(characters))
+                .findAny()
+                .orElseThrow(() -> new NoSuchElementException("Requested card is not playable"));
+
     }
 
     /**

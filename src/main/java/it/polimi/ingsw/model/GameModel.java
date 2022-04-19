@@ -189,8 +189,43 @@ public class GameModel {
         Player player = getPlayer(playerName);
         try {
             player.playCharacterCard(character);
-        } catch (Exception e) {
-            return;
+        } catch (InvalidParameterException | NoSuchElementException e) {
+            throw new InvalidParameterException(e.getMessage());
+        } catch (IllegalStateException e){
+            throw new GameModelException(e.getMessage());
+        }
+    }
+
+    public void playCharacterCard(String playerName, Characters character, TeacherColor color) {
+        Player player = getPlayer(playerName);
+        try {
+            player.playCharacterCard(character, color);
+        } catch (InvalidParameterException | NoSuchElementException e) {
+            throw new InvalidParameterException(e.getMessage());
+        } catch (IllegalStateException e){
+            throw new GameModelException(e.getMessage());
+        }
+    }
+
+    public void playCharacterCard(String playerName, Characters character, String islandId) {
+        Player player = getPlayer(playerName);
+        try {
+            player.playCharacterCard(character, game.getTable().getIslandById(islandId).orElseThrow());
+        } catch (InvalidParameterException | NoSuchElementException e) {
+            throw new InvalidParameterException(e.getMessage());
+        } catch (IllegalStateException e){
+            throw new GameModelException(e.getMessage());
+        }
+    }
+
+    public void playCharacterCard(String playerName, Characters character, TowerColor color) {
+        Player player = getPlayer(playerName);
+        try {
+            player.playCharacterCard(character, color);
+        } catch (InvalidParameterException | NoSuchElementException e) {
+            throw new InvalidParameterException(e.getMessage());
+        } catch (IllegalStateException e){
+            throw new GameModelException(e.getMessage());
         }
     }
 
@@ -254,7 +289,7 @@ public class GameModel {
     public Map<TeacherColor, Integer> getStudentsInCloud(String cloudId) {
         Cloud cloud;
         try {
-            cloud = (Cloud) game.getTable().getIslandById(cloudId).orElseThrow();
+            cloud = (Cloud) game.getTable().getCloudById(cloudId).orElseThrow();
         } catch (NoSuchElementException e) {
             System.err.println("No island with " + cloudId + " found");
             return new HashMap<>();
@@ -405,5 +440,9 @@ public class GameModel {
             }
         }
         return studentContent;
+    }
+
+    public boolean isGameEnded(){
+        return game.isGameEnded();
     }
 }

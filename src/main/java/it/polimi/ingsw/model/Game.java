@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.phase.PianificationFase;
 import it.polimi.ingsw.model.phase.action.ActionFase;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Bag;
+import it.polimi.ingsw.model.table.Cloud;
+import it.polimi.ingsw.model.table.Island;
 import it.polimi.ingsw.model.table.Table;
 
 import java.util.*;
@@ -13,7 +15,7 @@ import java.util.*;
  */
 public class Game {
     private final List<Player> players;
-    private Player actualPlayer = null;
+    //private Player actualPlayer = null;
     private Table table;
     private final List<TowerColor> order;
     private final Map<TowerColor, String> preGamePlayersList;
@@ -24,7 +26,7 @@ public class Game {
     private ActionFase actionFase;
     private int numOfRegisteredPlayers = 0;
     private boolean endgame = false;
-    private Player endplayer = null;
+    private Player endPlayer = null;
 
 
     /**
@@ -142,9 +144,17 @@ public class Game {
      */
     public Optional<StudentsManager> getStudentsManagerById(String id) {
         if (id.equals("Bag")) return table.getBag();
-        if (id.contains("c_")) return table.getCloudById(id);
-        if (id.contains("i_")) return table.getIslandById(id);
-        return Optional.empty(); //needs to be better reimplemented
+        if (id.contains("c_")) {
+            Cloud tmp = table.getCloudById(id).orElse(null);
+            if(tmp == null) return Optional.empty();
+            return Optional.of((StudentsManager) tmp);
+        }
+        if (id.contains("i_")) {
+            Island tmp = table.getIslandById(id).orElse(null);
+            if(tmp == null) return Optional.empty();
+            return Optional.of((StudentsManager) tmp);
+        }
+        return Optional.empty();
     }
 
     /**
@@ -186,8 +196,12 @@ public class Game {
         return numOfRegisteredPlayers;
     }
 
-    public boolean getEndgame() {
+    public boolean isGameEnded() {
         return endgame;
+    }
+
+    public void endGame(){
+        endgame = true;
     }
 
     public void setEndgame(boolean endgame) {
@@ -195,11 +209,11 @@ public class Game {
     }
 
     public Player getendplayer() {
-        return endplayer;
+        return endPlayer;
     }
 
-    public void setendplayer(Player endgame) {
-        this.endplayer = endplayer;
+    public void setendplayer(Player endPlayer) {
+        this.endPlayer = endPlayer;
     }
 
     public Player searchPlayerWithMostTower() {
