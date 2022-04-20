@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.enums.TowerColor;
 import it.polimi.ingsw.model.phase.PianificationFase;
 import it.polimi.ingsw.model.phase.action.ActionFase;
 import it.polimi.ingsw.model.player.Player;

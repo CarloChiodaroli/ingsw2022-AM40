@@ -1,7 +1,9 @@
 package it.polimi.ingsw.model;
 
 
-import it.polimi.ingsw.model.phase.action.Characters;
+import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.model.enums.TowerColor;
+import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.player.AssistantCard;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Cloud;

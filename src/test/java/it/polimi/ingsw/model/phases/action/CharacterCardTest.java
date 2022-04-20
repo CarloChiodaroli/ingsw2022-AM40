@@ -2,12 +2,11 @@ package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.phase.action.ActionFase;
-import it.polimi.ingsw.model.phase.action.CharacterCard;
-import it.polimi.ingsw.model.phase.action.Characters;
+import it.polimi.ingsw.model.phase.action.states.CharacterCard;
+import it.polimi.ingsw.model.enums.Characters;
 import org.junit.jupiter.api.Test;
 import java.util.Map;
 import java.util.HashMap;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class CharacterCardTest {
     @Test

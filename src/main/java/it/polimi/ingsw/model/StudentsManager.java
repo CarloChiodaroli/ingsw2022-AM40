@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
 
+import it.polimi.ingsw.model.enums.TeacherColor;
+
 import java.util.Optional;
 
 public abstract class StudentsManager{

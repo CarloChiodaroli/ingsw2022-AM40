@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.school;
+package it.polimi.ingsw.model.player.school;
 
 import it.polimi.ingsw.model.StudentsManager;
 

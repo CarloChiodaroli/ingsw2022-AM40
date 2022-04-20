@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model.table;
 
 import it.polimi.ingsw.model.StudentsManager;
-import it.polimi.ingsw.model.TeacherColor;
-import it.polimi.ingsw.model.phase.action.StudentMovement;
+import it.polimi.ingsw.model.enums.TeacherColor;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

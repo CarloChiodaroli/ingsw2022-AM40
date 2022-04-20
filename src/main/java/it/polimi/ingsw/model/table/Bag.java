@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.table;
 import it.polimi.ingsw.model.StudentsManager;
-import it.polimi.ingsw.model.TeacherColor;
+import it.polimi.ingsw.model.enums.TeacherColor;
 
 
 public class Bag extends StudentsManager {

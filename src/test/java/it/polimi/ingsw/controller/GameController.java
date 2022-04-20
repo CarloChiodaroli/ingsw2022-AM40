@@ -1,4 +1,4 @@
 package it.polimi.ingsw.controller;
 
-public class ControllerTest {
+public class GameController {
 }

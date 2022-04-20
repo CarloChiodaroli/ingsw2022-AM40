@@ -2,11 +2,11 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.StudentsManager;
-import it.polimi.ingsw.model.TeacherColor;
-import it.polimi.ingsw.model.TowerColor;
-import it.polimi.ingsw.model.phase.action.Characters;
-import it.polimi.ingsw.model.school.RoomTable;
-import it.polimi.ingsw.model.school.SchoolDashboard;
+import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.model.enums.TowerColor;
+import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.player.school.RoomTable;
+import it.polimi.ingsw.model.player.school.SchoolDashboard;
 import it.polimi.ingsw.model.table.Island;
 
 import java.security.InvalidParameterException;

@@ -2,8 +2,12 @@ package it.polimi.ingsw.model.phase.action;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.StudentsManager;
-import it.polimi.ingsw.model.TeacherColor;
-import it.polimi.ingsw.model.TowerColor;
+import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.model.enums.TowerColor;
+import it.polimi.ingsw.model.phase.action.states.*;
+import it.polimi.ingsw.model.phase.action.states.CharacterCard;
+import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
 import it.polimi.ingsw.model.table.MotherNature;
@@ -121,7 +125,7 @@ public class ActionFase {
             states.get(1).handle(player, motherNatureHops, maxHops);
         } else {
             if(actualCard.isInUse() &&
-                Characters.getClassOfCard(actualCard.getCharacter()).equals("MotherNature")){
+                CharacterCardFabric.getClassOfCard(actualCard.getCharacter()).equals("MotherNature")){
                 actualCard.handle(player, motherNatureHops, maxHops);
             } else {
                 states.get(1).handle(player, motherNatureHops, maxHops);
@@ -146,7 +150,7 @@ public class ActionFase {
                 throw new RuntimeException("Mother Nature does not know where she is");
             if (actualCard != null &&
                     actualCard.isInUse() &&
-                    Characters.getClassOfCard(actualCard.getCharacter()).equals("Influence"))
+                    CharacterCardFabric.getClassOfCard(actualCard.getCharacter()).equals("Influence"))
                 actualCard.handle(player, MotherNature.getMotherNature().getPosition().get());
             else states.get(2).handle(player, MotherNature.getMotherNature().getPosition().get());
             calculatedInfluence = true;
@@ -295,7 +299,7 @@ public class ActionFase {
             throw new IllegalStateException("This is not an expert variant game");
         if (actualCard != null)
             throw new IllegalStateException("Character Card already chosen");
-        switch (Characters.getClassOfCard(character)) {
+        switch (CharacterCardFabric.getClassOfCard(character)) {
             case "StudentMovement" -> {
                 if (possibleStudentMovements < 0 || movedMotherNature)
                     throw new IllegalStateException("The round has progressed too much to play this card");
@@ -316,7 +320,7 @@ public class ActionFase {
      *
      * @return the game
      */
-    protected Game getGame() {
+    public Game getGame() {
         return game;
     }
 

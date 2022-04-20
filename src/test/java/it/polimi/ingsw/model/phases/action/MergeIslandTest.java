@@ -1,16 +1,9 @@
 package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.TowerColor;
-import it.polimi.ingsw.model.phase.action.ActionFase;
-import it.polimi.ingsw.model.phase.action.MergeIsland;
-import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.table.Island;
-import it.polimi.ingsw.model.table.Table;
+import it.polimi.ingsw.model.enums.TowerColor;
+import it.polimi.ingsw.model.phase.action.states.MergeIsland;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

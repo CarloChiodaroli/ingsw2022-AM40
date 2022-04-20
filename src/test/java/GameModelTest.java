@@ -1,7 +1,7 @@
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.GameModelException;
-import it.polimi.ingsw.model.TeacherColor;
-import it.polimi.ingsw.model.phase.action.Characters;
+import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.model.enums.Characters;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,12 @@
-package it.polimi.ingsw.model.phase.action;
+package it.polimi.ingsw.model.phase.action.states.cards;
 
 import it.polimi.ingsw.model.StudentsManager;
-import it.polimi.ingsw.model.TeacherColor;
+import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.phase.action.StudentsContainer;
+import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.phase.action.states.CharacterCard;
+import it.polimi.ingsw.model.phase.action.states.StudentMovement;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Bag;
 import it.polimi.ingsw.model.table.Island;

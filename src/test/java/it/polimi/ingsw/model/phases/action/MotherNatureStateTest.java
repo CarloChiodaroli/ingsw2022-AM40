@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.phase.action.MotherNatureState;
+import it.polimi.ingsw.model.phase.action.states.MotherNatureState;
 import it.polimi.ingsw.model.table.Island;
 import it.polimi.ingsw.model.table.MotherNature;
 import org.junit.jupiter.api.Test;

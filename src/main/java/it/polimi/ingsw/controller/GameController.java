@@ -1,9 +1,9 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.TeacherColor;
-import it.polimi.ingsw.model.TowerColor;
-import it.polimi.ingsw.model.phase.action.Characters;
+import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.model.enums.TowerColor;
+import it.polimi.ingsw.model.enums.Characters;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;

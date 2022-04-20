@@ -1,11 +1,10 @@
 package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.TeacherColor;
-import it.polimi.ingsw.model.TowerColor;
-import it.polimi.ingsw.model.phase.action.Influence;
-import it.polimi.ingsw.model.phase.action.StudentMovement;
-import org.junit.jupiter.api.RepeatedTest;
+import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.model.enums.TowerColor;
+import it.polimi.ingsw.model.phase.action.states.Influence;
+import it.polimi.ingsw.model.phase.action.states.StudentMovement;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
