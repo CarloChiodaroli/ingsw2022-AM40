@@ -20,7 +20,6 @@ Implementation of Eriantys board game
 |  Game model's initial UML class diagram  |       Done       |
 |           Model Implementation           | Almost Completed |
 |  *Model FA implementation and testing*   |       Done       |
-|              Model Testing               |      Model       |
 |        Controller implementation         |      Making      |
 |   *MCV FA implementation and testing*    |        -         |
 |      Communication protocol design       |        -         |
