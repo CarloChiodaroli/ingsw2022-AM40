@@ -70,6 +70,7 @@ public class GameController {
         playerNames.forEach(model::addPlayer);
         model.startGame();
         gameState = GameState.next(gameState);
+        actualPlayer = playerNames.get(0);
         return getAllIslandIds();
     }
 
@@ -94,7 +95,7 @@ public class GameController {
     }
 
     private void nextTurn() {
-        if (gameState.equals(GameState.INITIAL)) {
+        if (gameState.equals(GameState.PIANIFICATION)) {
             int i = playerNames.indexOf(actualPlayer) + 1;
             if (i >= playerNames.size()) {
                 gameState = GameState.next(gameState);
@@ -174,10 +175,10 @@ public class GameController {
         afterSource = getStudentContainerStateFromId(playerName, sourceId);
         for (TeacherColor iColor : TeacherColor.values()) {
             if (!afterDestination.get(iColor).equals(beforeDestination.get(iColor))) {
-                delta.put(destinationId, beforeDestination.get(iColor) - afterDestination.get(iColor));
+                delta.put(destinationId, afterDestination.get(iColor) - beforeDestination.get(iColor));
             }
             if (!afterSource.get(iColor).equals(beforeSource.get(iColor))) {
-                delta.put(sourceId, beforeSource.get(iColor) - afterSource.get(iColor));
+                delta.put(sourceId, afterSource.get(iColor) - beforeSource.get(iColor));
             }
         }
         return delta;
@@ -218,10 +219,10 @@ public class GameController {
         // States Comparison
         for (TeacherColor color : TeacherColor.values()) {
             if (afterEntrance.get(color).equals(beforeEntrance.get(color))) {
-                delta.put("Entrance", beforeEntrance.get(color) - afterEntrance.get(color));
+                delta.put("Entrance", afterEntrance.get(color) - beforeEntrance.get(color));
             }
             if (afterOther.get(color).equals(beforeOther.get(color))) {
-                delta.put("Room", beforeOther.get(color) - afterOther.get(color));
+                delta.put("Room", afterOther.get(color) - beforeOther.get(color));
             }
         }
 
@@ -279,5 +280,4 @@ public class GameController {
     public GameModel getModel() {
         return model;
     }
-
 }
