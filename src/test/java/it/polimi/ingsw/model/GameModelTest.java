@@ -1,12 +1,19 @@
+package it.polimi.ingsw.model;
+
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.GameModelException;
 import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.table.Island;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -96,6 +103,76 @@ public class GameModelTest {
         model.addPlayer("Giacomo");
 
         assertTrue(model.isThreePlayerGame());
+    }
+
+    @Test
+    public void playAssistantCardTest(){
+        GameModel model = new GameModel();
+
+        String aldoName = "Aldo";
+        String giovanniName = "Giovanni";
+        String testIslandId = "i_1";
+
+        model.addPlayer(aldoName);
+        assertThrowsGameModelException(model::startGame);
+
+        model.addPlayer(giovanniName);
+
+        model.startGame();
+
+        Game game = model.getGame();
+
+        // Game alteration for test purposes
+
+        Player aldo = game.getPlayers().get(0);
+        Player giovanni = game.getPlayers().get(1);
+        StudentsManager testIsland = game.getStudentsManagerById(testIslandId).orElseThrow();
+
+        model.playAssistantCard(aldo.getName(), 3);
+
+        model.getPlayersInOrder();
+
+        assertThrowsGameModelException(() -> model.playAssistantCard(giovanni.getName(), 3));
+
+        model.playAssistantCard(giovanni.getName(), 5);
+
+        List<String> expectedOrder = new ArrayList<>();
+
+        expectedOrder.add(aldoName);
+        expectedOrder.add(giovanniName);
+        assertEquals(expectedOrder, model.getPlayersInOrder());
+
+        // emptied aldo and giovanni from all students in entrance and students in island
+        for(TeacherColor color: TeacherColor.values()){
+            for(int i = aldo.getEntrance().howManyStudents(color); i > 0; i--){
+                aldo.getEntrance().removeStudent(color);
+            }
+            for(int j = giovanni.getEntrance().howManyStudents(color); j > 0; j--){
+                giovanni.getEntrance().removeStudent(color);
+            }
+            for(int k = testIsland.howManyStudents(color); k > 0; k--){
+                testIsland.removeStudent(color);
+            }
+        }
+
+        aldo.getEntrance().addStudent(TeacherColor.BLUE);
+        aldo.getEntrance().addStudent(TeacherColor.BLUE);
+        aldo.getEntrance().addStudent(TeacherColor.BLUE);
+
+        giovanni.getEntrance().addStudent(TeacherColor.PINK);
+
+        assertEquals(3, aldo.getEntrance().howManyStudents(TeacherColor.BLUE));
+        assertEquals(1, giovanni.getEntrance().howManyStudents(TeacherColor.PINK));
+        assertEquals(0, testIsland.howManyTotStudents());
+
+        model.moveStudent(aldoName, TeacherColor.BLUE, "Entrance", testIslandId);
+        model.moveStudent(aldoName, TeacherColor.BLUE, "Entrance", "Room");
+
+        assertEquals(1, aldo.getEntrance().howManyStudents(TeacherColor.BLUE));
+        assertEquals(1, testIsland.howManyStudents(TeacherColor.BLUE));
+        assertEquals(1, aldo.getRoomTable(TeacherColor.BLUE).howManyStudents(TeacherColor.BLUE));
+
+        assertThrowsGameModelException(() -> model.moveStudent(giovanniName, TeacherColor.PINK, "Entrance", "Room"));
     }
 
 }

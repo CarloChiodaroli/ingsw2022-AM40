@@ -138,6 +138,7 @@ public class PianificationFase {
             } else {
                 game.buildClouds();
                 actualPlayer = 0;
+                game.getActionFase().startPhase(playersInOrder.get(actualPlayer));
                 countround++;
             }
         }
@@ -166,6 +167,9 @@ public class PianificationFase {
 
     public void nextPlayer() {
         actualPlayer++;
+        if(actualPlayer >= playersInOrder.size()){
+            reset();
+        }
     }
 
     public int getMotherNatureHops(Player player) {

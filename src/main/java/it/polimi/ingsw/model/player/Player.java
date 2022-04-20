@@ -22,7 +22,7 @@ public class Player {
     private final Game game;
     private final SchoolDashboard dashboard;
     private int money = 0;
-    private boolean permit;
+    private boolean enable;
 
 
     /**
@@ -38,7 +38,7 @@ public class Player {
         setPersonalDeck();
         this.dashboard = new SchoolDashboard(game.isThreePlayerGame(), towerColor);
         if(game.getTable().getCoin()) this.money++;
-        permit = false;
+        enable = false;
         //if(game.getTable().getCoin()) this.money++;
     }
 
@@ -104,12 +104,14 @@ public class Player {
      * @param destinationId is the ID of the place to move the student to
      */
     public void moveStudent(TeacherColor student, String sourceId, String destinationId){
+        controlEnable();
         Optional<StudentsManager> from = getStudentsManagerById(sourceId, student);
         Optional<StudentsManager> to = getStudentsManagerById(destinationId, student);
         game.getActionFase().request(student, from, to);
     }
 
     public void moveStudent(TeacherColor studentA,TeacherColor studentB){
+        controlEnable();
         game.getActionFase().request(this, studentA, studentB);
     }
 
@@ -142,6 +144,7 @@ public class Player {
      * @param steps is the number of steps to move mother nature
      */
     public void moveMotherNature(int steps){
+        controlEnable();
         game.getActionFase().request(this, steps);
     }
 
@@ -149,6 +152,7 @@ public class Player {
      * Command that triggers the influence count
      */
     public void calcInfluence(){
+        controlEnable();
         game.getActionFase().request(this, "MotherNature");
     }
 
@@ -214,18 +218,22 @@ public class Player {
     }
 
     public void playCharacterCard(Characters characters){
+        controlEnable();
         game.getActionFase().activateCard(characters, this);
     }
 
     public void playCharacterCard(Characters characters, TeacherColor color){
+        controlEnable();
         game.getActionFase().activateCard(characters, this, color);
     }
 
     public void playCharacterCard(Characters characters, Island island){
+        controlEnable();
         game.getActionFase().activateCard(characters, this, island);
     }
 
     public void playCharacterCard(Characters characters, TowerColor color){
+        controlEnable();
         game.getActionFase().activateCard(characters, this, color);
     }
 
@@ -272,5 +280,21 @@ public class Player {
     public int getNumberTowersLeft()
     {
         return dashboard.getNumOfTowers();
+    }
+
+    public void enable(){
+        enable = true;
+    }
+
+    public void disable(){
+        enable = false;
+    }
+
+    public boolean isEnabled(){
+        return enable;
+    }
+
+    private void controlEnable() throws IllegalStateException{
+        if(!isEnabled()) throw new IllegalStateException("Player can't make any moves now");
     }
 }

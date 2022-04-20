@@ -49,7 +49,6 @@ public class ActionFase {
         this.game = game;
         this.expertVariant = game.isExpertVariant();
         this.activated = false;
-
         this.states = new ArrayList<>();
         this.states.add(new StudentMovement(this));
         this.states.add(new MotherNatureState(this));
@@ -71,8 +70,9 @@ public class ActionFase {
      * @param player the player who wants to start his action phase
      */
     public void startPhase(Player player) {
-        if (!chosenCloud) return;
+        if (activated) return;
         if (!game.getPianificationFase().getActualPlayer().equals(player)) return;
+        player.enable();
         // reset of action phase state
         activated = true;
         possibleStudentMovements = 3;
@@ -101,7 +101,7 @@ public class ActionFase {
         isStateActivated();
         if (possibleStudentMovements <= 0 || calculatedInfluence)
             throw new IllegalStateException("Cannot move any students");
-        if (expertVariant && actualCard.isInUse()) {
+        if (expertVariant && Characters.getClassOfCard(actualCard.getCharacter()).equals("StudentMovement") && actualCard.isInUse()) {
             actualCard.handle(teacherColor, from, to);
         } else {
             states.get(0).handle(teacherColor, from, to);
@@ -159,8 +159,7 @@ public class ActionFase {
                 throw new IllegalStateException("Cannot choose clouds now");
             states.get(4).handle(player, game.getTable().getCloudById(id)
                     .orElseThrow(() -> new NoSuchElementException("Cloud not found")));
-            chosenCloud = true;
-            activated = false;
+            game.nextPlayer();
         }
     }
 
@@ -354,5 +353,9 @@ public class ActionFase {
 
     private void isStateActivated() throws IllegalStateException{
         if(!isActivated()) throw new IllegalStateException("Action Phase is not Activated");
+    }
+
+    public void reset(){
+        activated = false;
     }
 }

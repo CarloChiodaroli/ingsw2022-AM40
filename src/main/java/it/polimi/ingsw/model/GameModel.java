@@ -38,7 +38,11 @@ public class GameModel {
      * Starts the game once there are enough players
      */
     public void startGame() {
-        game.gameStarter();
+        try {
+            game.gameStarter();
+        } catch (IllegalStateException e){
+            throw new GameModelException(e.getMessage());
+        }
     }
 
     /**
@@ -105,7 +109,6 @@ public class GameModel {
     public void moveStudent(String playerName, TeacherColor color, String sourceId, String destinationId)
             throws GameModelException, NoSuchElementException{
         Player player = getPlayer(playerName);
-
         try {
             player.moveStudent(color, sourceId, destinationId);
         } catch (IllegalStateException | InvalidParameterException e) {
@@ -446,5 +449,9 @@ public class GameModel {
 
     public boolean isGameEnded(){
         return game.isGameEnded();
+    }
+
+    public Game getGame(){
+        return game;
     }
 }

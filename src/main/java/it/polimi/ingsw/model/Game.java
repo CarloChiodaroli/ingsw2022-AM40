@@ -52,8 +52,9 @@ public class Game {
     /**
      * Method which effectively starts the game creating all necessary objects
      */
-    public void gameStarter() {
-        if (numOfRegisteredPlayers < 2) return;
+    public void gameStarter() throws IllegalStateException{
+        if (numOfRegisteredPlayers < 2)
+            throw new IllegalStateException("Not enough players");
         table = new Table(numOfRegisteredPlayers);
         if (isThreePlayerGame) {
             players.add(new Player(this, preGamePlayersList.get(TowerColor.BLACK), TowerColor.BLACK));
@@ -243,5 +244,15 @@ public class Game {
         return maxPlayer;
     }
 
+    public void nextPlayer(){
+        actionFase.reset();
+        pianificationFase.getActualPlayer().disable();
+        pianificationFase.nextPlayer();
+        if(pianificationFase.isInOrder()){
+            actionFase.startPhase(pianificationFase.getActualPlayer());
+        } else {
+            pianificationFase.activate();
+        }
+    }
 
 }
