@@ -98,7 +98,7 @@ public class CharactersTest {
 
             assertEquals(3, characterization.get("Price"));
             assertEquals(0, characterization.get("Memory"));
-            assertEquals(0, characterization.get("Usages"));
+            assertEquals(1, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
@@ -121,7 +121,7 @@ public class CharactersTest {
 
             assertEquals(1, characterization.get("Price"));
             assertEquals(0, characterization.get("Memory"));
-            assertEquals(0, characterization.get("Usages"));
+            assertEquals(1, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
@@ -144,7 +144,7 @@ public class CharactersTest {
 
             assertEquals(2, characterization.get("Price"));
             assertEquals(4, characterization.get("Memory"));
-            assertEquals(0, characterization.get("Usages"));
+            assertEquals(1, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
@@ -167,7 +167,7 @@ public class CharactersTest {
 
             assertEquals(3, characterization.get("Price"));
             assertEquals(0, characterization.get("Memory"));
-            assertEquals(0, characterization.get("Usages"));
+            assertEquals(1, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
@@ -213,7 +213,7 @@ public class CharactersTest {
 
             assertEquals(2, characterization.get("Price"));
             assertEquals(0, characterization.get("Memory"));
-            assertEquals(0, characterization.get("Usages"));
+            assertEquals(1, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
@@ -236,7 +236,7 @@ public class CharactersTest {
 
             assertEquals(3, characterization.get("Price"));
             assertEquals(0, characterization.get("Memory"));
-            assertEquals(0, characterization.get("Usages"));
+            assertEquals(1, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
@@ -305,7 +305,7 @@ public class CharactersTest {
 
             assertEquals(3, characterization.get("Price"));
             assertEquals(0, characterization.get("Memory"));
-            assertEquals(0, characterization.get("Usages"));
+            assertEquals(1, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(1, characterization.get("EffectAllPlayers"));

@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.phase.action.ActionFase;
 import it.polimi.ingsw.model.table.MotherNature;
 import it.polimi.ingsw.model.table.Island;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -48,61 +49,79 @@ public class ActionFaseTest {
     }
 
     @Test
-    @Disabled("Need to fix")
     public void activateCardTest(){
         Game game = new Game();
         ActionFase actionFase;
-        PianificationFase pianificationFase;
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.switchExpertVariant();
         game.gameStarter();
-        //game.getPianificationFase().activate();
         actionFase = game.getActionFase();
-        pianificationFase = game.getPianificationFase();
 
         List<CharacterCard> actualCharacterCards = actionFase.getCharacterCards();
 
         actualCharacterCards.add(CharacterCardFabric.createCard(Characters.SORCERER, actionFase));
 
-        StudentMovement studentMovement = new StudentMovement(game.getActionFase());
+        Player camilla = game.getPlayers().get(0);
+        Player anja = game.getPlayers().get(1);
+
         AssistantCard card = new AssistantCard(4);
-        AssistantCard card1 = game.getPianificationFase().play(card, game.getPlayers().get(0));
+        camilla.playAssistantCard(card);
+
         AssistantCard card2 = new AssistantCard(6);
-        AssistantCard card3 = game.getPianificationFase().play(card2, game.getPlayers().get(1));
-        actionFase.startPhase(game.getPlayers().get(0));
+        anja.playAssistantCard(card2);
 
-        TeacherColor color = game.getPlayers().get(0).getEntrance().getStudent().get();
-        game.getPlayers().get(0).getEntrance().addStudent(TeacherColor.PINK);
-        studentMovement.handle(TeacherColor.PINK, Optional.of(game.getPlayers().get(0).getEntrance()),
-                Optional.of(game.getPlayers().get(0).getRoomTable(TeacherColor.PINK)));
-        assertTrue(game.getPlayers().get(0).getRoomTable(TeacherColor.PINK).hasTeacher());
+        game.getTable().mergeIsland(game.getTable().getIslandList().get(3), game.getTable().getIslandList().get(4));
 
-        TeacherColor color1 = game.getPlayers().get(1).getEntrance().getStudent().get();
-        game.getPlayers().get(1).getEntrance().addStudent(TeacherColor.RED);
-        studentMovement.handle(TeacherColor.RED, Optional.of(game.getPlayers().get(1).getEntrance()),
-                Optional.of(game.getPlayers().get(1).getRoomTable(TeacherColor.RED)));
-        assertTrue(game.getPlayers().get(1).getRoomTable(TeacherColor.RED).hasTeacher());
+        Island testIsland = game.getTable().getIslandList().get(3);
 
-        TeacherColor color2 = game.getPlayers().get(0).getEntrance().getStudent().get();
-        game.getPlayers().get(1).getEntrance().addStudent(TeacherColor.PINK);
-        studentMovement.handle(TeacherColor.PINK, Optional.of(game.getPlayers().get(0).getEntrance()),
-                Optional.of(game.getTable().getIslandList().get(3)));
-
-        for(int i = 0; i < 2; i++){
-            TeacherColor color3 = game.getPlayers().get(1).getEntrance().getStudent().get();
-            game.getPlayers().get(1).getEntrance().addStudent(TeacherColor.RED);
-            studentMovement.handle(TeacherColor.RED, Optional.of(game.getPlayers().get(1).getEntrance()),
-                    Optional.of(game.getTable().getIslandList().get(3)));
+        for(TeacherColor color: TeacherColor.values()){
+            for(int i = anja.getEntrance().howManyStudents(color); i > 0; i--){
+                anja.getEntrance().removeStudent(color);
+            }
+            for(int j = camilla.getEntrance().howManyStudents(color); j > 0; j--){
+                camilla.getEntrance().removeStudent(color);
+            }
+            for(int k = testIsland.howManyStudents(color); k > 0; k--){
+                testIsland.removeStudent(color);
+            }
         }
 
-        game.getPlayers().get(0).giveMoney(2);
-        actionFase.activateCard(Characters.SORCERER, game.getPlayers().get(0), TeacherColor.RED);
-        actionFase.setCalculatedInfluence(true);
-        actionFase.request(game.getPlayers().get(0), game.getTable().getIslandList().get(3).getId());
-        assertEquals(game.getPlayers().get(0).getTowerColor(), game.getTable().getIslandList().get(3).getTowerColor());
+        camilla.getRoomTable(TeacherColor.BLUE).addStudent(TeacherColor.BLUE);
+        camilla.getRoomTable(TeacherColor.BLUE).setTeacherPresence(true);
+
+        anja.getRoomTable(TeacherColor.PINK).addStudent(TeacherColor.PINK);
+        anja.getRoomTable(TeacherColor.PINK).setTeacherPresence(true);
+
+        testIsland.addStudent(TeacherColor.BLUE);
+
+        testIsland.addStudent(TeacherColor.PINK);
+        testIsland.addStudent(TeacherColor.PINK);
+
+        MotherNature.getMotherNature().setPosition(testIsland);
+
+        actionFase.setMovedMotherNature(true);
+        camilla.calcInfluence();
+        assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
+
+        testIsland.addStudent(TeacherColor.BLUE);
+        testIsland.addStudent(TeacherColor.BLUE);
+
+        actionFase.setMovedMotherNature(true);
+        actionFase.setCalculatedInfluence(false);
+
+        camilla.calcInfluence();
+        assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
+
+        actionFase.setMovedMotherNature(true);
+        actionFase.setCalculatedInfluence(false);
+
+        camilla.giveMoney(2);
+        actionFase.activateCard(Characters.SORCERER, game.getPlayers().get(0), TeacherColor.PINK);
 
 
+        camilla.calcInfluence();
+        assertEquals(camilla.getTowerColor(), testIsland.getTowerColor().get());
     }
 
 
