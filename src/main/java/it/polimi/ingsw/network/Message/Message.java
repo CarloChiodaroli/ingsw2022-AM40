@@ -28,4 +28,3 @@ public abstract class Message implements Serializable {
                 '}';
     }
 }
-}

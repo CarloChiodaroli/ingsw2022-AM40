@@ -6,7 +6,7 @@ import it.polimi.ingsw.network.Message.Message;
 /**
  * Abstract class to communicate with the server. Every type of connection must implement this interface.
  */
-public abstract class Client extends Observable {
+public abstract class Client  {
 
     /**
      * Sends a message to the server.
