@@ -14,11 +14,11 @@ public enum Characters {
     QUEEN,
     THIEF;
 
-    public static String getClassOfCard(Characters type){
+    public static CharacterCardType getClassOfCard(Characters type){
         return switch (type) {
-            case HOST, FRIAR, QUEEN, THIEF, JESTER, MINSTREL -> "StudentMovement";
-            case MESSENGER -> "MotherNature";
-            case SORCERESS, SORCERER, CENTAUR, KNIGHT, CRIER -> "Influence";
+            case HOST, FRIAR, QUEEN, THIEF, JESTER, MINSTREL -> CharacterCardType.STUDENT;
+            case MESSENGER -> CharacterCardType.MOTHER;
+            case SORCERESS, SORCERER, CENTAUR, KNIGHT, CRIER -> CharacterCardType.INFLUENCE;
         };
     }
 }

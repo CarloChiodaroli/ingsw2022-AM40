@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.phase.action.states.cards;
 import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.phase.action.ActionFase;
 import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.model.phase.action.states.MotherNatureState;
 import it.polimi.ingsw.model.player.Player;
@@ -24,13 +25,9 @@ public class MotherNatureCard extends CharacterCard {
         decorated.handle(player, steps, maxSteps+2);
     }
 
-    public void activator(MotherNatureState decorated, Player player) throws InvalidParameterException {
+    public void activator(ActionFaseState decorated, Player player) throws InvalidParameterException {
         playerPays(player);
-        this.decorated = decorated;
+        this.decorated = (MotherNatureState) decorated;
         super.activator(player);
     }
-
-    public void activator(MotherNatureState decorated, Player player, TeacherColor color){    }
-
-    public void activator(MotherNatureState decorated, Player player, Island island){    }
 }

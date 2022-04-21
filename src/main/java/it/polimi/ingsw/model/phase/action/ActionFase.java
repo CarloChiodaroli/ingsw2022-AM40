@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.phase.action;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.StudentsManager;
+import it.polimi.ingsw.model.enums.CharacterCardType;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.enums.TowerColor;
@@ -50,9 +51,9 @@ public class ActionFase {
         this.expertVariant = game.isExpertVariant();
         this.activated = false;
         this.states = new ArrayList<>();
-        this.states.add(new StudentMovement(this));
-        this.states.add(new MotherNatureState(this));
-        this.states.add(new Influence(this));
+        this.states.add(CharacterCardType.getEquivalentInt(CharacterCardType.STUDENT), new StudentMovement(this));
+        this.states.add(CharacterCardType.getEquivalentInt(CharacterCardType.MOTHER), new MotherNatureState(this));
+        this.states.add(CharacterCardType.getEquivalentInt(CharacterCardType.INFLUENCE), new Influence(this));
         this.states.add(new MergeIsland(this));
         this.states.add(new Finalize(this));
         if (expertVariant) {
@@ -60,6 +61,10 @@ public class ActionFase {
         } else {
             this.characterCards = null;
         }
+    }
+
+    public List<CharacterCard> getCharacterCards() {
+        return characterCards;
     }
 
     /**
@@ -101,7 +106,7 @@ public class ActionFase {
         isStateActivated();
         if (possibleStudentMovements <= 0 || calculatedInfluence)
             throw new IllegalStateException("Cannot move any students");
-        if (expertVariant && Characters.getClassOfCard(actualCard.getCharacter()).equals("StudentMovement") && actualCard.isInUse()) {
+        if (expertVariant && Characters.getClassOfCard(actualCard.getCharacter()).equals(CharacterCardType.STUDENT) && actualCard.isInUse()) {
             actualCard.handle(teacherColor, from, to);
         } else {
             states.get(0).handle(teacherColor, from, to);
@@ -125,7 +130,7 @@ public class ActionFase {
             states.get(1).handle(player, motherNatureHops, maxHops);
         } else {
             if(actualCard.isInUse() &&
-                CharacterCardFabric.getClassOfCard(actualCard.getCharacter()).equals("MotherNature")){
+                CharacterCardFabric.getClassOfCard(actualCard.getCharacter()).equals(CharacterCardType.MOTHER)){
                 actualCard.handle(player, motherNatureHops, maxHops);
             } else {
                 states.get(1).handle(player, motherNatureHops, maxHops);
@@ -150,7 +155,7 @@ public class ActionFase {
                 throw new RuntimeException("Mother Nature does not know where she is");
             if (actualCard != null &&
                     actualCard.isInUse() &&
-                    CharacterCardFabric.getClassOfCard(actualCard.getCharacter()).equals("Influence"))
+                    CharacterCardFabric.getClassOfCard(actualCard.getCharacter()).equals(CharacterCardType.INFLUENCE))
                 actualCard.handle(player, MotherNature.getMotherNature().getPosition().get());
             else states.get(2).handle(player, MotherNature.getMotherNature().getPosition().get());
             calculatedInfluence = true;
@@ -216,7 +221,8 @@ public class ActionFase {
     public void activateCard(Characters characters, Player player)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         actualCard = coreActivateCard(characters);
-        actualCard.activator(player);
+        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(actualCard.getCharacter())));
+        actualCard.activator(decorated, player);
     }
 
     /**
@@ -233,7 +239,8 @@ public class ActionFase {
     public void activateCard(Characters characters, Player player, TeacherColor color)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         actualCard = coreActivateCard(characters);
-        actualCard.activator(player, color);
+        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(actualCard.getCharacter())));
+        actualCard.activator(decorated, player, color);
     }
 
     /**
@@ -250,7 +257,8 @@ public class ActionFase {
     public void activateCard(Characters characters, Player player, Island island)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         actualCard = coreActivateCard(characters);
-        actualCard.activator(player, island);
+        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(actualCard.getCharacter())));
+        actualCard.activator(decorated, player, island);
     }
 
     /**
@@ -267,7 +275,8 @@ public class ActionFase {
     public void activateCard(Characters characters, Player player, TowerColor color)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         actualCard = coreActivateCard(characters);
-        actualCard.activator(player, color);
+        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(actualCard.getCharacter())));
+        actualCard.activator(decorated, player, color);
     }
 
     /**
@@ -299,15 +308,15 @@ public class ActionFase {
         if (actualCard != null)
             throw new IllegalStateException("Character Card already chosen");
         switch (CharacterCardFabric.getClassOfCard(character)) {
-            case "StudentMovement" -> {
+            case STUDENT -> {
                 if (possibleStudentMovements < 0 || movedMotherNature)
                     throw new IllegalStateException("The round has progressed too much to play this card");
             }
-            case "MotherNature" -> {
+            case MOTHER -> {
                 if (movedMotherNature)
                     throw new IllegalStateException("The round has progressed too much to play this card");
             }
-            case "Influence" -> {
+            case INFLUENCE -> {
                 if (calculatedInfluence)
                     throw new IllegalStateException("The round has progressed too much to play this card");
             }
@@ -362,4 +371,24 @@ public class ActionFase {
     public void setCalculatedInfluence(boolean calculatedInfluence) {
         this.calculatedInfluence = calculatedInfluence;
     }
+
+    // for testing purposes
+
+
+    public void setChosenCloud(boolean chosenCloud) {
+        this.chosenCloud = chosenCloud;
+    }
+
+    public void setPossibleStudentMovements(int possibleStudentMovements) {
+        this.possibleStudentMovements = possibleStudentMovements;
+    }
+
+    public void setMovedMotherNature(boolean movedMotherNature) {
+        this.movedMotherNature = movedMotherNature;
+    }
+
+    public void setMergedIslands(boolean mergedIslands) {
+        this.mergedIslands = mergedIslands;
+    }
+
 }

@@ -29,17 +29,17 @@ public class CharacterCardFabricTest {
         CharacterCard card = CharacterCardFabric.createCard(character, game.getActionFase());
 
         switch(CharacterCardFabric.getClassOfCard(character)){
-            case "StudentMovement" -> {
+            case STUDENT -> {
                 assertEquals(StudentMovementCard.class, card.getClass());
                 assertNotEquals(InfluenceCard.class, card.getClass());
                 assertNotEquals(MotherNatureCard.class, card.getClass());
             }
-            case "MotherNature" -> {
+            case MOTHER -> {
                 assertNotEquals(StudentMovementCard.class, card.getClass());
                 assertNotEquals(InfluenceCard.class, card.getClass());
                 assertEquals(MotherNatureCard.class, card.getClass());
             }
-            case "Influence" -> {
+            case INFLUENCE -> {
                 assertNotEquals(StudentMovementCard.class, card.getClass());
                 assertEquals(InfluenceCard.class, card.getClass());
                 assertNotEquals(MotherNatureCard.class, card.getClass());

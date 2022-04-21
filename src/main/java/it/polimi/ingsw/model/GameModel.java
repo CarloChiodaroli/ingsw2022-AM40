@@ -4,6 +4,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.enums.TowerColor;
 import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.phase.action.states.cards.IllegalActivatorCall;
 import it.polimi.ingsw.model.player.AssistantCard;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Cloud;
@@ -196,7 +197,7 @@ public class GameModel {
             player.playCharacterCard(character);
         } catch (InvalidParameterException | NoSuchElementException e) {
             throw new InvalidParameterException(e.getMessage());
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException | IllegalActivatorCall e){
             throw new GameModelException(e.getMessage());
         }
     }
@@ -207,7 +208,7 @@ public class GameModel {
             player.playCharacterCard(character, color);
         } catch (InvalidParameterException | NoSuchElementException e) {
             throw new InvalidParameterException(e.getMessage());
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException | IllegalActivatorCall e){
             throw new GameModelException(e.getMessage());
         }
     }
@@ -218,7 +219,7 @@ public class GameModel {
             player.playCharacterCard(character, game.getTable().getIslandById(islandId).orElseThrow());
         } catch (InvalidParameterException | NoSuchElementException e) {
             throw new InvalidParameterException(e.getMessage());
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException | IllegalActivatorCall e){
             throw new GameModelException(e.getMessage());
         }
     }
@@ -229,7 +230,7 @@ public class GameModel {
             player.playCharacterCard(character, color);
         } catch (InvalidParameterException | NoSuchElementException e) {
             throw new InvalidParameterException(e.getMessage());
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException | IllegalActivatorCall e){
             throw new GameModelException(e.getMessage());
         }
     }

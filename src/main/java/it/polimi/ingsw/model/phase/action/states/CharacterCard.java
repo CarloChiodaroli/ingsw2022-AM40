@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.phase.action.states;
 
 import it.polimi.ingsw.model.StudentsManager;
+import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.enums.TowerColor;
-import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.phase.action.ActionFase;
 import it.polimi.ingsw.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.model.player.Player;
@@ -119,13 +119,24 @@ public abstract class CharacterCard extends ActionFaseState {
     }
 
     public boolean playerPays(Player player) throws InvalidParameterException {
-        if(player.pay(getPrice())){
+        if (player.pay(getPrice())) {
             return true;
         } else throw new InvalidParameterException("Player cannot pay for the card");
     }
 
-    public Optional<StudentsManager> getStudentContainer(){
+    public Optional<StudentsManager> getStudentContainer() {
         return Optional.empty();
     }
 
+    public void activator(ActionFaseState decorated, Player player, TowerColor color) {
+    }
+
+    public void activator(ActionFaseState decorated, Player player, TeacherColor color) {
+    }
+
+    public void activator(ActionFaseState decorated, Player player) {
+    }
+
+    public void activator(ActionFaseState decorated, Player player, Island island) {
+    }
 }
