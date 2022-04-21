@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 public abstract class Message implements Serializable {
 
-    private final String nickname;
+    private final String playername;
     private final MessageType messageType;
 
-    Message(String nickname, MessageType messageType) {
-        this.nickname = nickname;
+    Message(String playername, MessageType messageType) {
+        this.playername = playername;
         this.messageType = messageType;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getPlayerName() {
+        return playername;
     }
 
     public MessageType getMessageType() {
@@ -23,7 +23,7 @@ public abstract class Message implements Serializable {
     @Override
     public String toString() {
         return "Message{" +
-                "nickname=" + nickname +
+                "playername=" + playername +
                 ", messageType=" + messageType +
                 '}';
     }

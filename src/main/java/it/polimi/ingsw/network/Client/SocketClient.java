@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network;
+package it.polimi.ingsw.network.Client;
 
 import it.polimi.ingsw.network.Message.Message;
 import it.polimi.ingsw.network.Message.PingMessage;
@@ -14,17 +14,16 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * This class represents a socket client implementation.
+ * ExecutorService is an API that simplifies running tasks in asynchronous mode.
  */
-/**
-    ExecutorService is an API that simplifies running tasks in asynchronous mode.
- */
+
 public class SocketClient extends Client {
 
     private final Socket socket;
 
     private final ObjectOutputStream outputStm;
     private final ObjectInputStream inputStm;
-    private final ExecutorService readExecutionQueue;   //"Engine"
+    private final ExecutorService readExecutionQueue;   //"Engine"   (Permette di leggere messaggi asincroni)
     private final ScheduledExecutorService pinger;      //Schedule Command to run after a given delay
 
     private static final int SOCKET_TIMEOUT = 10000;
@@ -105,4 +104,5 @@ public class SocketClient extends Client {
             pinger.shutdownNow();
         }
     }
+
 }
