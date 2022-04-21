@@ -192,14 +192,14 @@ public class ActionFase {
      */
     public void request(Player player, TeacherColor studentA, TeacherColor studentB) throws IllegalStateException {
         isStateActivated();
-        if (!expertVariant) throw new IllegalStateException("Game is not in expert variant");
-        if (actualCard == null) throw new IllegalStateException("No card has been activated");
-        if (actualCard.isInUse()) {
-            actualCard.handle(player, studentA, studentB);
-        } else {
-            throw new IllegalStateException("Card has been already used");
-        }
-        possibleStudentMovements--;
+            if (!expertVariant) throw new IllegalStateException("Game is not in expert variant");
+            if (actualCard == null) throw new IllegalStateException("No card has been activated");
+            if (actualCard.isInUse()) {
+                actualCard.handle(player, studentA, studentB);
+            } else {
+                throw new IllegalStateException("Card has been already used");
+            }
+            possibleStudentMovements--;
     }
 
     // Activate Card methods
@@ -357,5 +357,9 @@ public class ActionFase {
 
     public void reset(){
         activated = false;
+    }
+
+    public void setCalculatedInfluence(boolean calculatedInfluence) {
+        this.calculatedInfluence = calculatedInfluence;
     }
 }
