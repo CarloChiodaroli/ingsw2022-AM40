@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.phases.action;
 
+import it.polimi.ingsw.model.enums.CharacterCardType;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
 import org.junit.jupiter.api.DisplayName;
@@ -20,18 +21,18 @@ public class CharactersTest {
     @Test
     @DisplayName("Control if the right class of card is given")
     public void getClassOfCardTest() {
-        assertEquals("StudentMovement", CharacterCardFabric.getClassOfCard(Characters.HOST));
-        assertEquals("StudentMovement", CharacterCardFabric.getClassOfCard(Characters.FRIAR));
-        assertEquals("StudentMovement", CharacterCardFabric.getClassOfCard(Characters.QUEEN));
-        assertEquals("StudentMovement", CharacterCardFabric.getClassOfCard(Characters.THIEF));
-        assertEquals("StudentMovement", CharacterCardFabric.getClassOfCard(Characters.JESTER));
-        assertEquals("StudentMovement", CharacterCardFabric.getClassOfCard(Characters.MINSTREL));
-        assertEquals("MotherNature", CharacterCardFabric.getClassOfCard(Characters.MESSENGER));
-        assertEquals("Influence", CharacterCardFabric.getClassOfCard(Characters.SORCERESS));
-        assertEquals("Influence", CharacterCardFabric.getClassOfCard(Characters.SORCERER));
-        assertEquals("Influence", CharacterCardFabric.getClassOfCard(Characters.CENTAUR));
-        assertEquals("Influence", CharacterCardFabric.getClassOfCard(Characters.KNIGHT));
-        assertEquals("Influence", CharacterCardFabric.getClassOfCard(Characters.CRIER));
+        assertEquals(CharacterCardType.STUDENT, CharacterCardFabric.getClassOfCard(Characters.HOST));
+        assertEquals(CharacterCardType.STUDENT, CharacterCardFabric.getClassOfCard(Characters.FRIAR));
+        assertEquals(CharacterCardType.STUDENT, CharacterCardFabric.getClassOfCard(Characters.QUEEN));
+        assertEquals(CharacterCardType.STUDENT, CharacterCardFabric.getClassOfCard(Characters.THIEF));
+        assertEquals(CharacterCardType.STUDENT, CharacterCardFabric.getClassOfCard(Characters.JESTER));
+        assertEquals(CharacterCardType.STUDENT, CharacterCardFabric.getClassOfCard(Characters.MINSTREL));
+        assertEquals(CharacterCardType.MOTHER, CharacterCardFabric.getClassOfCard(Characters.MESSENGER));
+        assertEquals(CharacterCardType.INFLUENCE, CharacterCardFabric.getClassOfCard(Characters.SORCERESS));
+        assertEquals(CharacterCardType.INFLUENCE, CharacterCardFabric.getClassOfCard(Characters.SORCERER));
+        assertEquals(CharacterCardType.INFLUENCE, CharacterCardFabric.getClassOfCard(Characters.CENTAUR));
+        assertEquals(CharacterCardType.INFLUENCE, CharacterCardFabric.getClassOfCard(Characters.KNIGHT));
+        assertEquals(CharacterCardType.INFLUENCE, CharacterCardFabric.getClassOfCard(Characters.CRIER));
     }
 
     /**

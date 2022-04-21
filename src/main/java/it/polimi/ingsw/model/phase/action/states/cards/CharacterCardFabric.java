@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.phase.action.states.cards;
 
+import it.polimi.ingsw.model.enums.CharacterCardType;
 import it.polimi.ingsw.model.phase.action.ActionFase;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.phase.action.states.CharacterCard;
@@ -26,12 +27,11 @@ public class CharacterCardFabric {
     }
 
     public static CharacterCard createCard(Characters type, ActionFase actionFase){
-        String classOfCard = getClassOfCard(type);
+        CharacterCardType classOfCard = getClassOfCard(type);
         return switch (classOfCard) {
-            case "StudentMovement"-> new StudentMovementCard(type, actionFase, getCharacterization(type));
-            case "MotherNature" -> new MotherNatureCard(type, actionFase, getCharacterization(type));
-            case "Influence" -> new InfluenceCard(type, actionFase, getCharacterization(type));
-            default -> null;
+            case STUDENT-> new StudentMovementCard(type, actionFase, getCharacterization(type));
+            case MOTHER -> new MotherNatureCard(type, actionFase, getCharacterization(type));
+            case INFLUENCE -> new InfluenceCard(type, actionFase, getCharacterization(type));
         };
     }
 
@@ -148,7 +148,7 @@ public class CharacterCardFabric {
         }
     }
 
-    public static String getClassOfCard(Characters type){
+    public static CharacterCardType getClassOfCard(Characters type){
         return Characters.getClassOfCard(type);
     }
 }
