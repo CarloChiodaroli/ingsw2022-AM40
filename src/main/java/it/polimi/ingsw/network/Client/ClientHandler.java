@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.Client;
 
 import it.polimi.ingsw.network.Message.Message;
+
 public interface ClientHandler {
 
     /**
