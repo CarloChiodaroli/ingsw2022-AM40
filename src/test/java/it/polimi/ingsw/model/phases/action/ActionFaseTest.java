@@ -311,7 +311,9 @@ public class ActionFaseTest {
         actionFase.request(game.getPlayers().get(0), 1);
         Island finpos = MotherNature.getMotherNature().getPosition().get();
         int secondposition = game.getTable().getIslandList().indexOf(finpos);
-        assertEquals(firstposition + 1, secondposition);
+        int position = firstposition + 1;
+        if(position == 12) position = 0;
+        assertEquals(position, secondposition);
 
         assertThrowsIllegalStateException(() -> actionFase.request(game.getPlayers().get(0), 1));
 

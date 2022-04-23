@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.enums.TowerColor;
 import it.polimi.ingsw.model.phase.action.states.*;
-import it.polimi.ingsw.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
@@ -106,7 +105,10 @@ public class ActionFase {
         isStateActivated();
         if (possibleStudentMovements <= 0 || calculatedInfluence)
             throw new IllegalStateException("Cannot move any students");
-        if (expertVariant && Characters.getClassOfCard(actualCard.getCharacter()).equals(CharacterCardType.STUDENT) && actualCard.isInUse()) {
+        if (expertVariant &&
+                actualCard != null &&
+                Characters.getClassOfCard(actualCard.getCharacter()).equals(CharacterCardType.STUDENT) &&
+                actualCard.isInUse()) {
             actualCard.handle(teacherColor, from, to);
         } else {
             states.get(0).handle(teacherColor, from, to);
@@ -129,8 +131,9 @@ public class ActionFase {
         if (!expertVariant) {
             states.get(1).handle(player, motherNatureHops, maxHops);
         } else {
-            if(actualCard.isInUse() &&
-                CharacterCardFabric.getClassOfCard(actualCard.getCharacter()).equals(CharacterCardType.MOTHER)){
+            if (actualCard != null &&
+                    actualCard.isInUse() &&
+                    CharacterCardFabric.getClassOfCard(actualCard.getCharacter()).equals(CharacterCardType.MOTHER)) {
                 actualCard.handle(player, motherNatureHops, maxHops);
             } else {
                 states.get(1).handle(player, motherNatureHops, maxHops);
@@ -197,14 +200,14 @@ public class ActionFase {
      */
     public void request(Player player, TeacherColor studentA, TeacherColor studentB) throws IllegalStateException {
         isStateActivated();
-            if (!expertVariant) throw new IllegalStateException("Game is not in expert variant");
-            if (actualCard == null) throw new IllegalStateException("No card has been activated");
-            if (actualCard.isInUse()) {
-                actualCard.handle(player, studentA, studentB);
-            } else {
-                throw new IllegalStateException("Card has been already used");
-            }
-            possibleStudentMovements--;
+        if (!expertVariant) throw new IllegalStateException("Game is not in expert variant");
+        if (actualCard == null) throw new IllegalStateException("No card has been activated");
+        if (actualCard.isInUse()) {
+            actualCard.handle(player, studentA, studentB);
+        } else {
+            throw new IllegalStateException("Card has been already used");
+        }
+        possibleStudentMovements--;
     }
 
     // Activate Card methods
@@ -220,9 +223,10 @@ public class ActionFase {
      */
     public void activateCard(Characters characters, Player player)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
-        actualCard = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(actualCard.getCharacter())));
-        actualCard.activator(decorated, player);
+        CharacterCard tmp = coreActivateCard(characters);
+        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(tmp.getCharacter())));
+        tmp.activator(decorated, player);
+        actualCard = tmp;
     }
 
     /**
@@ -238,9 +242,10 @@ public class ActionFase {
      */
     public void activateCard(Characters characters, Player player, TeacherColor color)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
-        actualCard = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(actualCard.getCharacter())));
-        actualCard.activator(decorated, player, color);
+        CharacterCard tmp = coreActivateCard(characters);
+        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(tmp.getCharacter())));
+        tmp.activator(decorated, player, color);
+        actualCard = tmp;
     }
 
     /**
@@ -256,9 +261,10 @@ public class ActionFase {
      */
     public void activateCard(Characters characters, Player player, Island island)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
-        actualCard = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(actualCard.getCharacter())));
-        actualCard.activator(decorated, player, island);
+        CharacterCard tmp = coreActivateCard(characters);
+        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(tmp.getCharacter())));
+        tmp.activator(decorated, player, island);
+        actualCard = tmp;
     }
 
     /**
@@ -274,17 +280,18 @@ public class ActionFase {
      */
     public void activateCard(Characters characters, Player player, TowerColor color)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
-        actualCard = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(actualCard.getCharacter())));
-        actualCard.activator(decorated, player, color);
+        CharacterCard tmp = coreActivateCard(characters);
+        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(tmp.getCharacter())));
+        tmp.activator(decorated, player, color);
+        actualCard = tmp;
     }
 
     /**
      * Method which activates the wanted character card between the enabled cards
      *
      * @param characters the character represented by the character card
-     * @throws NoSuchElementException    thrown when the requested card is not available for this game
-     * @throws IllegalStateException     thrown when the actual context is not the right one to activate the card
+     * @throws NoSuchElementException thrown when the requested card is not available for this game
+     * @throws IllegalStateException  thrown when the actual context is not the right one to activate the card
      */
     private CharacterCard coreActivateCard(Characters characters)
             throws NoSuchElementException, IllegalStateException {
@@ -343,12 +350,12 @@ public class ActionFase {
                 .anyMatch(card -> card.getCharacter().equals(character));
     }
 
-    public Optional<Characters> getActualCharacter(){
-        if(actualCard == null) return Optional.empty();
+    public Optional<Characters> getActualCharacter() {
+        if (actualCard == null) return Optional.empty();
         return Optional.of(actualCard.getCharacter());
     }
 
-    public Optional<StudentsManager> getCardMemory(Characters character){
+    public Optional<StudentsManager> getCardMemory(Characters character) {
         return characterCards.stream()
                 .filter(card -> card.getCharacter().equals(character))
                 .findAny()
@@ -356,15 +363,15 @@ public class ActionFase {
                 .getStudentContainer();
     }
 
-    public boolean isActivated(){
+    public boolean isActivated() {
         return activated;
     }
 
-    private void isStateActivated() throws IllegalStateException{
-        if(!isActivated()) throw new IllegalStateException("Action Phase is not Activated");
+    private void isStateActivated() throws IllegalStateException {
+        if (!isActivated()) throw new IllegalStateException("Action Phase is not Activated");
     }
 
-    public void reset(){
+    public void reset() {
         activated = false;
     }
 
