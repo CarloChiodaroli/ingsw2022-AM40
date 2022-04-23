@@ -8,9 +8,10 @@ Implementation of Eriantys board game
 ## Actual test coverage
 | __Package__ | __Class %__ | __Method %__ | __Line %__ |
 |:-----------:|:-----------:|:------------:|:----------:|
-|    model    |     100     |      82      |     77     |
+|    model    |     100     |      89      |     86     |
 | controller  |     100     |      53      |     50     |
-| _All test_  |     100     |      79      |     75     |
+|  network    |     0       |      0       |     0      |
+| _All test_  |     85      |      81      |     77     |
 
 
 ## Project progress:
