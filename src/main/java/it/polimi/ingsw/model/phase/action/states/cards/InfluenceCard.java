@@ -29,7 +29,7 @@ public class InfluenceCard extends CharacterCard {
 
     @Override
     public void handle(Player player, Island island) {
-        if (super.getCharacterization("Island") > 1) {
+        if (super.getCharacterization("Island") > 0 && super.getCharacterization("NoEntrySetter") == 0) {
             decoratedCaller(player, super.getInterestingIsland());
         }
         if (super.getCharacterization("NoEntrySetter") == 0) decoratedCaller(player, island);

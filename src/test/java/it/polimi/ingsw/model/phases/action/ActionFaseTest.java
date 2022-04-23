@@ -190,7 +190,6 @@ public class ActionFaseTest {
         assertEquals(camilla.getTowerColor(), testIsland.getTowerColor().get());
     }
 
-    @Disabled //Need to fix
     @Test
     public void activateCardTest3(){
         Game game = new Game();
@@ -227,7 +226,7 @@ public class ActionFaseTest {
             for(int k = testIsland.howManyStudents(color); k > 0; k--){
                 testIsland.removeStudent(color);
             }
-            for(int q = testIsland.howManyStudents(color); q > 0; q--){
+            for(int q = specialTestIsland.howManyStudents(color); q > 0; q--){
                 specialTestIsland.removeStudent(color);
             }
         }
@@ -245,7 +244,8 @@ public class ActionFaseTest {
         testIsland.addStudent(TeacherColor.PINK);
 
         camilla.giveMoney(2);
-        actionFase.activateCard(Characters.CRIER, camilla, specialTestIsland);
+        camilla.playCharacterCard(Characters.CRIER, specialTestIsland);
+        //actionFase.activateCard(Characters.CRIER, camilla, specialTestIsland);
 
         MotherNature.getMotherNature().setPosition(testIsland);
 
