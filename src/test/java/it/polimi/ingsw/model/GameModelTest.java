@@ -4,13 +4,11 @@ import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.GameModelException;
 import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
 import it.polimi.ingsw.model.table.MotherNature;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -261,7 +259,6 @@ public class GameModelTest {
     }
 
     @Test
-    @Disabled("Need to fix")
     public void playCharacterCardTest(){
         GameModel model = new GameModel();
         String aldoName = "Aldo";
@@ -277,6 +274,7 @@ public class GameModelTest {
         Island inpos = initialpos.get();
         int firstposition = game.getTable().getIslandList().indexOf(inpos);
         int finposition = firstposition + 1;
+        if(finposition == 12) finposition = 0;
 
         Player aldo = game.getPlayers().get(0);
         Player giovanni = game.getPlayers().get(1);
@@ -286,6 +284,7 @@ public class GameModelTest {
 
         model.playAssistantCard(aldo.getName(), 3);
         model.playAssistantCard(giovanni.getName(), 5);
+        model.getGame().getActionFase().getCharacterCards().add(CharacterCardFabric.createCard(Characters.CENTAUR, model.getGame().getActionFase()));
 
         for(TeacherColor color: TeacherColor.values()){
             for(int i = aldo.getEntrance().howManyStudents(color); i > 0; i--){
@@ -333,7 +332,7 @@ public class GameModelTest {
         assertEquals(1, model.coinsOfThePlayer(giovanniName));
         giovanni.giveMoney(-1);
         assertInvalidParameterException(() -> model.playCharacterCard(giovanniName, Characters.CENTAUR));
-        giovanni.giveMoney(1);
+        giovanni.giveMoney(3);
         model.playCharacterCard(giovanniName, Characters.CENTAUR);
         model.calcInfluence(giovanniName);
         assertEquals(testIslandId, model.getMotherNaturePosition());
