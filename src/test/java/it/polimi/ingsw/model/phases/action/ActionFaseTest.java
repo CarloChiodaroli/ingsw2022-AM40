@@ -253,6 +253,7 @@ public class ActionFaseTest {
         assertTrue(game.isExpertVariant());
         assertThrowsIllegalStateException(() -> actionFase.request(game.getPlayers().get(0), TeacherColor.PINK,
                 TeacherColor.RED));
+        assertTrue(actionFase.canBeActivated(Characters.JESTER));
         actionFase.activateCard(Characters.JESTER, game.getPlayers().get(0));
         TeacherColor color = game.getPlayers().get(0).getEntrance().getStudent().get();
         game.getPlayers().get(0).getEntrance().addStudent(color);

@@ -6,10 +6,12 @@ import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
+import it.polimi.ingsw.model.table.MotherNature;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,6 +28,10 @@ public class GameModelTest {
 
     public static void assertThrowsGameModelException(org.junit.jupiter.api.function.Executable executable) {
         assertThrows(GameModelException.class, executable);
+    }
+
+    public static void assertInvalidParameterException(org.junit.jupiter.api.function.Executable executable){
+        assertThrows(InvalidParameterException.class, executable);
     }
 
     @Test
@@ -173,6 +179,168 @@ public class GameModelTest {
         assertEquals(1, aldo.getRoomTable(TeacherColor.BLUE).howManyStudents(TeacherColor.BLUE));
 
         assertThrowsGameModelException(() -> model.moveStudent(giovanniName, TeacherColor.PINK, "Entrance", "Room"));
+    }
+
+    @Test
+    public void moveMotherNatureCalcInfluenceChooseCloudTest(){
+        GameModel model = new GameModel();
+
+        String aldoName = "Aldo";
+        String giovanniName = "Giovanni";
+
+        model.addPlayer(aldoName);
+        model.addPlayer(giovanniName);
+        model.startGame();
+
+        Game game = model.getGame();
+        Optional<Island> initialpos = MotherNature.getMotherNature().getPosition();
+        Island inpos = initialpos.get();
+        int firstposition = game.getTable().getIslandList().indexOf(inpos);
+        int finposition = firstposition + 1;
+
+        Player aldo = game.getPlayers().get(0);
+        Player giovanni = game.getPlayers().get(1);
+        Island island = game.getTable().getIslandList().get(finposition);
+        StudentsManager testIsland = game.getStudentsManagerById(island.getId()).orElseThrow();
+        String testIslandId = island.getId();
+
+        model.playAssistantCard(aldo.getName(), 3);
+        model.playAssistantCard(giovanni.getName(), 5);
+
+        for(TeacherColor color: TeacherColor.values()){
+            for(int i = aldo.getEntrance().howManyStudents(color); i > 0; i--){
+                aldo.getEntrance().removeStudent(color);
+            }
+            for(int j = giovanni.getEntrance().howManyStudents(color); j > 0; j--){
+                giovanni.getEntrance().removeStudent(color);
+            }
+            for(int k = testIsland.howManyStudents(color); k > 0; k--){
+                testIsland.removeStudent(color);
+            }
+        }
+
+        aldo.getEntrance().addStudent(TeacherColor.BLUE);
+        aldo.getEntrance().addStudent(TeacherColor.BLUE);
+
+        for(int i = 0; i < 3; i++) {
+            giovanni.getEntrance().addStudent(TeacherColor.PINK);
+        }
+
+        model.moveStudent(aldoName, TeacherColor.BLUE, "Entrance", testIslandId);
+        model.moveStudent(aldoName, TeacherColor.BLUE, "Entrance", "Room");
+
+        aldo.enable();
+        assertInvalidParameterException(() -> model.moveMotherNature(aldoName, 3));
+        model.moveMotherNature(aldoName, 1);
+        model.calcInfluence(aldoName);
+        assertEquals(testIslandId, model.getMotherNaturePosition());
+        assertEquals(aldo.getTowerColor(), island.getTowerColor().get());
+        model.chooseCloud(aldoName, game.getTable().getCloudList().get(0).getId());
+        aldo.disable();
+
+        MotherNature.getMotherNature().setPosition(inpos);
+
+        giovanni.enable();
+        for(int i = 0; i < 2; i++) {
+            model.moveStudent(giovanniName, TeacherColor.PINK, "Entrance", testIslandId);
+        }
+        model.moveStudent(giovanniName, TeacherColor.PINK, "Entrance", "Room");
+
+        assertInvalidParameterException(() -> model.moveMotherNature(giovanniName, 4));
+        model.moveMotherNature(giovanniName, 1);
+        model.calcInfluence(giovanniName);
+        assertEquals(island, MotherNature.getMotherNature().getPosition().get());
+        assertEquals(aldo.getTowerColor(), island.getTowerColor().get());
+        model.chooseCloud(giovanniName, game.getTable().getCloudList().get(1).getId());
+        giovanni.disable();
+
+        assertEquals(3, aldo.getEntrance().howManyTotStudents());
+        assertEquals(3, giovanni.getEntrance().howManyTotStudents());
+
+    }
+
+    @Test
+    public void playCharacterCardTest(){
+        GameModel model = new GameModel();
+        String aldoName = "Aldo";
+        String giovanniName = "Giovanni";
+
+        model.addPlayer(aldoName);
+        model.addPlayer(giovanniName);
+        model.switchExpertVariant();
+        model.startGame();
+
+        Game game = model.getGame();
+        Optional<Island> initialpos = MotherNature.getMotherNature().getPosition();
+        Island inpos = initialpos.get();
+        int firstposition = game.getTable().getIslandList().indexOf(inpos);
+        int finposition = firstposition + 1;
+
+        Player aldo = game.getPlayers().get(0);
+        Player giovanni = game.getPlayers().get(1);
+        Island island = game.getTable().getIslandList().get(finposition);
+        StudentsManager testIsland = game.getStudentsManagerById(island.getId()).orElseThrow();
+        String testIslandId = island.getId();
+
+        model.playAssistantCard(aldo.getName(), 3);
+        model.playAssistantCard(giovanni.getName(), 5);
+
+        for(TeacherColor color: TeacherColor.values()){
+            for(int i = aldo.getEntrance().howManyStudents(color); i > 0; i--){
+                aldo.getEntrance().removeStudent(color);
+            }
+            for(int j = giovanni.getEntrance().howManyStudents(color); j > 0; j--){
+                giovanni.getEntrance().removeStudent(color);
+            }
+            for(int k = testIsland.howManyStudents(color); k > 0; k--){
+                testIsland.removeStudent(color);
+            }
+        }
+
+        for(int i = 0; i < 3; i++) {
+            aldo.getEntrance().addStudent(TeacherColor.BLUE);
+        }
+
+        for(int i = 0; i < 3; i++) {
+            giovanni.getEntrance().addStudent(TeacherColor.PINK);
+        }
+
+        model.moveStudent(aldoName, TeacherColor.BLUE, "Entrance", testIslandId);
+        model.moveStudent(aldoName, TeacherColor.BLUE, "Entrance", "Room");
+        model.moveStudent(aldoName, TeacherColor.BLUE, "Entrance", "Room");
+
+        aldo.enable();
+        assertInvalidParameterException(() -> model.moveMotherNature(aldoName, 3));
+        model.moveMotherNature(aldoName, 1);
+        model.calcInfluence(aldoName);
+        assertEquals(testIslandId, model.getMotherNaturePosition());
+        assertEquals(aldo.getTowerColor(), island.getTowerColor().get());
+        model.chooseCloud(aldoName, game.getTable().getCloudList().get(0).getId());
+        aldo.disable();
+
+        MotherNature.getMotherNature().setPosition(inpos);
+
+        giovanni.enable();
+        for(int i = 0; i < 2; i++) {
+            model.moveStudent(giovanniName, TeacherColor.PINK, "Entrance", testIslandId);
+        }
+        model.moveStudent(giovanniName, TeacherColor.PINK, "Entrance", "Room");
+
+        assertInvalidParameterException(() -> model.moveMotherNature(giovanniName, 4));
+        model.moveMotherNature(giovanniName, 1);
+        assertEquals(1, model.coinsOfThePlayer(giovanniName));
+        giovanni.giveMoney(-1);
+        assertInvalidParameterException(() -> model.playCharacterCard(giovanniName, Characters.CENTAUR));
+        giovanni.giveMoney(1);
+        model.playCharacterCard(giovanniName, Characters.CENTAUR);
+        model.calcInfluence(giovanniName);
+        assertEquals(testIslandId, model.getMotherNaturePosition());
+        assertEquals(giovanni.getTowerColor(), island.getTowerColor().get());
+        model.chooseCloud(giovanniName, game.getTable().getCloudList().get(1).getId());
+        giovanni.disable();
+
+        assertEquals(3, aldo.getEntrance().howManyTotStudents());
+        assertEquals(3, giovanni.getEntrance().howManyTotStudents());
     }
 
 }
