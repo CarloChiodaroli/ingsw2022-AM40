@@ -60,6 +60,72 @@ public class ActionFaseTest {
 
         List<CharacterCard> actualCharacterCards = actionFase.getCharacterCards();
 
+        actualCharacterCards.add(CharacterCardFabric.createCard(Characters.CENTAUR, actionFase));
+
+        Player camilla = game.getPlayers().get(0);
+        Player anja = game.getPlayers().get(1);
+
+        AssistantCard card = new AssistantCard(4);
+        camilla.playAssistantCard(card);
+
+        AssistantCard card2 = new AssistantCard(6);
+        anja.playAssistantCard(card2);
+
+        Island testIsland = game.getTable().getIslandList().get(3);
+
+        for(TeacherColor color: TeacherColor.values()){
+            for(int i = anja.getEntrance().howManyStudents(color); i > 0; i--){
+                anja.getEntrance().removeStudent(color);
+            }
+            for(int j = camilla.getEntrance().howManyStudents(color); j > 0; j--){
+                camilla.getEntrance().removeStudent(color);
+            }
+            for(int k = testIsland.howManyStudents(color); k > 0; k--){
+                testIsland.removeStudent(color);
+            }
+        }
+
+        camilla.getRoomTable(TeacherColor.BLUE).addStudent(TeacherColor.BLUE);
+        camilla.getRoomTable(TeacherColor.BLUE).setTeacherPresence(true);
+
+        anja.getRoomTable(TeacherColor.PINK).addStudent(TeacherColor.PINK);
+        anja.getRoomTable(TeacherColor.PINK).setTeacherPresence(true);
+
+        testIsland.addStudent(TeacherColor.BLUE);
+
+        testIsland.addStudent(TeacherColor.PINK);
+        testIsland.addStudent(TeacherColor.PINK);
+
+        MotherNature.getMotherNature().setPosition(testIsland);
+
+        actionFase.setMovedMotherNature(true);
+        camilla.calcInfluence();
+        assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
+        actionFase.setCalculatedInfluence(false);
+
+        testIsland.addStudent(TeacherColor.BLUE);
+        testIsland.addStudent(TeacherColor.BLUE);
+
+        camilla.giveMoney(2);
+        actionFase.activateCard(Characters.CENTAUR, camilla);
+
+        camilla.calcInfluence();
+        assertEquals(camilla.getTowerColor(), testIsland.getTowerColor().get());
+    }
+
+
+    @Test
+    public void activateCardTest2(){
+        Game game = new Game();
+        ActionFase actionFase;
+        game.addPlayer("Camilla");
+        game.addPlayer("Anja");
+        game.switchExpertVariant();
+        game.gameStarter();
+        actionFase = game.getActionFase();
+
+        List<CharacterCard> actualCharacterCards = actionFase.getCharacterCards();
+
         actualCharacterCards.add(CharacterCardFabric.createCard(Characters.SORCERER, actionFase));
 
         Player camilla = game.getPlayers().get(0);
@@ -123,6 +189,73 @@ public class ActionFaseTest {
         camilla.calcInfluence();
         assertEquals(camilla.getTowerColor(), testIsland.getTowerColor().get());
     }
+
+    @Disabled //Need to fix
+    @Test
+    public void activateCardTest3(){
+        Game game = new Game();
+        ActionFase actionFase;
+        game.addPlayer("Camilla");
+        game.addPlayer("Anja");
+        game.switchExpertVariant();
+        game.gameStarter();
+        actionFase = game.getActionFase();
+
+        List<CharacterCard> actualCharacterCards = actionFase.getCharacterCards();
+
+        actualCharacterCards.add(CharacterCardFabric.createCard(Characters.CRIER, actionFase));
+
+        Player camilla = game.getPlayers().get(0);
+        Player anja = game.getPlayers().get(1);
+
+        AssistantCard card = new AssistantCard(4);
+        camilla.playAssistantCard(card);
+
+        AssistantCard card2 = new AssistantCard(6);
+        anja.playAssistantCard(card2);
+
+        Island testIsland = game.getTable().getIslandList().get(3);
+        Island specialTestIsland = game.getTable().getIslandList().get(5);
+
+        for(TeacherColor color: TeacherColor.values()){
+            for(int i = anja.getEntrance().howManyStudents(color); i > 0; i--){
+                anja.getEntrance().removeStudent(color);
+            }
+            for(int j = camilla.getEntrance().howManyStudents(color); j > 0; j--){
+                camilla.getEntrance().removeStudent(color);
+            }
+            for(int k = testIsland.howManyStudents(color); k > 0; k--){
+                testIsland.removeStudent(color);
+            }
+            for(int q = testIsland.howManyStudents(color); q > 0; q--){
+                specialTestIsland.removeStudent(color);
+            }
+        }
+
+        camilla.getRoomTable(TeacherColor.BLUE).addStudent(TeacherColor.BLUE);
+        camilla.getRoomTable(TeacherColor.BLUE).setTeacherPresence(true);
+
+        anja.getRoomTable(TeacherColor.PINK).addStudent(TeacherColor.PINK);
+        anja.getRoomTable(TeacherColor.PINK).setTeacherPresence(true);
+
+        testIsland.addStudent(TeacherColor.BLUE);
+        specialTestIsland.addStudent(TeacherColor.BLUE);
+
+        testIsland.addStudent(TeacherColor.PINK);
+        testIsland.addStudent(TeacherColor.PINK);
+
+        camilla.giveMoney(2);
+        actionFase.activateCard(Characters.CRIER, camilla, specialTestIsland);
+
+        MotherNature.getMotherNature().setPosition(testIsland);
+
+        actionFase.setMovedMotherNature(true);
+        camilla.calcInfluence();
+        assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
+        assertEquals(camilla.getTowerColor(), specialTestIsland.getTowerColor().get());
+
+    }
+
 
 
     @Test
