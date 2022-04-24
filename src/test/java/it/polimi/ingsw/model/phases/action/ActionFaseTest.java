@@ -1,21 +1,15 @@
 package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.GameModelException;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.enums.TeacherColor;
-import it.polimi.ingsw.model.phase.PianificationFase;
 import it.polimi.ingsw.model.phase.action.states.CharacterCard;
-import it.polimi.ingsw.model.phase.action.states.Influence;
-import it.polimi.ingsw.model.phase.action.states.StudentMovement;
 import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.model.player.AssistantCard;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.phase.action.ActionFase;
 import it.polimi.ingsw.model.table.MotherNature;
 import it.polimi.ingsw.model.table.Island;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

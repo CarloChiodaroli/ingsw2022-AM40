@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * Models game round's pianification phase
  */
 
-public class PianificationFase {
+public class PlanningPhase {
 
     private AbstractMap<Player, AssistantCard> playedCards;
     private List<Player> playersInOrder;
@@ -28,7 +28,7 @@ public class PianificationFase {
      *
      * @param game the game that uses this pianification phase
      */
-    public PianificationFase(Game game) {
+    public PlanningPhase(Game game) {
         this.game = game;
         this.activated = false;
         if (game.isThreePlayerGame()) {

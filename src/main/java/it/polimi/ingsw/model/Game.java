@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.enums.TowerColor;
-import it.polimi.ingsw.model.phase.PianificationFase;
+import it.polimi.ingsw.model.phase.PlanningPhase;
 import it.polimi.ingsw.model.phase.action.ActionFase;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Bag;
@@ -23,7 +23,7 @@ public class Game {
     private boolean isInitial = true;
     private boolean isThreePlayerGame = false;
     private boolean isExpertVariant = false;
-    private PianificationFase pianificationFase;
+    private PlanningPhase planningPhase;
     private ActionFase actionFase;
     private int numOfRegisteredPlayers = 0;
     private boolean endgame = false;
@@ -66,18 +66,18 @@ public class Game {
         }
         players.forEach(this::initializePlayer);
         actionFase = new ActionFase(this);
-        pianificationFase = new PianificationFase(this);
+        planningPhase = new PlanningPhase(this);
         isInitial = false;
         startRound();
     }
 
     private void startRound() {
-        pianificationFase.activate();
+        planningPhase.activate();
     }
 
     public void updateState() {
-        if (pianificationFase.isInOrder()) {
-            actionFase.startPhase(pianificationFase.getActualPlayer());
+        if (planningPhase.isInOrder()) {
+            actionFase.startPhase(planningPhase.getActualPlayer());
         }
     }
 
@@ -125,8 +125,8 @@ public class Game {
      *
      * @return the pianification fase
      */
-    public PianificationFase getPianificationFase() {
-        return pianificationFase;
+    public PlanningPhase getPianificationFase() {
+        return planningPhase;
     }
 
     /**
@@ -246,12 +246,12 @@ public class Game {
 
     public void nextPlayer() {
         actionFase.reset();
-        pianificationFase.getActualPlayer().disable();
-        pianificationFase.nextPlayer();
-        if (pianificationFase.isInOrder()) {
-            actionFase.startPhase(pianificationFase.getActualPlayer());
+        planningPhase.getActualPlayer().disable();
+        planningPhase.nextPlayer();
+        if (planningPhase.isInOrder()) {
+            actionFase.startPhase(planningPhase.getActualPlayer());
         } else {
-            pianificationFase.activate();
+            planningPhase.activate();
         }
     }
 

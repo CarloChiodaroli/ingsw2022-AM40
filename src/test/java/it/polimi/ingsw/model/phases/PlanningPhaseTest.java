@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.phases;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.phase.PianificationFase;
+import it.polimi.ingsw.model.phase.PlanningPhase;
 import it.polimi.ingsw.model.player.AssistantCard;
 import it.polimi.ingsw.model.player.Player;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PianificationFaseTest {
+public class PlanningPhaseTest {
 
     @Test
     @DisplayName("Controls the correct creation and activation of the Pianification Phase")
@@ -24,7 +24,7 @@ public class PianificationFaseTest {
 
         game.gameStarter();
 
-        PianificationFase phase = game.getPianificationFase();
+        PlanningPhase phase = game.getPianificationFase();
 
         assertFalse(phase.isInOrder());
 
@@ -42,7 +42,7 @@ public class PianificationFaseTest {
 
         game.gameStarter();
 
-        PianificationFase phase = game.getPianificationFase();
+        PlanningPhase phase = game.getPianificationFase();
 
         assertFalse(phase.isInOrder());
         assertTrue(phase.isActivated());
@@ -82,7 +82,7 @@ public class PianificationFaseTest {
 
         game.gameStarter();
 
-        PianificationFase phase = game.getPianificationFase();
+        PlanningPhase phase = game.getPianificationFase();
 
         assertFalse(phase.isInOrder());
         assertTrue(phase.isActivated());
