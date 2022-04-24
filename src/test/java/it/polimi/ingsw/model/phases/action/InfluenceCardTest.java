@@ -1,12 +1,12 @@
 package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.phase.action.states.Influence;
+import it.polimi.ingsw.model.phase.action.states.StudentMovement;
 import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.model.phase.action.states.cards.InfluenceCard;
-import it.polimi.ingsw.model.phase.action.states.StudentMovement;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ public class InfluenceCardTest {
                 Optional.of(camilla.getRoomTable(firstMaxColor)));
         assertTrue(camilla.getRoomTable(firstMaxColor).hasTeacher());
 
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             camilla.getEntrance().addStudent(firstMaxColor);
             studentMovement.handle(firstMaxColor, Optional.of(camilla.getEntrance()), Optional.of(testIsland));
         }
@@ -68,7 +68,7 @@ public class InfluenceCardTest {
                 Optional.of(anja.getRoomTable(secondMaxColor)));
         assertTrue(anja.getRoomTable(secondMaxColor).hasTeacher());
 
-        for(int i = 0; i < 1; i++) {
+        for (int i = 0; i < 1; i++) {
             anja.getEntrance().addStudent(secondMaxColor);
             studentMovement.handle(secondMaxColor, Optional.of(anja.getEntrance()), Optional.of(testIsland));
         }
@@ -84,7 +84,7 @@ public class InfluenceCardTest {
 
         testIsland.setNoEntry(true);
 
-        for(int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) {
             anja.getEntrance().addStudent(secondMaxColor);
             studentMovement.handle(secondMaxColor, Optional.of(anja.getEntrance()),
                     Optional.of(testIsland));
@@ -95,7 +95,7 @@ public class InfluenceCardTest {
     }
 
     @Test
-    public void influenceCardSorcererTest(){
+    public void influenceCardSorcererTest() {
         Game game = new Game();
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
@@ -124,7 +124,7 @@ public class InfluenceCardTest {
                 Optional.of(camilla.getRoomTable(firstMaxColor)));
         assertTrue(camilla.getRoomTable(firstMaxColor).hasTeacher());
 
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             camilla.getEntrance().addStudent(firstMaxColor);
             studentMovement.handle(firstMaxColor, Optional.of(camilla.getEntrance()),
                     Optional.of(testIsland));
@@ -145,7 +145,7 @@ public class InfluenceCardTest {
         influence.handle(camilla, testIsland);
         assertTrue(testIsland.hasTowers());
         assertEquals(camilla.getTowerColor(), testIsland.getTowerColor().get());
-        for(int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) {
             anja.getEntrance().addStudent(secondMaxColor);
             studentMovement.handle(secondMaxColor, Optional.of(anja.getEntrance()),
                     Optional.of(testIsland));
@@ -193,15 +193,14 @@ public class InfluenceCardTest {
         studentMovement.handle(firstMaxColor, Optional.of(camilla.getEntrance()),
                 Optional.of(camilla.getRoomTable(firstMaxColor)));
         assertTrue(camilla.getRoomTable(firstMaxColor).hasTeacher());
-        if(testIsland.howManyStudents(firstMaxColor) == 0) {
-            for(int i = 0; i < 3; i++) {
+        if (testIsland.howManyStudents(firstMaxColor) == 0) {
+            for (int i = 0; i < 3; i++) {
                 camilla.getEntrance().addStudent(firstMaxColor);
                 studentMovement.handle(firstMaxColor, Optional.of(camilla.getEntrance()),
                         Optional.of(testIsland));
             }
-        }
-        else{
-            for(int i = 0; i < 2; i++) {
+        } else {
+            for (int i = 0; i < 2; i++) {
                 camilla.getEntrance().addStudent(firstMaxColor);
                 studentMovement.handle(firstMaxColor, Optional.of(camilla.getEntrance()),
                         Optional.of(testIsland));
@@ -225,20 +224,19 @@ public class InfluenceCardTest {
         assertTrue(testIsland.hasTowers());
         assertEquals(camilla.getTowerColor(), testIsland.getTowerColor().get());
 
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             anja.getEntrance().addStudent(secondMaxColor);
             studentMovement.handle(secondMaxColor, Optional.of(anja.getEntrance()),
                     Optional.of(anja.getRoomTable(secondMaxColor)));
         }
 
-        if(testIsland.howManyStudents(secondMaxColor) == 0) {
+        if (testIsland.howManyStudents(secondMaxColor) == 0) {
             for (int i = 0; i < 4; i++) {
                 anja.getEntrance().addStudent(secondMaxColor);
                 studentMovement.handle(secondMaxColor, Optional.of(anja.getEntrance()),
                         Optional.of(testIsland));
             }
-        }
-        else{
+        } else {
             for (int i = 0; i < 3; i++) {
                 anja.getEntrance().addStudent(secondMaxColor);
                 studentMovement.handle(secondMaxColor, Optional.of(anja.getEntrance()),
@@ -251,7 +249,7 @@ public class InfluenceCardTest {
         assertThrows(InvalidParameterException.class, () -> centaurCard.activator(influence, anja));
         anja.giveMoney(3);
 
-        centaurCard.activator(influence, anja, camilla.getTowerColor());
+        centaurCard.activator(influence, anja);
         centaurCard.handle(anja, testIsland);
         assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
     }
@@ -287,9 +285,9 @@ public class InfluenceCardTest {
 
         int qnt = 3;
 
-        if(testIsland.howManyStudents(firstMaxColor) > 0) qnt -= testIsland.howManyStudents(firstMaxColor);
+        if (testIsland.howManyStudents(firstMaxColor) > 0) qnt -= testIsland.howManyStudents(firstMaxColor);
 
-        for(int i = 0; i < qnt; i++) {
+        for (int i = 0; i < qnt; i++) {
             camilla.getEntrance().addStudent(firstMaxColor);
             studentMovement.handle(firstMaxColor, Optional.of(camilla.getEntrance()), Optional.of(testIsland));
         }
@@ -312,9 +310,9 @@ public class InfluenceCardTest {
 
         qnt = 3;
 
-        if(testIsland.howManyStudents(secondMaxColor) > 0) qnt -= testIsland.howManyStudents(secondMaxColor);
+        if (testIsland.howManyStudents(secondMaxColor) > 0) qnt -= testIsland.howManyStudents(secondMaxColor);
 
-        for(int i = 0; i < qnt; i++) {
+        for (int i = 0; i < qnt; i++) {
             anja.getEntrance().addStudent(secondMaxColor);
             studentMovement.handle(secondMaxColor, Optional.of(anja.getEntrance()), Optional.of(testIsland));
         }

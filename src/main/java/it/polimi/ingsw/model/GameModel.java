@@ -223,17 +223,6 @@ public class GameModel {
         }
     }
 
-    public void playCharacterCard(String playerName, Characters character, TowerColor color) {
-        Player player = getPlayer(playerName);
-        try {
-            player.playCharacterCard(character, color);
-        } catch (InvalidParameterException | NoSuchElementException e) {
-            throw new InvalidParameterException(e.getMessage());
-        } catch (IllegalStateException e) {
-            throw new GameModelException(e.getMessage());
-        }
-    }
-
     // Getter of the model state
 
     /**

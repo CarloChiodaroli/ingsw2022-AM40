@@ -196,6 +196,7 @@ public class GameModelTest {
         Island inpos = initialpos.get();
         int firstposition = game.getTable().getIslandList().indexOf(inpos);
         int finposition = firstposition + 1;
+        if(finposition == 12) finposition = 0;
 
         Player aldo = game.getPlayers().get(0);
         Player giovanni = game.getPlayers().get(1);

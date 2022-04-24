@@ -3,9 +3,8 @@ package it.polimi.ingsw.model.phase.action.states;
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.enums.TeacherColor;
-import it.polimi.ingsw.model.enums.TowerColor;
-import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.phase.action.ActionFaseState;
+import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
 
@@ -24,7 +23,6 @@ public abstract class CharacterCard extends ActionFaseState {
     private int usesLeft;
     private TeacherColor interestingColor;
     private Island interestingIsland;
-    private TowerColor interestingTower;
     private Player actualPlayer;
 
 
@@ -36,7 +34,6 @@ public abstract class CharacterCard extends ActionFaseState {
         this.usedOneTime = false;
         this.using = false;
         this.interestingColor = null;
-        this.interestingTower = null;
     }
 
     public boolean activator(Player player) {
@@ -65,15 +62,6 @@ public abstract class CharacterCard extends ActionFaseState {
         return false;
     }
 
-    public boolean activator(Player player, TowerColor color) {
-        if (getCharacterization("Tower") > 0) {
-            activator(player);
-            interestingTower = color;
-            return true;
-        }
-        return false;
-    }
-
     public void updateUse() {
         usesLeft--;
         if (usesLeft == 0) {
@@ -84,7 +72,6 @@ public abstract class CharacterCard extends ActionFaseState {
     private void reset() {
         interestingIsland = null;
         interestingColor = null;
-        interestingTower = null;
         using = false;
         actualPlayer = null;
     }
@@ -124,9 +111,6 @@ public abstract class CharacterCard extends ActionFaseState {
 
     public Optional<StudentsManager> getStudentContainer() {
         return Optional.empty();
-    }
-
-    public void activator(ActionFaseState decorated, Player player, TowerColor color) {
     }
 
     public void activator(ActionFaseState decorated, Player player, TeacherColor color) {

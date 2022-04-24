@@ -245,10 +245,11 @@ public class Player {
         game.getActionFase().activateCard(characters, this, island);
     }
 
+    /*@Deprecated
     public void playCharacterCard(Characters characters, TowerColor color) {
         controlEnable();
         game.getActionFase().activateCard(characters, this, color);
-    }
+    }*/
 
     public boolean pay(int howMuch) {
         if (money >= howMuch) {

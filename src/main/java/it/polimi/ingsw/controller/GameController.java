@@ -1,9 +1,8 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.enums.TeacherColor;
-import it.polimi.ingsw.model.enums.TowerColor;
 import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.enums.TeacherColor;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -91,7 +90,7 @@ public class GameController {
     }
 
     private void nextTurn() {
-        if (gameState.equals(GameState.PIANIFICATION)) {
+        if (gameState.equals(GameState.PLANNING)) {
             int i = playerNames.indexOf(actualPlayer) + 1;
             if (i >= playerNames.size()) {
                 gameState = GameState.next(gameState);
@@ -125,7 +124,7 @@ public class GameController {
     // Player Moves
 
     public int playAssistantCard(String playerName, int cardWeight) {
-        controlGameState(GameState.PIANIFICATION);
+        controlGameState(GameState.PLANNING);
         controlActualPlayer(playerName);
         model.playAssistantCard(playerName, cardWeight);
         nextTurn();
@@ -210,31 +209,25 @@ public class GameController {
         return model.getStudentsInEntrance(playerName);
     }
 
-    private void playCharacterCardPermit(String playerName){
+    private void playCharacterCardPermit(String playerName) {
         controlExpertVariant();
         controlGameState(GameState.ACTION);
         controlActualPlayer(playerName);
     }
 
-    public void playCharacterCard(String playerName, Characters character){
+    public void playCharacterCard(String playerName, Characters character) {
         playCharacterCardPermit(playerName);
         model.playCharacterCard(playerName, character);
     }
 
-    public void playCharacterCard(String playerName, Characters character, TeacherColor color){
+    public void playCharacterCard(String playerName, Characters character, TeacherColor color) {
         playCharacterCardPermit(playerName);
         model.playCharacterCard(playerName, character, color);
     }
 
-    public void playCharacterCard(String playerName, Characters character, String islandId){
+    public void playCharacterCard(String playerName, Characters character, String islandId) {
         playCharacterCardPermit(playerName);
         model.playCharacterCard(playerName, character, islandId);
-    }
-
-    @Deprecated
-    public void playCharacterCard(String playerName, Characters character, TowerColor color){
-        playCharacterCardPermit(playerName);
-        model.playCharacterCard(playerName, character, color);
     }
 
     public GameModel getModel() {
@@ -245,7 +238,7 @@ public class GameController {
         this.gameState = gameState;
     }
 
-    public GameState getGameState(){
+    public GameState getGameState() {
         return gameState;
     }
 }

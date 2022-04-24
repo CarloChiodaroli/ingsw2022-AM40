@@ -269,25 +269,6 @@ public class ActionPhase {
 
     /**
      * Method which activates the wanted character card between the enabled cards
-     * Activator which passes the needed tower color for the correct functioning of the card
-     *
-     * @param characters the character represented by the character card
-     * @param player     the player who makes the request
-     * @param color      the needed tower color
-     * @throws NoSuchElementException    thrown when the requested card is not available for this game
-     * @throws IllegalStateException     thrown when the actual context is not the right one to activate the card
-     * @throws InvalidParameterException thrown when the player has not enough money to pay the card activation fee
-     */
-    public void activateCard(Characters characters, Player player, TowerColor color)
-            throws NoSuchElementException, IllegalStateException, InvalidParameterException {
-        CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(tmp.getCharacter())));
-        tmp.activator(decorated, player, color);
-        actualCard = tmp;
-    }
-
-    /**
-     * Method which activates the wanted character card between the enabled cards
      *
      * @param characters the character represented by the character card
      * @throws NoSuchElementException thrown when the requested card is not available for this game

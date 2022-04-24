@@ -13,7 +13,6 @@ import it.polimi.ingsw.model.table.MotherNature;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.security.InvalidParameterException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -274,7 +273,7 @@ public class GameControllerTest {
         controller.setGameState(GameState.INITIAL);
         assertThrowsIllegalStateException(() -> controller.moveMotherNature(aldoName, 1));
 
-        controller.setGameState(GameState.PIANIFICATION);
+        controller.setGameState(GameState.PLANNING);
         assertThrowsIllegalStateException(() -> controller.moveMotherNature(aldoName, 2));
     }
 
@@ -340,7 +339,7 @@ public class GameControllerTest {
 
         controller.chooseCloud(giovanniName, "c_2");
 
-        assertEquals(GameState.PIANIFICATION, controller.getGameState());
+        assertEquals(GameState.PLANNING, controller.getGameState());
     }
 
     @Test
