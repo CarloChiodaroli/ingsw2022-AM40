@@ -1,26 +1,32 @@
-package it.polimi.ingsw.model.phase.action;
+package it.polimi.ingsw.model.phase.action.states;
 
-import it.polimi.ingsw.model.TeacherColor;
-import it.polimi.ingsw.model.TowerColor;
+import it.polimi.ingsw.model.StudentsManager;
+import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.model.enums.TowerColor;
+import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
 
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public abstract class CharacterCard extends ActionFaseState {
 
+    private final Map<String, Integer> characterization;
+    private final Characters characters;
     private final int price;
     private boolean usedOneTime;
-    private final Characters characters;
     private boolean using;
+    private int usesLeft;
     private TeacherColor interestingColor;
     private Island interestingIsland;
-    private final Map<String, Integer> characterization;
-    private int usesLeft;
-    private Player actualPlayer;
     private TowerColor interestingTower;
+    private Player actualPlayer;
+
 
     public CharacterCard(Map<String, Integer> args, Characters characters, ActionFase actionFase) {
         super(actionFase);
@@ -113,8 +119,24 @@ public abstract class CharacterCard extends ActionFaseState {
     }
 
     public boolean playerPays(Player player) throws InvalidParameterException {
-        if(player.pay(getPrice())){
+        if (player.pay(getPrice())) {
             return true;
         } else throw new InvalidParameterException("Player cannot pay for the card");
+    }
+
+    public Optional<StudentsManager> getStudentContainer() {
+        return Optional.empty();
+    }
+
+    public void activator(ActionFaseState decorated, Player player, TowerColor color) {
+    }
+
+    public void activator(ActionFaseState decorated, Player player, TeacherColor color) {
+    }
+
+    public void activator(ActionFaseState decorated, Player player) {
+    }
+
+    public void activator(ActionFaseState decorated, Player player, Island island) {
     }
 }

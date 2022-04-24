@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.school;
+package it.polimi.ingsw.model.player.school;
 
 import it.polimi.ingsw.model.StudentsManager;
 
@@ -9,6 +9,6 @@ public class SchoolEntrance extends StudentsManager {
      * @param studentCapacity
      */
     public SchoolEntrance(int studentCapacity) {
-        super(studentCapacity, studentCapacity);
+        super(studentCapacity);
     }
 }

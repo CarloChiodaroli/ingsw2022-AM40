@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.phases.action;
 
-import it.polimi.ingsw.model.phase.action.Characters;
+import it.polimi.ingsw.model.enums.CharacterCardType;
+import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,18 +21,18 @@ public class CharactersTest {
     @Test
     @DisplayName("Control if the right class of card is given")
     public void getClassOfCardTest() {
-        assertEquals("StudentMovement", Characters.getClassOfCard(Characters.HOST));
-        assertEquals("StudentMovement", Characters.getClassOfCard(Characters.FRIAR));
-        assertEquals("StudentMovement", Characters.getClassOfCard(Characters.QUEEN));
-        assertEquals("StudentMovement", Characters.getClassOfCard(Characters.THIEF));
-        assertEquals("StudentMovement", Characters.getClassOfCard(Characters.JESTER));
-        assertEquals("StudentMovement", Characters.getClassOfCard(Characters.MINSTREL));
-        assertEquals("MotherNature", Characters.getClassOfCard(Characters.MESSENGER));
-        assertEquals("Influence", Characters.getClassOfCard(Characters.SORCERESS));
-        assertEquals("Influence", Characters.getClassOfCard(Characters.SORCERER));
-        assertEquals("Influence", Characters.getClassOfCard(Characters.CENTAUR));
-        assertEquals("Influence", Characters.getClassOfCard(Characters.KNIGHT));
-        assertEquals("Influence", Characters.getClassOfCard(Characters.CRIER));
+        assertEquals(CharacterCardType.STUDENT, CharacterCardFabric.getClassOfCard(Characters.HOST));
+        assertEquals(CharacterCardType.STUDENT, CharacterCardFabric.getClassOfCard(Characters.FRIAR));
+        assertEquals(CharacterCardType.STUDENT, CharacterCardFabric.getClassOfCard(Characters.QUEEN));
+        assertEquals(CharacterCardType.STUDENT, CharacterCardFabric.getClassOfCard(Characters.THIEF));
+        assertEquals(CharacterCardType.STUDENT, CharacterCardFabric.getClassOfCard(Characters.JESTER));
+        assertEquals(CharacterCardType.STUDENT, CharacterCardFabric.getClassOfCard(Characters.MINSTREL));
+        assertEquals(CharacterCardType.MOTHER, CharacterCardFabric.getClassOfCard(Characters.MESSENGER));
+        assertEquals(CharacterCardType.INFLUENCE, CharacterCardFabric.getClassOfCard(Characters.SORCERESS));
+        assertEquals(CharacterCardType.INFLUENCE, CharacterCardFabric.getClassOfCard(Characters.SORCERER));
+        assertEquals(CharacterCardType.INFLUENCE, CharacterCardFabric.getClassOfCard(Characters.CENTAUR));
+        assertEquals(CharacterCardType.INFLUENCE, CharacterCardFabric.getClassOfCard(Characters.KNIGHT));
+        assertEquals(CharacterCardType.INFLUENCE, CharacterCardFabric.getClassOfCard(Characters.CRIER));
     }
 
     /**
@@ -46,7 +48,7 @@ public class CharactersTest {
         @Test
         @DisplayName("Friar")
         public void characterizationFriarTest() {
-            Map<String, Integer> characterization = Characters.getCharacterization(Characters.FRIAR);
+            Map<String, Integer> characterization = CharacterCardFabric.getCharacterization(Characters.FRIAR);
 
             assertEquals(1, characterization.get("Price"));
             assertEquals(4, characterization.get("Memory"));
@@ -69,7 +71,7 @@ public class CharactersTest {
         @Test
         @DisplayName("Host")
         public void characterizationHostTest() {
-            Map<String, Integer> characterization = Characters.getCharacterization(Characters.HOST);
+            Map<String, Integer> characterization = CharacterCardFabric.getCharacterization(Characters.HOST);
 
             assertEquals(2, characterization.get("Price"));
             assertEquals(0, characterization.get("Memory"));
@@ -92,11 +94,11 @@ public class CharactersTest {
         @Test
         @DisplayName("Crier")
         public void characterizationCrierTest() {
-            Map<String, Integer> characterization = Characters.getCharacterization(Characters.CRIER);
+            Map<String, Integer> characterization = CharacterCardFabric.getCharacterization(Characters.CRIER);
 
             assertEquals(3, characterization.get("Price"));
             assertEquals(0, characterization.get("Memory"));
-            assertEquals(0, characterization.get("Usages"));
+            assertEquals(1, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
@@ -115,11 +117,11 @@ public class CharactersTest {
         @Test
         @DisplayName("Messenger")
         public void characterizationMessengerTest() {
-            Map<String, Integer> characterization = Characters.getCharacterization(Characters.MESSENGER);
+            Map<String, Integer> characterization = CharacterCardFabric.getCharacterization(Characters.MESSENGER);
 
             assertEquals(1, characterization.get("Price"));
             assertEquals(0, characterization.get("Memory"));
-            assertEquals(0, characterization.get("Usages"));
+            assertEquals(1, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
@@ -138,11 +140,11 @@ public class CharactersTest {
         @Test
         @DisplayName("Sorceress")
         public void characterizationSorceressTest() {
-            Map<String, Integer> characterization = Characters.getCharacterization(Characters.SORCERESS);
+            Map<String, Integer> characterization = CharacterCardFabric.getCharacterization(Characters.SORCERESS);
 
             assertEquals(2, characterization.get("Price"));
             assertEquals(4, characterization.get("Memory"));
-            assertEquals(0, characterization.get("Usages"));
+            assertEquals(1, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
@@ -161,11 +163,11 @@ public class CharactersTest {
         @Test
         @DisplayName("Centaur")
         public void characterizationCentaurTest() {
-            Map<String, Integer> characterization = Characters.getCharacterization(Characters.CENTAUR);
+            Map<String, Integer> characterization = CharacterCardFabric.getCharacterization(Characters.CENTAUR);
 
             assertEquals(3, characterization.get("Price"));
             assertEquals(0, characterization.get("Memory"));
-            assertEquals(0, characterization.get("Usages"));
+            assertEquals(1, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
@@ -184,7 +186,7 @@ public class CharactersTest {
         @Test
         @DisplayName("Jester")
         public void characterizationJesterTest() {
-            Map<String, Integer> characterization = Characters.getCharacterization(Characters.JESTER);
+            Map<String, Integer> characterization = CharacterCardFabric.getCharacterization(Characters.JESTER);
 
             assertEquals(1, characterization.get("Price"));
             assertEquals(6, characterization.get("Memory"));
@@ -207,11 +209,11 @@ public class CharactersTest {
         @Test
         @DisplayName("Knight")
         public void characterizationKnightTest() {
-            Map<String, Integer> characterization = Characters.getCharacterization(Characters.KNIGHT);
+            Map<String, Integer> characterization = CharacterCardFabric.getCharacterization(Characters.KNIGHT);
 
             assertEquals(2, characterization.get("Price"));
             assertEquals(0, characterization.get("Memory"));
-            assertEquals(0, characterization.get("Usages"));
+            assertEquals(1, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
@@ -230,11 +232,11 @@ public class CharactersTest {
         @Test
         @DisplayName("Sorcerer")
         public void characterizationSorcererTest() {
-            Map<String, Integer> characterization = Characters.getCharacterization(Characters.SORCERER);
+            Map<String, Integer> characterization = CharacterCardFabric.getCharacterization(Characters.SORCERER);
 
             assertEquals(3, characterization.get("Price"));
             assertEquals(0, characterization.get("Memory"));
-            assertEquals(0, characterization.get("Usages"));
+            assertEquals(1, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(0, characterization.get("EffectAllPlayers"));
@@ -253,7 +255,7 @@ public class CharactersTest {
         @Test
         @DisplayName("Minstrel")
         public void characterizationMinstrelTest() {
-            Map<String, Integer> characterization = Characters.getCharacterization(Characters.MINSTREL);
+            Map<String, Integer> characterization = CharacterCardFabric.getCharacterization(Characters.MINSTREL);
 
             assertEquals(1, characterization.get("Price"));
             assertEquals(0, characterization.get("Memory"));
@@ -276,7 +278,7 @@ public class CharactersTest {
         @Test
         @DisplayName("Queen")
         public void characterizationQueenTest() {
-            Map<String, Integer> characterization = Characters.getCharacterization(Characters.QUEEN);
+            Map<String, Integer> characterization = CharacterCardFabric.getCharacterization(Characters.QUEEN);
 
             assertEquals(2, characterization.get("Price"));
             assertEquals(4, characterization.get("Memory"));
@@ -299,11 +301,11 @@ public class CharactersTest {
         @Test
         @DisplayName("Thief")
         public void characterizationThiefTest() {
-            Map<String, Integer> characterization = Characters.getCharacterization(Characters.THIEF);
+            Map<String, Integer> characterization = CharacterCardFabric.getCharacterization(Characters.THIEF);
 
             assertEquals(3, characterization.get("Price"));
             assertEquals(0, characterization.get("Memory"));
-            assertEquals(0, characterization.get("Usages"));
+            assertEquals(1, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(1, characterization.get("EffectAllPlayers"));

@@ -1,6 +1,6 @@
-package it.polimi.ingsw.model.school;
+package it.polimi.ingsw.model.player.school;
 
-import it.polimi.ingsw.model.TowerColor;
+import it.polimi.ingsw.model.enums.TowerColor;
 import it.polimi.ingsw.model.StudentsManager;
 
 public class SchoolDashboard {

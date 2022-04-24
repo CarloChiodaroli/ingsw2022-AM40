@@ -1,7 +1,13 @@
-package it.polimi.ingsw.model.phase.action;
+package it.polimi.ingsw.model.phase.action.states.cards;
 
 import it.polimi.ingsw.model.StudentsManager;
-import it.polimi.ingsw.model.TeacherColor;
+import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.phase.action.ActionFaseState;
+import it.polimi.ingsw.model.phase.action.StudentsContainer;
+import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.phase.action.states.CharacterCard;
+import it.polimi.ingsw.model.phase.action.states.StudentMovement;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Bag;
 import it.polimi.ingsw.model.table.Island;
@@ -68,16 +74,16 @@ public class StudentMovementCard extends CharacterCard {
         }
     }
 
-    public boolean activator(StudentMovement decorated, Player player) throws InvalidParameterException {
-        if (!playerPays(player)) return false;
-        this.decorated = decorated;
-        return super.activator(player);
+    public void activator(ActionFaseState decorated, Player player) throws InvalidParameterException {
+        playerPays(player);
+        this.decorated = (StudentMovement) decorated;
+        super.activator(player);
     }
 
-    public boolean activator(StudentMovement decorated, Player player, TeacherColor color) throws InvalidParameterException {
+    public void activator(ActionFaseState decorated, Player player, TeacherColor color) throws InvalidParameterException {
         playerPays(player);
-        this.decorated = decorated;
-        if (!super.activator(player, color)) return false;
+        this.decorated = (StudentMovement) decorated;
+        super.activator(player, color);
         if (this.getCharacterization("Usages") == 0) {
             List<Player> players = super.getActionFase().getGame().getPlayers();
             for (Player player1 : players) {
@@ -85,10 +91,6 @@ public class StudentMovementCard extends CharacterCard {
                     player1.getRoomTable(color).removeStudent(color);
             }
         }
-        return true;
-    }
-
-    public void activator(StudentMovement decorated, Player player, Island island) throws InvalidParameterException {
     }
 
     private void controlTeachers(Player player) {
@@ -109,5 +111,9 @@ public class StudentMovementCard extends CharacterCard {
 
     public StudentsManager getStudents() {
         return students;
+    }
+
+    public Optional<StudentsManager> getStudentContainer(){
+        return Optional.ofNullable(students);
     }
 }

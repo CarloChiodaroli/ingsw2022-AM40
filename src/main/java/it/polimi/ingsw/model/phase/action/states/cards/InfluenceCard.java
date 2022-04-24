@@ -1,7 +1,12 @@
-package it.polimi.ingsw.model.phase.action;
+package it.polimi.ingsw.model.phase.action.states.cards;
 
-import it.polimi.ingsw.model.TeacherColor;
-import it.polimi.ingsw.model.TowerColor;
+import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.model.enums.TowerColor;
+import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.phase.action.ActionFaseState;
+import it.polimi.ingsw.model.phase.action.states.CharacterCard;
+import it.polimi.ingsw.model.phase.action.states.Influence;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
 
@@ -24,7 +29,7 @@ public class InfluenceCard extends CharacterCard {
 
     @Override
     public void handle(Player player, Island island) {
-        if (super.getCharacterization("Island") > 1) {
+        if (super.getCharacterization("Island") > 0 && super.getCharacterization("NoEntrySetter") == 0) {
             decoratedCaller(player, super.getInterestingIsland());
         }
         if (super.getCharacterization("NoEntrySetter") == 0) decoratedCaller(player, island);
@@ -53,22 +58,22 @@ public class InfluenceCard extends CharacterCard {
         decorated.influenceSetter(players, island, decorated.winnerFinder(players, influences));
     }
 
-    public void activator(Influence decorated, Player player) throws InvalidParameterException {
+    public void activator(ActionFaseState decorated, Player player) throws InvalidParameterException {
         playerPays(player);
         super.activator(player);
-        this.decorated = decorated;
+        this.decorated = (Influence) decorated;
     }
 
-    public void activator(Influence decorated, Player player, TeacherColor color) throws InvalidParameterException {
+    public void activator(ActionFaseState decorated, Player player, TeacherColor color) throws InvalidParameterException {
         playerPays(player);
         super.activator(player, color);
-        this.decorated = decorated;
+        this.decorated = (Influence) decorated;
     }
 
-    public void activator(Influence decorated, Player player, Island island) throws InvalidParameterException {
+    public void activator(ActionFaseState decorated, Player player, Island island) throws InvalidParameterException {
         playerPays(player);
         super.activator(player, island);
-        this.decorated = decorated;
+        this.decorated = (Influence) decorated;
         if (super.getCharacterization("Memory") > 0) {
             if (!island.hasNoEntryTile()) {
                 island.setNoEntry(true);
@@ -77,7 +82,7 @@ public class InfluenceCard extends CharacterCard {
         }
     }
 
-    public void activator(Influence decorated, Player player, TowerColor color) {
-        if (super.activator(player, color)) this.decorated = decorated;
+    public void activator(ActionFaseState decorated, Player player, TowerColor color) {
+        if (super.activator(player, color)) this.decorated = (Influence) decorated;;
     }
 }

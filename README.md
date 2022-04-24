@@ -5,27 +5,34 @@
 
 Implementation of Eriantys board game
 
+## Actual test coverage
+| __Package__ | __Class %__ | __Method %__ | __Line %__ |
+|:-----------:|:-----------:|:------------:|:----------:|
+|    model    |     100     |      91      |     88     |
+| controller  |     100     |      96      |     94     |
+|  network    |     0       |      0       |     0      |
+| _All test_  |     85      |      86      |     82     |
+
+
 ## Project progress:
 
-| __Phase__ | __Status__ |
-| :---:    | :---:      |
-| Game model's initial UML class diagram | Done |
-| Model Implementation | Almost Completed |
-| *Model FA implementation and testing* | Done |
-| Model Testing | 80% |
-| MCV server side implementation | Making (Controller Branch) |
-| *MCV FA implementation and testing* | - |
-| Server side testing | 80% (only model) |
-| Communication protocol design | Making |
-| Communication protocol Implementation | - |
-| CLI client Implementation and testing | - |
-| GUI client Implementation | - |
-| GUI client Testing | - |
-| Application Testing for the 31st of may| - |
+|                __Phase__                 |    __Status__    |
+|:----------------------------------------:|:----------------:|
+|  Game model's initial UML class diagram  |       Done       |
+|           Model Implementation           | Almost Completed |
+|  *Model FA implementation and testing*   |       Done       |
+|        Controller implementation         |      Making      |
+|   *MCV FA implementation and testing*    |        -         |
+|      Communication protocol design       |        Making         |
+|  Communication protocol Implementation   |        -         |
+|  CLI client Implementation and testing   |        -         |
+|        GUI client Implementation         |        -         |
+|            GUI client Testing            |        -         |
+| Application Testing for the 31st of may  |        -         |
 |||
-| Final Application Testing| - |
-| Delivery of "'deliveries' folder things" | - |
-| __Final delivery__ on 25th of june | - |
+|        Final Application Testing         |        -         |
+| Delivery of "'deliveries' folder things" |        -         |
+|    __Final delivery__ on 25th of june    |        -         |
 
 *Tecnical Issues buffer time: 6 days*
 

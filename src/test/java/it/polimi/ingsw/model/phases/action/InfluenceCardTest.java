@@ -1,17 +1,16 @@
 package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.TeacherColor;
-import it.polimi.ingsw.model.phase.action.Characters;
-import it.polimi.ingsw.model.phase.action.Influence;
-import it.polimi.ingsw.model.phase.action.InfluenceCard;
-import it.polimi.ingsw.model.phase.action.StudentMovement;
+import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.phase.action.states.Influence;
+import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
+import it.polimi.ingsw.model.phase.action.states.cards.InfluenceCard;
+import it.polimi.ingsw.model.phase.action.states.StudentMovement;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.*;
 import java.security.InvalidParameterException;
 import java.util.Optional;
 
@@ -28,7 +27,7 @@ public class InfluenceCardTest {
         StudentMovement studentMovement = new StudentMovement(game.getActionFase());
         Characters sorceress = Characters.SORCERESS;
         InfluenceCard sorceressCard = new InfluenceCard(sorceress, game.getActionFase(),
-                Characters.getCharacterization(sorceress));
+                CharacterCardFabric.getCharacterization(sorceress));
         Influence influence = new Influence(game.getActionFase());
 
         Player camilla = game.getPlayers().get(0);
@@ -104,7 +103,7 @@ public class InfluenceCardTest {
         StudentMovement studentMovement = new StudentMovement(game.getActionFase());
         Characters sorcerer = Characters.SORCERER;
         InfluenceCard sorcererCard = new InfluenceCard(sorcerer, game.getActionFase(),
-                Characters.getCharacterization(sorcerer));
+                CharacterCardFabric.getCharacterization(sorcerer));
         Influence influence = new Influence(game.getActionFase());
 
         Player camilla = game.getPlayers().get(0);
@@ -174,7 +173,7 @@ public class InfluenceCardTest {
         StudentMovement studentMovement = new StudentMovement(game.getActionFase());
         Characters centaur = Characters.CENTAUR;
         InfluenceCard centaurCard = new InfluenceCard(centaur, game.getActionFase(),
-                Characters.getCharacterization(centaur));
+                CharacterCardFabric.getCharacterization(centaur));
         Influence influence = new Influence(game.getActionFase());
 
         Player camilla = game.getPlayers().get(0);
@@ -266,7 +265,7 @@ public class InfluenceCardTest {
         StudentMovement studentMovement = new StudentMovement(game.getActionFase());
         Characters knight = Characters.KNIGHT;
         InfluenceCard knightCard = new InfluenceCard(knight, game.getActionFase(),
-                Characters.getCharacterization(knight));
+                CharacterCardFabric.getCharacterization(knight));
         Influence influence = new Influence(game.getActionFase());
 
         Player camilla = game.getPlayers().get(0);
@@ -341,7 +340,7 @@ public class InfluenceCardTest {
         StudentMovement studentMovement = new StudentMovement(game.getActionFase());
         Characters crier = Characters.CRIER;
         InfluenceCard crierCard = new InfluenceCard(crier, game.getActionFase(),
-                Characters.getCharacterization(crier));
+                CharacterCardFabric.getCharacterization(crier));
         Influence influence = new Influence(game.getActionFase());
 
         Player camilla = game.getPlayers().get(0);

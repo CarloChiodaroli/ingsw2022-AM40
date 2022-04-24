@@ -1,11 +1,9 @@
 package it.polimi.ingsw.model.table;
 
 import it.polimi.ingsw.model.StudentsManager;
-import it.polimi.ingsw.model.TeacherColor;
+import it.polimi.ingsw.model.enums.TeacherColor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * CLASS TABLE (Idea -> It is a physic table)
@@ -13,7 +11,7 @@ import java.util.Optional;
  */
 public class Table {
 
-    private List<Island> IslandList;
+    private List<Island> islandList;
     private List<Cloud> CloudList;
     public static Bag bag;
     private int coinsleft;
@@ -26,11 +24,11 @@ public class Table {
         int randomFirstIsland = (int) (Math.random() * 12);
         bag = new Bag(130, 26);
         coinsleft = 20;
-        IslandList = new ArrayList<Island>();
+        islandList = new ArrayList<Island>();
         CloudList = new ArrayList<Cloud>();
         buildsIsland(12);
         FillCInitialIslandWithStudent(randomFirstIsland);
-        MotherNature.getMotherNature().setPosition(IslandList.get(randomFirstIsland));
+        MotherNature.getMotherNature().setPosition(islandList.get(randomFirstIsland));
         buildsCloud(numberofplayer);
     }
 
@@ -51,10 +49,14 @@ public class Table {
     }
 
     public void FillCInitialIslandWithStudent(int randomFirstIsland) {
-        int idisland;
         int emptyIsland1;
         int emptyIsland2;
         ArrayList<Integer> array = new ArrayList<>();
+
+        Map<TeacherColor, Integer> assignsLeft = new HashMap<>();
+        for(TeacherColor color: TeacherColor.values()){
+            assignsLeft.put(color, 2);
+        }
 
         if (randomFirstIsland >= 6) {
             emptyIsland1 = randomFirstIsland - 6;
@@ -64,20 +66,16 @@ public class Table {
             emptyIsland2 = randomFirstIsland + 6;
         }
 
-        for (int i = 0; i < 12; i++)
-            array.add(i);
-
-        for (TeacherColor tc : TeacherColor.values()) {
-            for (int i = 0; i < 2; i++) {
-                //Extract correct number
-                idisland = (int) (Math.random() * 12);
-                while (!array.contains(idisland) || idisland == emptyIsland1 || idisland == emptyIsland2) {
-                    idisland = (int) (Math.random() * 12);
-                }
-
-                IslandList.get(idisland).addStudent(tc);
-                bag.removeStudent(tc);
-                array.remove(new Integer(idisland));
+        for(int i = 0; i<12; i++){
+            if(i != emptyIsland1 && i != emptyIsland2){
+                int indexColor;
+                TeacherColor actualColor;
+                do {
+                    indexColor = (int) (Math.random() * 5);
+                    actualColor = TeacherColor.values()[indexColor];
+                } while(assignsLeft.get(actualColor).equals(0));
+                assignsLeft.compute(actualColor, (k, val) -> val - 1);
+                if(bag.removeStudent(actualColor)) islandList.get(i).addStudent(actualColor);
             }
         }
     }
@@ -87,7 +85,7 @@ public class Table {
      */
     private void buildsIsland(int howManyIslands) {
         for (int i = 0; i < howManyIslands; i++) {
-            IslandList.add(new Island("i_" + (i + 1)));
+            islandList.add(new Island("i_" + (i + 1)));
         }
     }
 
@@ -123,10 +121,10 @@ public class Table {
      */
     public void mergeIsland(Island island1, Island island2) {
         Island IslandToAdd = new Island(island1, island2);
-        int FirstPositionOfIslandToAdd = IslandList.indexOf(island1);
-        IslandList.add(FirstPositionOfIslandToAdd, IslandToAdd);
-        IslandList.remove(island1);
-        IslandList.remove(island2);
+        int FirstPositionOfIslandToAdd = islandList.indexOf(island1);
+        islandList.add(FirstPositionOfIslandToAdd, IslandToAdd);
+        islandList.remove(island1);
+        islandList.remove(island2);
         //for (int i = FirstPositionOfIslandToAdd + 1; i < IslandList.size() - 1; i++)
         //    IslandList.add(i, IslandList.get(i + 1));
         //IslandList.remove(IslandList.size() - 1);
@@ -136,7 +134,7 @@ public class Table {
      * @return List of island
      */
     public List<Island> getIslandList() {
-        return IslandList;
+        return islandList;
     }
 
     /**
@@ -150,24 +148,20 @@ public class Table {
      * @param id Cloud's Id
      * @return Cloud you are looking for
      */
-    public Optional<StudentsManager> getCloudById(String id) {
-        Optional<StudentsManager> result = CloudList.stream()
+    public Optional<Cloud> getCloudById(String id) {
+        return CloudList.stream()
                 .filter(cloud -> cloud.getId().equals(id))
-                .findAny()
-                .map(manager -> (StudentsManager) manager);
-        return result;
+                .findAny();
     }
 
     /**
      * @param id Island's Id
      * @return Island you are looking for
      */
-    public Optional<StudentsManager> getIslandById(String id) {
-        Optional<StudentsManager> result = IslandList.stream()
-                .filter(island -> island.getId() == id)
-                .findAny()
-                .map(manager -> (StudentsManager) manager);
-        return result;
+    public Optional<Island> getIslandById(String id) {
+        return islandList.stream()
+                .filter(island -> island.getId().equals(id))
+                .findAny();
     }
 
 

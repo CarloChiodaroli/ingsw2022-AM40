@@ -2,8 +2,12 @@ package it.polimi.ingsw.model.phase.action;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.StudentsManager;
-import it.polimi.ingsw.model.TeacherColor;
-import it.polimi.ingsw.model.TowerColor;
+import it.polimi.ingsw.model.enums.CharacterCardType;
+import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.model.enums.TowerColor;
+import it.polimi.ingsw.model.phase.action.states.*;
+import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
 import it.polimi.ingsw.model.table.MotherNature;
@@ -22,6 +26,7 @@ public class ActionFase {
     // Variables
     private final Game game;
     private final List<ActionFaseState> states;
+    private boolean activated;
 
     // Non expert Status variables
     private int possibleStudentMovements;
@@ -43,11 +48,11 @@ public class ActionFase {
     public ActionFase(Game game) {
         this.game = game;
         this.expertVariant = game.isExpertVariant();
-
+        this.activated = false;
         this.states = new ArrayList<>();
-        this.states.add(new StudentMovement(this));
-        this.states.add(new MotherNatureState(this));
-        this.states.add(new Influence(this));
+        this.states.add(CharacterCardType.getEquivalentInt(CharacterCardType.STUDENT), new StudentMovement(this));
+        this.states.add(CharacterCardType.getEquivalentInt(CharacterCardType.MOTHER), new MotherNatureState(this));
+        this.states.add(CharacterCardType.getEquivalentInt(CharacterCardType.INFLUENCE), new Influence(this));
         this.states.add(new MergeIsland(this));
         this.states.add(new Finalize(this));
         if (expertVariant) {
@@ -55,6 +60,10 @@ public class ActionFase {
         } else {
             this.characterCards = null;
         }
+    }
+
+    public List<CharacterCard> getCharacterCards() {
+        return characterCards;
     }
 
     /**
@@ -65,9 +74,11 @@ public class ActionFase {
      * @param player the player who wants to start his action phase
      */
     public void startPhase(Player player) {
-        if (!chosenCloud) return;
+        if (activated) return;
         if (!game.getPianificationFase().getActualPlayer().equals(player)) return;
+        player.enable();
         // reset of action phase state
+        activated = true;
         possibleStudentMovements = 3;
         movedMotherNature = false;
         calculatedInfluence = false;
@@ -91,9 +102,13 @@ public class ActionFase {
      */
     public void request(TeacherColor teacherColor, Optional<StudentsManager> from, Optional<StudentsManager> to)
             throws IllegalStateException {
+        isStateActivated();
         if (possibleStudentMovements <= 0 || calculatedInfluence)
             throw new IllegalStateException("Cannot move any students");
-        if (expertVariant && actualCard.isInUse()) {
+        if (expertVariant &&
+                actualCard != null &&
+                Characters.getClassOfCard(actualCard.getCharacter()).equals(CharacterCardType.STUDENT) &&
+                actualCard.isInUse()) {
             actualCard.handle(teacherColor, from, to);
         } else {
             states.get(0).handle(teacherColor, from, to);
@@ -109,14 +124,22 @@ public class ActionFase {
      * @throws IllegalStateException is thrown when it's not the right moment to move mother nature
      */
     public void request(Player player, int motherNatureHops) throws IllegalStateException {
+        isStateActivated();
         if (movedMotherNature)
             throw new IllegalStateException("Mother nature has been already moved once");
         int maxHops = game.getPianificationFase().getMotherNatureHops(player);
-        if (motherNatureHops > maxHops || motherNatureHops <= 0) return;
         if (!expertVariant) {
             states.get(1).handle(player, motherNatureHops, maxHops);
-            movedMotherNature = true;
+        } else {
+            if (actualCard != null &&
+                    actualCard.isInUse() &&
+                    CharacterCardFabric.getClassOfCard(actualCard.getCharacter()).equals(CharacterCardType.MOTHER)) {
+                actualCard.handle(player, motherNatureHops, maxHops);
+            } else {
+                states.get(1).handle(player, motherNatureHops, maxHops);
+            }
         }
+        movedMotherNature = true;
     }
 
     /**
@@ -126,7 +149,8 @@ public class ActionFase {
      * @param id     the id of the cloud, or "MotherNature" to calc the influence
      * @throws IllegalStateException is thrown when it's not the right moment to calc the influence nor to choose a cloud
      */
-    public void request(Player player, String id) throws IllegalStateException {
+    public void request(Player player, String id) throws IllegalStateException, NoSuchElementException {
+        isStateActivated();
         if (id.equals("MotherNature")) {
             if (!movedMotherNature || calculatedInfluence)
                 throw new IllegalStateException("Cannot calculate Influence now");
@@ -134,15 +158,16 @@ public class ActionFase {
                 throw new RuntimeException("Mother Nature does not know where she is");
             if (actualCard != null &&
                     actualCard.isInUse() &&
-                    Characters.getClassOfCard(actualCard.getCharacter()).equals("Influence"))
+                    CharacterCardFabric.getClassOfCard(actualCard.getCharacter()).equals(CharacterCardType.INFLUENCE))
                 actualCard.handle(player, MotherNature.getMotherNature().getPosition().get());
             else states.get(2).handle(player, MotherNature.getMotherNature().getPosition().get());
             calculatedInfluence = true;
         } else {
             if (!calculatedInfluence || chosenCloud)
                 throw new IllegalStateException("Cannot choose clouds now");
-            game.getTable().getCloudById(id).ifPresent(cloud -> states.get(4).handle(player, cloud));
-            chosenCloud = true;
+            states.get(4).handle(player, game.getTable().getCloudById(id)
+                    .orElseThrow(() -> new NoSuchElementException("Cloud not found")));
+            game.nextPlayer();
         }
     }
 
@@ -152,6 +177,7 @@ public class ActionFase {
      * @throws IllegalStateException is thrown when it's not the right moment to merge the islands
      */
     public void request() throws IllegalStateException {
+        isStateActivated();
         if (mergedIslands || !calculatedInfluence)
             throw new IllegalStateException("Cannot merge Islands now");
         states.get(3).handle();
@@ -173,6 +199,7 @@ public class ActionFase {
      * @throws IllegalStateException is thrown when it's not the right moment nor the right game mode to use this kind of student movement
      */
     public void request(Player player, TeacherColor studentA, TeacherColor studentB) throws IllegalStateException {
+        isStateActivated();
         if (!expertVariant) throw new IllegalStateException("Game is not in expert variant");
         if (actualCard == null) throw new IllegalStateException("No card has been activated");
         if (actualCard.isInUse()) {
@@ -196,8 +223,10 @@ public class ActionFase {
      */
     public void activateCard(Characters characters, Player player)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
-        actualCard = coreActivateCard(characters);
-        actualCard.activator(player);
+        CharacterCard tmp = coreActivateCard(characters);
+        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(tmp.getCharacter())));
+        tmp.activator(decorated, player);
+        actualCard = tmp;
     }
 
     /**
@@ -213,8 +242,10 @@ public class ActionFase {
      */
     public void activateCard(Characters characters, Player player, TeacherColor color)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
-        actualCard = coreActivateCard(characters);
-        actualCard.activator(player, color);
+        CharacterCard tmp = coreActivateCard(characters);
+        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(tmp.getCharacter())));
+        tmp.activator(decorated, player, color);
+        actualCard = tmp;
     }
 
     /**
@@ -230,8 +261,10 @@ public class ActionFase {
      */
     public void activateCard(Characters characters, Player player, Island island)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
-        actualCard = coreActivateCard(characters);
-        actualCard.activator(player, island);
+        CharacterCard tmp = coreActivateCard(characters);
+        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(tmp.getCharacter())));
+        tmp.activator(decorated, player, island);
+        actualCard = tmp;
     }
 
     /**
@@ -247,29 +280,28 @@ public class ActionFase {
      */
     public void activateCard(Characters characters, Player player, TowerColor color)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
-        actualCard = coreActivateCard(characters);
-        actualCard.activator(player, color);
+        CharacterCard tmp = coreActivateCard(characters);
+        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(tmp.getCharacter())));
+        tmp.activator(decorated, player, color);
+        actualCard = tmp;
     }
 
     /**
      * Method which activates the wanted character card between the enabled cards
      *
      * @param characters the character represented by the character card
-     * @throws NoSuchElementException    thrown when the requested card is not available for this game
-     * @throws IllegalStateException     thrown when the actual context is not the right one to activate the card
-     * @throws InvalidParameterException thrown when the player has not enough money to pay the card activation fee
+     * @throws NoSuchElementException thrown when the requested card is not available for this game
+     * @throws IllegalStateException  thrown when the actual context is not the right one to activate the card
      */
     private CharacterCard coreActivateCard(Characters characters)
             throws NoSuchElementException, IllegalStateException {
+        isStateActivated();
         isCardPlayable(characters);
-        try {
-            return characterCards.stream()
-                    .filter(card -> card.getCharacter().equals(characters))
-                    .findAny()
-                    .orElseThrow();
-        } catch (NoSuchElementException e) {
-            throw new NoSuchElementException("Requested card is not playable");
-        }
+        return characterCards.stream()
+                .filter(card -> card.getCharacter().equals(characters))
+                .findAny()
+                .orElseThrow(() -> new NoSuchElementException("Requested card is not playable"));
+
     }
 
     /**
@@ -282,16 +314,16 @@ public class ActionFase {
             throw new IllegalStateException("This is not an expert variant game");
         if (actualCard != null)
             throw new IllegalStateException("Character Card already chosen");
-        switch (Characters.getClassOfCard(character)) {
-            case "StudentMovement" -> {
+        switch (CharacterCardFabric.getClassOfCard(character)) {
+            case STUDENT -> {
                 if (possibleStudentMovements < 0 || movedMotherNature)
                     throw new IllegalStateException("The round has progressed too much to play this card");
             }
-            case "MotherNature" -> {
+            case MOTHER -> {
                 if (movedMotherNature)
                     throw new IllegalStateException("The round has progressed too much to play this card");
             }
-            case "Influence" -> {
+            case INFLUENCE -> {
                 if (calculatedInfluence)
                     throw new IllegalStateException("The round has progressed too much to play this card");
             }
@@ -303,7 +335,7 @@ public class ActionFase {
      *
      * @return the game
      */
-    protected Game getGame() {
+    public Game getGame() {
         return game;
     }
 
@@ -316,6 +348,54 @@ public class ActionFase {
     public boolean canBeActivated(Characters character) {
         return characterCards.stream()
                 .anyMatch(card -> card.getCharacter().equals(character));
+    }
+
+    public Optional<Characters> getActualCharacter() {
+        if (actualCard == null) return Optional.empty();
+        return Optional.of(actualCard.getCharacter());
+    }
+
+    public Optional<StudentsManager> getCardMemory(Characters character) {
+        return characterCards.stream()
+                .filter(card -> card.getCharacter().equals(character))
+                .findAny()
+                .orElseThrow(() -> new InvalidParameterException("Card not in game"))
+                .getStudentContainer();
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    private void isStateActivated() throws IllegalStateException {
+        if (!isActivated()) throw new IllegalStateException("Action Phase is not Activated");
+    }
+
+    public void reset() {
+        activated = false;
+    }
+
+    public void setCalculatedInfluence(boolean calculatedInfluence) {
+        this.calculatedInfluence = calculatedInfluence;
+    }
+
+    // for testing purposes
+
+
+    public void setChosenCloud(boolean chosenCloud) {
+        this.chosenCloud = chosenCloud;
+    }
+
+    public void setPossibleStudentMovements(int possibleStudentMovements) {
+        this.possibleStudentMovements = possibleStudentMovements;
+    }
+
+    public void setMovedMotherNature(boolean movedMotherNature) {
+        this.movedMotherNature = movedMotherNature;
+    }
+
+    public void setMergedIslands(boolean mergedIslands) {
+        this.mergedIslands = mergedIslands;
     }
 
 }

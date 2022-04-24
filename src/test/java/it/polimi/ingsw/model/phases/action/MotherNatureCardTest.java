@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.phase.action.Characters;
-import it.polimi.ingsw.model.phase.action.MotherNatureCard;
-import it.polimi.ingsw.model.phase.action.MotherNatureState;
+import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
+import it.polimi.ingsw.model.phase.action.states.cards.MotherNatureCard;
+import it.polimi.ingsw.model.phase.action.states.MotherNatureState;
 import it.polimi.ingsw.model.table.Island;
 import it.polimi.ingsw.model.table.MotherNature;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ public class MotherNatureCardTest {
         game.gameStarter();
         Characters messenger = Characters.MESSENGER;
         MotherNatureCard motherNatureCard = new MotherNatureCard(messenger, game.getActionFase(),
-                Characters.getCharacterization(messenger));
+                CharacterCardFabric.getCharacterization(messenger));
         MotherNatureState motherNatureState = new MotherNatureState(game.getActionFase());
         motherNatureCard.activator(motherNatureState, game.getPlayers().get(0));
         Optional<Island> initialpos = MotherNature.getMotherNature().getPosition();

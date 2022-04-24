@@ -1,20 +1,39 @@
-package it.polimi.ingsw.model.phase.action;
+package it.polimi.ingsw.model.phase.action.states.cards;
+
+import it.polimi.ingsw.model.enums.CharacterCardType;
+import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.model.phase.action.states.CharacterCard;
 
 import java.util.*;
 
-public enum Characters {
-    FRIAR,
-    HOST,
-    CRIER,
-    MESSENGER,
-    SORCERESS,
-    CENTAUR,
-    JESTER,
-    KNIGHT,
-    SORCERER,
-    MINSTREL,
-    QUEEN,
-    THIEF;
+public class CharacterCardFabric {
+
+    public static List<CharacterCard> getCards(ActionFase actionFase) {
+        List<CharacterCard> enabledCharacterCards = new ArrayList<>();
+        while(enabledCharacterCards.size() < 3) {
+            Characters characters = getRandomCharacter();
+            if (!alreadyCreated(characters, enabledCharacterCards))
+                enabledCharacterCards.add(CharacterCardFabric.createCard(characters, actionFase));
+        }
+        return enabledCharacterCards;
+    }
+
+    private static boolean alreadyCreated(Characters characters, List<CharacterCard> existent){
+        for(CharacterCard card: existent){
+            if(card.getCharacter().equals(characters)) return true;
+        }
+        return false;
+    }
+
+    public static CharacterCard createCard(Characters type, ActionFase actionFase){
+        CharacterCardType classOfCard = getClassOfCard(type);
+        return switch (classOfCard) {
+            case STUDENT-> new StudentMovementCard(type, actionFase, getCharacterization(type));
+            case MOTHER -> new MotherNatureCard(type, actionFase, getCharacterization(type));
+            case INFLUENCE -> new InfluenceCard(type, actionFase, getCharacterization(type));
+        };
+    }
 
     public static Characters getRandomCharacter(){
         Random random = new Random();
@@ -27,7 +46,7 @@ public enum Characters {
 
         result.put("Price", 0); // Card Price
         result.put("Memory", 0); // Card memory size
-        result.put("Usages", 0); // How many times the card is used
+        result.put("Usages", 1); // How many times the card is used
         result.put("Bidirectional", 0); // Has a bidirectional behaviour
         result.put("TeacherBehaviour", 0); // Changes behaviour of the movement of teachers
         result.put("EffectAllPlayers", 0); // Has effect to all players in this turn
@@ -129,11 +148,7 @@ public enum Characters {
         }
     }
 
-    public static String getClassOfCard(Characters type){
-        return switch (type) {
-            case HOST, FRIAR, QUEEN, THIEF, JESTER, MINSTREL -> "StudentMovement";
-            case MESSENGER -> "MotherNature";
-            case SORCERESS, SORCERER, CENTAUR, KNIGHT, CRIER -> "Influence";
-        };
+    public static CharacterCardType getClassOfCard(Characters type){
+        return Characters.getClassOfCard(type);
     }
 }

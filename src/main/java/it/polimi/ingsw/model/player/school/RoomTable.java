@@ -1,8 +1,8 @@
-package it.polimi.ingsw.model.school;
+package it.polimi.ingsw.model.player.school;
 
 
 import it.polimi.ingsw.model.StudentsManager;
-import it.polimi.ingsw.model.TeacherColor;
+import it.polimi.ingsw.model.enums.TeacherColor;
 
 public class RoomTable extends StudentsManager implements Comparable<RoomTable> {
     private final TeacherColor teacherColor;

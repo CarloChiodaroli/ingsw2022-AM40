@@ -1,7 +1,6 @@
-package it.polimi.ingsw.model.school;
+package it.polimi.ingsw.model.player.school;
 
-import it.polimi.ingsw.model.TeacherColor;
-import it.polimi.ingsw.model.TowerColor;
+import it.polimi.ingsw.model.enums.TeacherColor;
 
 import java.util.ArrayList;
 
