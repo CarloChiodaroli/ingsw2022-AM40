@@ -90,10 +90,6 @@ public class GameController {
         this.expertVariant = model.isExpertVariant();
     }
 
-    private boolean isThreePlayerGame() {
-        return model.isThreePlayerGame();
-    }
-
     private void nextTurn() {
         if (gameState.equals(GameState.PIANIFICATION)) {
             int i = playerNames.indexOf(actualPlayer) + 1;
@@ -159,6 +155,7 @@ public class GameController {
         Map<TeacherColor, Integer> afterDestination;
         Map<TeacherColor, Integer> afterSource;
         Map<String, Integer> delta = new HashMap<>();
+        controlGameState(GameState.ACTION);
         controlActualPlayer(playerName);
         if (destinationId.contains("i") || destinationId.equals("Room")) {
             beforeDestination = getStudentContainerStateFromId(playerName, destinationId);
@@ -184,50 +181,11 @@ public class GameController {
         return delta;
     }
 
-    public Map<String, Integer> moveStudent(String playerName, TeacherColor entranceStudent, TeacherColor otherStudent, String placeId) {
+    public void moveStudent(String playerName, TeacherColor entranceStudent, TeacherColor otherStudent, String placeId) {
         controlExpertVariant();
         controlGameState(GameState.ACTION);
         controlActualPlayer(playerName);
-
-        Map<String, Integer> delta = new HashMap<>();
-        Map<TeacherColor, Integer> beforeOther;
-        Map<TeacherColor, Integer> afterOther;
-        Map<TeacherColor, Integer> beforeEntrance;
-        Map<TeacherColor, Integer> afterEntrance;
-
-        // pre move state
-        if (placeId.equals("Room")) {
-            beforeOther = model.getStudentsInRoom(playerName);
-        } else if (placeId.equals("Card")) {
-            beforeOther = model.getCardMemory(actualCharacter);
-        } else {
-            throw new InvalidParameterException("Wrong place ID for this move");
-        }
-        beforeEntrance = model.getStudentsInEntrance(playerName);
-
-        // move
         model.moveStudent(playerName, entranceStudent, otherStudent);
-
-        // After move state
-        afterEntrance = model.getStudentsInEntrance(playerName);
-        if (placeId.equals("Room")) {
-            afterOther = model.getStudentsInRoom(playerName);
-        } else {
-            afterOther = model.getActualCardMemory();
-        }
-
-        // States Comparison
-        for (TeacherColor color : TeacherColor.values()) {
-            if (afterEntrance.get(color).equals(beforeEntrance.get(color))) {
-                delta.put("Entrance", afterEntrance.get(color) - beforeEntrance.get(color));
-            }
-            if (afterOther.get(color).equals(beforeOther.get(color))) {
-                delta.put("Room", afterOther.get(color) - beforeOther.get(color));
-            }
-        }
-
-        // return differences
-        return delta;
     }
 
     public String moveMotherNature(String playerName, int steps) {
@@ -244,6 +202,7 @@ public class GameController {
     }
 
     public Map<TeacherColor, Integer> chooseCloud(String playerName, String cloudId) {
+        controlGameState(GameState.ACTION);
         controlActualPlayer(playerName);
         if (!cloudId.contains("c_")) throw new InvalidParameterException("Gotten Id is not a cloud Id");
         model.chooseCloud(playerName, cloudId);
@@ -272,6 +231,7 @@ public class GameController {
         model.playCharacterCard(playerName, character, islandId);
     }
 
+    @Deprecated
     public void playCharacterCard(String playerName, Characters character, TowerColor color){
         playCharacterCardPermit(playerName);
         model.playCharacterCard(playerName, character, color);
@@ -279,5 +239,13 @@ public class GameController {
 
     public GameModel getModel() {
         return model;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    public GameState getGameState(){
+        return gameState;
     }
 }
