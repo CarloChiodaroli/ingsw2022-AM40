@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.enums.TowerColor;
 import it.polimi.ingsw.model.phase.PlanningPhase;
-import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Bag;
 import it.polimi.ingsw.model.table.Cloud;
@@ -24,7 +24,7 @@ public class Game {
     private boolean isThreePlayerGame = false;
     private boolean isExpertVariant = false;
     private PlanningPhase planningPhase;
-    private ActionFase actionFase;
+    private ActionPhase actionPhase;
     private int numOfRegisteredPlayers = 0;
     private boolean endgame = false;
     private Player endPlayer = null;
@@ -65,7 +65,7 @@ public class Game {
             players.add(new Player(this, preGamePlayersList.get(TowerColor.WHITE), TowerColor.WHITE));
         }
         players.forEach(this::initializePlayer);
-        actionFase = new ActionFase(this);
+        actionPhase = new ActionPhase(this);
         planningPhase = new PlanningPhase(this);
         isInitial = false;
         startRound();
@@ -77,7 +77,7 @@ public class Game {
 
     public void updateState() {
         if (planningPhase.isInOrder()) {
-            actionFase.startPhase(planningPhase.getActualPlayer());
+            actionPhase.startPhase(planningPhase.getActualPlayer());
         }
     }
 
@@ -134,8 +134,8 @@ public class Game {
      *
      * @return the action fase
      */
-    public ActionFase getActionFase() {
-        return actionFase;
+    public ActionPhase getActionFase() {
+        return actionPhase;
     }
 
     /**
@@ -245,11 +245,11 @@ public class Game {
     }
 
     public void nextPlayer() {
-        actionFase.reset();
+        actionPhase.reset();
         planningPhase.getActualPlayer().disable();
         planningPhase.nextPlayer();
         if (planningPhase.isInOrder()) {
-            actionFase.startPhase(planningPhase.getActualPlayer());
+            actionPhase.startPhase(planningPhase.getActualPlayer());
         } else {
             planningPhase.activate();
         }

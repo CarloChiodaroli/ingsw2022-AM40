@@ -2,19 +2,19 @@ package it.polimi.ingsw.model.phase.action.states.cards;
 
 import it.polimi.ingsw.model.enums.CharacterCardType;
 import it.polimi.ingsw.model.enums.Characters;
-import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.phase.action.states.CharacterCard;
 
 import java.util.*;
 
 public class CharacterCardFabric {
 
-    public static List<CharacterCard> getCards(ActionFase actionFase) {
+    public static List<CharacterCard> getCards(ActionPhase actionPhase) {
         List<CharacterCard> enabledCharacterCards = new ArrayList<>();
         while (enabledCharacterCards.size() < 3) {
             Characters characters = getRandomCharacter();
             if (!alreadyCreated(characters, enabledCharacterCards))
-                enabledCharacterCards.add(CharacterCardFabric.createCard(characters, actionFase));
+                enabledCharacterCards.add(CharacterCardFabric.createCard(characters, actionPhase));
         }
         return enabledCharacterCards;
     }
@@ -26,12 +26,12 @@ public class CharacterCardFabric {
         return false;
     }
 
-    public static CharacterCard createCard(Characters type, ActionFase actionFase) {
+    public static CharacterCard createCard(Characters type, ActionPhase actionPhase) {
         CharacterCardType classOfCard = getClassOfCard(type);
         return switch (classOfCard) {
-            case STUDENT -> new StudentMovementCard(type, actionFase, getCharacterization(type));
-            case MOTHER -> new MotherNatureCard(type, actionFase, getCharacterization(type));
-            case INFLUENCE -> new InfluenceCard(type, actionFase, getCharacterization(type));
+            case STUDENT -> new StudentMovementCard(type, actionPhase, getCharacterization(type));
+            case MOTHER -> new MotherNatureCard(type, actionPhase, getCharacterization(type));
+            case INFLUENCE -> new InfluenceCard(type, actionPhase, getCharacterization(type));
         };
     }
 

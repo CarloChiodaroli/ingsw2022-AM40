@@ -21,7 +21,7 @@ import java.util.Optional;
 /**
  * Manages the game's Action Phase in normal or in Expert Variant
  */
-public class ActionFase {
+public class ActionPhase {
 
     // Variables
     private final Game game;
@@ -45,7 +45,7 @@ public class ActionFase {
      *
      * @param game the game in which the phase is used
      */
-    public ActionFase(Game game) {
+    public ActionPhase(Game game) {
         this.game = game;
         this.expertVariant = game.isExpertVariant();
         this.activated = false;

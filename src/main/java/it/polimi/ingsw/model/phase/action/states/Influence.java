@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.phase.action.states;
 
 import it.polimi.ingsw.model.enums.TeacherColor;
-import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
@@ -11,8 +11,8 @@ import java.util.*;
 
 public class Influence extends ActionFaseState {
 
-    public Influence(ActionFase actionFase) {
-        super(actionFase);
+    public Influence(ActionPhase actionPhase) {
+        super(actionPhase);
     }
 
     @Override

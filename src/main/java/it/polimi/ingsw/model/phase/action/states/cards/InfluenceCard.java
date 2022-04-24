@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.phase.action.states.cards;
 
 import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.enums.TowerColor;
-import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.model.phase.action.states.CharacterCard;
@@ -20,8 +20,8 @@ public class InfluenceCard extends CharacterCard {
     private Influence decorated;
     private int noEntryCounter = 0;
 
-    public InfluenceCard(Characters characters, ActionFase actionFase, Map<String, Integer> args) {
-        super(args, characters, actionFase);
+    public InfluenceCard(Characters characters, ActionPhase actionPhase, Map<String, Integer> args) {
+        super(args, characters, actionPhase);
         if (super.getCharacterization("Memory") > 0) {
             noEntryCounter = getCharacterization("Memory");
         }

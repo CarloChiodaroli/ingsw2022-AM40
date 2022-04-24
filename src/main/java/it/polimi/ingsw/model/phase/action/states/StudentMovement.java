@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.phase.action.states;
 
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.enums.TeacherColor;
-import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.school.RoomTable;
@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 
 public class StudentMovement extends ActionFaseState {
 
-    public StudentMovement(ActionFase actionFase) {
-        super(actionFase);
+    public StudentMovement(ActionPhase actionPhase) {
+        super(actionPhase);
     }
 
     @Override

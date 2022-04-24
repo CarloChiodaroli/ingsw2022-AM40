@@ -1,14 +1,14 @@
 package it.polimi.ingsw.model.phase.action.states;
 
 import it.polimi.ingsw.model.StudentsManager;
-import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.model.player.Player;
 
 public class Finalize extends ActionFaseState {
 
-    public Finalize(ActionFase actionFase) {
-        super(actionFase);
+    public Finalize(ActionPhase actionPhase) {
+        super(actionPhase);
     }
 
     @Override

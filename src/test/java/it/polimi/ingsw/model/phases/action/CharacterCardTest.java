@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.model.enums.Characters;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ public class CharacterCardTest {
     @Test
     public void characterCardTest(){
         Game game = new Game();
-        ActionFase actionfase = new ActionFase(game);
+        ActionPhase actionfase = new ActionPhase(game);
         CharacterCardIstance charactercard;
 
 
@@ -41,8 +41,8 @@ class CharacterCardIstance extends CharacterCard {
 
         return result;
     }
-        CharacterCardIstance(Map<String, Integer> args, Characters characters, ActionFase actionFase){
-        super(createBaseCharacterization(), characters, actionFase);
+        CharacterCardIstance(Map<String, Integer> args, Characters characters, ActionPhase actionPhase){
+        super(createBaseCharacterization(), characters, actionPhase);
         }
 }
 

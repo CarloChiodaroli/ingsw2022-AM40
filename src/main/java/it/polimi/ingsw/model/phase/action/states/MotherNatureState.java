@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.phase.action.states;
 
-import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
@@ -11,8 +11,8 @@ import java.util.List;
 
 public class MotherNatureState extends ActionFaseState {
 
-    public MotherNatureState(ActionFase actionFase) {
-        super(actionFase);
+    public MotherNatureState(ActionPhase actionPhase) {
+        super(actionPhase);
     }
 
     @Override

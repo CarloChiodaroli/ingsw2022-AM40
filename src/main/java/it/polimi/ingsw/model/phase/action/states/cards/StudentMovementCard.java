@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.phase.action.states.cards;
 
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.enums.TeacherColor;
-import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.model.phase.action.StudentsContainer;
 import it.polimi.ingsw.model.enums.Characters;
@@ -22,8 +22,8 @@ public class StudentMovementCard extends CharacterCard {
     private StudentsContainer students = null;
     private final int maxUsages;
 
-    public StudentMovementCard(Characters characters, ActionFase actionFase, Map<String, Integer> args) {
-        super(args, characters, actionFase);
+    public StudentMovementCard(Characters characters, ActionPhase actionPhase, Map<String, Integer> args) {
+        super(args, characters, actionPhase);
         if (args.get("Memory") > 0) {
             this.students = new StudentsContainer(args.get("Memory"));
             Bag bag = (Bag) getActionFase().getGame().getTable().getBag().orElseThrow();

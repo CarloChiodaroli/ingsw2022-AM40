@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.phase.action.states;
 
-import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.model.table.Island;
 
@@ -8,8 +8,8 @@ import java.util.List;
 
 public class MergeIsland extends ActionFaseState {
 
-    public MergeIsland(ActionFase actionFase) {
-        super(actionFase);
+    public MergeIsland(ActionPhase actionPhase) {
+        super(actionPhase);
     }
 
     @Override

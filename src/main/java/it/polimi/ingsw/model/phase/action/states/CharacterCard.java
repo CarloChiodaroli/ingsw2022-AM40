@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.enums.TowerColor;
-import it.polimi.ingsw.model.phase.action.ActionFase;
+import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
@@ -28,8 +28,8 @@ public abstract class CharacterCard extends ActionFaseState {
     private Player actualPlayer;
 
 
-    public CharacterCard(Map<String, Integer> args, Characters characters, ActionFase actionFase) {
-        super(actionFase);
+    public CharacterCard(Map<String, Integer> args, Characters characters, ActionPhase actionPhase) {
+        super(actionPhase);
         this.characterization = args;
         this.characters = characters;
         this.price = characterization.get("Price");

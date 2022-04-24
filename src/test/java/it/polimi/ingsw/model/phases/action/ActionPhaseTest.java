@@ -3,11 +3,11 @@ package it.polimi.ingsw.model.phases.action;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.model.player.AssistantCard;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.phase.action.ActionFase;
 import it.polimi.ingsw.model.table.MotherNature;
 import it.polimi.ingsw.model.table.Island;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ActionFaseTest {
+public class ActionPhaseTest {
 
     public static void assertThrowsIllegalStateException(org.junit.jupiter.api.function.Executable executable) {
         assertThrows(IllegalStateException.class, executable);
@@ -35,7 +35,7 @@ public class ActionFaseTest {
     @Test
     public void startPhaseTest(){
         Game game = new Game();
-        ActionFase actionFase = new ActionFase(game);
+        ActionPhase actionPhase = new ActionPhase(game);
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
@@ -46,24 +46,24 @@ public class ActionFaseTest {
         AssistantCard card3 = game.getPianificationFase().play(card2, game.getPlayers().get(1));
         Player player1 = game.getPianificationFase().getActualPlayer();
 
-        actionFase.startPhase(player1);
+        actionPhase.startPhase(player1);
         assertEquals(player1, game.getPlayers().get(0));
-        assertTrue(actionFase.isActivated());
+        assertTrue(actionPhase.isActivated());
     }
 
     @Test
     public void activateCardTest(){
         Game game = new Game();
-        ActionFase actionFase;
+        ActionPhase actionPhase;
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.switchExpertVariant();
         game.gameStarter();
-        actionFase = game.getActionFase();
+        actionPhase = game.getActionFase();
 
-        List<CharacterCard> actualCharacterCards = actionFase.getCharacterCards();
+        List<CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
 
-        actualCharacterCards.add(CharacterCardFabric.createCard(Characters.CENTAUR, actionFase));
+        actualCharacterCards.add(CharacterCardFabric.createCard(Characters.CENTAUR, actionPhase));
 
         Player camilla = game.getPlayers().get(0);
         Player anja = game.getPlayers().get(1);
@@ -100,27 +100,27 @@ public class ActionFaseTest {
         testIsland.addStudent(TeacherColor.PINK);
 
         MotherNature.getMotherNature().setPosition(testIsland);
-        actionFase.setMovedMotherNature(false);
-        assertThrowsIllegalStateException(() -> actionFase.request(camilla, "MotherNature"));
+        actionPhase.setMovedMotherNature(false);
+        assertThrowsIllegalStateException(() -> actionPhase.request(camilla, "MotherNature"));
 
-        actionFase.setMovedMotherNature(true);
+        actionPhase.setMovedMotherNature(true);
         //camilla.calcInfluence();
-        actionFase.request(camilla, "MotherNature");
+        actionPhase.request(camilla, "MotherNature");
 
         MotherNature.getMotherNature().resetPosition();
-        assertThrowsRunTimeException(() -> actionFase.request(camilla, "MotherNature"));
+        assertThrowsRunTimeException(() -> actionPhase.request(camilla, "MotherNature"));
         MotherNature.getMotherNature().setPosition(testIsland);
 
-        actionFase.setCalculatedInfluence(true);
-        assertThrowsIllegalStateException(() -> actionFase.request(camilla, "MotherNature"));
+        actionPhase.setCalculatedInfluence(true);
+        assertThrowsIllegalStateException(() -> actionPhase.request(camilla, "MotherNature"));
         assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
-        actionFase.setCalculatedInfluence(false);
+        actionPhase.setCalculatedInfluence(false);
 
         testIsland.addStudent(TeacherColor.BLUE);
         testIsland.addStudent(TeacherColor.BLUE);
 
         camilla.giveMoney(2);
-        actionFase.activateCard(Characters.CENTAUR, camilla);
+        actionPhase.activateCard(Characters.CENTAUR, camilla);
 
         camilla.calcInfluence();
         assertEquals(camilla.getTowerColor(), testIsland.getTowerColor().get());
@@ -130,16 +130,16 @@ public class ActionFaseTest {
     @Test
     public void activateCardTest2(){
         Game game = new Game();
-        ActionFase actionFase;
+        ActionPhase actionPhase;
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.switchExpertVariant();
         game.gameStarter();
-        actionFase = game.getActionFase();
+        actionPhase = game.getActionFase();
 
-        List<CharacterCard> actualCharacterCards = actionFase.getCharacterCards();
+        List<CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
 
-        actualCharacterCards.add(CharacterCardFabric.createCard(Characters.SORCERER, actionFase));
+        actualCharacterCards.add(CharacterCardFabric.createCard(Characters.SORCERER, actionPhase));
 
         Player camilla = game.getPlayers().get(0);
         Player anja = game.getPlayers().get(1);
@@ -179,34 +179,34 @@ public class ActionFaseTest {
 
         MotherNature.getMotherNature().setPosition(testIsland);
 
-        actionFase.setMovedMotherNature(true);
+        actionPhase.setMovedMotherNature(true);
         camilla.calcInfluence();
         assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
 
         testIsland.addStudent(TeacherColor.BLUE);
         testIsland.addStudent(TeacherColor.BLUE);
 
-        actionFase.setMovedMotherNature(true);
-        actionFase.setCalculatedInfluence(false);
+        actionPhase.setMovedMotherNature(true);
+        actionPhase.setCalculatedInfluence(false);
 
         camilla.calcInfluence();
         assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
 
-        actionFase.setMovedMotherNature(true);
-        actionFase.setCalculatedInfluence(false);
+        actionPhase.setMovedMotherNature(true);
+        actionPhase.setCalculatedInfluence(false);
 
         camilla.giveMoney(2);
-        actionFase.activateCard(Characters.SORCERER, game.getPlayers().get(0), TeacherColor.PINK);
+        actionPhase.activateCard(Characters.SORCERER, game.getPlayers().get(0), TeacherColor.PINK);
 
-        assertThrowsIllegalStateException(() -> actionFase.request(camilla, "c_1"));
+        assertThrowsIllegalStateException(() -> actionPhase.request(camilla, "c_1"));
         camilla.calcInfluence();
-        actionFase.setCalculatedInfluence(true);
+        actionPhase.setCalculatedInfluence(true);
         assertEquals(camilla.getTowerColor(), testIsland.getTowerColor().get());
 
-        assertThrowsNoSuchElementException(() -> actionFase.request(camilla, "casual"));
-        actionFase.request(camilla, game.getTable().getCloudList().get(1).getId());
-        assertThrowsIllegalStateException(() -> actionFase.request(anja, game.getTable().getCloudList().get(0).getId()));
-        assertThrowsIllegalStateException(() -> actionFase.request(camilla, "c_1"));
+        assertThrowsNoSuchElementException(() -> actionPhase.request(camilla, "casual"));
+        actionPhase.request(camilla, game.getTable().getCloudList().get(1).getId());
+        assertThrowsIllegalStateException(() -> actionPhase.request(anja, game.getTable().getCloudList().get(0).getId()));
+        assertThrowsIllegalStateException(() -> actionPhase.request(camilla, "c_1"));
 
         assertEquals(3, camilla.getEntrance().howManyTotStudents());
 
@@ -217,16 +217,16 @@ public class ActionFaseTest {
     @Test
     public void activateCardTest3(){
         Game game = new Game();
-        ActionFase actionFase;
+        ActionPhase actionPhase;
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.switchExpertVariant();
         game.gameStarter();
-        actionFase = game.getActionFase();
+        actionPhase = game.getActionFase();
 
-        List<CharacterCard> actualCharacterCards = actionFase.getCharacterCards();
+        List<CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
 
-        actualCharacterCards.add(CharacterCardFabric.createCard(Characters.CRIER, actionFase));
+        actualCharacterCards.add(CharacterCardFabric.createCard(Characters.CRIER, actionPhase));
 
         Player camilla = game.getPlayers().get(0);
         Player anja = game.getPlayers().get(1);
@@ -269,11 +269,11 @@ public class ActionFaseTest {
 
         camilla.giveMoney(2);
         camilla.playCharacterCard(Characters.CRIER, specialTestIsland);
-        //actionFase.activateCard(Characters.CRIER, camilla, specialTestIsland);
+        //actionPhase.activateCard(Characters.CRIER, camilla, specialTestIsland);
 
         MotherNature.getMotherNature().setPosition(testIsland);
 
-        actionFase.setMovedMotherNature(true);
+        actionPhase.setMovedMotherNature(true);
         camilla.calcInfluence();
         assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
         assertEquals(camilla.getTowerColor(), specialTestIsland.getTowerColor().get());
@@ -284,12 +284,12 @@ public class ActionFaseTest {
     @Test
     public void requestTest(){
         Game game = new Game();
-        ActionFase actionFase;
+        ActionPhase actionPhase;
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.switchExpertVariant();
         game.gameStarter();
-        actionFase = game.getActionFase();
+        actionPhase = game.getActionFase();
 
         Player camilla = game.getPlayers().get(0);
         Player anja = game.getPlayers().get(1);
@@ -305,7 +305,7 @@ public class ActionFaseTest {
     @Test
     public void requestColorTest(){
         Game game = new Game();
-        ActionFase actionFase = new ActionFase(game);
+        ActionPhase actionPhase = new ActionPhase(game);
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
@@ -319,19 +319,19 @@ public class ActionFaseTest {
         TeacherColor color = game.getPlayers().get(0).getEntrance().getStudent().get();
         game.getPlayers().get(0).getEntrance().addStudent(color);
 
-        assertThrowsIllegalStateException(() -> actionFase.request(color, Optional.of(game.getPlayers().get(0).getEntrance()),
+        assertThrowsIllegalStateException(() -> actionPhase.request(color, Optional.of(game.getPlayers().get(0).getEntrance()),
                 Optional.of(game.getPlayers().get(0).getRoomTable(color))));
 
-        actionFase.startPhase(game.getPlayers().get(0));
+        actionPhase.startPhase(game.getPlayers().get(0));
         for(int i = 0; i < 3; i++){
             TeacherColor color1 = game.getPlayers().get(0).getEntrance().getStudent().get();
             game.getPlayers().get(0).getEntrance().addStudent(color1);
-            actionFase.request(color1, Optional.of(game.getPlayers().get(0).getEntrance()),
+            actionPhase.request(color1, Optional.of(game.getPlayers().get(0).getEntrance()),
                     Optional.of(game.getPlayers().get(0).getRoomTable(color1)));
         }
         TeacherColor color2 = game.getPlayers().get(0).getEntrance().getStudent().get();
         game.getPlayers().get(0).getEntrance().addStudent(color2);
-        assertThrowsIllegalStateException(() -> actionFase.request(color2, Optional.of(game.getPlayers().get(0).getEntrance()),
+        assertThrowsIllegalStateException(() -> actionPhase.request(color2, Optional.of(game.getPlayers().get(0).getEntrance()),
                 Optional.of(game.getPlayers().get(0).getRoomTable(color2))));
 
     }
@@ -339,7 +339,7 @@ public class ActionFaseTest {
     @Test
     public void requestMotherNatureTest(){
         Game game = new Game();
-        ActionFase actionFase = new ActionFase(game);
+        ActionPhase actionPhase = new ActionPhase(game);
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
@@ -348,18 +348,18 @@ public class ActionFaseTest {
         AssistantCard card1 = game.getPianificationFase().play(card, game.getPlayers().get(0));
         AssistantCard card2 = new AssistantCard(6);
         AssistantCard card3 = game.getPianificationFase().play(card2, game.getPlayers().get(1));
-        actionFase.startPhase(game.getPlayers().get(0));
+        actionPhase.startPhase(game.getPlayers().get(0));
 
         Island inpos = MotherNature.getMotherNature().getPosition().get();
         int firstposition = game.getTable().getIslandList().indexOf(inpos);
-        actionFase.request(game.getPlayers().get(0), 1);
+        actionPhase.request(game.getPlayers().get(0), 1);
         Island finpos = MotherNature.getMotherNature().getPosition().get();
         int secondposition = game.getTable().getIslandList().indexOf(finpos);
         int position = firstposition + 1;
         if(position == 12) position = 0;
         assertEquals(position, secondposition);
 
-        assertThrowsIllegalStateException(() -> actionFase.request(game.getPlayers().get(0), 1));
+        assertThrowsIllegalStateException(() -> actionPhase.request(game.getPlayers().get(0), 1));
 
 
     }
@@ -367,7 +367,7 @@ public class ActionFaseTest {
     @Test
     public void requestMergeIslandTest(){
         Game game = new Game();
-        ActionFase actionFase = new ActionFase(game);
+        ActionPhase actionPhase = new ActionPhase(game);
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
@@ -376,25 +376,25 @@ public class ActionFaseTest {
         AssistantCard card1 = game.getPianificationFase().play(card, game.getPlayers().get(0));
         AssistantCard card2 = new AssistantCard(6);
         AssistantCard card3 = game.getPianificationFase().play(card2, game.getPlayers().get(1));
-        actionFase.startPhase(game.getPlayers().get(0));
+        actionPhase.startPhase(game.getPlayers().get(0));
 
         game.getTable().getIslandList().get(3).setInfluence(game.getPlayers().get(0).getTowerColor());
         game.getTable().getIslandList().get(4).setInfluence(game.getPlayers().get(0).getTowerColor());
 
-        assertThrowsIllegalStateException(() -> actionFase.request());
+        assertThrowsIllegalStateException(() -> actionPhase.request());
 
-        actionFase.setCalculatedInfluence(true);
-        actionFase.request();
+        actionPhase.setCalculatedInfluence(true);
+        actionPhase.request();
         assertEquals(11, game.getTable().getIslandList().size());
 
-        assertThrowsIllegalStateException(() -> actionFase.request());
+        assertThrowsIllegalStateException(() -> actionPhase.request());
 
     }
 
     @Test
     public void requestSpecialColorTest(){
         Game game = new Game();
-        ActionFase actionFase = new ActionFase(game);
+        ActionPhase actionPhase = new ActionPhase(game);
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
@@ -403,40 +403,40 @@ public class ActionFaseTest {
         AssistantCard card1 = game.getPianificationFase().play(card, game.getPlayers().get(0));
         AssistantCard card2 = new AssistantCard(6);
         AssistantCard card3 = game.getPianificationFase().play(card2, game.getPlayers().get(1));
-        actionFase.startPhase(game.getPlayers().get(0));
+        actionPhase.startPhase(game.getPlayers().get(0));
 
-        assertThrowsIllegalStateException(() -> actionFase.request(game.getPlayers().get(0), TeacherColor.PINK,
+        assertThrowsIllegalStateException(() -> actionPhase.request(game.getPlayers().get(0), TeacherColor.PINK,
                 TeacherColor.RED));
     }
 
     @Test
     public void requestSpecialColorTest2(){
         Game game = new Game();
-        ActionFase actionFase;
+        ActionPhase actionPhase;
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.switchExpertVariant();
         game.gameStarter();
-        actionFase = game.getActionFase();
+        actionPhase = game.getActionFase();
         game.getPianificationFase().activate();
         AssistantCard card = new AssistantCard(4);
         AssistantCard card1 = game.getPianificationFase().play(card, game.getPlayers().get(0));
         AssistantCard card2 = new AssistantCard(6);
         AssistantCard card3 = game.getPianificationFase().play(card2, game.getPlayers().get(1));
-        actionFase.startPhase(game.getPlayers().get(0));
+        actionPhase.startPhase(game.getPlayers().get(0));
 
-        List<CharacterCard> actualCharacterCards = actionFase.getCharacterCards();
+        List<CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
 
-        actualCharacterCards.add(CharacterCardFabric.createCard(Characters.JESTER, actionFase));
+        actualCharacterCards.add(CharacterCardFabric.createCard(Characters.JESTER, actionPhase));
 
         assertTrue(game.isExpertVariant());
-        assertThrowsIllegalStateException(() -> actionFase.request(game.getPlayers().get(0), TeacherColor.PINK,
+        assertThrowsIllegalStateException(() -> actionPhase.request(game.getPlayers().get(0), TeacherColor.PINK,
                 TeacherColor.RED));
-        assertTrue(actionFase.canBeActivated(Characters.JESTER));
-        actionFase.activateCard(Characters.JESTER, game.getPlayers().get(0));
+        assertTrue(actionPhase.canBeActivated(Characters.JESTER));
+        actionPhase.activateCard(Characters.JESTER, game.getPlayers().get(0));
         TeacherColor color = game.getPlayers().get(0).getEntrance().getStudent().get();
         game.getPlayers().get(0).getEntrance().addStudent(color);
-        actionFase.request(game.getPlayers().get(0), color, TeacherColor.PINK);
+        actionPhase.request(game.getPlayers().get(0), color, TeacherColor.PINK);
     }
 
 }

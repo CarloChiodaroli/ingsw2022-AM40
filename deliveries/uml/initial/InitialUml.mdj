@@ -168,7 +168,7 @@
 											"top": 2126,
 											"width": 67.91357421875,
 											"height": 13,
-											"text": "actionFase"
+											"text": "actionPhase"
 										},
 										{
 											"_type": "LabelView",
@@ -18361,7 +18361,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "actionFase"
+					"name": "actionPhase"
 				},
 				{
 					"_type": "UMLClass",

@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public abstract class ActionFaseState {
 
-    private final ActionFase actionFase;
+    private final ActionPhase actionPhase;
 
-    protected ActionFaseState(ActionFase actionFase) {
-        this.actionFase = actionFase;
+    protected ActionFaseState(ActionPhase actionPhase) {
+        this.actionPhase = actionPhase;
     }
 
     protected void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) {
@@ -33,7 +33,7 @@ public abstract class ActionFaseState {
     protected void handle() {
     }
 
-    public ActionFase getActionFase() {
-        return actionFase;
+    public ActionPhase getActionFase() {
+        return actionPhase;
     }
 }
