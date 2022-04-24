@@ -67,19 +67,19 @@ public class RoomTableTest {
     @Test
     public void howManyStudentsTest(){
         RoomTable table = new RoomTable(TeacherColor.YELLOW);
-        assertEquals(table.howManyStudents(TeacherColor.YELLOW), table.howManyStudentsColor());
+        assertEquals(table.howManyStudents(TeacherColor.YELLOW), table.howManyStudents());
 
         table = new RoomTable(TeacherColor.PINK);
-        assertEquals(table.howManyStudents(TeacherColor.PINK), table.howManyStudentsColor());
+        assertEquals(table.howManyStudents(TeacherColor.PINK), table.howManyStudents());
 
         table = new RoomTable(TeacherColor.RED);
-        assertEquals(table.howManyStudents(TeacherColor.RED), table.howManyStudentsColor());
+        assertEquals(table.howManyStudents(TeacherColor.RED), table.howManyStudents());
 
         table = new RoomTable(TeacherColor.GREEN);
-        assertEquals(table.howManyStudents(TeacherColor.GREEN), table.howManyStudentsColor());
+        assertEquals(table.howManyStudents(TeacherColor.GREEN), table.howManyStudents());
 
         table = new RoomTable(TeacherColor.BLUE);
-        assertEquals(table.howManyStudents(TeacherColor.BLUE), table.howManyStudentsColor());
+        assertEquals(table.howManyStudents(TeacherColor.BLUE), table.howManyStudents());
     }
 
 }

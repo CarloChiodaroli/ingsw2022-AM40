@@ -13,7 +13,7 @@ public class Island extends StudentsManager {
     private final String id;
     private final int equivalentIsland;
     private boolean noEntry;
-    private Optional<TowerColor> towerColor;
+    private TowerColor towerColor;
     private boolean tower;
 
     /**
@@ -24,7 +24,7 @@ public class Island extends StudentsManager {
         this.id = id;
         this.equivalentIsland = 1;
         this.noEntry = false;
-        this.towerColor = Optional.empty();
+        this.towerColor = null;
         this.tower = false;
     }
 
@@ -63,20 +63,20 @@ public class Island extends StudentsManager {
      * @return String Final Island's Id
      */
     public String elaborationMergeIslandId(String id1, String id2) {
-        return id1 + "" + id2.substring(1, id2.length());
+        return id1 + "" + id2.substring(1);
     }
 
-    public void setInfluence(TowerColor color){
+    public void setInfluence(TowerColor color) {
         tower = true;
-        towerColor = Optional.of(color);
+        towerColor = color;
     }
 
-    public void removeNoEntryTile(){
+    public void removeNoEntryTile() {
         noEntry = false;
     }
 
-    public int howManyTowers(){
-        if(this.tower) return howManyEquivalents();
+    public int howManyTowers() {
+        if (this.tower) return howManyEquivalents();
         else return 0;
     }
 
@@ -96,12 +96,13 @@ public class Island extends StudentsManager {
         this.noEntry = noEntry;
     }
 
+    @Deprecated
     public void setTowerColor(Optional<TowerColor> towerColor) {
-        this.towerColor = towerColor;
+        this.towerColor = towerColor.orElse(null);
     }
 
     public Optional<TowerColor> getTowerColor() {
-        return towerColor;
+        return Optional.ofNullable(towerColor);
     }
 
     public void setTower(boolean tower) {

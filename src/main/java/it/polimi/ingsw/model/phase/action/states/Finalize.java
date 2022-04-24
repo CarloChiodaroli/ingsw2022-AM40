@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.player.Player;
 
 public class Finalize extends ActionFaseState {
 
-    public Finalize(ActionFase actionFase){
+    public Finalize(ActionFase actionFase) {
         super(actionFase);
     }
 
@@ -15,7 +15,7 @@ public class Finalize extends ActionFaseState {
     public void handle(Player player, StudentsManager cloud) {
         StudentsManager destination = player.getEntrance();
         int tmp = cloud.howManyTotStudents();
-        for(int i = 0; i < tmp; i++){
+        for (int i = 0; i < tmp; i++) {
             cloud.getStudent().ifPresent(destination::addStudent);
         }
     }

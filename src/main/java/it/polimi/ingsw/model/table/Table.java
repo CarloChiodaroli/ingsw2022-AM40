@@ -11,25 +11,26 @@ import java.util.*;
  */
 public class Table {
 
-    private List<Island> islandList;
-    private List<Cloud> CloudList;
+    private final List<Island> islandList;
+    private final List<Cloud> CloudList;
     public static Bag bag;
-    private int coinsleft;
+    private int coinsLeft;
+    private final static int numOfIslandsToCreate = 12;
 
 
     /**
      * Constructor
      */
-    public Table(int numberofplayer) {
+    public Table(int numberOfPlayer) {
         int randomFirstIsland = (int) (Math.random() * 12);
         bag = new Bag(130, 26);
-        coinsleft = 20;
-        islandList = new ArrayList<Island>();
-        CloudList = new ArrayList<Cloud>();
-        buildsIsland(12);
+        coinsLeft = 20;
+        islandList = new ArrayList<>();
+        CloudList = new ArrayList<>();
+        buildIslands();
         FillCInitialIslandWithStudent(randomFirstIsland);
         MotherNature.getMotherNature().setPosition(islandList.get(randomFirstIsland));
-        buildsCloud(numberofplayer);
+        buildsCloud(numberOfPlayer);
     }
 
 
@@ -40,18 +41,17 @@ public class Table {
 
 
     /**
-     * @param numberofplayer number of player to create
+     * @param numberOfPlayer number of player to create
      */
-    private void buildsCloud(int numberofplayer) {
-        for (int i = 0; i < numberofplayer; i++) {
-            CloudList.add(new Cloud("c_" + (i + 1), numberofplayer + 1));
+    private void buildsCloud(int numberOfPlayer) {
+        for (int i = 0; i < numberOfPlayer; i++) {
+            CloudList.add(new Cloud("c_" + (i + 1), numberOfPlayer + 1));
         }
     }
 
     public void FillCInitialIslandWithStudent(int randomFirstIsland) {
         int emptyIsland1;
         int emptyIsland2;
-        ArrayList<Integer> array = new ArrayList<>();
 
         Map<TeacherColor, Integer> assignsLeft = new HashMap<>();
         for(TeacherColor color: TeacherColor.values()){
@@ -74,17 +74,17 @@ public class Table {
                     indexColor = (int) (Math.random() * 5);
                     actualColor = TeacherColor.values()[indexColor];
                 } while(assignsLeft.get(actualColor).equals(0));
-                assignsLeft.compute(actualColor, (k, val) -> val - 1);
+                assignsLeft.computeIfPresent(actualColor, (k, val) -> val - 1);
                 if(bag.removeStudent(actualColor)) islandList.get(i).addStudent(actualColor);
             }
         }
     }
 
     /**
-     * @param howManyIslands number of islands to create
+     *
      */
-    private void buildsIsland(int howManyIslands) {
-        for (int i = 0; i < howManyIslands; i++) {
+    private void buildIslands() {
+        for (int i = 0; i < numOfIslandsToCreate; i++) {
             islandList.add(new Island("i_" + (i + 1)));
         }
     }
@@ -93,19 +93,16 @@ public class Table {
      * @return boolean It allows to getCoin requested by the Game
      */
     public boolean getCoin() {
-        return coinsleft > 0;
+        return coinsLeft > 0;
     }
 
     public int getNumCoin() {
-        return coinsleft;
+        return coinsLeft;
     }
 
-    /**
-     * @throws Exception If there is not coin
-     */
     public void giveCoin() {
         if (getCoin())
-            coinsleft--;
+            coinsLeft--;
     }
 
     /**
@@ -125,9 +122,6 @@ public class Table {
         islandList.add(FirstPositionOfIslandToAdd, IslandToAdd);
         islandList.remove(island1);
         islandList.remove(island2);
-        //for (int i = FirstPositionOfIslandToAdd + 1; i < IslandList.size() - 1; i++)
-        //    IslandList.add(i, IslandList.get(i + 1));
-        //IslandList.remove(IslandList.size() - 1);
     }
 
     /**
@@ -155,7 +149,7 @@ public class Table {
     }
 
     /**
-     * @param id Island's Id
+     * @param id Island's id
      * @return Island you are looking for
      */
     public Optional<Island> getIslandById(String id) {

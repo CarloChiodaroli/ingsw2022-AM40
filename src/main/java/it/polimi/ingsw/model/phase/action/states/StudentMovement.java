@@ -25,29 +25,30 @@ public class StudentMovement extends ActionFaseState {
         controlTeachers();
     }
 
-    private void controlTeachers(){
+    private void controlTeachers() {
         List<Player> players = super.getActionFase().getGame().getPlayers();
-        for(TeacherColor color: TeacherColor.values()){
+        for (TeacherColor color : TeacherColor.values()) {
             Optional<RoomTable> roomTableWithTeacher = players.stream()
                     .filter(x -> x.getRoomTable(color).hasTeacher())
                     .findFirst()
                     .map(x -> x.getRoomTable(color));
 
-                Integer max = players.stream()
-                        .map(x -> x.getRoomTable(color).howManyStudentsColor())
-                        .max(Integer::compareTo)
-                        .orElse(-1);
+            Integer max = players.stream()
+                    .map(x -> x.getRoomTable(color).howManyStudents())
+                    .max(Integer::compareTo)
+                    .orElse(-1);
 
-                List<Player> maxPlayers = players.stream()
-                        .filter(x -> x.getRoomTable(color).howManyStudentsColor() == max)
-                        .collect(Collectors.toList());
+            List<Player> maxPlayers = players.stream()
+                    .filter(x -> x.getRoomTable(color).howManyStudents() == max)
+                    .collect(Collectors.toList());
 
-            if(roomTableWithTeacher.isPresent()){
-                if(maxPlayers.size() == 1){
-                    maxPlayers.get(0).getRoomTable(color).setTeacherPresence(roomTableWithTeacher.get().removeTeacher());
+            if (roomTableWithTeacher.isPresent()) {
+                if (maxPlayers.size() == 1) {
+                    roomTableWithTeacher.get().setTeacherPresence(false);
+                    maxPlayers.get(0).getRoomTable(color).setTeacherPresence(true);
                 }
             } else {
-                if(maxPlayers.size() == 1){
+                if (maxPlayers.size() == 1) {
                     maxPlayers.get(0).getRoomTable(color).setTeacherPresence(true);
                 }
             }

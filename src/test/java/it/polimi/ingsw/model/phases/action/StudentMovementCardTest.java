@@ -290,8 +290,8 @@ public class StudentMovementCardTest {
             }
         }
 
-        int oldTableContent1 = players.get(0).getRoomTable(maxColor).howManyStudentsColor();
-        int oldTableContent2 = players.get(1).getRoomTable(maxColor).howManyStudentsColor();
+        int oldTableContent1 = players.get(0).getRoomTable(maxColor).howManyStudents();
+        int oldTableContent2 = players.get(1).getRoomTable(maxColor).howManyStudents();
 
         if (oldTableContent1 >= oldTableContent2) {
             assertTrue(players.get(0).getRoomTable(maxColor).hasTeacher());
@@ -312,8 +312,8 @@ public class StudentMovementCardTest {
                 card.handle(maxColor, Optional.of(players.get(0).getEntrance()), Optional.of(players.get(0).getRoomTable(maxColor)));
             }
 
-            int tableContent1 = players.get(0).getRoomTable(maxColor).howManyStudentsColor();
-            int tableContent2 = players.get(1).getRoomTable(maxColor).howManyStudentsColor();
+            int tableContent1 = players.get(0).getRoomTable(maxColor).howManyStudents();
+            int tableContent2 = players.get(1).getRoomTable(maxColor).howManyStudents();
 
             // Not assert equals... left and right values can be wrong... I can't know now what value to expect
             assertTrue(tableContent2 == tableContent1, "" + tableContent2 + " != " + tableContent1);
@@ -327,8 +327,8 @@ public class StudentMovementCardTest {
                 card.handle(maxColor, Optional.of(players.get(1).getEntrance()), Optional.of(players.get(1).getRoomTable(maxColor)));
             }
 
-            int tableContent1 = players.get(0).getRoomTable(maxColor).howManyStudentsColor();
-            int tableContent2 = players.get(1).getRoomTable(maxColor).howManyStudentsColor();
+            int tableContent1 = players.get(0).getRoomTable(maxColor).howManyStudents();
+            int tableContent2 = players.get(1).getRoomTable(maxColor).howManyStudents();
 
             // Not assert equals... left and right values can be wrong... I can't know now what value to expect
             assertTrue(tableContent2 == tableContent1, "" + tableContent2 + " != " + tableContent1);

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MergeIsland extends ActionFaseState {
 
-    public MergeIsland(ActionFase actionFase){
+    public MergeIsland(ActionFase actionFase) {
         super(actionFase);
     }
 
@@ -16,12 +16,12 @@ public class MergeIsland extends ActionFaseState {
     public void handle() {
         Island mount, valley;
         List<Island> islands = super.getActionFase().getGame().getTable().getIslandList();
-        for(int i = 0; i < islands.size(); i++){
+        for (int i = 0; i < islands.size(); i++) {
             mount = islands.get(i);
-            if(i + 1 == islands.size()) valley = islands.get(0);
+            if (i + 1 == islands.size()) valley = islands.get(0);
             else valley = islands.get(i + 1);
-            if(mount.hasTowers() && valley.hasTowers()){
-                if(mount.getTowerColor().equals(valley.getTowerColor())){
+            if (mount.hasTowers() && valley.hasTowers()) {
+                if (mount.getTowerColor().equals(valley.getTowerColor())) {
                     super.getActionFase().getGame().getTable().mergeIsland(mount, valley);
                     this.handle();
                     return;

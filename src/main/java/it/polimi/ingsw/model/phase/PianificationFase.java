@@ -21,7 +21,7 @@ public class PianificationFase {
     private final int players;
     private int actualPlayer;
     private final Game game;
-    private int countround = 0;
+    private int countRound = 0;
 
     /**
      * Class Constructor
@@ -44,7 +44,7 @@ public class PianificationFase {
      * Starts the phase, reinitializing it in a clean state
      */
     public void activate() {
-        if (countround == 10) {
+        if (countRound == 10) {
             game.setEndgame(true);
             game.setendplayer(game.searchPlayerWithMostTower());
         }
@@ -69,7 +69,7 @@ public class PianificationFase {
      * Method called from the player where is played the assistant card
      *
      * @param card            the assistant card the player wants to play
-     * @param applicantPlayer the players who does the move
+     * @param applicantPlayer the players who do the move
      * @return true if the move was successful, else false
      */
     public AssistantCard play(AssistantCard card, Player applicantPlayer)
@@ -94,7 +94,7 @@ public class PianificationFase {
     }
 
     /**
-     * Determines if the card the player wants to play can be played
+     * Determines if the player can play that card
      *
      * @param card   the card to examine
      * @param player the player who wants to play the card
@@ -104,10 +104,9 @@ public class PianificationFase {
         Set<Player> submittingPlayers = playedCards.keySet();
         for (Player subPlayer : submittingPlayers) {
             if (playedCards.get(subPlayer).equals(card)) {
-                if (player.canChangeAssistantCard())
-                    return false;
-                else return true; //I don't like it but it's more legible
-                //return !player.canChangeAssistantCard(); is cleaner but less legible
+                return !player.canChangeAssistantCard();
+                // if player can change, I will not accept the card
+                // if player can't change, I have no choice than to accept the card
             }
         }
         return true;
@@ -132,14 +131,14 @@ public class PianificationFase {
     private void endPhase() {
         if (playersInOrder.size() == players) {
             determinedOrder = true;
-            if (game.getTable().getBag().get().howManyTotStudents() < game.getNumOfRegisteredPlayers() * game.getNumOfRegisteredPlayers() + 1) {
+            if (game.getTable().getBag().orElseThrow().howManyTotStudents() < game.getNumOfRegisteredPlayers() * game.getNumOfRegisteredPlayers() + 1) {
                 game.setEndgame(true);
                 game.setendplayer(game.searchPlayerWithMostTower());
             } else {
                 game.buildClouds();
                 actualPlayer = 0;
                 game.getActionFase().startPhase(playersInOrder.get(actualPlayer));
-                countround++;
+                countRound++;
             }
         }
     }
@@ -167,7 +166,7 @@ public class PianificationFase {
 
     public void nextPlayer() {
         actualPlayer++;
-        if(actualPlayer >= playersInOrder.size()){
+        if (actualPlayer >= playersInOrder.size()) {
             reset();
         }
     }

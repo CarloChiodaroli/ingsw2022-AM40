@@ -17,7 +17,6 @@ public class Cloud extends StudentsManager {
     public Cloud(String id, int equalsStudents) {
         super(equalsStudents);
         this.id = id;
-
     }
 
     /**
@@ -35,8 +34,6 @@ public class Cloud extends StudentsManager {
                 color = (int) (Math.random() * 5);
             }
             bag.removeStudent(TeacherColor.values()[color]);
-
         }
-
     }
 }

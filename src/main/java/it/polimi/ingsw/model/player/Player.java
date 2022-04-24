@@ -2,9 +2,9 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.StudentsManager;
+import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.enums.TowerColor;
-import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.player.school.RoomTable;
 import it.polimi.ingsw.model.player.school.SchoolDashboard;
 import it.polimi.ingsw.model.table.Island;
@@ -27,17 +27,18 @@ public class Player {
 
     /**
      * Class Constructor
-     * @param game the game in which the player is playing
-     * @param name the name of the player, used to find two equal players
+     *
+     * @param game       the game in which the player is playing
+     * @param name       the name of the player, used to find two equal players
      * @param towerColor the color of the towers of the player
      */
-    public Player(Game game, String name, TowerColor towerColor){
+    public Player(Game game, String name, TowerColor towerColor) {
         this.game = game;
         this.name = name;
         this.personalDeck = new ArrayList<>();
         setPersonalDeck();
         this.dashboard = new SchoolDashboard(game.isThreePlayerGame(), towerColor);
-        if(game.getTable().getCoin()) this.money++;
+        if (game.getTable().getCoin()) this.money++;
         enable = false;
         //if(game.getTable().getCoin()) this.money++;
     }
@@ -45,18 +46,19 @@ public class Player {
     /**
      * Creates the different assistant cards of player's personal deck
      */
-    private void setPersonalDeck(){
-        if(!personalDeck.isEmpty()) personalDeck.clear();
-        for(int i = 1; i <= 10; i++){
+    private void setPersonalDeck() {
+        if (!personalDeck.isEmpty()) personalDeck.clear();
+        for (int i = 1; i <= 10; i++) {
             personalDeck.add(new AssistantCard(i));
         }
     }
 
     /**
      * Command for playing a card during the game
+     *
      * @param which to define which card we need to get from the deck
      */
-    public void playAssistantCard(AssistantCard which){
+    public void playAssistantCard(AssistantCard which) {
         personalDeck.stream()
                 .filter(which::equals)
                 .findAny()
@@ -67,62 +69,67 @@ public class Player {
 
     /**
      * Method to know if a player can play another card
+     *
      * @return true if he can, false if not
      */
-    public boolean canChangeAssistantCard(){
+    public boolean canChangeAssistantCard() {
         return !personalDeck.isEmpty();
     }
 
     /**
      * Adds a card to the player's personal card Deck
+     *
      * @param card card to be added
      */
-    public void giveAssistantCard(AssistantCard card){
-        if(!personalDeck.contains(card)) personalDeck.add(card);
+    public void giveAssistantCard(AssistantCard card) {
+        if (!personalDeck.contains(card)) personalDeck.add(card);
         sortPersonalDeck();
     }
 
     /**
      * Utility private method to sort the personal card Deck
      */
-    private void sortPersonalDeck(){
+    private void sortPersonalDeck() {
         Collections.sort(personalDeck);
     }
 
     /**
      * Getter
+     *
      * @return a list of Assistant Cards representing the personal card deck
      */
-    public List<AssistantCard> getPersonalDeck(){
+    public List<AssistantCard> getPersonalDeck() {
         return new ArrayList<>(personalDeck);
     }
 
     /**
      * Command to execute a student movement
-     * @param student is the Teacher Color of the student to move
-     * @param sourceId is the ID of the place to move the student from
+     *
+     * @param student       is the Teacher Color of the student to move
+     * @param sourceId      is the ID of the place to move the student from
      * @param destinationId is the ID of the place to move the student to
      */
-    public void moveStudent(TeacherColor student, String sourceId, String destinationId){
+    public void moveStudent(TeacherColor student, String sourceId, String destinationId) {
         controlEnable();
         Optional<StudentsManager> from = getStudentsManagerById(sourceId, student);
         Optional<StudentsManager> to = getStudentsManagerById(destinationId, student);
         game.getActionFase().request(student, from, to);
     }
 
-    public void moveStudent(TeacherColor studentA,TeacherColor studentB){
+    public void moveStudent(TeacherColor studentA, TeacherColor studentB) {
         controlEnable();
         game.getActionFase().request(this, studentA, studentB);
     }
 
     /**
      * Utility method to find the precise places to move the player to and from
-     * @param id is the ID of the desired students manager
+     *
+     * @param id    is the ID of the desired students manager
      * @param color is the color of the student which is moving
      * @return the wanted student manager
      */
-    public Optional<StudentsManager> getStudentsManagerById(String id, TeacherColor color){
-        switch(id){
+    public Optional<StudentsManager> getStudentsManagerById(String id, TeacherColor color) {
+        switch (id) {
             case "Room" -> {
                 return Optional.of(dashboard.getRoom().getTable(color));
             }
@@ -135,15 +142,16 @@ public class Player {
         }
     }
 
-    public StudentsManager getEntrance(){
+    public StudentsManager getEntrance() {
         return dashboard.getEntranceAsStudentsManager();
     }
 
     /**
      * Command to execute mother nature movement
+     *
      * @param steps is the number of steps to move mother nature
      */
-    public void moveMotherNature(int steps){
+    public void moveMotherNature(int steps) {
         controlEnable();
         game.getActionFase().request(this, steps);
     }
@@ -151,19 +159,20 @@ public class Player {
     /**
      * Command that triggers the influence count
      */
-    public void calcInfluence(){
+    public void calcInfluence() {
         controlEnable();
         game.getActionFase().request(this, "MotherNature");
     }
 
     /**
      * Utility used for influence count
+     *
      * @return a list of colors of the possessed teachers
      */
-    public List<TeacherColor> getTeachers(){
+    public List<TeacherColor> getTeachers() {
         List<TeacherColor> teachers = new ArrayList<>();
-        for(TeacherColor color: TeacherColor.values()){
-            if(dashboard.getRoom().getTable(color).hasTeacher()){
+        for (TeacherColor color : TeacherColor.values()) {
+            if (dashboard.getRoom().getTable(color).hasTeacher()) {
                 teachers.add(color);
             }
         }
@@ -172,73 +181,77 @@ public class Player {
 
     /**
      * Utility used for the influence count, represents the movement of the tower from the player Dashboard
+     *
      * @return the color of the asked tower if the player has towers to place
      * @throws InvalidParameterException sent when there are no more towers, in a normal play this scenario should be not possible
      */
-    public TowerColor getTower(int howManyTowers) throws InvalidParameterException{
+    public TowerColor getTower(int howManyTowers) throws InvalidParameterException {
         boolean result = dashboard.getTower(howManyTowers);
-        if(result){
+        if (result) {
             return dashboard.getTowerColor();
         } else {
             throw new InvalidParameterException("Player has no more Towers to give");
         }
     }
 
-    public TowerColor getTowerColor(){
+    public TowerColor getTowerColor() {
         return dashboard.getTowerColor();
     }
 
-    public RoomTable getRoomTable(TeacherColor color){
+    public RoomTable getRoomTable(TeacherColor color) {
         return dashboard.getRoom().getTable(color);
     }
 
 
     /**
      * Utility used to give a tower back to a player
+     *
      * @param howManyTowers is the number of towers to give to the player
      */
-    public void pushTower(int howManyTowers){
+    public void pushTower(int howManyTowers) {
         dashboard.pushTower(howManyTowers);
     }
 
     /**
      * Command to choose which cloud the player wants
+     *
      * @param cloudId is the id of the chosen cloud
      */
-    public void chooseCloud(String cloudId){
+    public void chooseCloud(String cloudId) {
         game.getActionFase().request(this, cloudId);
     }
 
     /**
      * Getter of the name
+     *
      * @return the name of the player
      */
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public void playCharacterCard(Characters characters){
+    public void playCharacterCard(Characters characters) {
         controlEnable();
         game.getActionFase().activateCard(characters, this);
     }
 
-    public void playCharacterCard(Characters characters, TeacherColor color){
+    public void playCharacterCard(Characters characters, TeacherColor color) {
         controlEnable();
         game.getActionFase().activateCard(characters, this, color);
     }
 
-    public void playCharacterCard(Characters characters, Island island){
+    public void playCharacterCard(Characters characters, Island island) {
         controlEnable();
         game.getActionFase().activateCard(characters, this, island);
     }
 
-    public void playCharacterCard(Characters characters, TowerColor color){
+    public void playCharacterCard(Characters characters, TowerColor color) {
         controlEnable();
         game.getActionFase().activateCard(characters, this, color);
     }
 
-    public boolean pay(int howMuch){
-        if(money >= howMuch){
+    public boolean pay(int howMuch) {
+        if (money >= howMuch) {
             money -= howMuch;
             return true;
         } else {
@@ -246,11 +259,11 @@ public class Player {
         }
     }
 
-    public int getMoney(){
+    public int getMoney() {
         return money;
     }
 
-    public void giveMoney(int howMuch){
+    public void giveMoney(int howMuch) {
         money += howMuch;
     }
 
@@ -277,24 +290,23 @@ public class Player {
                 '}';
     }
 
-    public int getNumberTowersLeft()
-    {
+    public int getNumberTowersLeft() {
         return dashboard.getNumOfTowers();
     }
 
-    public void enable(){
+    public void enable() {
         enable = true;
     }
 
-    public void disable(){
+    public void disable() {
         enable = false;
     }
 
-    public boolean isEnabled(){
+    public boolean isEnabled() {
         return enable;
     }
 
-    private void controlEnable() throws IllegalStateException{
-        if(!isEnabled()) throw new IllegalStateException("Player can't make any moves now");
+    private void controlEnable() throws IllegalStateException {
+        if (!isEnabled()) throw new IllegalStateException("Player can't make any moves now");
     }
 }

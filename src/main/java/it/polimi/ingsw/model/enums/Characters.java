@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.enums;
 
 public enum Characters {
+
+    // The characters are listed as in the player's handbook
     FRIAR,
     HOST,
     CRIER,
@@ -14,7 +16,7 @@ public enum Characters {
     QUEEN,
     THIEF;
 
-    public static CharacterCardType getClassOfCard(Characters type){
+    public static CharacterCardType getClassOfCard(Characters type) {
         return switch (type) {
             case HOST, FRIAR, QUEEN, THIEF, JESTER, MINSTREL -> CharacterCardType.STUDENT;
             case MESSENGER -> CharacterCardType.MOTHER;

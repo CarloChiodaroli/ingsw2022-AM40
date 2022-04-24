@@ -8,7 +8,7 @@ public class RoomTable extends StudentsManager implements Comparable<RoomTable> 
     private final TeacherColor teacherColor;
     private boolean teacherPresence;
 
-    public RoomTable(TeacherColor teacherColor){
+    public RoomTable(TeacherColor teacherColor) {
         super(10, 10);
         this.teacherPresence = false;
         this.teacherColor = teacherColor;
@@ -31,26 +31,36 @@ public class RoomTable extends StudentsManager implements Comparable<RoomTable> 
     /**
      * getter
      */
-    public boolean hasTeacher(){
+    public boolean hasTeacher() {
         return teacherPresence;
     }
 
     /**
      * assigned to numOfStudents the number of students there are in the room
      */
-    public int howManyStudentsColor(){
+    public int howManyStudents() {
         return super.howManyStudents(teacherColor);
+    }
+
+    public int howManyStudents(TeacherColor color) {
+        return super.howManyStudents(color);
     }
 
     /**
      * add one student to the room
      */
-    public void add1Student(){
-        super.addStudent(teacherColor);
+    public boolean addStudent() {
+        return super.addStudent(teacherColor);
     }
 
-    public boolean removeTeacher(){
-        if(teacherPresence){
+    public boolean addStudent(TeacherColor color) {
+        if (color != teacherColor) return false;
+        return super.addStudent(teacherColor);
+    }
+
+    @Deprecated
+    public boolean removeTeacher() {
+        if (teacherPresence) {
             teacherPresence = false;
             return true;
         } else {
@@ -60,6 +70,6 @@ public class RoomTable extends StudentsManager implements Comparable<RoomTable> 
 
     @Override
     public int compareTo(RoomTable o) {
-        return howManyStudentsColor() - o.howManyStudentsColor();
+        return howManyStudents() - o.howManyStudents();
     }
 }

@@ -47,7 +47,7 @@ public class Influence extends ActionFaseState {
 
     public Player winnerFinder(List<Player> players, Map<Player, Integer> influences) {
         int maxInfluence = players.stream().map(influences::get)
-                .mapToInt(influence -> influence).max().getAsInt();  //for how is written there will be always a value
+                .mapToInt(influence -> influence).max().orElseThrow();
         Player tmpMaxInfluencePlayer = null;
         for (Player iPlayer : players) {
             if (influences.get(iPlayer) == maxInfluence) {

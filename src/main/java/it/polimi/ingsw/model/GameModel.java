@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model;
 
 
+import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.enums.TowerColor;
-import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.player.AssistantCard;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Cloud;
@@ -40,7 +40,7 @@ public class GameModel {
     public void startGame() {
         try {
             game.gameStarter();
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             throw new GameModelException(e.getMessage());
         }
     }
@@ -107,7 +107,7 @@ public class GameModel {
      * @param destinationId the id og the destination of the movement of the student
      */
     public void moveStudent(String playerName, TeacherColor color, String sourceId, String destinationId)
-            throws GameModelException, NoSuchElementException{
+            throws GameModelException, NoSuchElementException {
         Player player = getPlayer(playerName);
         try {
             player.moveStudent(color, sourceId, destinationId);
@@ -177,7 +177,7 @@ public class GameModel {
         Player player = getPlayer(playerName);
         try {
             player.chooseCloud(cloudId);
-        } catch (IllegalStateException  e) {
+        } catch (IllegalStateException e) {
             throw new GameModelException(e.getMessage());
         } catch (InvalidParameterException | NoSuchElementException e) {
             throw new InvalidParameterException(e.getMessage());
@@ -196,7 +196,7 @@ public class GameModel {
             player.playCharacterCard(character);
         } catch (InvalidParameterException | NoSuchElementException e) {
             throw new InvalidParameterException(e.getMessage());
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             throw new GameModelException(e.getMessage());
         }
     }
@@ -207,7 +207,7 @@ public class GameModel {
             player.playCharacterCard(character, color);
         } catch (InvalidParameterException | NoSuchElementException e) {
             throw new InvalidParameterException(e.getMessage());
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             throw new GameModelException(e.getMessage());
         }
     }
@@ -218,7 +218,7 @@ public class GameModel {
             player.playCharacterCard(character, game.getTable().getIslandById(islandId).orElseThrow());
         } catch (InvalidParameterException | NoSuchElementException e) {
             throw new InvalidParameterException(e.getMessage());
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             throw new GameModelException(e.getMessage());
         }
     }
@@ -229,7 +229,7 @@ public class GameModel {
             player.playCharacterCard(character, color);
         } catch (InvalidParameterException | NoSuchElementException e) {
             throw new InvalidParameterException(e.getMessage());
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             throw new GameModelException(e.getMessage());
         }
     }
@@ -245,7 +245,7 @@ public class GameModel {
     public Map<TeacherColor, Integer> getStudentsInIsland(String islandId) {
         Island island;
         try {
-            island = (Island) game.getTable().getIslandById(islandId).orElseThrow();
+            island = game.getTable().getIslandById(islandId).orElseThrow();
         } catch (NoSuchElementException e) {
             System.err.println("No island with " + islandId + " found");
             return new HashMap<>();
@@ -266,7 +266,7 @@ public class GameModel {
     public Optional<TowerColor> getTowerInIsland(String islandId) {
         Island island;
         try {
-            island = (Island) game.getTable().getIslandById(islandId).orElseThrow();
+            island = game.getTable().getIslandById(islandId).orElseThrow();
         } catch (NoSuchElementException e) {
             System.err.println("No island with " + islandId + " found");
             return Optional.empty();
@@ -294,7 +294,7 @@ public class GameModel {
     public Map<TeacherColor, Integer> getStudentsInCloud(String cloudId) {
         Cloud cloud;
         try {
-            cloud = (Cloud) game.getTable().getCloudById(cloudId).orElseThrow();
+            cloud = game.getTable().getCloudById(cloudId).orElseThrow();
         } catch (NoSuchElementException e) {
             System.err.println("No island with " + cloudId + " found");
             return new HashMap<>();
@@ -327,7 +327,7 @@ public class GameModel {
     }
 
     /**
-     * Gets which cards Character cards are enabled to be chosen in a Action Phase round
+     * Gets which cards Character cards are enabled to be chosen in an Action Phase round
      *
      * @return a list of Characters the cards of which are usable
      */
@@ -417,28 +417,28 @@ public class GameModel {
         return studentContent;
     }
 
-    public List<String> getAllIslandIds(){
+    public List<String> getAllIslandIds() {
         return game.getTable().getIslandList().stream()
                 .map(Island::getId)
                 .collect(Collectors.toList());
     }
 
-    public List<String> getPlayersInOrder(){
+    public List<String> getPlayersInOrder() {
         return game.getPianificationFase().getPlayersInOrder().stream()
                 .map(Player::getName)
                 .collect(Collectors.toList());
     }
 
-    public Map<TeacherColor, Integer> getActualCardMemory(){
+    public Map<TeacherColor, Integer> getActualCardMemory() {
         return getCardMemory(game.getActionFase().getActualCharacter()
                 .orElseThrow(() -> new IllegalStateException("No card has been activated")));
     }
 
-    public Map<TeacherColor, Integer> getCardMemory(Characters character){
+    public Map<TeacherColor, Integer> getCardMemory(Characters character) {
         Map<TeacherColor, Integer> studentContent = new HashMap<>();
         Optional<StudentsManager> tmp = game.getActionFase().getCardMemory(character);
         for (TeacherColor color : TeacherColor.values()) {
-            if(tmp.isEmpty()){
+            if (tmp.isEmpty()) {
                 studentContent.put(color, 0);
             } else {
                 studentContent.put(color, tmp.get().howManyStudents(color));
@@ -447,11 +447,11 @@ public class GameModel {
         return studentContent;
     }
 
-    public boolean isGameEnded(){
+    public boolean isGameEnded() {
         return game.isGameEnded();
     }
 
-    public Game getGame(){
+    public Game getGame() {
         return game;
     }
 }

@@ -52,7 +52,7 @@ public class Game {
     /**
      * Method which effectively starts the game creating all necessary objects
      */
-    public void gameStarter() throws IllegalStateException{
+    public void gameStarter() throws IllegalStateException {
         if (numOfRegisteredPlayers < 2)
             throw new IllegalStateException("Not enough players");
         table = new Table(numOfRegisteredPlayers);
@@ -75,8 +75,8 @@ public class Game {
         pianificationFase.activate();
     }
 
-    public void updateState(){
-        if(pianificationFase.isInOrder()){
+    public void updateState() {
+        if (pianificationFase.isInOrder()) {
             actionFase.startPhase(pianificationFase.getActualPlayer());
         }
     }
@@ -148,13 +148,13 @@ public class Game {
         if (id.equals("Bag")) return table.getBag();
         if (id.contains("c_")) {
             Cloud tmp = table.getCloudById(id).orElse(null);
-            if(tmp == null) return Optional.empty();
-            return Optional.of((StudentsManager) tmp);
+            if (tmp == null) return Optional.empty();
+            return Optional.of(tmp);
         }
         if (id.contains("i_")) {
             Island tmp = table.getIslandById(id).orElse(null);
-            if(tmp == null) return Optional.empty();
-            return Optional.of((StudentsManager) tmp);
+            if (tmp == null) return Optional.empty();
+            return Optional.of(tmp);
         }
         return Optional.empty();
     }
@@ -202,7 +202,7 @@ public class Game {
         return endgame;
     }
 
-    public void endGame(){
+    public void endGame() {
         endgame = true;
     }
 
@@ -244,11 +244,11 @@ public class Game {
         return maxPlayer;
     }
 
-    public void nextPlayer(){
+    public void nextPlayer() {
         actionFase.reset();
         pianificationFase.getActualPlayer().disable();
         pianificationFase.nextPlayer();
-        if(pianificationFase.isInOrder()){
+        if (pianificationFase.isInOrder()) {
             actionFase.startPhase(pianificationFase.getActualPlayer());
         } else {
             pianificationFase.activate();

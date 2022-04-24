@@ -6,33 +6,36 @@ import java.util.Objects;
  * Represents the so-called "Assistant Cards" in the game
  */
 
-public class AssistantCard implements Comparable<AssistantCard>{
+public class AssistantCard implements Comparable<AssistantCard> {
 
     private final int weight;
     private final int numOfMotherNatureMovements;
 
     /**
      * Class Constructor
+     *
      * @param weight is the weight value written on the card
      */
-    public AssistantCard(int weight){
+    public AssistantCard(int weight) {
         this.weight = weight;
         this.numOfMotherNatureMovements = (int) ((weight + 1) / 2F);
     }
 
     /**
      * Getter of the weight value
+     *
      * @return the weight value
      */
-    public int getWeight(){
+    public int getWeight() {
         return weight;
     }
 
     /**
      * Getter of the hop count
+     *
      * @return the hop count
      */
-    public int getNumOfMotherNatureMovements(){
+    public int getNumOfMotherNatureMovements() {
         return numOfMotherNatureMovements;
     }
 

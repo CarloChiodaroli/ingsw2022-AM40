@@ -7,27 +7,33 @@ import it.polimi.ingsw.model.table.Island;
 
 import java.util.Optional;
 
-public abstract class ActionFaseState{
+public abstract class ActionFaseState {
 
     private final ActionFase actionFase;
 
-    protected ActionFaseState(ActionFase actionFase){
+    protected ActionFaseState(ActionFase actionFase) {
         this.actionFase = actionFase;
     }
 
-    protected void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) {    };
+    protected void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) {
+    }
 
-    protected void handle(Player player, TeacherColor fromColor, TeacherColor toColor) {    };
+    protected void handle(Player player, TeacherColor fromColor, TeacherColor toColor) {
+    }
 
-    protected void handle(Player player, int steps, int maxSteps) {    };
+    protected void handle(Player player, int steps, int maxSteps) {
+    }
 
-    protected void handle(Player player, Island island) {    };
+    protected void handle(Player player, Island island) {
+    }
 
-    protected void handle(Player player, StudentsManager cloud) {    }
+    protected void handle(Player player, StudentsManager cloud) {
+    }
 
-    protected void handle() {    }
+    protected void handle() {
+    }
 
-    public ActionFase getActionFase(){
+    public ActionFase getActionFase() {
         return actionFase;
     }
 }

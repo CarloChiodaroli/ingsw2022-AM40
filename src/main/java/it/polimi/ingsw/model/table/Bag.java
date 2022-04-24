@@ -1,66 +1,59 @@
 package it.polimi.ingsw.model.table;
+
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.enums.TeacherColor;
 
+import java.util.Arrays;
+import java.util.List;
+
 
 public class Bag extends StudentsManager {
+
+    private final static int defaultColorNumOfStudents = 26;
+    private final static int defaultTotalNumOfStudents = defaultColorNumOfStudents * 5;
+
+
     /**
-     *
-     * @param maxStudents Max number of student
+     * @param maxStudents      Max number of student
      * @param maxStudentsColor Max number of student for each color
      */
-    public Bag(int maxStudents,int maxStudentsColor)
-    {
-        super(maxStudents,maxStudentsColor);
-
-        for(TeacherColor color : TeacherColor.values()){
-            for(int i = 0; i < 26; i++){
+    public Bag(int maxStudents, int maxStudentsColor) {
+        super(maxStudents, maxStudentsColor);
+        for (TeacherColor color : TeacherColor.values()) {
+            for (int i = 0; i < maxStudentsColor; i++) {
                 this.addStudent(color);
             }
         }
     }
 
+    public Bag() {
+        super(defaultTotalNumOfStudents, defaultColorNumOfStudents);
+        for (TeacherColor color : TeacherColor.values()) {
+            for (int i = 0; i < defaultColorNumOfStudents; i++) {
+                this.addStudent(color);
+            }
+        }
+    }
+
+    public boolean isEmpty() {
+        return howManyTotStudents() == 0;
+    }
+
     /**
-     *
      * @return TeacherColor It returns a casual color
      */
-    public TeacherColor getAStudent()
-    {
-        int i = (int) (Math.random()*5);
-        boolean find = false;
-        while(!find) {
-            if (i == 0 && howManyStudents(TeacherColor.YELLOW) > 0) {
-                removeStudent(TeacherColor.YELLOW);
-                return TeacherColor.YELLOW;
+    public TeacherColor getAStudent() {
+        if (isEmpty()) return null;
+        int i;
+        List<TeacherColor> colors = Arrays.asList(TeacherColor.values());
+        do {
+            i = (int) (Math.random() * 5);
+            if (howManyStudents(colors.get(i)) > 0) {
+                removeStudent(colors.get(i));
+                return colors.get(i);
             }
-            if (i == 0 && howManyStudents(TeacherColor.YELLOW) == 0)
-                i = (int) (Math.random()*5);
-            if (i == 1 && howManyStudents(TeacherColor.PINK) > 0) {
-                removeStudent(TeacherColor.PINK);
-                return TeacherColor.PINK;
-            }
-            if (i == 1 && howManyStudents(TeacherColor.PINK) == 0)
-                i = (int) (Math.random() * 5);
-            if (i == 2 && howManyStudents(TeacherColor.RED) > 0) {
-                removeStudent(TeacherColor.RED);
-                return TeacherColor.RED;
-            }
-            if (i == 2 && howManyStudents(TeacherColor.RED) == 0)
-                i = (int) (Math.random() * 5);
-            if (i == 3 && howManyStudents(TeacherColor.GREEN) > 0) {
-                removeStudent(TeacherColor.GREEN);
-                return TeacherColor.GREEN;
-            }
-            if (i == 3 && howManyStudents(TeacherColor.GREEN) == 0)
-                i = (int) (Math.random() * 5);
-            if (i == 4 && howManyStudents(TeacherColor.BLUE) > 0) {
-                removeStudent(TeacherColor.BLUE);
-                return TeacherColor.BLUE;
-            }
-            if (i == 4 && howManyStudents(TeacherColor.BLUE) == 0)
-                i = (int) (Math.random() * 5);
-        }
-        return null;
+            if (isEmpty()) return null;
+        } while (true);
     }
 
 }

@@ -118,10 +118,8 @@ public abstract class CharacterCard extends ActionFaseState {
         return actualPlayer;
     }
 
-    public boolean playerPays(Player player) throws InvalidParameterException {
-        if (player.pay(getPrice())) {
-            return true;
-        } else throw new InvalidParameterException("Player cannot pay for the card");
+    public void playerPays(Player player) throws InvalidParameterException {
+        if (!player.pay(getPrice())) throw new InvalidParameterException("Player cannot pay for the card");
     }
 
     public Optional<StudentsManager> getStudentContainer() {

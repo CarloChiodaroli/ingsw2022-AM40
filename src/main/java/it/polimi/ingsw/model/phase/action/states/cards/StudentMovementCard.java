@@ -10,7 +10,6 @@ import it.polimi.ingsw.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.model.phase.action.states.StudentMovement;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Bag;
-import it.polimi.ingsw.model.table.Island;
 
 import java.security.InvalidParameterException;
 import java.util.List;
@@ -103,8 +102,9 @@ public class StudentMovementCard extends CharacterCard {
 
             if (maxPlayer.isPresent() &&
                     !maxPlayer.get().equals(player) &&
-                    maxPlayer.get().getRoomTable(color).howManyStudentsColor() == player.getRoomTable(color).howManyStudentsColor()) {
-                player.getRoomTable(color).setTeacherPresence(maxPlayer.get().getRoomTable(color).removeTeacher());
+                    maxPlayer.get().getRoomTable(color).howManyStudents() == player.getRoomTable(color).howManyStudents()) {
+                player.getRoomTable(color).setTeacherPresence(true);
+                maxPlayer.get().getRoomTable(color).setTeacherPresence(false);
             }
         }
     }
@@ -115,5 +115,9 @@ public class StudentMovementCard extends CharacterCard {
 
     public Optional<StudentsManager> getStudentContainer(){
         return Optional.ofNullable(students);
+    }
+
+    public int getMaxUsages(){
+        return maxUsages;
     }
 }

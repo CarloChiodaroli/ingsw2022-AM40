@@ -83,6 +83,6 @@ public class InfluenceCard extends CharacterCard {
     }
 
     public void activator(ActionFaseState decorated, Player player, TowerColor color) {
-        if (super.activator(player, color)) this.decorated = (Influence) decorated;;
+        if (super.activator(player, color)) this.decorated = (Influence) decorated;
     }
 }

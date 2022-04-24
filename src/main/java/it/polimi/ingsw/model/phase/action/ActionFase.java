@@ -342,7 +342,7 @@ public class ActionFase {
     /**
      * Controls if, chosen a character, if it's card is playable
      *
-     * @param character the intresting character
+     * @param character the interesting character
      * @return true if it is, else false
      */
     public boolean canBeActivated(Characters character) {

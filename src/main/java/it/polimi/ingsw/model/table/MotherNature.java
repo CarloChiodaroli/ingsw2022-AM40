@@ -4,41 +4,36 @@ import java.util.Optional;
 
 public class MotherNature {
 
-    private static MotherNature istance = null;
-    private Island island=null;
+    private static MotherNature instance = null;
+    private Island island = null;
+
     /**
-     * CLASS MOTHERNATURE
-     * Design pattern : Singleton
+     * Class constructor
      */
-    private MotherNature()
-    {
+    private MotherNature() {
     }
 
-    public static MotherNature getMotherNature()
-    {
-        if(istance==null)
-            istance=new MotherNature();
-        return istance;
+    public static MotherNature getMotherNature() {
+        if (instance == null)
+            instance = new MotherNature();
+        return instance;
     }
 
     /**
-     *
-     * @return Island Mothernature's Island
+     * @return Island MotherNature's Island
      */
-    public Optional<Island> getPosition()
-    {
+    public Optional<Island> getPosition() {
         return Optional.ofNullable(island);
     }
+
     /**
-     *
-     * set Mothernature's Island
+     * set MotherNature's Island
      */
-    public void setPosition(Island island)
-    {
-        this.island=island;
+    public void setPosition(Island island) {
+        this.island = island;
     }
 
-    public void resetPosition(){
+    public void resetPosition() {
         this.island = null;
     }
 }

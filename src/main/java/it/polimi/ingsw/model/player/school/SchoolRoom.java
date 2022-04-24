@@ -10,9 +10,9 @@ public class SchoolRoom {
     /**
      * construction of 5 rooms, one for each color
      */
-    public SchoolRoom(){
+    public SchoolRoom() {
         table = new ArrayList<>();
-        for(TeacherColor color: TeacherColor.values()){
+        for (TeacherColor color : TeacherColor.values()) {
             table.add(new RoomTable(color));
         }
     }
@@ -24,6 +24,6 @@ public class SchoolRoom {
     public RoomTable getTable(TeacherColor color) {
         return table.stream()
                 .filter(x -> x.getTeacherColor().equals(color))
-                .findFirst().get();
+                .findFirst().orElseThrow();
     }
 }
