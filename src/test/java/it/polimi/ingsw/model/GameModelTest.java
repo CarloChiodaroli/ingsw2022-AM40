@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.GameModelException;
+import it.polimi.ingsw.model.enums.ActionPhaseStateType;
 import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
@@ -318,11 +319,11 @@ public class GameModelTest {
         assertEquals(testIslandId, model.getMotherNaturePosition());
         assertEquals(aldo.getTowerColor(), island.getTowerColor().get());
         model.chooseCloud(aldoName, game.getTable().getCloudList().get(0).getId());
-        aldo.disable();
+        //aldo.disable();
 
         MotherNature.getMotherNature().setPosition(inpos);
 
-        giovanni.enable();
+        //giovanni.enable();
         for(int i = 0; i < 2; i++) {
             model.moveStudent(giovanniName, TeacherColor.PINK, "Entrance", testIslandId);
         }
@@ -335,6 +336,11 @@ public class GameModelTest {
         assertInvalidParameterException(() -> model.playCharacterCard(giovanniName, Characters.CENTAUR));
         giovanni.giveMoney(3);
         model.playCharacterCard(giovanniName, Characters.CENTAUR);
+
+        //model.getGame().getActionFase().setCalculatedInfluence(false);
+        //model.getGame().getActionFase().setMovedMotherNature(true);
+        //model.getGame().getActionFase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
+
         model.calcInfluence(giovanniName);
         assertEquals(testIslandId, model.getMotherNaturePosition());
         assertEquals(giovanni.getTowerColor(), island.getTowerColor().get());

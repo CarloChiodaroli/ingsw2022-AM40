@@ -28,7 +28,7 @@ public class CharacterCardFabricTest {
 
         CharacterCard card = CharacterCardFabric.createCard(character, game.getActionFase());
 
-        switch(CharacterCardFabric.getClassOfCard(character)){
+        switch(character.getType()){
             case STUDENT -> {
                 assertEquals(StudentMovementCard.class, card.getClass());
                 assertNotEquals(InfluenceCard.class, card.getClass());

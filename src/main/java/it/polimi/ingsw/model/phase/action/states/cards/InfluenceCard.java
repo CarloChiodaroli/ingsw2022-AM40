@@ -74,11 +74,21 @@ public class InfluenceCard extends CharacterCard {
         playerPays(player);
         super.activator(player, island);
         this.decorated = (Influence) decorated;
-        if (super.getCharacterization("Memory") > 0) {
+        if (super.getCharacterization("NoEntrySetter") > 0) {
             if (!island.hasNoEntryTile()) {
                 island.setNoEntry(true);
                 noEntryCounter--;
             }
         }
+    }
+
+    public void giveNoEntryBack(){
+        if(super.getCharacterization("NoEntrySetter") > 0){
+            throw new IllegalStateException("Card does not manage no entry cards");
+        }
+        if(noEntryCounter == super.getCharacterization("Memory")){
+            throw new IllegalStateException("Card has already got back all no entry tiles");
+        }
+        noEntryCounter++;
     }
 }

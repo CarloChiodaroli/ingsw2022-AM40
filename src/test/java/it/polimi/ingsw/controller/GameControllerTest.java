@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameModelException;
 import it.polimi.ingsw.model.StudentsManager;
+import it.polimi.ingsw.model.enums.ActionPhaseStateType;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
@@ -293,6 +294,7 @@ public class GameControllerTest {
 
         game.getActionFase().setCalculatedInfluence(false);
         game.getActionFase().setMovedMotherNature(true);
+        game.getActionFase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
 
         controller.calcInfluence(aldoName);
 
@@ -311,6 +313,7 @@ public class GameControllerTest {
 
         game.getActionFase().setCalculatedInfluence(true);
         game.getActionFase().setChosenCloud(false);
+        game.getActionFase().setActualState(ActionPhaseStateType.CLOUD.getOrderPlace());
 
         Map<TeacherColor, Integer> cloudContent = new HashMap<>();
 
@@ -346,6 +349,7 @@ public class GameControllerTest {
     public void playCharacterCardTest(){
         game.getActionFase().getCharacterCards().add(CharacterCardFabric.createCard(Characters.FRIAR, game.getActionFase()));
 
+        controller.getModel().getGame().getActionFase().setActualState(Characters.FRIAR.getType().getOrderPlace());
         aldo.giveMoney(3);
         controller.playCharacterCard(aldoName, Characters.FRIAR);
 
@@ -356,6 +360,7 @@ public class GameControllerTest {
     public void playCharacterCardTeacherColorTest(){
         game.getActionFase().getCharacterCards().add(CharacterCardFabric.createCard(Characters.SORCERER, game.getActionFase()));
 
+        controller.getModel().getGame().getActionFase().setActualState(Characters.SORCERER.getType().getOrderPlace());
         aldo.giveMoney(3);
         controller.playCharacterCard(aldoName, Characters.SORCERER, TeacherColor.PINK);
 
@@ -366,6 +371,7 @@ public class GameControllerTest {
     public void playCharacterCardIslandTest(){
         game.getActionFase().getCharacterCards().add(CharacterCardFabric.createCard(Characters.CRIER, game.getActionFase()));
 
+        controller.getModel().getGame().getActionFase().setActualState(Characters.CRIER.getType().getOrderPlace());
         aldo.giveMoney(3);
         controller.playCharacterCard(aldoName, Characters.CRIER, testIslandId);
 

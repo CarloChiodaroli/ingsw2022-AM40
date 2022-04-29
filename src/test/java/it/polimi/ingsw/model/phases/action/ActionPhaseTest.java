@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.enums.ActionPhaseStateType;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.phase.action.ActionPhase;
@@ -104,6 +105,7 @@ public class ActionPhaseTest {
         assertThrowsIllegalStateException(() -> actionPhase.request(camilla, "MotherNature"));
 
         actionPhase.setMovedMotherNature(true);
+        game.getActionFase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
         //camilla.calcInfluence();
         actionPhase.request(camilla, "MotherNature");
 
@@ -115,6 +117,8 @@ public class ActionPhaseTest {
         assertThrowsIllegalStateException(() -> actionPhase.request(camilla, "MotherNature"));
         assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
         actionPhase.setCalculatedInfluence(false);
+        actionPhase.setMergedIslands(false);
+        actionPhase.setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
 
         testIsland.addStudent(TeacherColor.BLUE);
         testIsland.addStudent(TeacherColor.BLUE);
@@ -180,6 +184,8 @@ public class ActionPhaseTest {
         MotherNature.getMotherNature().setPosition(testIsland);
 
         actionPhase.setMovedMotherNature(true);
+        game.getActionFase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
+
         camilla.calcInfluence();
         assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
 
@@ -188,12 +194,16 @@ public class ActionPhaseTest {
 
         actionPhase.setMovedMotherNature(true);
         actionPhase.setCalculatedInfluence(false);
+        actionPhase.setMergedIslands(false);
+        game.getActionFase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
 
         camilla.calcInfluence();
         assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
 
         actionPhase.setMovedMotherNature(true);
         actionPhase.setCalculatedInfluence(false);
+        actionPhase.setMergedIslands(false);
+        game.getActionFase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
 
         camilla.giveMoney(2);
         actionPhase.activateCard(Characters.SORCERER, game.getPlayers().get(0), TeacherColor.PINK);
@@ -201,10 +211,11 @@ public class ActionPhaseTest {
         assertThrowsIllegalStateException(() -> actionPhase.request(camilla, "c_1"));
         camilla.calcInfluence();
         actionPhase.setCalculatedInfluence(true);
+        game.getActionFase().setActualState(ActionPhaseStateType.CLOUD.getOrderPlace());
         assertEquals(camilla.getTowerColor(), testIsland.getTowerColor().get());
 
         assertThrowsNoSuchElementException(() -> actionPhase.request(camilla, "casual"));
-        actionPhase.request(camilla, game.getTable().getCloudList().get(1).getId());
+        assertDoesNotThrow(() -> actionPhase.request(camilla, game.getTable().getCloudList().get(1).getId()));
         assertThrowsIllegalStateException(() -> actionPhase.request(anja, game.getTable().getCloudList().get(0).getId()));
         assertThrowsIllegalStateException(() -> actionPhase.request(camilla, "c_1"));
 
@@ -268,6 +279,7 @@ public class ActionPhaseTest {
         testIsland.addStudent(TeacherColor.PINK);
 
         camilla.giveMoney(2);
+        game.getActionFase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
         camilla.playCharacterCard(Characters.CRIER, specialTestIsland);
         //actionPhase.activateCard(Characters.CRIER, camilla, specialTestIsland);
 
@@ -384,6 +396,7 @@ public class ActionPhaseTest {
         assertThrowsIllegalStateException(() -> actionPhase.request());
 
         actionPhase.setCalculatedInfluence(true);
+        actionPhase.setActualState(ActionPhaseStateType.MERGE.getOrderPlace());
         actionPhase.request();
         assertEquals(11, game.getTable().getIslandList().size());
 

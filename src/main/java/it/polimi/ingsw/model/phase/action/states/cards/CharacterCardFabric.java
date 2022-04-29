@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.phase.action.states.cards;
 
-import it.polimi.ingsw.model.enums.CharacterCardType;
+import it.polimi.ingsw.model.enums.ActionPhaseStateType;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.phase.action.states.CharacterCard;
@@ -8,6 +8,8 @@ import it.polimi.ingsw.model.phase.action.states.CharacterCard;
 import java.util.*;
 
 public class CharacterCardFabric {
+
+    private final static Map<Characters, Map<String, Integer>> particularities = allParticularities();
 
     public static List<CharacterCard> getCards(ActionPhase actionPhase) {
         List<CharacterCard> enabledCharacterCards = new ArrayList<>();
@@ -27,12 +29,11 @@ public class CharacterCardFabric {
     }
 
     public static CharacterCard createCard(Characters type, ActionPhase actionPhase) {
-        CharacterCardType classOfCard = getClassOfCard(type);
-        return switch (classOfCard) {
-            case STUDENT -> new StudentMovementCard(type, actionPhase, getCharacterization(type));
-            case MOTHER -> new MotherNatureCard(type, actionPhase, getCharacterization(type));
-            case INFLUENCE -> new InfluenceCard(type, actionPhase, getCharacterization(type));
-        };
+        List<CharacterCard> possibleCards = new ArrayList<>();
+        possibleCards.add(ActionPhaseStateType.STUDENT.getOrderPlace(), new StudentMovementCard(type, actionPhase, getCharacterization(type)));
+        possibleCards.add(ActionPhaseStateType.MOTHER.getOrderPlace(), new MotherNatureCard(type, actionPhase, getCharacterization(type)));
+        possibleCards.add(ActionPhaseStateType.INFLUENCE.getOrderPlace(), new InfluenceCard(type, actionPhase, getCharacterization(type)));
+        return possibleCards.get(type.getType().getOrderPlace());
     }
 
     public static Characters getRandomCharacter() {
@@ -62,93 +63,72 @@ public class CharacterCardFabric {
         return result;
     }
 
-    public static Map<String, Integer> getCharacterization(Characters characters) {
-        Map<String, Integer> result = createBaseCharacterization();
-        switch (characters) {
-            case HOST -> {
-                result.replace("Price", 2);
-                result.replace("Usages", 3); // How many times is the card used
-                result.replace("TeacherBehaviour", 1);
-                return result;
-            }
-            case FRIAR -> {
-                result.replace("Price", 1);
-                result.replace("Memory", 4);
-                result.replace("Usages", 1);
-                result.replace("Island", 1);
-                return result;
-            }
-            case QUEEN -> {
-                result.replace("Price", 2);
-                result.replace("Memory", 4);
-                result.replace("Usages", 1);
-                result.replace("Room", 1);
-                result.replace("Player", 1);
-                return result;
-            }
-            case THIEF -> {
-                result.replace("Price", 3);
-                result.replace("EffectAllPlayers", 1);
-                return result;
-            }
-            case JESTER -> {
-                result.replace("Price", 1);
-                result.replace("Memory", 6);
-                result.replace("Usages", 3);
-                result.replace("Bidirectional", 1);
-                result.replace("Entrance", 1);
-                result.replace("Student", 2);
-                result.replace("Player", 1);
-                return result;
-            }
-            case MINSTREL -> {
-                result.replace("Price", 1);
-                result.replace("Usages", 2);
-                result.replace("Bidirectional", 1);
-                result.replace("Player", 1);
-                result.replace("Room", 1);
-                result.replace("Entrance", 1);
-                result.replace("Student", 2);
-                return result;
-            }
-            case MESSENGER -> {
-                result.replace("Price", 1);
-                return result;
-            }
-            case CRIER -> {
-                result.replace("Price", 3);
-                result.replace("Island", 1);
-                return result;
-            }
-            case KNIGHT -> {
-                result.replace("Price", 2);
-                result.replace("Player", 2);
-                return result;
-            }
-            case CENTAUR -> {
-                result.replace("Price", 3);
-                result.replace("Tower", 1);
-                return result;
-            }
-            case SORCERER -> {
-                result.replace("Price", 3);
-                result.replace("Student", 1);
-                return result;
-            }
-            case SORCERESS -> {
-                result.replace("Price", 2);
-                result.replace("Memory", 4);
-                result.replace("Island", 1);
-                result.replace("NoEntrySetter", 1);
-                return result;
-            }
-            default -> {
-                return result;
-            }
+    private static Map<Characters, Map<String, Integer>> allParticularities(){
+        Map<Characters, Map<String, Integer>> allCharacterizations = new HashMap<>();
+
+        for (Characters value : Characters.values()) {
+            allCharacterizations.put(value, new HashMap<>());
         }
+
+        allCharacterizations.get(Characters.FRIAR).put("Price", 1);
+        allCharacterizations.get(Characters.FRIAR).put("Memory", 4);
+        allCharacterizations.get(Characters.FRIAR).put("Usages", 1);
+        allCharacterizations.get(Characters.FRIAR).put("Island", 1);
+
+        allCharacterizations.get(Characters.HOST).put("Price", 2);
+        allCharacterizations.get(Characters.HOST).put("Usages", 3);
+        allCharacterizations.get(Characters.HOST).put("TeacherBehaviour", 1);
+
+        allCharacterizations.get(Characters.CRIER).put("Price", 3);
+        allCharacterizations.get(Characters.CRIER).put("Island", 1);
+
+        allCharacterizations.get(Characters.MESSENGER).put("Price", 1);
+
+        allCharacterizations.get(Characters.SORCERESS).put("Price", 2);
+        allCharacterizations.get(Characters.SORCERESS).put("Memory", 4);
+        allCharacterizations.get(Characters.SORCERESS).put("Island", 1);
+        allCharacterizations.get(Characters.SORCERESS).put("NoEntrySetter", 1);
+
+        allCharacterizations.get(Characters.CENTAUR).put("Price", 3);
+        allCharacterizations.get(Characters.CENTAUR).put("Tower", 1);
+
+        allCharacterizations.get(Characters.JESTER).put("Price", 1);
+        allCharacterizations.get(Characters.JESTER).put("Memory", 6);
+        allCharacterizations.get(Characters.JESTER).put("Usages", 3);
+        allCharacterizations.get(Characters.JESTER).put("Bidirectional", 1);
+        allCharacterizations.get(Characters.JESTER).put("Entrance", 1);
+        allCharacterizations.get(Characters.JESTER).put("Student", 2);
+        allCharacterizations.get(Characters.JESTER).put("Player", 1);
+
+        allCharacterizations.get(Characters.KNIGHT).put("Price", 2);
+        allCharacterizations.get(Characters.KNIGHT).put("Player", 2);
+
+        allCharacterizations.get(Characters.SORCERER).put("Price", 3);
+        allCharacterizations.get(Characters.SORCERER).put("Student", 1);
+
+        allCharacterizations.get(Characters.MINSTREL).put("Price", 1);
+        allCharacterizations.get(Characters.MINSTREL).put("Usages", 2);
+        allCharacterizations.get(Characters.MINSTREL).put("Bidirectional", 1);
+        allCharacterizations.get(Characters.MINSTREL).put("Player", 1);
+        allCharacterizations.get(Characters.MINSTREL).put("Room", 1);
+        allCharacterizations.get(Characters.MINSTREL).put("Entrance", 1);
+        allCharacterizations.get(Characters.MINSTREL).put("Student", 2);
+
+        allCharacterizations.get(Characters.QUEEN).put("Price", 2);
+        allCharacterizations.get(Characters.QUEEN).put("Memory", 4);
+        allCharacterizations.get(Characters.QUEEN).put("Usages", 1);
+        allCharacterizations.get(Characters.QUEEN).put("Room", 1);
+        allCharacterizations.get(Characters.QUEEN).put("Player", 1);
+
+        allCharacterizations.get(Characters.THIEF).put("Price", 3);
+        allCharacterizations.get(Characters.THIEF).put("EffectAllPlayers", 1);
+
+        return allCharacterizations;
     }
 
-    public static CharacterCardType getClassOfCard(Characters type) {
-        return Characters.getClassOfCard(type);
+    public static Map<String, Integer> getCharacterization(Characters characters) {
+        Map<String, Integer> result = createBaseCharacterization();
+        particularities.get(characters).forEach(result::replace);
+        return result;
     }
 }

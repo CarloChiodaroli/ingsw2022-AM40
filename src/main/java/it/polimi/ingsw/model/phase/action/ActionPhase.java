@@ -2,12 +2,12 @@ package it.polimi.ingsw.model.phase.action;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.StudentsManager;
-import it.polimi.ingsw.model.enums.CharacterCardType;
+import it.polimi.ingsw.model.enums.ActionPhaseStateType;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.enums.TeacherColor;
-import it.polimi.ingsw.model.enums.TowerColor;
 import it.polimi.ingsw.model.phase.action.states.*;
 import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
+import it.polimi.ingsw.model.phase.action.states.cards.InfluenceCard;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.table.Island;
 import it.polimi.ingsw.model.table.MotherNature;
@@ -34,6 +34,7 @@ public class ActionPhase {
     private boolean calculatedInfluence;
     private boolean mergedIslands;
     private boolean chosenCloud;
+    private int actualState;
 
     // Expert variant attributes
     private final boolean expertVariant;
@@ -50,16 +51,17 @@ public class ActionPhase {
         this.expertVariant = game.isExpertVariant();
         this.activated = false;
         this.states = new ArrayList<>();
-        this.states.add(CharacterCardType.getEquivalentInt(CharacterCardType.STUDENT), new StudentMovement(this));
-        this.states.add(CharacterCardType.getEquivalentInt(CharacterCardType.MOTHER), new MotherNatureState(this));
-        this.states.add(CharacterCardType.getEquivalentInt(CharacterCardType.INFLUENCE), new Influence(this));
-        this.states.add(new MergeIsland(this));
-        this.states.add(new Finalize(this));
-        if (expertVariant) {
+        this.states.add(ActionPhaseStateType.STUDENT.getOrderPlace(), new StudentMovement(this));
+        this.states.add(ActionPhaseStateType.MOTHER.getOrderPlace(), new MotherNatureState(this));
+        this.states.add(ActionPhaseStateType.INFLUENCE.getOrderPlace(), new Influence(this));
+        this.states.add(ActionPhaseStateType.MERGE.getOrderPlace(), new MergeIsland(this));
+        this.states.add(ActionPhaseStateType.CLOUD.getOrderPlace(), new Finalize(this));
+        if (isExpertVariant()) {
             this.characterCards = CharacterCardFabric.getCards(this);
         } else {
             this.characterCards = null;
         }
+        actualState = -1;
     }
 
     public List<CharacterCard> getCharacterCards() {
@@ -84,8 +86,8 @@ public class ActionPhase {
         calculatedInfluence = false;
         mergedIslands = false;
         chosenCloud = false;
-
-        if (expertVariant) {
+        actualState = ActionPhaseStateType.STUDENT.getOrderPlace();
+        if (isExpertVariant()) {
             actualCard = null;
         }
     }
@@ -105,13 +107,37 @@ public class ActionPhase {
         isStateActivated();
         if (possibleStudentMovements <= 0 || calculatedInfluence)
             throw new IllegalStateException("Cannot move any students");
-        if (expertVariant &&
-                actualCard != null &&
-                Characters.getClassOfCard(actualCard.getCharacter()).equals(CharacterCardType.STUDENT) &&
+        if (isExpertVariant() &&
+                getActualCard().isPresent() &&
+                actualCard.getCharacter().getType().equals(ActionPhaseStateType.STUDENT) &&
                 actualCard.isInUse()) {
             actualCard.handle(teacherColor, from, to);
         } else {
-            states.get(0).handle(teacherColor, from, to);
+            states.get(actualState).handle(teacherColor, from, to);
+        }
+        possibleStudentMovements--;
+    }
+
+    /**
+     * It's a special student movement request needed by those cards who bidirectionally shift students between places.
+     * Since those cards move students between three well-defined places (player's school entrance, p.'s s. room and the card),
+     * at every call, thanks the context, is known if it's legal and what places are the ones to move students in and out.
+     *
+     * @param player   the player who makes the request
+     * @param studentA the color of the student from the player's entrance
+     * @param studentB the color of the student from the player's room or from the card
+     * @throws IllegalStateException is thrown when it's not the right moment nor the right game mode to use this kind of student movement
+     */
+    public void request(Player player, TeacherColor studentA, TeacherColor studentB) throws IllegalStateException {
+        isStateActivated();
+        controlExpertVariant();
+        controlActualCard();
+        if (possibleStudentMovements <= 0 || calculatedInfluence)
+            throw new IllegalStateException("Cannot move any students");
+        if (actualCard.isInUse()) {
+            actualCard.handle(player, studentA, studentB);
+        } else {
+            throw new IllegalStateException("Card has been already used");
         }
         possibleStudentMovements--;
     }
@@ -127,19 +153,21 @@ public class ActionPhase {
         isStateActivated();
         if (movedMotherNature)
             throw new IllegalStateException("Mother nature has been already moved once");
+        actualState = ActionPhaseStateType.MOTHER.getOrderPlace();
         int maxHops = game.getPianificationFase().getMotherNatureHops(player);
-        if (!expertVariant) {
-            states.get(1).handle(player, motherNatureHops, maxHops);
+        if (!isExpertVariant()) {
+            states.get(actualState).handle(player, motherNatureHops, maxHops);
         } else {
-            if (actualCard != null &&
+            if (getActualCard().isPresent() &&
                     actualCard.isInUse() &&
-                    CharacterCardFabric.getClassOfCard(actualCard.getCharacter()).equals(CharacterCardType.MOTHER)) {
+                    actualCard.getCharacter().getType().equals(ActionPhaseStateType.MOTHER)) {
                 actualCard.handle(player, motherNatureHops, maxHops);
             } else {
-                states.get(1).handle(player, motherNatureHops, maxHops);
+                states.get(actualState).handle(player, motherNatureHops, maxHops);
             }
         }
         movedMotherNature = true;
+        actualState++;
     }
 
     /**
@@ -158,14 +186,16 @@ public class ActionPhase {
                 throw new RuntimeException("Mother Nature does not know where she is");
             if (actualCard != null &&
                     actualCard.isInUse() &&
-                    CharacterCardFabric.getClassOfCard(actualCard.getCharacter()).equals(CharacterCardType.INFLUENCE))
+                    actualCard.getCharacter().getType().equals(ActionPhaseStateType.INFLUENCE))
                 actualCard.handle(player, MotherNature.getMotherNature().getPosition().get());
-            else states.get(2).handle(player, MotherNature.getMotherNature().getPosition().get());
+            else states.get(actualState).handle(player, MotherNature.getMotherNature().getPosition().get());
             calculatedInfluence = true;
+            actualState++;
+            request();
         } else {
             if (!calculatedInfluence || chosenCloud)
                 throw new IllegalStateException("Cannot choose clouds now");
-            states.get(4).handle(player, game.getTable().getCloudById(id)
+            states.get(actualState).handle(player, game.getTable().getCloudById(id)
                     .orElseThrow(() -> new NoSuchElementException("Cloud not found")));
             game.nextPlayer();
         }
@@ -180,35 +210,16 @@ public class ActionPhase {
         isStateActivated();
         if (mergedIslands || !calculatedInfluence)
             throw new IllegalStateException("Cannot merge Islands now");
-        states.get(3).handle();
+        states.get(actualState).handle();
         if (game.getTable().getIslandList().size() == 3) {
             this.getGame().setEndgame(true);
             this.getGame().setendplayer(game.searchPlayerWithMostTower());
         }
         mergedIslands = true;
+        actualState++;
     }
 
-    /**
-     * It's a special student movement request needed by those cards who bidirectionally shift students between places.
-     * Since those cards move students between three well-defined places (player's school entrance, p.'s s. room and the card),
-     * at every call, thanks the context, is known if it's legal and what places are the ones to move students in and out.
-     *
-     * @param player   the player who makes the request
-     * @param studentA the color of the student from the player's entrance
-     * @param studentB the color of the student from the player's room or from the card
-     * @throws IllegalStateException is thrown when it's not the right moment nor the right game mode to use this kind of student movement
-     */
-    public void request(Player player, TeacherColor studentA, TeacherColor studentB) throws IllegalStateException {
-        isStateActivated();
-        if (!expertVariant) throw new IllegalStateException("Game is not in expert variant");
-        if (actualCard == null) throw new IllegalStateException("No card has been activated");
-        if (actualCard.isInUse()) {
-            actualCard.handle(player, studentA, studentB);
-        } else {
-            throw new IllegalStateException("Card has been already used");
-        }
-        possibleStudentMovements--;
-    }
+
 
     // Activate Card methods
 
@@ -224,7 +235,7 @@ public class ActionPhase {
     public void activateCard(Characters characters, Player player)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(tmp.getCharacter())));
+        ActionFaseState decorated = states.get(tmp.getCharacter().getType().getOrderPlace());
         tmp.activator(decorated, player);
         actualCard = tmp;
     }
@@ -243,7 +254,7 @@ public class ActionPhase {
     public void activateCard(Characters characters, Player player, TeacherColor color)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(tmp.getCharacter())));
+        ActionFaseState decorated = states.get(tmp.getCharacter().getType().getOrderPlace());
         tmp.activator(decorated, player, color);
         actualCard = tmp;
     }
@@ -262,7 +273,7 @@ public class ActionPhase {
     public void activateCard(Characters characters, Player player, Island island)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(CharacterCardType.getEquivalentInt(Characters.getClassOfCard(tmp.getCharacter())));
+        ActionFaseState decorated = states.get(tmp.getCharacter().getType().getOrderPlace());
         tmp.activator(decorated, player, island);
         actualCard = tmp;
     }
@@ -291,23 +302,11 @@ public class ActionPhase {
      * @throws IllegalStateException thrown when the actual context is not the right one to activate the card
      */
     private void isCardPlayable(Characters character) throws IllegalStateException {
-        if (!expertVariant)
-            throw new IllegalStateException("This is not an expert variant game");
-        if (actualCard != null)
+        controlExpertVariant();
+        if (getActualCard().isPresent())
             throw new IllegalStateException("Character Card already chosen");
-        switch (CharacterCardFabric.getClassOfCard(character)) {
-            case STUDENT -> {
-                if (possibleStudentMovements < 0 || movedMotherNature)
-                    throw new IllegalStateException("The round has progressed too much to play this card");
-            }
-            case MOTHER -> {
-                if (movedMotherNature)
-                    throw new IllegalStateException("The round has progressed too much to play this card");
-            }
-            case INFLUENCE -> {
-                if (calculatedInfluence)
-                    throw new IllegalStateException("The round has progressed too much to play this card");
-            }
+        if(character.getType().getOrderPlace() > actualState){
+            throw new IllegalStateException("The round has progressed too much to play this card");
         }
     }
 
@@ -332,8 +331,7 @@ public class ActionPhase {
     }
 
     public Optional<Characters> getActualCharacter() {
-        if (actualCard == null) return Optional.empty();
-        return Optional.of(actualCard.getCharacter());
+        return getActualCard().map(CharacterCard::getCharacter);
     }
 
     public Optional<StudentsManager> getCardMemory(Characters character) {
@@ -342,6 +340,15 @@ public class ActionPhase {
                 .findAny()
                 .orElseThrow(() -> new InvalidParameterException("Card not in game"))
                 .getStudentContainer();
+    }
+
+    public void giveNoEntryTileBack(){
+        controlExpertVariant();
+        InfluenceCard noEntryCard = (InfluenceCard) characterCards.stream()
+                .filter(card -> card.getCharacterization("NoEntrySetter") > 0)
+                .findAny()
+                .orElseThrow(() -> new IllegalStateException("No entry tile setter card in game"));
+        noEntryCard.giveNoEntryBack();
     }
 
     public boolean isActivated() {
@@ -360,9 +367,6 @@ public class ActionPhase {
         this.calculatedInfluence = calculatedInfluence;
     }
 
-    // for testing purposes
-
-
     public void setChosenCloud(boolean chosenCloud) {
         this.chosenCloud = chosenCloud;
     }
@@ -377,6 +381,29 @@ public class ActionPhase {
 
     public void setMergedIslands(boolean mergedIslands) {
         this.mergedIslands = mergedIslands;
+    }
+
+    public void controlExpertVariant() throws IllegalStateException{
+        if (!isExpertVariant())
+            throw new IllegalStateException("Game is not in expert variant");
+    }
+
+    public boolean isExpertVariant(){
+        return expertVariant;
+    }
+
+    public Optional<CharacterCard> getActualCard(){
+        return Optional.ofNullable(actualCard);
+    }
+
+    public void controlActualCard() throws IllegalStateException{
+        if(getActualCard().isEmpty()){
+            throw new IllegalStateException("There is no activated card");
+        }
+    }
+
+    public void setActualState(int state){
+        this.actualState = state;
     }
 
 }
