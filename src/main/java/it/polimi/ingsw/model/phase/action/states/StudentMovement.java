@@ -2,10 +2,9 @@ package it.polimi.ingsw.model.phase.action.states;
 
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.enums.TeacherColor;
-import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.phase.action.ActionFaseState;
+import it.polimi.ingsw.model.phase.action.ActionPhase;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.school.RoomTable;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,29 +27,19 @@ public class StudentMovement extends ActionFaseState {
     private void controlTeachers() {
         List<Player> players = super.getActionFase().getGame().getPlayers();
         for (TeacherColor color : TeacherColor.values()) {
-            Optional<RoomTable> roomTableWithTeacher = players.stream()
-                    .filter(x -> x.getRoomTable(color).hasTeacher())
-                    .findFirst()
-                    .map(x -> x.getRoomTable(color));
 
-            Integer max = players.stream()
-                    .map(x -> x.getRoomTable(color).howManyStudents())
-                    .max(Integer::compareTo)
-                    .orElse(-1);
+            Optional<Player> playerWithTeacher = players.stream()
+                    .filter(x -> x.hasTeacher(color))
+                    .findFirst();
 
-            List<Player> maxPlayers = players.stream()
-                    .filter(x -> x.getRoomTable(color).howManyStudents() == max)
+            List<Player> candidates = players.stream()
+                    .filter(player -> player != playerWithTeacher.orElse(null))
+                    .filter(player -> player.howManyStudentsInRoom(color) > playerWithTeacher.map(player1 -> player1.howManyStudentsInRoom(color)).orElse(0))
                     .collect(Collectors.toList());
 
-            if (roomTableWithTeacher.isPresent()) {
-                if (maxPlayers.size() == 1) {
-                    roomTableWithTeacher.get().setTeacherPresence(false);
-                    maxPlayers.get(0).getRoomTable(color).setTeacherPresence(true);
-                }
-            } else {
-                if (maxPlayers.size() == 1) {
-                    maxPlayers.get(0).getRoomTable(color).setTeacherPresence(true);
-                }
+            if (candidates.size() == 1) {
+                playerWithTeacher.ifPresent(player -> player.removeTeacher(color));
+                candidates.get(0).addTeacher(color);
             }
         }
     }

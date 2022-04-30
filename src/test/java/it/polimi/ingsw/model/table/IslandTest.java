@@ -35,7 +35,7 @@ public class IslandTest {
             assertEquals(5, island.howManyStudents(tc));
         }
 
-        newisland.addStudentfromSmallIsland(island);
+        newisland.addStudentFromSmallIsland(island);
         assertEquals(25, island.howManyTotStudents());
         for (TeacherColor tc : TeacherColor.values()) {
             assertEquals(5, island.howManyStudents(tc));

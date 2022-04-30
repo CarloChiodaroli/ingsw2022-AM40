@@ -32,7 +32,7 @@ public class StudentMovementTest {
 
         studentMovement.handle(maxColor, Optional.of(game.getPlayers().get(0).getEntrance()),
                 Optional.of(game.getPlayers().get(0).getRoomTable(maxColor)));
-        assertTrue(game.getPlayers().get(0).getRoomTable(maxColor).hasTeacher(), "" + max);
+        assertTrue(game.getPlayers().get(0).hasTeacher(maxColor), "" + max);
 
         max = 0;
         TeacherColor secondMaxColor = TeacherColor.RED;
@@ -55,11 +55,11 @@ public class StudentMovementTest {
         }
 
         if(total1 >= max){
-            assertTrue(game.getPlayers().get(0).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
-            assertFalse(game.getPlayers().get(1).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
+            assertTrue(game.getPlayers().get(0).hasTeacher(secondMaxColor), total1 + " " + max);
+            assertFalse(game.getPlayers().get(1).hasTeacher(secondMaxColor), total1 + " " + max);
         } else {
-            assertTrue(game.getPlayers().get(1).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
-            assertFalse(game.getPlayers().get(0).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
+            assertTrue(game.getPlayers().get(1).hasTeacher(secondMaxColor), total1 + " " + max);
+            assertFalse(game.getPlayers().get(0).hasTeacher(secondMaxColor), total1 + " " + max);
         }
 
         int delta;
@@ -81,11 +81,11 @@ public class StudentMovementTest {
         }
 
         if(total1 >= max){
-            assertTrue(game.getPlayers().get(1).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
-            assertFalse(game.getPlayers().get(0).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
+            assertTrue(game.getPlayers().get(1).hasTeacher(secondMaxColor), total1 + " " + max);
+            assertFalse(game.getPlayers().get(0).hasTeacher(secondMaxColor), total1 + " " + max);
         } else {
-            assertTrue(game.getPlayers().get(0).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
-            assertFalse(game.getPlayers().get(1).getRoomTable(secondMaxColor).hasTeacher(), total1 + " " + max);
+            assertTrue(game.getPlayers().get(0).hasTeacher(secondMaxColor), total1 + " " + max);
+            assertFalse(game.getPlayers().get(1).hasTeacher(secondMaxColor), total1 + " " + max);
         }
     }
 

@@ -290,15 +290,15 @@ public class StudentMovementCardTest {
             }
         }
 
-        int oldTableContent1 = players.get(0).getRoomTable(maxColor).howManyStudents();
-        int oldTableContent2 = players.get(1).getRoomTable(maxColor).howManyStudents();
+        int oldTableContent1 = players.get(0).howManyStudentsInRoom(maxColor);
+        int oldTableContent2 = players.get(1).howManyStudentsInRoom(maxColor);
 
         if (oldTableContent1 >= oldTableContent2) {
-            assertTrue(players.get(0).getRoomTable(maxColor).hasTeacher());
-            assertFalse(players.get(1).getRoomTable(maxColor).hasTeacher());
+            assertTrue(players.get(0).hasTeacher(maxColor));
+            assertFalse(players.get(1).hasTeacher(maxColor));
         } else {
-            assertFalse(players.get(0).getRoomTable(maxColor).hasTeacher());
-            assertTrue(players.get(1).getRoomTable(maxColor).hasTeacher());
+            assertFalse(players.get(0).hasTeacher(maxColor));
+            assertTrue(players.get(1).hasTeacher(maxColor));
         }
 
         if (oldTableContent1 == oldTableContent2) {
@@ -312,14 +312,14 @@ public class StudentMovementCardTest {
                 card.handle(maxColor, Optional.of(players.get(0).getEntrance()), Optional.of(players.get(0).getRoomTable(maxColor)));
             }
 
-            int tableContent1 = players.get(0).getRoomTable(maxColor).howManyStudents();
-            int tableContent2 = players.get(1).getRoomTable(maxColor).howManyStudents();
+            int tableContent1 = players.get(0).howManyStudentsInRoom(maxColor);
+            int tableContent2 = players.get(1).howManyStudentsInRoom(maxColor);
 
             // Not assert equals... left and right values can be wrong... I can't know now what value to expect
             assertTrue(tableContent2 == tableContent1, "" + tableContent2 + " != " + tableContent1);
 
-            assertFalse(players.get(1).getRoomTable(maxColor).hasTeacher());
-            assertTrue(players.get(0).getRoomTable(maxColor).hasTeacher());
+            assertFalse(players.get(1).hasTeacher(maxColor));
+            assertTrue(players.get(0).hasTeacher(maxColor));
         } else {
             card.activator(phase, players.get(1));
             for (int i = 0; i < (oldTableContent1 - oldTableContent2); i++) {
@@ -327,14 +327,14 @@ public class StudentMovementCardTest {
                 card.handle(maxColor, Optional.of(players.get(1).getEntrance()), Optional.of(players.get(1).getRoomTable(maxColor)));
             }
 
-            int tableContent1 = players.get(0).getRoomTable(maxColor).howManyStudents();
-            int tableContent2 = players.get(1).getRoomTable(maxColor).howManyStudents();
+            int tableContent1 = players.get(0).howManyStudentsInRoom(maxColor);
+            int tableContent2 = players.get(1).howManyStudentsInRoom(maxColor);
 
             // Not assert equals... left and right values can be wrong... I can't know now what value to expect
             assertTrue(tableContent2 == tableContent1, "" + tableContent2 + " != " + tableContent1);
 
-            assertFalse(players.get(0).getRoomTable(maxColor).hasTeacher());
-            assertTrue(players.get(1).getRoomTable(maxColor).hasTeacher());
+            assertFalse(players.get(0).hasTeacher(maxColor));
+            assertTrue(players.get(1).hasTeacher(maxColor));
         }
     }
 }

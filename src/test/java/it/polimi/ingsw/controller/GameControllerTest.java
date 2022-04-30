@@ -285,7 +285,7 @@ public class GameControllerTest {
         giovanni.getEntrance().addStudent(TeacherColor.PINK);
 
         aldo.getRoomTable(TeacherColor.BLUE).addStudent(TeacherColor.BLUE);
-        aldo.getRoomTable(TeacherColor.BLUE).setTeacherPresence(true);
+        aldo.addTeacher(TeacherColor.BLUE);
 
         Island testIsland = game.getTable().getIslandById(testIslandId).get();
 

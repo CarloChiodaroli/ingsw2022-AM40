@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.enums.TeacherColor;
 import it.polimi.ingsw.model.enums.TowerColor;
-import it.polimi.ingsw.model.player.school.RoomTable;
 import it.polimi.ingsw.model.player.school.SchoolDashboard;
 import it.polimi.ingsw.model.table.Island;
 
@@ -198,10 +197,25 @@ public class Player {
         return dashboard.getTowerColor();
     }
 
-    public RoomTable getRoomTable(TeacherColor color) {
+    public StudentsManager getRoomTable(TeacherColor color) {
         return dashboard.getRoom().getTable(color);
     }
 
+    public void addTeacher(TeacherColor color){
+        dashboard.getRoom().getTable(color).setTeacherPresence(true);
+    }
+
+    public void removeTeacher(TeacherColor color){
+        dashboard.getRoom().getTable(color).setTeacherPresence(false);
+    }
+
+    public boolean hasTeacher(TeacherColor color){
+        return dashboard.getRoom().getTable(color).hasTeacher();
+    }
+
+    public int howManyStudentsInRoom(TeacherColor color){
+        return dashboard.getRoom().getTable(color).howManyStudents();
+    }
 
     /**
      * Utility used to give a tower back to a player
@@ -244,12 +258,6 @@ public class Player {
         controlEnable();
         game.getActionFase().activateCard(characters, this, island);
     }
-
-    /*@Deprecated
-    public void playCharacterCard(Characters characters, TowerColor color) {
-        controlEnable();
-        game.getActionFase().activateCard(characters, this, color);
-    }*/
 
     public boolean pay(int howMuch) {
         if (money >= howMuch) {

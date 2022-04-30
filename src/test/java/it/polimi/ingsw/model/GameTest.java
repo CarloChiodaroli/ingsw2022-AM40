@@ -62,7 +62,7 @@ public class GameTest {
 
         giovanni.getTower(3);
 
-        aldo.getRoomTable(TeacherColor.BLUE).setTeacherPresence(true);
+        aldo.addTeacher(TeacherColor.BLUE);
 
         assertEquals(aldo, game.searchPlayerWithMostTower());
     }

@@ -38,7 +38,7 @@ public class InfluenceTest {
 
         studentMovement.handle(firstMaxColor, Optional.of(game.getPlayers().get(0).getEntrance()),
                 Optional.of(game.getPlayers().get(0).getRoomTable(firstMaxColor)));
-        assertTrue(game.getPlayers().get(0).getRoomTable(firstMaxColor).hasTeacher(), "" + max);
+        assertTrue(game.getPlayers().get(0).hasTeacher(firstMaxColor), "" + max);
         game.getPlayers().get(0).getEntrance().addStudent(firstMaxColor);
 
         max = 0;
@@ -95,7 +95,7 @@ public class InfluenceTest {
 
         studentMovement.handle(maxColor, Optional.of(game.getPlayers().get(0).getEntrance()),
                 Optional.of(game.getPlayers().get(0).getRoomTable(maxColor)));
-        assertTrue(game.getPlayers().get(0).getRoomTable(maxColor).hasTeacher());
+        assertTrue(game.getPlayers().get(0).hasTeacher(maxColor));
         game.getPlayers().get(0).getEntrance().addStudent(maxColor);
 
         studentMovement.handle(maxColor, Optional.of(game.getPlayers().get(0).getEntrance()),

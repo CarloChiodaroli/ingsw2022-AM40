@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.table;
 import it.polimi.ingsw.model.StudentsManager;
 import it.polimi.ingsw.model.enums.TeacherColor;
 
-
 /**
  * CLASS Cloud
  */

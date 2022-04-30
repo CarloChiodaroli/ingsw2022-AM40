@@ -16,15 +16,16 @@ public class Table {
     public static Bag bag;
     private int coinsLeft;
     private final static int numOfIslandsToCreate = 12;
+    private final static int maxAvailableCoins = 20;
 
 
     /**
      * Constructor
      */
     public Table(int numberOfPlayer) {
-        int randomFirstIsland = (int) (Math.random() * 12);
-        bag = new Bag(130, 26);
-        coinsLeft = 20;
+        int randomFirstIsland = (int) (Math.random() * numOfIslandsToCreate);
+        bag = new Bag();
+        coinsLeft = maxAvailableCoins;
         islandList = new ArrayList<>();
         CloudList = new ArrayList<>();
         buildIslands();
@@ -108,6 +109,7 @@ public class Table {
     /**
      * @return Bag status
      */
+    @Deprecated
     public Optional<StudentsManager> getBag() {
         return Optional.of(bag);
     }
@@ -158,5 +160,11 @@ public class Table {
                 .findAny();
     }
 
+    public Optional<TeacherColor> getStudentFromBag(){
+        return Optional.ofNullable(bag.getAStudent());
+    }
 
+    public boolean isBagEmpty(){
+        return bag.isEmpty();
+    }
 }

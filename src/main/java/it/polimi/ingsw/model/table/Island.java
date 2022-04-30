@@ -39,8 +39,8 @@ public class Island extends StudentsManager {
         this.noEntry = (island1.noEntry && island2.noEntry);
         this.towerColor = island1.towerColor;
         this.tower = island1.tower;
-        addStudentfromSmallIsland(island1);
-        addStudentfromSmallIsland(island2);
+        addStudentFromSmallIsland(island1);
+        addStudentFromSmallIsland(island2);
     }
 
     /**
@@ -48,7 +48,7 @@ public class Island extends StudentsManager {
      *
      * @param island Old Island
      */
-    public void addStudentfromSmallIsland(Island island) {
+    public void addStudentFromSmallIsland(Island island) {
         for (TeacherColor tc : TeacherColor.values()) {
             for (int i = 0; i < island.howManyStudents(tc); i++) {
                 this.addStudent(tc);

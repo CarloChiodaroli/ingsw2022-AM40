@@ -91,10 +91,10 @@ public class ActionPhaseTest {
         }
 
         camilla.getRoomTable(TeacherColor.BLUE).addStudent(TeacherColor.BLUE);
-        camilla.getRoomTable(TeacherColor.BLUE).setTeacherPresence(true);
+        camilla.addTeacher(TeacherColor.BLUE);
 
         anja.getRoomTable(TeacherColor.PINK).addStudent(TeacherColor.PINK);
-        anja.getRoomTable(TeacherColor.PINK).setTeacherPresence(true);
+        anja.addTeacher(TeacherColor.PINK);
 
         testIsland.addStudent(TeacherColor.BLUE);
 
@@ -172,10 +172,10 @@ public class ActionPhaseTest {
         }
 
         camilla.getRoomTable(TeacherColor.BLUE).addStudent(TeacherColor.BLUE);
-        camilla.getRoomTable(TeacherColor.BLUE).setTeacherPresence(true);
+        camilla.addTeacher(TeacherColor.BLUE);
 
         anja.getRoomTable(TeacherColor.PINK).addStudent(TeacherColor.PINK);
-        anja.getRoomTable(TeacherColor.PINK).setTeacherPresence(true);
+        anja.addTeacher(TeacherColor.PINK);
 
         testIsland.addStudent(TeacherColor.BLUE);
 
@@ -268,10 +268,10 @@ public class ActionPhaseTest {
         }
 
         camilla.getRoomTable(TeacherColor.BLUE).addStudent(TeacherColor.BLUE);
-        camilla.getRoomTable(TeacherColor.BLUE).setTeacherPresence(true);
+        camilla.addTeacher(TeacherColor.BLUE);
 
         anja.getRoomTable(TeacherColor.PINK).addStudent(TeacherColor.PINK);
-        anja.getRoomTable(TeacherColor.PINK).setTeacherPresence(true);
+        anja.addTeacher(TeacherColor.PINK);
 
         testIsland.addStudent(TeacherColor.BLUE);
         specialTestIsland.addStudent(TeacherColor.BLUE);

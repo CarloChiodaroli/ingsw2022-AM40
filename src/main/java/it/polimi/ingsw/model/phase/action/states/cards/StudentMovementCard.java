@@ -9,9 +9,11 @@ import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.model.phase.action.states.StudentMovement;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.school.RoomTable;
 import it.polimi.ingsw.model.table.Bag;
 
 import java.security.InvalidParameterException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,19 +28,23 @@ public class StudentMovementCard extends CharacterCard {
         super(args, characters, actionPhase);
         if (args.get("Memory") > 0) {
             this.students = new StudentsContainer(args.get("Memory"));
-            Bag bag = (Bag) getActionFase().getGame().getTable().getBag().orElseThrow();
             for (int i = 0; i < args.get("Memory"); i++) {
-                students.addStudent(bag.getAStudent());
+                students.addStudent(getStudentFromBag());
             }
         }
         this.maxUsages = args.get("Usages");
     }
 
+    private TeacherColor getStudentFromBag(){
+        return getActionFase().getGame().getTable().getStudentFromBag().orElseThrow();
+    }
+
     @Override
     public void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) {
         if (!isInUse()) return;
-        if (from.isEmpty()) {
-            decorated.handle(color, Optional.of(students), to); // Needs other control
+        if (from.isEmpty() && super.getCharacterization("Bidirectional") == 0) {
+            decorated.handle(color, Optional.of(students), to);
+            students.addStudent(getStudentFromBag());
         } else {
             decorated.handle(color, from, to);
         }
@@ -97,14 +103,14 @@ public class StudentMovementCard extends CharacterCard {
         for (TeacherColor color : TeacherColor.values()) {
 
             Optional<Player> maxPlayer = players.stream()
-                    .filter(x -> x.getRoomTable(color).hasTeacher())
+                    .filter(x -> x.hasTeacher(color))
                     .findFirst();
 
             if (maxPlayer.isPresent() &&
                     !maxPlayer.get().equals(player) &&
-                    maxPlayer.get().getRoomTable(color).howManyStudents() == player.getRoomTable(color).howManyStudents()) {
-                player.getRoomTable(color).setTeacherPresence(true);
-                maxPlayer.get().getRoomTable(color).setTeacherPresence(false);
+                    maxPlayer.get().howManyStudentsInRoom(color) == player.howManyStudentsInRoom(color)) {
+                player.addTeacher(color);
+                maxPlayer.get().removeTeacher(color);
             }
         }
     }
