@@ -14,6 +14,7 @@ import it.polimi.ingsw.model.table.Island;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -62,9 +63,9 @@ public class ActionPhaseTest {
         game.gameStarter();
         actionPhase = game.getActionFase();
 
-        List<CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
+        Map<Characters, CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
 
-        actualCharacterCards.add(CharacterCardFabric.createCard(Characters.CENTAUR, actionPhase));
+        actualCharacterCards.putIfAbsent(Characters.CENTAUR, CharacterCardFabric.createCard(Characters.CENTAUR, actionPhase));
 
         Player camilla = game.getPlayers().get(0);
         Player anja = game.getPlayers().get(1);
@@ -141,9 +142,9 @@ public class ActionPhaseTest {
         game.gameStarter();
         actionPhase = game.getActionFase();
 
-        List<CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
+        Map<Characters, CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
 
-        actualCharacterCards.add(CharacterCardFabric.createCard(Characters.SORCERER, actionPhase));
+        actualCharacterCards.putIfAbsent(Characters.SORCERER, CharacterCardFabric.createCard(Characters.SORCERER, actionPhase));
 
         Player camilla = game.getPlayers().get(0);
         Player anja = game.getPlayers().get(1);
@@ -235,9 +236,9 @@ public class ActionPhaseTest {
         game.gameStarter();
         actionPhase = game.getActionFase();
 
-        List<CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
+        Map<Characters, CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
 
-        actualCharacterCards.add(CharacterCardFabric.createCard(Characters.CRIER, actionPhase));
+        actualCharacterCards.putIfAbsent(Characters.CRIER, CharacterCardFabric.createCard(Characters.CRIER, actionPhase));
 
         Player camilla = game.getPlayers().get(0);
         Player anja = game.getPlayers().get(1);
@@ -438,9 +439,9 @@ public class ActionPhaseTest {
         AssistantCard card3 = game.getPianificationFase().play(card2, game.getPlayers().get(1));
         actionPhase.startPhase(game.getPlayers().get(0));
 
-        List<CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
+        Map<Characters, CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
 
-        actualCharacterCards.add(CharacterCardFabric.createCard(Characters.JESTER, actionPhase));
+        actualCharacterCards.putIfAbsent(Characters.JESTER, CharacterCardFabric.createCard(Characters.JESTER, actionPhase));
 
         assertTrue(game.isExpertVariant());
         assertThrowsIllegalStateException(() -> actionPhase.request(game.getPlayers().get(0), TeacherColor.PINK,

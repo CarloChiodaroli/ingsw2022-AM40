@@ -75,7 +75,7 @@ public class IslandTest {
         is1 = new Island("I_1");
 
         assertEquals(0, is1.howManyTowers());
-        is1.setTowerColor(Optional.of(TowerColor.WHITE));
+        is1.setInfluence(TowerColor.WHITE);
 
         assertEquals(Optional.of(TowerColor.WHITE) , is1.getTowerColor());
     }

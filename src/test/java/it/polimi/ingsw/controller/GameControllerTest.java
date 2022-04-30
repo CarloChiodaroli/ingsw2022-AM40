@@ -240,7 +240,7 @@ public class GameControllerTest {
 
     @Test
     public void expertStudentMovementTest(){
-        game.getActionFase().getCharacterCards().add(CharacterCardFabric.createCard(Characters.MINSTREL, game.getActionFase()));
+        game.getActionFase().getCharacterCards().putIfAbsent(Characters.MINSTREL, CharacterCardFabric.createCard(Characters.MINSTREL, game.getActionFase()));
 
         aldo.giveMoney(3);
         controller.playCharacterCard(aldoName, Characters.MINSTREL);
@@ -347,7 +347,7 @@ public class GameControllerTest {
 
     @Test
     public void playCharacterCardTest(){
-        game.getActionFase().getCharacterCards().add(CharacterCardFabric.createCard(Characters.FRIAR, game.getActionFase()));
+        game.getActionFase().getCharacterCards().putIfAbsent(Characters.FRIAR,CharacterCardFabric.createCard(Characters.FRIAR, game.getActionFase()));
 
         controller.getModel().getGame().getActionFase().setActualState(Characters.FRIAR.getType().getOrderPlace());
         aldo.giveMoney(3);
@@ -358,7 +358,7 @@ public class GameControllerTest {
 
     @Test
     public void playCharacterCardTeacherColorTest(){
-        game.getActionFase().getCharacterCards().add(CharacterCardFabric.createCard(Characters.SORCERER, game.getActionFase()));
+        game.getActionFase().getCharacterCards().putIfAbsent(Characters.SORCERER, CharacterCardFabric.createCard(Characters.SORCERER, game.getActionFase()));
 
         controller.getModel().getGame().getActionFase().setActualState(Characters.SORCERER.getType().getOrderPlace());
         aldo.giveMoney(3);
@@ -369,7 +369,7 @@ public class GameControllerTest {
 
     @Test
     public void playCharacterCardIslandTest(){
-        game.getActionFase().getCharacterCards().add(CharacterCardFabric.createCard(Characters.CRIER, game.getActionFase()));
+        game.getActionFase().getCharacterCards().putIfAbsent(Characters.CRIER,CharacterCardFabric.createCard(Characters.CRIER, game.getActionFase()));
 
         controller.getModel().getGame().getActionFase().setActualState(Characters.CRIER.getType().getOrderPlace());
         aldo.giveMoney(3);

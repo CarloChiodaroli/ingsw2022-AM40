@@ -11,29 +11,23 @@ public class CharacterCardFabric {
 
     private final static Map<Characters, Map<String, Integer>> particularities = allParticularities();
 
-    public static List<CharacterCard> getCards(ActionPhase actionPhase) {
-        List<CharacterCard> enabledCharacterCards = new ArrayList<>();
-        while (enabledCharacterCards.size() < 3) {
+    public static Map<Characters, CharacterCard> getCards(ActionPhase actionPhase){
+        Map<Characters, CharacterCard> enabledCharacterCards = new HashMap<>();
+        while(enabledCharacterCards.size() < 3){
             Characters characters = getRandomCharacter();
-            if (!alreadyCreated(characters, enabledCharacterCards))
-                enabledCharacterCards.add(CharacterCardFabric.createCard(characters, actionPhase));
+            if(!enabledCharacterCards.containsKey(characters)){
+                enabledCharacterCards.put(characters, createCard(characters, actionPhase));
+            }
         }
         return enabledCharacterCards;
     }
 
-    private static boolean alreadyCreated(Characters characters, List<CharacterCard> existent) {
-        for (CharacterCard card : existent) {
-            if (card.getCharacter().equals(characters)) return true;
-        }
-        return false;
-    }
-
     public static CharacterCard createCard(Characters type, ActionPhase actionPhase) {
-        List<CharacterCard> possibleCards = new ArrayList<>();
-        possibleCards.add(ActionPhaseStateType.STUDENT.getOrderPlace(), new StudentMovementCard(type, actionPhase, getCharacterization(type)));
-        possibleCards.add(ActionPhaseStateType.MOTHER.getOrderPlace(), new MotherNatureCard(type, actionPhase, getCharacterization(type)));
-        possibleCards.add(ActionPhaseStateType.INFLUENCE.getOrderPlace(), new InfluenceCard(type, actionPhase, getCharacterization(type)));
-        return possibleCards.get(type.getType().getOrderPlace());
+        Map<ActionPhaseStateType, CharacterCard> possibleCards = new HashMap<>();
+        possibleCards.put(ActionPhaseStateType.STUDENT, new StudentMovementCard(type, actionPhase, getCharacterization(type)));
+        possibleCards.put(ActionPhaseStateType.MOTHER, new MotherNatureCard(type, actionPhase, getCharacterization(type)));
+        possibleCards.put(ActionPhaseStateType.INFLUENCE, new InfluenceCard(type, actionPhase, getCharacterization(type)));
+        return possibleCards.get(type.getType());
     }
 
     public static Characters getRandomCharacter() {
@@ -52,7 +46,8 @@ public class CharacterCardFabric {
         result.put("TeacherBehaviour", 0); // Changes behaviour of the movement of teachers
         result.put("EffectAllPlayers", 0); // Has effect to all players in this turn
         result.put("NoEntrySetter", 0); // Defines if it needs to set no entry tile
-        // On how many things the card works on
+
+        // things the card works with
         result.put("Island", 0);
         result.put("Player", 0);
         result.put("Room", 0);

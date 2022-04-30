@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,11 +56,11 @@ public class CharacterCardFabricTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        List<CharacterCard> cards = CharacterCardFabric.getCards(game.getActionFase());
+        Map<Characters, CharacterCard> cards = CharacterCardFabric.getCards(game.getActionFase());
 
         assertEquals(3, cards.size());
 
-        List<Characters> presentCharacters = cards.stream()
+        List<Characters> presentCharacters = cards.values().stream()
                 .map(CharacterCard::getCharacter)
                 .distinct()
                 .collect(Collectors.toList());

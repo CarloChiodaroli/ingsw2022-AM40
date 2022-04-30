@@ -13,8 +13,8 @@ import it.polimi.ingsw.model.table.Island;
 import it.polimi.ingsw.model.table.MotherNature;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -25,7 +25,7 @@ public class ActionPhase {
 
     // Variables
     private final Game game;
-    private final List<ActionFaseState> states;
+    private final Map<ActionPhaseStateType, ActionFaseState> states;
     private boolean activated;
 
     // Non expert Status variables
@@ -39,7 +39,7 @@ public class ActionPhase {
     // Expert variant attributes
     private final boolean expertVariant;
     private CharacterCard actualCard;
-    private final List<CharacterCard> characterCards;
+    private final Map<Characters, CharacterCard> characterCards;
 
     /**
      * Constructor
@@ -50,12 +50,12 @@ public class ActionPhase {
         this.game = game;
         this.expertVariant = game.isExpertVariant();
         this.activated = false;
-        this.states = new ArrayList<>();
-        this.states.add(ActionPhaseStateType.STUDENT.getOrderPlace(), new StudentMovement(this));
-        this.states.add(ActionPhaseStateType.MOTHER.getOrderPlace(), new MotherNatureState(this));
-        this.states.add(ActionPhaseStateType.INFLUENCE.getOrderPlace(), new Influence(this));
-        this.states.add(ActionPhaseStateType.MERGE.getOrderPlace(), new MergeIsland(this));
-        this.states.add(ActionPhaseStateType.CLOUD.getOrderPlace(), new Finalize(this));
+        this.states = new HashMap<>();
+        this.states.put(ActionPhaseStateType.STUDENT, new StudentMovement(this));
+        this.states.put(ActionPhaseStateType.MOTHER, new MotherNatureState(this));
+        this.states.put(ActionPhaseStateType.INFLUENCE, new Influence(this));
+        this.states.put(ActionPhaseStateType.MERGE, new MergeIsland(this));
+        this.states.put(ActionPhaseStateType.CLOUD, new Finalize(this));
         if (isExpertVariant()) {
             this.characterCards = CharacterCardFabric.getCards(this);
         } else {
@@ -64,7 +64,7 @@ public class ActionPhase {
         actualState = -1;
     }
 
-    public List<CharacterCard> getCharacterCards() {
+    public Map<Characters, CharacterCard> getCharacterCards() {
         return characterCards;
     }
 
@@ -113,7 +113,7 @@ public class ActionPhase {
                 actualCard.isInUse()) {
             actualCard.handle(teacherColor, from, to);
         } else {
-            states.get(actualState).handle(teacherColor, from, to);
+            states.get(ActionPhaseStateType.STUDENT).handle(teacherColor, from, to);
         }
         possibleStudentMovements--;
     }
@@ -156,14 +156,14 @@ public class ActionPhase {
         actualState = ActionPhaseStateType.MOTHER.getOrderPlace();
         int maxHops = game.getPianificationFase().getMotherNatureHops(player);
         if (!isExpertVariant()) {
-            states.get(actualState).handle(player, motherNatureHops, maxHops);
+            states.get(ActionPhaseStateType.MOTHER).handle(player, motherNatureHops, maxHops);
         } else {
             if (getActualCard().isPresent() &&
                     actualCard.isInUse() &&
                     actualCard.getCharacter().getType().equals(ActionPhaseStateType.MOTHER)) {
                 actualCard.handle(player, motherNatureHops, maxHops);
             } else {
-                states.get(actualState).handle(player, motherNatureHops, maxHops);
+                states.get(ActionPhaseStateType.MOTHER).handle(player, motherNatureHops, maxHops);
             }
         }
         movedMotherNature = true;
@@ -188,14 +188,15 @@ public class ActionPhase {
                     actualCard.isInUse() &&
                     actualCard.getCharacter().getType().equals(ActionPhaseStateType.INFLUENCE))
                 actualCard.handle(player, MotherNature.getMotherNature().getPosition().get());
-            else states.get(actualState).handle(player, MotherNature.getMotherNature().getPosition().get());
+            else
+                states.get(ActionPhaseStateType.INFLUENCE).handle(player, MotherNature.getMotherNature().getPosition().get());
             calculatedInfluence = true;
             actualState++;
             request();
         } else {
             if (!calculatedInfluence || chosenCloud)
                 throw new IllegalStateException("Cannot choose clouds now");
-            states.get(actualState).handle(player, game.getTable().getCloudById(id)
+            states.get(ActionPhaseStateType.CLOUD).handle(player, game.getTable().getCloudById(id)
                     .orElseThrow(() -> new NoSuchElementException("Cloud not found")));
             game.nextPlayer();
         }
@@ -210,7 +211,7 @@ public class ActionPhase {
         isStateActivated();
         if (mergedIslands || !calculatedInfluence)
             throw new IllegalStateException("Cannot merge Islands now");
-        states.get(actualState).handle();
+        states.get(ActionPhaseStateType.MERGE).handle();
         if (game.getTable().getIslandList().size() == 3) {
             this.getGame().setEndgame(true);
             this.getGame().setendplayer(game.searchPlayerWithMostTower());
@@ -218,8 +219,6 @@ public class ActionPhase {
         mergedIslands = true;
         actualState++;
     }
-
-
 
     // Activate Card methods
 
@@ -235,7 +234,7 @@ public class ActionPhase {
     public void activateCard(Characters characters, Player player)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(tmp.getCharacter().getType().getOrderPlace());
+        ActionFaseState decorated = states.get(tmp.getCharacter().getType());
         tmp.activator(decorated, player);
         actualCard = tmp;
     }
@@ -254,7 +253,7 @@ public class ActionPhase {
     public void activateCard(Characters characters, Player player, TeacherColor color)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(tmp.getCharacter().getType().getOrderPlace());
+        ActionFaseState decorated = states.get(tmp.getCharacter().getType());
         tmp.activator(decorated, player, color);
         actualCard = tmp;
     }
@@ -273,7 +272,7 @@ public class ActionPhase {
     public void activateCard(Characters characters, Player player, Island island)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(tmp.getCharacter().getType().getOrderPlace());
+        ActionFaseState decorated = states.get(tmp.getCharacter().getType());
         tmp.activator(decorated, player, island);
         actualCard = tmp;
     }
@@ -289,11 +288,7 @@ public class ActionPhase {
             throws NoSuchElementException, IllegalStateException {
         isStateActivated();
         isCardPlayable(characters);
-        return characterCards.stream()
-                .filter(card -> card.getCharacter().equals(characters))
-                .findAny()
-                .orElseThrow(() -> new NoSuchElementException("Requested card is not playable"));
-
+        return characterCards.get(characters);
     }
 
     /**
@@ -305,8 +300,11 @@ public class ActionPhase {
         controlExpertVariant();
         if (getActualCard().isPresent())
             throw new IllegalStateException("Character Card already chosen");
-        if(character.getType().getOrderPlace() > actualState){
+        if (character.getType().getOrderPlace() > actualState) {
             throw new IllegalStateException("The round has progressed too much to play this card");
+        }
+        if (!characterCards.containsKey(character)) {
+            throw new IllegalStateException("Requested card is not in this play");
         }
     }
 
@@ -326,8 +324,7 @@ public class ActionPhase {
      * @return true if it is, else false
      */
     public boolean canBeActivated(Characters character) {
-        return characterCards.stream()
-                .anyMatch(card -> card.getCharacter().equals(character));
+        return characterCards.containsKey(character);
     }
 
     public Optional<Characters> getActualCharacter() {
@@ -335,19 +332,16 @@ public class ActionPhase {
     }
 
     public Optional<StudentsManager> getCardMemory(Characters character) {
-        return characterCards.stream()
-                .filter(card -> card.getCharacter().equals(character))
-                .findAny()
-                .orElseThrow(() -> new InvalidParameterException("Card not in game"))
-                .getStudentContainer();
+        return characterCards.get(character).getStudentContainer();
     }
 
-    public void giveNoEntryTileBack(){
+    public void giveNoEntryTileBack() {
         controlExpertVariant();
-        InfluenceCard noEntryCard = (InfluenceCard) characterCards.stream()
-                .filter(card -> card.getCharacterization("NoEntrySetter") > 0)
+        InfluenceCard noEntryCard = (InfluenceCard) characterCards.entrySet().stream()
+                .filter(x -> x.getValue().getCharacterization("NoEntrySetter") > 0)
                 .findAny()
-                .orElseThrow(() -> new IllegalStateException("No entry tile setter card in game"));
+                .orElseThrow(() -> new IllegalStateException("No in game card holds no entry tiles"))
+                .getValue();
         noEntryCard.giveNoEntryBack();
     }
 
@@ -383,26 +377,26 @@ public class ActionPhase {
         this.mergedIslands = mergedIslands;
     }
 
-    public void controlExpertVariant() throws IllegalStateException{
+    public void controlExpertVariant() throws IllegalStateException {
         if (!isExpertVariant())
             throw new IllegalStateException("Game is not in expert variant");
     }
 
-    public boolean isExpertVariant(){
+    public boolean isExpertVariant() {
         return expertVariant;
     }
 
-    public Optional<CharacterCard> getActualCard(){
+    public Optional<CharacterCard> getActualCard() {
         return Optional.ofNullable(actualCard);
     }
 
-    public void controlActualCard() throws IllegalStateException{
-        if(getActualCard().isEmpty()){
+    public void controlActualCard() throws IllegalStateException {
+        if (getActualCard().isEmpty()) {
             throw new IllegalStateException("There is no activated card");
         }
     }
 
-    public void setActualState(int state){
+    public void setActualState(int state) {
         this.actualState = state;
     }
 
