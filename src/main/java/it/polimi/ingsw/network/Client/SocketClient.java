@@ -23,7 +23,7 @@ public class SocketClient extends Client {
 
     private final ObjectOutputStream outputStm;
     private final ObjectInputStream inputStm;
-    private final ExecutorService readExecutionQueue;   //"Engine"   (Permette di leggere messaggi asincroni)
+    private final ExecutorService readExecutionQueue;   //"Engine"  (allows to read async messages)
     private final ScheduledExecutorService pinger;      //Schedule Command to run after a given delay
 
     private static final int SOCKET_TIMEOUT = 10000;
@@ -52,7 +52,7 @@ public class SocketClient extends Client {
                     disconnect();
                     readExecutionQueue.shutdownNow();
                 }
-                //Notifica evento (Observer)
+                //Notify event (Observer)
             }
         });
     }
@@ -69,7 +69,7 @@ public class SocketClient extends Client {
             outputStm.reset();
         } catch (IOException e) {
             disconnect();
-            //Notifica evento (Observer) errore
+            //Notify event (Observer) error
         }
     }
 
@@ -85,7 +85,7 @@ public class SocketClient extends Client {
                 socket.close();
             }
         } catch (IOException e) {
-            //Notifica evento (Observer) errore
+            //Notify event (Observer) error
 
         }
     }

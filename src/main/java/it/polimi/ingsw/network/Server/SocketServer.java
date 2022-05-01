@@ -27,15 +27,15 @@ public class SocketServer {
 
     public void addClient(String nickname, ClientHandler clientHandler)
     {
-    //server aggiunge client
+    //server adds client
     }
 
     public void onMessageReceived(Message message)
     {
-        //server riceve messaggio
+        //server receives message
     }
 
     public void onDisconnect(ClientHandler clientHandler) {
-        //server si disconnette
+        //server disconnects
     }
 }
