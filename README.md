@@ -24,7 +24,7 @@ Implementation of Eriantys board game
 |        Controller implementation         |      Making      |
 |   *MCV FA implementation and testing*    |        -         |
 |      Communication protocol design       |        Making         |
-|  Communication protocol Implementation   |        -         |
+|  Communication protocol Implementation   |        Making         |
 |  CLI client Implementation and testing   |        -         |
 |        GUI client Implementation         |        -         |
 |            GUI client Testing            |        -         |
