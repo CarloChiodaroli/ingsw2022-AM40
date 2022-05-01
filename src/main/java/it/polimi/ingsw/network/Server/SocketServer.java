@@ -11,7 +11,7 @@ import java.net.Socket;
  * It handles all the new socket connection.
  * It is a socket and there is installed the server
  */
-public class SocketServer  implements  Runnable{
+public class SocketServer  implements Runnable{
     private final int port;
     private final Server server;
     ServerSocket serverSocket;

@@ -15,8 +15,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * This class represents a socket client implementation.
  * ExecutorService is an API that simplifies running tasks in asynchronous mode.
- */
-/**
  * Executor start threads in implicit mode, better that new Thread(new(RunnableTask())).start()
  * Use of two thread
  * 1. Communication Cli
@@ -46,10 +44,11 @@ public class SocketClient extends Client {
      * Asynchronously reads a message from the server via socket and notifies the ClientController.
      */
     @Override
-    public void readMessage() {
+    public void readMessage()
+    {
         readExecutionQueue.execute(() -> {
             while (!readExecutionQueue.isShutdown()) {
-                Message message;
+                Message message = null;
                 try {
                     message = (Message) inputStm.readObject();
                     System.out.println(message);
@@ -58,8 +57,7 @@ public class SocketClient extends Client {
                     disconnect();
                     readExecutionQueue.shutdownNow();
                 }
-
-                //Notify event (Observer)
+            notifyObserver(message);
             }
         });
     }
@@ -76,7 +74,7 @@ public class SocketClient extends Client {
             outputStm.reset();
         } catch (IOException e) {
             disconnect();
-            //Notify event (Observer) error
+            //Notify error
         }
     }
 
@@ -92,7 +90,7 @@ public class SocketClient extends Client {
                 socket.close();
             }
         } catch (IOException e) {
-            //Notify event (Observer) error
+            //Notify error
 
         }
     }
