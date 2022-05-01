@@ -9,9 +9,9 @@ Implementation of Eriantys board game
 | __Package__ | __Class %__ | __Method %__ | __Line %__ |
 |:-----------:|:-----------:|:------------:|:----------:|
 |    model    |     100     |      92      |     88     |
-| controller  |     100     |      96      |     94     |
-|  network    |     0       |      0       |     0      |
-| _All test_  |     85      |      87      |     83     |
+| controller  |     66      |      62      |     64     |
+|  network    |      0      |      0       |     0      |
+| _All test_  |     70      |      75      |     74     |
 
 
 ## Project progress:
@@ -23,8 +23,8 @@ Implementation of Eriantys board game
 |  *Model FA implementation and testing*   |       Done       |
 |        Controller implementation         |      Making      |
 |   *MCV FA implementation and testing*    |        -         |
-|      Communication protocol design       |        Making         |
-|  Communication protocol Implementation   |        -         |
+|      Communication protocol design       |      Making      |
+|  Communication protocol Implementation   |      Making      |
 |  CLI client Implementation and testing   |        -         |
 |        GUI client Implementation         |        -         |
 |            GUI client Testing            |        -         |

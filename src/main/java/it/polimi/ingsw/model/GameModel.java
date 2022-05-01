@@ -406,6 +406,11 @@ public class GameModel {
         return studentContent;
     }
 
+    public List<TeacherColor> getTeachersInRoom(String playerName) {
+        Player player = getPlayer(playerName);
+        return player.getTeachers();
+    }
+
     public List<String> getAllIslandIds() {
         return game.getTable().getIslandList().stream()
                 .map(Island::getId)

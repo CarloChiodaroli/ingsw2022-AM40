@@ -2,9 +2,11 @@ package it.polimi.ingsw.network.Server;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.GameModel;
+import it.polimi.ingsw.network.Message.Message;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -73,6 +75,14 @@ public class Server {
                 .map(Map.Entry::getKey)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public void sendBroadcast(List<Message> messagesToSend){
+        // Need to implement
+    }
+
+    public void sendBroadcast(Message messageToSend){
+        // Need to implement
     }
 
 }

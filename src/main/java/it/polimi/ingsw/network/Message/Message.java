@@ -6,10 +6,12 @@ public abstract class Message implements Serializable {
 
     private final String playername;
     private final MessageType messageType;
+    private boolean written;
 
     Message(String playername, MessageType messageType) {
         this.playername = playername;
         this.messageType = messageType;
+        written = false;
     }
 
     public String getPlayerName() {
@@ -18,6 +20,18 @@ public abstract class Message implements Serializable {
 
     public MessageType getMessageType() {
         return messageType;
+    }
+
+    protected void message(){
+        written = true;
+    }
+
+    protected void controlWritten(){
+        if(!written) throw new IllegalStateException("Message not written");
+    }
+
+    protected void controlNotWritten(){
+        if(written) throw new IllegalStateException("Message already written");
     }
 
     @Override
