@@ -1,17 +1,20 @@
-package it.polimi.ingsw.network.Client;
+package it.polimi.ingsw.network.Server;
 
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import it.polimi.ingsw.network.Server.SocketServer;
+
 import it.polimi.ingsw.network.Message.Message;
 import it.polimi.ingsw.network.Message.*;
 
+/**
+ * Link between client and server
+ */
 public class SocketClientHandler implements ClientHandler,Runnable{
 
-    private final Socket client;
+    private final Socket socketclient;
     private final SocketServer socketServer;
 
     private boolean connected;
@@ -22,17 +25,17 @@ public class SocketClientHandler implements ClientHandler,Runnable{
     private ObjectOutputStream output;
     private ObjectInputStream input;
 
-public SocketClientHandler(SocketServer socketServer,Socket client)
+public SocketClientHandler(SocketServer socketServer,Socket socketclient)
 {
     this.socketServer = socketServer;
-    this.client = client;
+    this.socketclient = socketclient;
     this.connected = true;
     this.inputLock = new Object();
     this.outputLock = new Object();
 
     try {
-        this.output = new ObjectOutputStream(client.getOutputStream());
-        this.input = new ObjectInputStream(client.getInputStream());
+        this.output = new ObjectOutputStream(socketclient.getOutputStream());
+        this.input = new ObjectInputStream(socketclient.getInputStream());
     } catch (IOException e) {
          new IOException("Stream I/O Error");
     }
@@ -42,7 +45,7 @@ public SocketClientHandler(SocketServer socketServer,Socket client)
         try {
             handleClientConnection();
         } catch (IOException e) {
-            System.out.println("Client " + client.getInetAddress() + " connection dropped.");
+            System.out.println("Client " + socketclient.getInetAddress() + " connection dropped.");
             disconnect();
         }
     }
@@ -53,7 +56,7 @@ public SocketClientHandler(SocketServer socketServer,Socket client)
      * @throws IOException any of the usual Input/Output exceptions.
      */
     private void handleClientConnection() throws IOException {
-        System.out.println("Client connected from " + client.getInetAddress());
+        System.out.println("Client connected from " + socketclient.getInetAddress());
 
         try {
             while (!Thread.currentThread().isInterrupted()) {
@@ -76,7 +79,7 @@ public SocketClientHandler(SocketServer socketServer,Socket client)
         } catch (ClassCastException | ClassNotFoundException e) {
             System.out.println("Invalid stream from client");
         }
-        client.close();
+        socketclient.close();
     }
     /**
      * Returns the current status of the connection.
@@ -95,8 +98,8 @@ public SocketClientHandler(SocketServer socketServer,Socket client)
     public void disconnect() {
         if (connected) {
             try {
-                if (!client.isClosed()) {
-                    client.close();
+                if (!socketclient.isClosed()) {
+                    socketclient.close();
                 }
             } catch (IOException e) {
                 System.out.println(e.getMessage());

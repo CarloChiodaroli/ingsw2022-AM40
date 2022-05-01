@@ -241,4 +241,19 @@ public class GameController {
     public GameState getGameState() {
         return gameState;
     }
+
+    public boolean isStartGame()
+    {
+        return getModel().getGame().isStartGame();
+    }
+
+    public boolean checkLoginUser(String username)
+    {
+        return playerNames.contains(username);
+    }
+
+    public void onMessageReceived()
+    {
+        //Implementation and link with Input Controller
+    }
 }

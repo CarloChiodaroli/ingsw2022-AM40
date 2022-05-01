@@ -16,15 +16,20 @@ import java.util.concurrent.TimeUnit;
  * This class represents a socket client implementation.
  * ExecutorService is an API that simplifies running tasks in asynchronous mode.
  */
-
+/**
+ * Executor start threads in implicit mode, better that new Thread(new(RunnableTask())).start()
+ * Use of two thread
+ * 1. Communication Cli
+ * 2. Ping
+ */
 public class SocketClient extends Client {
 
     private final Socket socket;
 
     private final ObjectOutputStream outputStm;
     private final ObjectInputStream inputStm;
-    private final ExecutorService readExecutionQueue;   //"Engine"  (allows to read async messages)
-    private final ScheduledExecutorService pinger;      //Schedule Command to run after a given delay
+    private final ExecutorService readExecutionQueue;   //First thread (Communication Cli)
+    private final ScheduledExecutorService pinger;      //Second thread (Scheduled ping)
 
     private static final int SOCKET_TIMEOUT = 10000;
 
@@ -33,7 +38,7 @@ public class SocketClient extends Client {
         this.socket.connect(new InetSocketAddress(address, port), SOCKET_TIMEOUT);
         this.outputStm = new ObjectOutputStream(socket.getOutputStream());
         this.inputStm = new ObjectInputStream(socket.getInputStream());
-        this.readExecutionQueue = Executors.newSingleThreadExecutor();//
+        this.readExecutionQueue = Executors.newSingleThreadExecutor();
         this.pinger = Executors.newSingleThreadScheduledExecutor();
     }
 
@@ -48,10 +53,12 @@ public class SocketClient extends Client {
                 try {
                     message = (Message) inputStm.readObject();
                     System.out.println(message);
-                } catch (IOException | ClassNotFoundException e) {
+                } catch (IOException | ClassNotFoundException e)
+                {
                     disconnect();
                     readExecutionQueue.shutdownNow();
                 }
+
                 //Notify event (Observer)
             }
         });

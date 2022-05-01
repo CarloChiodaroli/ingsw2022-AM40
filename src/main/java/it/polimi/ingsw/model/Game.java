@@ -255,4 +255,9 @@ public class Game {
         }
     }
 
+    public boolean isStartGame()
+    {
+        return this.isInitial;
+    }
+
 }

@@ -1,20 +1,13 @@
 package it.polimi.ingsw.network.Server;
 
-import it.polimi.ingsw.network.Client.ClientHandler;
 import it.polimi.ingsw.network.Message.Message;
 
 import java.net.ServerSocket;
-
-
-/**
- *
- */
 
 /**
  * It handles all the new socket connection.
  * It is a socket and there is installed the server
  */
-
 public class SocketServer {
     //private final Server server;
     private final int port;

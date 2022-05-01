@@ -1,7 +1,10 @@
-package it.polimi.ingsw.network.Client;
+package it.polimi.ingsw.network.Server;
 
 import it.polimi.ingsw.network.Message.Message;
 
+/**
+ * Interface with method for communication from Server to Client
+ */
 public interface ClientHandler {
 
     /**
