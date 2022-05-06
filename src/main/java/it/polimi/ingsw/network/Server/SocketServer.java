@@ -2,7 +2,6 @@ package it.polimi.ingsw.network.Server;
 
 import it.polimi.ingsw.network.Message.Message;
 
-import javax.swing.plaf.TableHeaderUI;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

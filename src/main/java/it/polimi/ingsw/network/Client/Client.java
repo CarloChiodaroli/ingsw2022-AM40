@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.Client;
 
-import it.polimi.ingsw.network.Client.Observer.Observable;
+import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.network.Message.Message;
 
 public abstract class Client extends Observable {

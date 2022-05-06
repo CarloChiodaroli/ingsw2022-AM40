@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.Client.Observer;
+package it.polimi.ingsw.Observer;
 
 import java.util.ArrayList;
 import java.util.List;

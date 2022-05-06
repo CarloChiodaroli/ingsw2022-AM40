@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.Client.Observer;
+package it.polimi.ingsw.Observer;
 
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.enums.TeacherColor;
@@ -34,20 +34,20 @@ public interface ViewObserver {
      *
      * @param expertvariant the number of players.
      */
-    void onUpdatePlayersNumber(boolean expertvariant);
+    //void onUpdatePlayersNumber(boolean expertvariant);
 
     /**
      * Handles a disconnection wanted by the user.
      * (e.g. a click on the back button into the GUI).
      */
-    void onDisconnection();
+    //void onDisconnection();
 
     /**
      * Sends a message to the server with the chosen assistant card  chosen by the user.
      *
      * @param assistantCard Assistant Card chosen
      */
-    void onUpdatePlayersNumber(AssistantCard assistantCard);
+    //void onUpdatePlayersNumber(AssistantCard assistantCard);
 
 
     /**
@@ -55,33 +55,33 @@ public interface ViewObserver {
      *
      * @param islandid Island Id chosen
      */
-    void onUpdatemoveStudentToIsland (String islandid);
+    //void onUpdatemoveStudentToIsland (String islandid);
 
     /**
      * Sends a message to the server with the chosen movement form entrance to room table chosen by the user.
      *
      * @param teacherColor TeacherColor chosen
      */
-    void onUpdatemoveStudentToRoomTable(TeacherColor teacherColor);
+    //void onUpdatemoveStudentToRoomTable(TeacherColor teacherColor);
 
     /**
      * Sends a message to the server with the chosen Mother Nature movement chosen by the user.
      *
      * @param numstepsMotherNature number steps for Mother Nature chosen
      */
-    void onUpdatemoveStudentToRoomTable(int numstepsMotherNature);
+    //void onUpdatemoveStudentToRoomTable(int numstepsMotherNature);
 
     /**
      * Sends a message to the server with the chosen movement form entrance to  cloud chosen by the user.
      *
      * @param cloudid cloud Id chosen
      */
-    void onUpdatemoveStudentToCloud (String cloudid);
+    //void onUpdatemoveStudentToCloud (String cloudid);
 
     /**
      * Sends a message to the server with the chosen movement character chosen by the user.
      *
      * @param characters the choice of the user about his god effect.
      */
-    void onUpdateApplyEffect(Characters characters);
+    //void onUpdateApplyEffect(Characters characters);
 }

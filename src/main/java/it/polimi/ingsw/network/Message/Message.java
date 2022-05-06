@@ -2,7 +2,7 @@ package it.polimi.ingsw.network.Message;
 
 import java.io.Serializable;
 
-public abstract class Message implements Serializable {
+public abstract class Message {
 
     private final String playername;
     private final MessageType messageType;

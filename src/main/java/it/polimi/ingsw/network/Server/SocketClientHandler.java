@@ -66,7 +66,7 @@ public SocketClientHandler(SocketServer socketServer,Socket socketclient)
                     if (message != null && message.getMessageType() != MessageType.PING) {
                         if (message.getMessageType() == MessageType.LOGIN_REQUEST)
                         {
-                            //socketServer.addClient(message.getPlayerName(), this);
+                            socketServer.addClient(message.getPlayerName(), this);
                         }
                         else
                         {
