@@ -81,7 +81,8 @@ public interface ViewObserver {
     /**
      * Sends a message to the server with the chosen movement character chosen by the user.
      *
-     * @param characters the choice of the user about his god effect.
      */
     //void onUpdateApplyEffect(Characters characters);
+
+    void onUpdateFirstPlayer(String nickname);
 }

@@ -75,6 +75,14 @@ public class ClientController implements ViewObserver, Observer {
         client.sendMessage(new PlayerNumberReply(this.playerName, playersNumber));
     }
 
+    public void onUpdateFirstPlayer(String playerName) {
+        client.sendMessage(new MatchInfoMessage(this.playerName, MessageType.PICK_FIRST_PLAYER, null,  playerName));
+    }
+
+    public void onDisconnection() {
+        client.disconnect();
+    }
+
     public void update(Message message)
     {
         switch (message.getMessageType()) {
@@ -91,8 +99,20 @@ public class ClientController implements ViewObserver, Observer {
                 client.disconnect();
                 view.showDisconnectionMessage(dm.getPlayerNameDisconnectedDisconnected(), dm.getMessageStr());
                 break;
+            case MATCH_INFO:
+                MatchInfoMessage matchInfoMessage = (MatchInfoMessage) message;
+                taskQueue.execute(() -> view.showMatchInfo(
+                        matchInfoMessage.getActivePlayers(),
+                        matchInfoMessage.getActivePlayerNickname()
+                ));
+                break;
+            case PICK_FIRST_PLAYER:
+                MatchInfoMessage playersMessage = (MatchInfoMessage) message;
+                taskQueue.execute(() -> view.askFirstPlayer(playersMessage.getActivePlayers()));
+                break;
         }
 
     }
+
 
     }

@@ -178,4 +178,30 @@ public class Cli extends ViewObservable implements View {
         return number;
     }
 
+    public void askFirstPlayer(List<String> nicknameQueue) {
+        out.println("You're the Challenger, choose the first player: ");
+        out.print("Online players: " + String.join(", ", nicknameQueue));
+        try {
+
+            String nickname;
+            do {
+                out.print("\nType the exact name of the player: ");
+
+                nickname = readCommand();
+                if (!nicknameQueue.contains(nickname)) {
+                    out.println("You have selected an invalid player! Please try again.");
+                }
+            } while (!nicknameQueue.contains(nickname));
+
+            String finalNickname = nickname;
+            notifyObserver(obs -> obs.onUpdateFirstPlayer(finalNickname));
+        } catch (ExecutionException e) {
+            out.println("Errore");
+        }
+    }
+
+    public void showMatchInfo(List<String> players, String activePlayer)
+    {
+//Errore
+     }
 }
