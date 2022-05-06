@@ -118,7 +118,6 @@ public class Cli extends ViewObservable implements View {
     {
         int playerNumber;
         String question = "How many players are going to play? (You can choose between 2 or 3 players): ";
-
         try
         {
             playerNumber = numberInput(2, 3, null, question);
@@ -145,6 +144,12 @@ public class Cli extends ViewObservable implements View {
         } else {
             out.println("Could not contact server.");
         }
+    }
+
+    public void showDisconnectionMessage(String playerNameDisconnected, String text) {
+        inputThread.interrupt();
+        out.println("\n" + playerNameDisconnected + text);
+        System.exit(1);
     }
 
     private int numberInput(int minValue, int maxValue, List<Integer> jumpList, String question) throws ExecutionException {

@@ -4,10 +4,7 @@ import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.Observer.ViewObserver;
 import it.polimi.ingsw.network.Client.Client;
 import it.polimi.ingsw.network.Client.SocketClient;
-import it.polimi.ingsw.network.Message.LoginRequest;
-import it.polimi.ingsw.network.Message.Message;
-import it.polimi.ingsw.network.Message;
-import it.polimi.ingsw.network.Message.PlayerNumberReply;
+import it.polimi.ingsw.network.Message.*;
 import it.polimi.ingsw.view.cli.View;
 
 import java.io.IOException;
@@ -53,6 +50,7 @@ public class ClientController implements ViewObserver, Observer {
         } catch (IOException e) {
             taskQueue.execute(() -> view.showLoginResult(false, false, this.playerName));
         }
+        System.out.println("Finish onUpdateServerInfo");
     }
 
     /**
@@ -83,10 +81,15 @@ public class ClientController implements ViewObserver, Observer {
 
             case LOGIN_REPLY:
                 LoginReply loginReply = (LoginReply) message;
-                taskQueue.execute(() -> view.showLoginResult(loginReply.isNicknameAccepted(), loginReply.isConnectionSuccessful(), this.playerName));
+                taskQueue.execute(() -> view.showLoginResult(loginReply.isPlayerNameAccepted(), loginReply.isConnectionSuccessful(), this.playerName));
                 break;
             case PLAYERNUMBER_REQUEST:
-                taskQueue.execute(view::askPlayersNumber);
+                taskQueue.execute(view::askPlayerName);
+                break;
+            case DISCONNECTION:
+                DisconnectionMessage dm = (DisconnectionMessage) message;
+                client.disconnect();
+                view.showDisconnectionMessage(dm.getPlayerNameDisconnectedDisconnected(), dm.getMessageStr());
                 break;
         }
 

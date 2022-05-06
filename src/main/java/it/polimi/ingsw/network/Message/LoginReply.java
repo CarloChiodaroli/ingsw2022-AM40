@@ -1,19 +1,15 @@
-package it.polimi.ingsw.network.message;
+package it.polimi.ingsw.network.Message;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.network.Message.Message;
-import it.polimi.ingsw.network.Message.MessageType;
 
 /**
  * Message used to confirm or discard a login request of a client.
  */
 public class LoginReply extends Message {
 
-    private static final long serialVersionUID = -1423312065079102467L;
     private final boolean playerNameAccepted;
     private final boolean connectionSuccessful;
 
-    public LoginReply(boolean nicknameAccepted, boolean connectionSuccessful) {
+    public LoginReply(boolean playerNameAccepted, boolean connectionSuccessful) {
         super(null, MessageType.LOGIN_REPLY);
         this.playerNameAccepted = playerNameAccepted;
         this.connectionSuccessful = connectionSuccessful;
@@ -31,7 +27,7 @@ public class LoginReply extends Message {
     public String toString() {
         return "LoginReply{" +
                 "nickname=" + getPlayerName() +
-                ", nicknameAccepted=" + nicknameAccepted +
+                ", nicknameAccepted=" + playerNameAccepted +
                 ", connectionSuccessful=" + connectionSuccessful +
                 '}';
     }

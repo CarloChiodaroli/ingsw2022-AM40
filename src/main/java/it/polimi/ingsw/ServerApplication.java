@@ -10,7 +10,7 @@ import it.polimi.ingsw.network.Server.SocketServer;
 public class ServerApplication {
 
     public static void main(String[] args) {
-        int serverPort = 1234;
+        int serverPort = 16847;
 
         GameController gameController = new GameController();
 
