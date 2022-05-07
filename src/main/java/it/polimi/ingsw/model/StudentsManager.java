@@ -22,7 +22,7 @@ public abstract class StudentsManager {
         this.maxStudentsColor = maxStudentsColor;
         this.manager = new HashMap<>();
         for(TeacherColor color: TeacherColor.values()){
-            manager.put(color, maxStudentsColor);
+            manager.put(color, 0);
         }
     }
 
@@ -31,7 +31,7 @@ public abstract class StudentsManager {
         this.maxStudentsColor = maxStudents;
         this.manager = new HashMap<>();
         for(TeacherColor color: TeacherColor.values()) {
-            manager.put(color, maxStudents);
+            manager.put(color, 0);
         }
     }
 

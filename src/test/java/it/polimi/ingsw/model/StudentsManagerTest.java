@@ -13,29 +13,8 @@ public class StudentsManagerTest {
         StudentsManagerIstance manager = new StudentsManagerIstance(130, 26);
         HashMap<TeacherColor, Integer> managerTest = new HashMap<>();
         for(TeacherColor color: TeacherColor.values()){
-            managerTest.put(color, 26);
+            managerTest.put(color, 0);
         }
-
-        for(TeacherColor color : TeacherColor.values()) {
-            assertFalse(manager.addStudent(color));
-            assertTrue(manager.removeStudent(color));
-        }
-
-        assertEquals(125, manager.howManyTotStudents());
-        for(TeacherColor color: TeacherColor.values()){
-            assertEquals(managerTest.get(color) - 1, manager.howManyStudents(color));
-            managerTest.replace(color, managerTest.get(color), managerTest.get(color) - 1);
-        }
-
-        for(TeacherColor color : TeacherColor.values()) {
-            for (int i = 0; i < 25; i++) {
-                manager.removeStudent(color);
-                managerTest.replace(color, managerTest.get(color), managerTest.get(color) - 1);
-            }
-            assertFalse(manager.removeStudent(color));
-            assertEquals(0, manager.howManyStudents(color));
-        }
-        assertEquals(0, manager.howManyTotStudents());
 
         for(TeacherColor color : TeacherColor.values()) {
             assertFalse(manager.removeStudent(color));
@@ -57,6 +36,27 @@ public class StudentsManagerTest {
             assertEquals(26, manager.howManyStudents(color));
         }
         assertEquals(130, manager.howManyTotStudents());
+
+        for(TeacherColor color : TeacherColor.values()) {
+            assertFalse(manager.addStudent(color));
+            assertTrue(manager.removeStudent(color));
+        }
+
+        assertEquals(125, manager.howManyTotStudents());
+        for(TeacherColor color: TeacherColor.values()){
+            assertEquals(managerTest.get(color) - 1, manager.howManyStudents(color));
+            managerTest.replace(color, managerTest.get(color), managerTest.get(color) - 1);
+        }
+
+        for(TeacherColor color : TeacherColor.values()) {
+            for (int i = 0; i < 25; i++) {
+                manager.removeStudent(color);
+                managerTest.replace(color, managerTest.get(color), managerTest.get(color) - 1);
+            }
+            assertFalse(manager.removeStudent(color));
+            assertEquals(0, manager.howManyStudents(color));
+        }
+        assertEquals(0, manager.howManyTotStudents());
 
     }
 
