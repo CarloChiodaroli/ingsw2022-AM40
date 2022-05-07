@@ -30,10 +30,6 @@ public abstract class Message implements Serializable {
         if(!written) throw new IllegalStateException("Message not written");
     }
 
-    protected void controlNotWritten(){
-        if(written) throw new IllegalStateException("Message already written");
-    }
-
     @Override
     public String toString() {
         return "Message{" +

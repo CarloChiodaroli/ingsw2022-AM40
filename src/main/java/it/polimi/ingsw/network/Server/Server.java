@@ -1,7 +1,6 @@
 package it.polimi.ingsw.network.Server;
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.network.Message.Message;
 
 import java.util.Collections;
