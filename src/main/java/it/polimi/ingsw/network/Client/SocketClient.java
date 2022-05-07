@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.Client;
 
+import it.polimi.ingsw.network.Message.ErrorMessage;
 import it.polimi.ingsw.network.Message.Message;
 import it.polimi.ingsw.network.Message.PingMessage;
 import java.io.IOException;
@@ -44,20 +45,19 @@ public class SocketClient extends Client {
      * Asynchronously reads a message from the server via socket and notifies the ClientController.
      */
     @Override
-    public void readMessage()
-    {
+    public void readMessage() {
         readExecutionQueue.execute(() -> {
+
             while (!readExecutionQueue.isShutdown()) {
-                Message message = null;
+                Message message;
                 try {
                     message = (Message) inputStm.readObject();
-                    System.out.println(message);
-                } catch (IOException | ClassNotFoundException e)
-                {
+                } catch (IOException | ClassNotFoundException e) {
+                    message = new ErrorMessage(null, "Connection lost with the server.");
                     disconnect();
                     readExecutionQueue.shutdownNow();
                 }
-            notifyObserver(message);
+                notifyObserver(message);
             }
         });
     }

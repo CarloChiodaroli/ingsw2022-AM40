@@ -9,5 +9,6 @@ public enum MessageType {
     DISCONNECTION,
     MATCHINFOMESSAGE,
     PICK_FIRST_PLAYER,
-    MATCH_INFO
+    MATCH_INFO,
+    ERROR
 }

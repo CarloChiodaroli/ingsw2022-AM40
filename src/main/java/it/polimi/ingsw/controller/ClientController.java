@@ -86,7 +86,6 @@ public class ClientController implements ViewObserver, Observer {
     public void update(Message message)
     {
         switch (message.getMessageType()) {
-
             case LOGIN_REPLY:
                 LoginReply loginReply = (LoginReply) message;
                 taskQueue.execute(() -> view.showLoginResult(loginReply.isPlayerNameAccepted(), loginReply.isConnectionSuccessful(), this.playerName));
