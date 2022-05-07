@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 public class PlayMessage extends Message {
 
-    private Object[] params;
-    private List<String> paramsTypeNames;
+    private final Object[] params;
+    private final List<String> paramsTypeNames;
     private Map<String, TowerColor> stringTowerColorMap = null;
     private Map<TeacherColor, Integer> teacherColorIntegerMap = null;
     private List<TeacherColor> teacherColorList;
@@ -20,19 +20,17 @@ public class PlayMessage extends Message {
 
     private static Map<Class<?>, Method> getParserMap() throws NoSuchMethodException {
         Map<Class<?>, Method> result = new HashMap<>();
-        result.put(int.class, PlayMessage.class.getDeclaredMethod("getInt", String.class));
+        result.put(Integer.class, PlayMessage.class.getDeclaredMethod("getInt", String.class));
         result.put(String.class, PlayMessage.class.getDeclaredMethod("getString", String.class));
         result.put(List.class, PlayMessage.class.getDeclaredMethod("getList", String.class));
         result.put(Map.class, PlayMessage.class.getDeclaredMethod("getMap", String.class));
-        result.put(Enum.class, PlayMessage.class.getDeclaredMethod("getEnum", Class.class, String.class));
+        result.put(TeacherColor.class, PlayMessage.class.getDeclaredMethod("getTeacherColor", String.class));
+        result.put(TowerColor.class, PlayMessage.class.getDeclaredMethod("getTowerColor", String.class));
+        result.put(Characters.class, PlayMessage.class.getDeclaredMethod("getCharacters", String.class));
         return result;
     }
 
-    public PlayMessage(String sender) throws NoSuchMethodException {
-        super(sender, MessageType.PLAY);
-    }
-
-    public void executeMessage(MessageReader manager) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException, InstantiationException {
+    public void executeMessage(MessageReader manager) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException{
         super.controlWritten();
         Map<Class<?>, Method> parser = getParserMap();
         List<Class<?>> paramClassList = new ArrayList<>();
@@ -40,17 +38,10 @@ public class PlayMessage extends Message {
             paramClassList.add(Class.forName(name));
         }
         Class<?>[] paramClassArray = paramClassList.toArray(this::intFunction);
-        Method method = MessageReader.class.getMethod("move", paramClassArray);
-        paramClassArray[0].isEnum();
         for (int i = 0; i < paramClassArray.length; i++) {
-            if (paramClassArray[i].isEnum()) {  // need to solve issue
-                String data = params[i].toString();
-                Method valueOf = paramClassArray[i].getMethod("valueOf", String.class);
-                params[i] = valueOf.invoke(paramClassArray[i], data);
-            } else {
-                params[i] = parser.get(paramClassArray[i]).invoke(this, params[i]);
-            }
+            params[i] = parser.get(paramClassArray[i]).invoke(this, params[i].toString());
         }
+        Method method = MessageReader.class.getMethod("move", paramClassArray);
         method.invoke(manager, params);
     }
 
@@ -69,8 +60,11 @@ public class PlayMessage extends Message {
         return this.teacherColorList;
     }
 
-    private Map<?, ?> getMap(String data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        return (Map<?, ?>) PlayMessage.class.getDeclaredMethod(data).invoke(this);
+    private Map<?, ?> getMap(String data) {
+        Map<String, Map<?, ?>> baseMap = new HashMap<>();
+        baseMap.put("getTeacherColorIntegerMap", teacherColorIntegerMap);
+        baseMap.put("getStringTowerColorMap", stringTowerColorMap);
+        return new HashMap<>(baseMap.get(data));
     }
 
     private List<?> getList(String data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
@@ -81,21 +75,32 @@ public class PlayMessage extends Message {
         return data;
     }
 
-    private int getInt(String data) {
-        return Integer.parseInt(data);
+    private Integer getInt(String data) {
+        Double tmp = Double.parseDouble(data);
+        return  tmp.intValue();
     }
 
-    private Object getEnum(Class<?> cla, String data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        String puuu = data.toString(); // well naming is hard // issue to solve
-        Method puuuj = cla.getMethod("valueOf", String.class);
-        return puuuj.invoke(cla, puuu);
+    private TeacherColor getTeacherColor(String data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method valueOf = TeacherColor.class.getMethod("valueOf", String.class);
+        System.out.println(valueOf);
+        return (TeacherColor) valueOf.invoke(TeacherColor.class, data);
+    }
+
+    private TowerColor getTowerColor(String data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method valueOf = TowerColor.class.getMethod("valueOf", String.class);
+        return (TowerColor) valueOf.invoke(TowerColor.class, data);
+    }
+
+    private Characters getCharacters(String data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method valueOf = Characters.class.getMethod("valueOf", String.class);
+        return (Characters) valueOf.invoke(Characters.class, data);
     }
 
     private Class<?>[] intFunction(int size) {
         return new Class<?>[size];
     }
 
-    public PlayMessage(String sender, TeacherColor color, String fromId, String toId) throws NoSuchMethodException {
+    public PlayMessage(String sender, TeacherColor color, String fromId, String toId){
         super(sender, messageType);
         params = new Object[]{super.getPlayerName(), color, fromId, toId};
         Class<?>[] tmp = new Class<?>[]{String.class, TeacherColor.class, String.class, String.class};
@@ -103,7 +108,7 @@ public class PlayMessage extends Message {
         super.message();
     }
 
-    public PlayMessage(String sender, TeacherColor fromColor, TeacherColor toColor, String placeId) throws NoSuchMethodException {
+    public PlayMessage(String sender, TeacherColor fromColor, TeacherColor toColor, String placeId) {
         super(sender, messageType);
         params = new Object[]{super.getPlayerName(), fromColor, toColor, placeId};
         Class<?>[] tmp = new Class<?>[]{String.class, TeacherColor.class, TeacherColor.class, String.class};
@@ -111,15 +116,15 @@ public class PlayMessage extends Message {
         super.message();
     }
 
-    public PlayMessage(String sender, int hops) throws NoSuchMethodException {
+    public PlayMessage(String sender, Integer hops) {
         super(sender, messageType);
         params = new Object[]{super.getPlayerName(), hops};
-        Class<?>[] tmp = new Class<?>[]{String.class, int.class};
+        Class<?>[] tmp = new Class<?>[]{String.class, Integer.class};
         paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
         super.message();
     }
 
-    public PlayMessage(String sender, String id) throws NoSuchMethodException {
+    public PlayMessage(String sender, String id) {
         super(sender, messageType);
         params = new Object[]{super.getPlayerName(), id};
         Class<?>[] tmp = new Class<?>[]{String.class, String.class};
@@ -127,7 +132,7 @@ public class PlayMessage extends Message {
         super.message();
     }
 
-    public PlayMessage(String sender, Characters character) throws NoSuchMethodException {
+    public PlayMessage(String sender, Characters character) {
         super(sender, messageType);
         params = new Object[]{super.getPlayerName(), character};
         Class<?>[] tmp = new Class<?>[]{String.class, Characters.class};
@@ -135,7 +140,7 @@ public class PlayMessage extends Message {
         super.message();
     }
 
-    public PlayMessage(String sender, Characters character, String id) throws NoSuchMethodException {
+    public PlayMessage(String sender, Characters character, String id) {
         super(sender, messageType);
         params = new Object[]{super.getPlayerName(), character, id};
         Class<?>[] tmp = new Class<?>[]{String.class, Characters.class, String.class};
@@ -143,7 +148,7 @@ public class PlayMessage extends Message {
         super.message();
     }
 
-    public PlayMessage(String sender, Characters character, TeacherColor color) throws NoSuchMethodException {
+    public PlayMessage(String sender, Characters character, TeacherColor color){
         super(sender, messageType);
         params = new Object[]{super.getPlayerName(), character, color};
         Class<?>[] tmp = new Class<?>[]{String.class, Characters.class, TeacherColor.class};
@@ -151,7 +156,7 @@ public class PlayMessage extends Message {
         super.message();
     }
 
-    public PlayMessage(String sender, String id, Map<TeacherColor, Integer> quantity) throws NoSuchMethodException {
+    public PlayMessage(String sender, String id, Map<TeacherColor, Integer> quantity){
         super(sender, messageType);
         teacherColorIntegerMap = new HashMap<>(quantity);
         params = new Object[]{super.getPlayerName(), id, "getTeacherColorIntegerMap"};
@@ -160,7 +165,7 @@ public class PlayMessage extends Message {
         super.message();
     }
 
-    public PlayMessage(String sender, String id, List<TeacherColor> which) throws NoSuchMethodException {
+    public PlayMessage(String sender, String id, List<TeacherColor> which){
         super(sender, messageType);
         teacherColorList = new ArrayList<>(which);
         params = new Object[]{super.getPlayerName(), id, "getTeacherColorList"};
@@ -169,7 +174,7 @@ public class PlayMessage extends Message {
         super.message();
     }
 
-    public PlayMessage(String sender, Map<String, Optional<TowerColor>> conquests) throws NoSuchMethodException {
+    public PlayMessage(String sender, Map<String, Optional<TowerColor>> conquests){
         super(sender, messageType);
         stringTowerColorMap = new HashMap<>();
         for (String place : conquests.keySet()) {
@@ -178,7 +183,7 @@ public class PlayMessage extends Message {
             }
         }
         params = new Object[]{super.getPlayerName(), "getStringTowerColorMap"};
-        Class<?>[] tmp = new Class<?>[]{String.class, String.class, Map.class};
+        Class<?>[] tmp = new Class<?>[]{String.class, Map.class};
         paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
         super.message();
     }

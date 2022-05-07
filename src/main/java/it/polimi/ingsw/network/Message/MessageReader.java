@@ -10,25 +10,25 @@ import java.util.Optional;
 
 public interface MessageReader {
 
-    public void move(String player, TeacherColor color, String fromId, String toId);
+    void move(String player, TeacherColor color, String fromId, String toId);
 
-    public void move(String player, TeacherColor fromColor, TeacherColor toColor, String placeId);
+    void move(String player, TeacherColor fromColor, TeacherColor toColor, String placeId);
 
-    public void move(String player, int hops);
+    void move(String player, Integer hops);
 
-    public void move(String player, String id);
+    void move(String player, String id);
 
-    public void move(String player, Characters character);
+    void move(String player, Characters character);
 
-    public void move(String player, Characters character, String id);
+    void move(String player, Characters character, String id);
 
-    public void move(String player, Characters character, TeacherColor color);
+    void move(String player, Characters character, TeacherColor color);
 
-    public void status(String sender, String id, Map<TeacherColor, Integer> quantity);
+    void move(String sender, String id, Map<TeacherColor, Integer> quantity);
 
-    public void status(String sender, String id, List<TeacherColor> which);
+    void move(String sender, String id, List<TeacherColor> which);
 
-    public void status(String sender, Map<String, Optional<TowerColor>> conquests);
+    void move(String sender, Map<String, Optional<TowerColor>> conquests);
 
-    public void status(String sender, List<String> ids);
+    void move(String sender, List<String> ids);
 }

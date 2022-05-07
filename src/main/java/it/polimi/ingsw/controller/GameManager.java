@@ -32,24 +32,24 @@ public class GameManager implements MessageReader {
     public void move(String player, TeacherColor color, String fromId, String toId) {
         List<Message> messagesToSend;
         controller.moveStudent(player, color, fromId, toId);
-        messagesToSend = getCompletePlaceUpdate(player, toId);
-        server.sendBroadcast(messagesToSend);
-        messagesToSend = getCompletePlaceUpdate(player, fromId);
-        server.sendBroadcast(messagesToSend);
+        //messagesToSend = getCompletePlaceUpdate(player, toId);
+        //server.sendBroadcast(messagesToSend);
+        //messagesToSend = getCompletePlaceUpdate(player, fromId);
+        //server.sendBroadcast(messagesToSend);
     }
 
     @Override
     public void move(String player, TeacherColor fromColor, TeacherColor toColor, String placeId) {
         List<Message> messagesToSend;
         controller.moveStudent(player, fromColor, toColor, placeId);
-        messagesToSend = getCompletePlaceUpdate(player, placeId);
-        server.sendBroadcast(messagesToSend);
-        messagesToSend = getCompletePlaceUpdate(player, "Entrance");
-        server.sendBroadcast(messagesToSend);
+        //messagesToSend = getCompletePlaceUpdate(player, placeId);
+        //server.sendBroadcast(messagesToSend);
+        //messagesToSend = getCompletePlaceUpdate(player, "Entrance");
+        //server.sendBroadcast(messagesToSend);
     }
 
     @Override
-    public void move(String player, int hops) {
+    public void move(String player, Integer hops) {
         controller.moveMotherNature(player, hops);
         String MotherNaturePlace = controller.getMotherNaturePosition();
         //PlayMessage answer = new PlayMessage(serverName);
@@ -60,8 +60,8 @@ public class GameManager implements MessageReader {
     public void move(String player, String id) {
         List<Message> messagesToSend;
         controller.chooseCloud(player, id);
-        messagesToSend = getCompletePlaceUpdate(player, "Entrance");
-        server.sendBroadcast(messagesToSend);
+        //messagesToSend = getCompletePlaceUpdate(player, "Entrance");
+        //server.sendBroadcast(messagesToSend);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class GameManager implements MessageReader {
         controller.playCharacterCard(player, character, color);
     }
 
-    private List<Message> getCompletePlaceUpdate(String player, String place) {
+    /*private List<Message> getCompletePlaceUpdate(String player, String place) {
         List<Message> messagesToSend = new ArrayList<>();
         Map<TeacherColor, Integer> studentsActual;
         Optional<TowerColor> towerActual;
@@ -111,7 +111,7 @@ public class GameManager implements MessageReader {
             // it will be done better soon when answer will be better implemented
         }
         return messagesToSend;
-    }
+    }*/
 
     /*private List<Message> sendAllPlayerDashboards(){
         List<String> names = controller.getPlayerNames();
@@ -142,22 +142,22 @@ public class GameManager implements MessageReader {
     }*/
 
     @Override
-    public void status(String sender, List<String> ids) {
+    public void move(String sender, List<String> ids) {
         invalidMessage();
     }
 
     @Override
-    public void status(String sender, String id, List<TeacherColor> which) {
+    public void move(String sender, String id, List<TeacherColor> which) {
         invalidMessage();
     }
 
     @Override
-    public void status(String sender, String id, Map<TeacherColor, Integer> quantity) {
+    public void move(String sender, String id, Map<TeacherColor, Integer> quantity) {
         invalidMessage();
     }
 
     @Override
-    public void status(String sender, Map<String, Optional<TowerColor>> conquests) {
+    public void move(String sender, Map<String, Optional<TowerColor>> conquests) {
         invalidMessage();
     }
 
