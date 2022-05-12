@@ -1,20 +1,22 @@
 package it.polimi.ingsw.network.Server;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import it.polimi.ingsw.network.Message.Message;
+import it.polimi.ingsw.network.Message.MessageType;
+
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
-import it.polimi.ingsw.network.Message.Message;
-import it.polimi.ingsw.network.Message.*;
-
 /**
- * Link between client and server
+ * Socket implementation of the {@link ClientHandler} interface.
  */
-public class SocketClientHandler implements ClientHandler,Runnable{
-
-    private final Socket socketclient;
+public class SocketClientHandler implements ClientHandler, Runnable {
+    private final Socket client;
     private final SocketServer socketServer;
 
     private boolean connected;
@@ -22,30 +24,46 @@ public class SocketClientHandler implements ClientHandler,Runnable{
     private final Object inputLock;
     private final Object outputLock;
 
-    private ObjectOutputStream output;
-    private ObjectInputStream input;
+    //private ObjectOutputStream output;
+    //private ObjectInputStream input;
 
-public SocketClientHandler(SocketServer socketServer,Socket socketclient)
-{
-    this.socketServer = socketServer;
-    this.socketclient = socketclient;
-    this.connected = true;
-    this.inputLock = new Object();
-    this.outputLock = new Object();
+    private PrintWriter output;
+    private BufferedReader input;
 
-    try {
-        this.output = new ObjectOutputStream(socketclient.getOutputStream());
-        this.input = new ObjectInputStream(socketclient.getInputStream());
-    } catch (IOException e) {
-         new IOException("Stream I/O Error");
+    private final GsonBuilder gsonBuilder;
+    private final Gson gson;
+
+
+    /**
+     * Default constructor.
+     *
+     * @param socketServer the socket of the server.
+     * @param client       the client connecting.
+     */
+    public SocketClientHandler(SocketServer socketServer, Socket client) {
+        this.socketServer = socketServer;
+        this.client = client;
+        this.connected = true;
+        this.gsonBuilder = new GsonBuilder().setPrettyPrinting();
+        this.gson = gsonBuilder.create();
+
+        this.inputLock = new Object();
+        this.outputLock = new Object();
+
+        try {
+            this.output = new PrintWriter(client.getOutputStream(), true); // Output to client
+            this.input = new BufferedReader(new InputStreamReader(client.getInputStream())); // Input from client
+        } catch (IOException e) {
+            Server.LOGGER.severe(e.getMessage());
+        }
     }
-}
 
+    @Override
     public void run() {
         try {
             handleClientConnection();
         } catch (IOException e) {
-            System.out.println("Client " + socketclient.getInetAddress() + " connection dropped.");
+            Server.LOGGER.severe("Client " + client.getInetAddress() + " connection dropped.");
             disconnect();
         }
     }
@@ -53,56 +71,57 @@ public SocketClientHandler(SocketServer socketServer,Socket socketclient)
     /**
      * Handles the connection of a new client and keep listening to the socket for new messages.
      *
-     * @throws IOException any of the usual Input/Output exceptions.
+     * @throws IOException any of the usual Input/Output related exceptions.
      */
     private void handleClientConnection() throws IOException {
-        System.out.println("Client connected from " + socketclient.getInetAddress());
+        Server.LOGGER.info("Client connected from " + client.getInetAddress());
 
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 synchronized (inputLock) {
-                    Message message = (Message) input.readObject();
+                    String line;
+                    String rawGson = "";
+                    line = input.readLine();
+                    while (line != null) {
+                        rawGson += line;
+                        line = input.readLine();
+                    }
+                    Message message = gson.fromJson(rawGson, Message.class);
+
+                    String goat = rawGson;
+
+                    Server.LOGGER.info(() -> "Received: " + goat);
 
                     if (message != null && message.getMessageType() != MessageType.PING) {
-                        if (message.getMessageType() == MessageType.LOGIN)
-                        {
-                            socketServer.addClient(message.getPlayerName(), this);
-                        }
-                        else
-                        {
-                            System.out.println( "Received: " + message);
-                            //socketServer.onMessageReceived(message);
+                        if (message.getMessageType() == MessageType.LOGIN_REQUEST) {
+                            socketServer.addClient(message.getSenderName(), this);
+                        } else {
+                            Server.LOGGER.info(() -> "Received: " + message);
+                            socketServer.onMessageReceived(message);
                         }
                     }
                 }
             }
-        } catch (ClassCastException | ClassNotFoundException e) {
-            System.out.println("Invalid stream from client");
+        } catch (ClassCastException e) {
+            Server.LOGGER.severe("Invalid stream from client");
         }
-        socketclient.close();
+        client.close();
     }
-    /**
-     * Returns the current status of the connection.
-     *
-     * @return {@code true} if the connection is still active, {@code false} otherwise.
-     */
+
     @Override
     public boolean isConnected() {
         return connected;
     }
 
-    /**
-     * Disconnect the socket.
-     */
     @Override
     public void disconnect() {
         if (connected) {
             try {
-                if (!socketclient.isClosed()) {
-                    socketclient.close();
+                if (!client.isClosed()) {
+                    client.close();
                 }
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                Server.LOGGER.severe(e.getMessage());
             }
             connected = false;
             Thread.currentThread().interrupt();
@@ -111,22 +130,15 @@ public SocketClientHandler(SocketServer socketServer,Socket socketclient)
         }
     }
 
-    /**
-     * Sends a message to the client via socket.
-     *
-     * @param message the message to be sent.
-     */
     @Override
     public void sendMessage(Message message) {
-        try {
-            synchronized (outputLock) {
-                output.writeObject(message);
-                output.reset();
-                System.out.println("Sent: " + message);
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            disconnect();
+        synchronized (outputLock) {
+            GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
+            Gson gson = builder.create();
+            String rawGson = gson.toJson(message);
+            output.println(rawGson);
+            Server.LOGGER.info(() -> "Sent: " + message);
         }
     }
+
 }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.manuel.view;
+package it.polimi.ingsw.view;
 
 
 import java.util.List;

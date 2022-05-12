@@ -9,6 +9,8 @@ public enum MessageType {
     MATCHINFOMESSAGE,
     PICK_FIRST_PLAYER,
     MATCH_INFO,
+    LOBBY,
+    GENERIC_MESSAGE,
     ERROR,
     PING,    // Ping type message
     LOGIN,   // Log in request

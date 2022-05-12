@@ -7,8 +7,8 @@ public class PlayerNumberReply extends Message {
 
     private final int playerNumber;
 
-    public PlayerNumberReply(String nickname, int playerNumber) {
-        super(nickname, MessageType.PLAYERNUMBER_REPLY);
+    public PlayerNumberReply(String senderName, int playerNumber) {
+        super(senderName, MessageType.PLAYERNUMBER_REPLY);
         this.playerNumber = playerNumber;
     }
 
@@ -19,7 +19,7 @@ public class PlayerNumberReply extends Message {
     @Override
     public String toString() {
         return "PlayerNumberReply{" +
-                "nickname=" + getPlayerName() +
+                "senderName=" + getSenderName() +
                 ", playerNumber=" + playerNumber +
                 '}';
     }

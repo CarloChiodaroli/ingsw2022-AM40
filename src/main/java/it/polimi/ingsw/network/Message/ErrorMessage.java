@@ -1,6 +1,5 @@
 package it.polimi.ingsw.network.Message;
 
-
 /**
  * Message to notify an error to the user.
  */
@@ -22,7 +21,7 @@ public class ErrorMessage extends Message {
     @Override
     public String toString() {
         return "ErrorMessage{" +
-                "nickname=" + getPlayerName() +
+                "senderName=" + getSenderName() +
                 ", error=" + error +
                 '}';
     }

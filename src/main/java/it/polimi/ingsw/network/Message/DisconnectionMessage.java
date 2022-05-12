@@ -1,23 +1,26 @@
 package it.polimi.ingsw.network.Message;
 
 
+import it.polimi.ingsw.manuel.model.Game;
+
 /**
  * Message to notify a disconnection to the other players.
  */
 public class DisconnectionMessage extends Message {
 
+    private static final long serialVersionUID = -5422965079989607600L;
 
-    private final String playerNameDisconnected;
+    private final String nicknameDisconnected;
     private final String messageStr;
 
-    public DisconnectionMessage(String playerNameDisconnected, String messageStr) {
-        super("server", MessageType.DISCONNECTION);
-        this.playerNameDisconnected = playerNameDisconnected;
+    public DisconnectionMessage(String nicknameDisconnected, String messageStr) {
+        super(Game.SERVER_NICKNAME, MessageType.DISCONNECTION);
+        this.nicknameDisconnected = nicknameDisconnected;
         this.messageStr = messageStr;
     }
 
-    public String getPlayerNameDisconnectedDisconnected() {
-        return playerNameDisconnected;
+    public String getNicknameDisconnected() {
+        return nicknameDisconnected;
     }
 
     public String getMessageStr() {
@@ -27,7 +30,7 @@ public class DisconnectionMessage extends Message {
     @Override
     public String toString() {
         return "DisconnectionMessage{" +
-                "nicknameDisconnected='" + playerNameDisconnected + '\'' +
+                "nicknameDisconnected='" + nicknameDisconnected + '\'' +
                 ", messageStr='" + messageStr + '\'' +
                 '}';
     }

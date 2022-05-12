@@ -1,4 +1,4 @@
-package it.polimi.ingsw.manuel.view.cli;
+package it.polimi.ingsw.view.cli;
 
 /**
  * This class contains all colors used in Cli.

@@ -1,10 +1,11 @@
-package it.polimi.ingsw.manuel;
+package it.polimi.ingsw;
 
-import it.polimi.ingsw.manuel.controller.ClientController;
-import it.polimi.ingsw.manuel.view.cli.Cli;
+import it.polimi.ingsw.client.controller.ClientController;
+import it.polimi.ingsw.view.cli.Cli;
 
 
-public class ClientApp {
+
+public class ClientApp2 {
 
     public static void main(String[] args) {
 
@@ -14,8 +15,6 @@ public class ClientApp {
             ClientController clientcontroller = new ClientController(view);
             view.addObserver(clientcontroller);
             view.init();
-            System.out.println("Finish client");
-
         }
     }
 }

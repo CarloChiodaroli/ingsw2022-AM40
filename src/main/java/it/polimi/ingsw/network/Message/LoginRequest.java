@@ -5,8 +5,6 @@ package it.polimi.ingsw.network.Message;
  */
 public class LoginRequest extends Message {
 
-    private static final long serialVersionUID = -6343239452500134346L;
-
     public LoginRequest(String nickname) {
         super(nickname, MessageType.LOGIN_REQUEST);
     }
@@ -14,7 +12,7 @@ public class LoginRequest extends Message {
     @Override
     public String toString() {
         return "LoginRequest{" +
-                "nickname=" + getPlayerName() +
+                "senderName=" + getSenderName() +
                 '}';
     }
 }

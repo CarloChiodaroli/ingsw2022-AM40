@@ -1,10 +1,10 @@
-package it.polimi.ingsw.manuel.controller;
+package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.manuel.model.Game;
-import it.polimi.ingsw.manuel.network.message.Message;
-import it.polimi.ingsw.manuel.network.message.PlayerNumberReply;
-import it.polimi.ingsw.manuel.view.View;
-import it.polimi.ingsw.manuel.view.VirtualView;
+import it.polimi.ingsw.network.Message.Message;
+import it.polimi.ingsw.network.Message.PlayerNumberReply;
+import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.VirtualView;
 
 import java.util.Map;
 
@@ -12,12 +12,12 @@ public class InputController {
 
     private final Game game;
     private transient Map<String, VirtualView> virtualViewMap;
-    private final GameController gameController;
+    private final GameManager gameManager;
 
-    public InputController(Map<String, VirtualView> virtualViewMap, GameController gameController) {
+    public InputController(Map<String, VirtualView> virtualViewMap, GameManager gameManager) {
         this.game = Game.getInstance();
         this.virtualViewMap = virtualViewMap;
-        this.gameController = gameController;
+        this.gameManager = gameManager;
     }
 
     public boolean verifyReceivedData(Message message) {
@@ -53,14 +53,14 @@ public class InputController {
         if (playerNumberReply.getPlayerNumber() < 4 && playerNumberReply.getPlayerNumber() > 1) {
             return true;
         } else {
-            VirtualView virtualView = virtualViewMap.get(message.getNickname());
+            VirtualView virtualView = virtualViewMap.get(message.getSenderName());
             virtualView.askPlayersNumber();
             return false;
         }
     }
 
     public boolean checkUser(Message receivedMessage) {
-        return receivedMessage.getNickname().equals(gameController.getTurnController().getActivePlayer());
+        return receivedMessage.getSenderName().equals(gameManager.getTurnController().getActivePlayer());
     }
 
 

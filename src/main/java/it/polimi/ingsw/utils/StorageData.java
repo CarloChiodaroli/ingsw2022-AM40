@@ -1,16 +1,16 @@
-package it.polimi.ingsw.manuel.utils;
+package it.polimi.ingsw.utils;
 
-import it.polimi.ingsw.manuel.controller.GameController;
-import it.polimi.ingsw.manuel.network.server.Server;
+import it.polimi.ingsw.controller.GameManager;
+import it.polimi.ingsw.network.Server.Server;
 
 import java.io.*;
 import java.nio.file.Files;
 
 public class StorageData {
 
-    public void store(GameController gameController) {
-        Persistence persistence = new Persistence(gameController);
-        try (FileOutputStream fileOutputStream = new FileOutputStream(new File(GameController.SAVED_GAME_FILE))) {
+    public void store(GameManager gameManager) {
+        Persistence persistence = new Persistence(gameManager);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(new File(GameManager.SAVED_GAME_FILE))) {
 
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(persistence);
@@ -20,9 +20,9 @@ public class StorageData {
         }
     }
 
-    public GameController restore() {
+    public GameManager restore() {
         Persistence persistence;
-        try (FileInputStream fileInputStream = new FileInputStream(new File(GameController.SAVED_GAME_FILE))) {
+        try (FileInputStream fileInputStream = new FileInputStream(new File(GameManager.SAVED_GAME_FILE))) {
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             persistence = (Persistence) objectInputStream.readObject();
             return persistence.getGameController();
@@ -35,11 +35,11 @@ public class StorageData {
     }
 
     public void delete() {
-        File file = new File(GameController.SAVED_GAME_FILE);
+        File file = new File(GameManager.SAVED_GAME_FILE);
         try {
             Files.deleteIfExists(file.toPath());
         } catch (IOException e) {
-            Server.LOGGER.severe("Failed to delete " + GameController.SAVED_GAME_FILE + " file.");
+            Server.LOGGER.severe("Failed to delete " + GameManager.SAVED_GAME_FILE + " file.");
         }
     }
 }

@@ -1,21 +1,20 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.controller.ClientController;
+import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.view.cli.Cli;
-public class ClientApplication {
+
+
+public class ClientApp {
 
     public static void main(String[] args) {
-        boolean cliParam  = true; //set true if there is cli , set false when there will be GUI
 
-        if(cliParam)
-        {
+        boolean cliParam = true; // default value
+        if (cliParam) {
             Cli view = new Cli();
             ClientController clientcontroller = new ClientController(view);
             view.addObserver(clientcontroller);
             view.init();
+            System.out.println("Finish client");
         }
     }
-
-
-
 }

@@ -1,22 +1,23 @@
 package it.polimi.ingsw.network.Message;
 
+import it.polimi.ingsw.manuel.model.Game;
 
 /**
  * Message used to confirm or discard a login request of a client.
  */
 public class LoginReply extends Message {
 
-    private final boolean playerNameAccepted;
+    private final boolean nicknameAccepted;
     private final boolean connectionSuccessful;
 
-    public LoginReply(boolean playerNameAccepted, boolean connectionSuccessful) {
-        super(null, MessageType.LOGIN_REPLY);
-        this.playerNameAccepted = playerNameAccepted;
+    public LoginReply(boolean nicknameAccepted, boolean connectionSuccessful) {
+        super(Game.SERVER_NICKNAME, MessageType.LOGIN_REPLY);
+        this.nicknameAccepted = nicknameAccepted;
         this.connectionSuccessful = connectionSuccessful;
     }
 
-    public boolean isPlayerNameAccepted() {
-        return playerNameAccepted;
+    public boolean isNicknameAccepted() {
+        return nicknameAccepted;
     }
 
     public boolean isConnectionSuccessful() {
@@ -26,8 +27,8 @@ public class LoginReply extends Message {
     @Override
     public String toString() {
         return "LoginReply{" +
-                "nickname=" + getPlayerName() +
-                ", nicknameAccepted=" + playerNameAccepted +
+                "senderName=" + getSenderName() +
+                ", senderAccepted=" + nicknameAccepted +
                 ", connectionSuccessful=" + connectionSuccessful +
                 '}';
     }

@@ -1,9 +1,9 @@
-package it.polimi.ingsw.manuel.view;
+package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.manuel.model.Game;
-import it.polimi.ingsw.manuel.network.message.*;
-import it.polimi.ingsw.manuel.network.server.ClientHandler;
-import it.polimi.ingsw.manuel.observer.Observer;
+import it.polimi.ingsw.network.Server.ClientHandler;
+import it.polimi.ingsw.Observer.Observer;
+import it.polimi.ingsw.network.Message.*;
 
 
 import java.util.List;

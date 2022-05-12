@@ -17,6 +17,8 @@ public class PlayMessage extends Message {
     private Map<TeacherColor, Integer> teacherColorIntegerMap = null;
     private List<TeacherColor> teacherColorList;
     private final static MessageType messageType = MessageType.PLAY;
+    private final String move;
+    
 
     private static Map<Class<?>, Method> getParserMap() throws NoSuchMethodException {
         Map<Class<?>, Method> result = new HashMap<>();
@@ -41,7 +43,7 @@ public class PlayMessage extends Message {
         for (int i = 0; i < paramClassArray.length; i++) {
             params[i] = parser.get(paramClassArray[i]).invoke(this, params[i].toString());
         }
-        Method method = MessageReader.class.getMethod("move", paramClassArray);
+        Method method = MessageReader.class.getMethod(move, paramClassArray);
         method.invoke(manager, params);
     }
 
@@ -100,89 +102,99 @@ public class PlayMessage extends Message {
         return new Class<?>[size];
     }
 
-    public PlayMessage(String sender, TeacherColor color, String fromId, String toId){
+    public PlayMessage(String sender, String move,  TeacherColor color, String fromId, String toId){
         super(sender, messageType);
-        params = new Object[]{super.getPlayerName(), color, fromId, toId};
+        this.move = move;
+        params = new Object[]{super.getSenderName(), color, fromId, toId};
         Class<?>[] tmp = new Class<?>[]{String.class, TeacherColor.class, String.class, String.class};
         paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
         super.message();
     }
 
-    public PlayMessage(String sender, TeacherColor fromColor, TeacherColor toColor, String placeId) {
+    public PlayMessage(String sender, String move,  TeacherColor fromColor, TeacherColor toColor, String placeId) {
         super(sender, messageType);
-        params = new Object[]{super.getPlayerName(), fromColor, toColor, placeId};
+        this.move = move;
+        params = new Object[]{super.getSenderName(), fromColor, toColor, placeId};
         Class<?>[] tmp = new Class<?>[]{String.class, TeacherColor.class, TeacherColor.class, String.class};
         paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
         super.message();
     }
 
-    public PlayMessage(String sender, Integer hops) {
+    public PlayMessage(String sender, String move,  Integer hops) {
         super(sender, messageType);
-        params = new Object[]{super.getPlayerName(), hops};
+        this.move = move;
+        params = new Object[]{super.getSenderName(), hops};
         Class<?>[] tmp = new Class<?>[]{String.class, Integer.class};
         paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
         super.message();
     }
 
-    public PlayMessage(String sender, String id) {
+    public PlayMessage(String sender, String move,  String id) {
         super(sender, messageType);
-        params = new Object[]{super.getPlayerName(), id};
+        this.move = move;
+        params = new Object[]{super.getSenderName(), id};
         Class<?>[] tmp = new Class<?>[]{String.class, String.class};
         paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
         super.message();
     }
 
-    public PlayMessage(String sender, Characters character) {
+    public PlayMessage(String sender, String move,  Characters character) {
         super(sender, messageType);
-        params = new Object[]{super.getPlayerName(), character};
+        this.move = move;
+        params = new Object[]{super.getSenderName(), character};
         Class<?>[] tmp = new Class<?>[]{String.class, Characters.class};
         paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
         super.message();
     }
 
-    public PlayMessage(String sender, Characters character, String id) {
+    public PlayMessage(String sender, String move,  Characters character, String id) {
         super(sender, messageType);
-        params = new Object[]{super.getPlayerName(), character, id};
+        this.move = move;
+        params = new Object[]{super.getSenderName(), character, id};
         Class<?>[] tmp = new Class<?>[]{String.class, Characters.class, String.class};
         paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
         super.message();
     }
 
-    public PlayMessage(String sender, Characters character, TeacherColor color){
+    public PlayMessage(String sender, String move,  Characters character, TeacherColor color){
         super(sender, messageType);
-        params = new Object[]{super.getPlayerName(), character, color};
+        this.move = move;
+        params = new Object[]{super.getSenderName(), character, color};
         Class<?>[] tmp = new Class<?>[]{String.class, Characters.class, TeacherColor.class};
         paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
         super.message();
     }
 
-    public PlayMessage(String sender, String id, Map<TeacherColor, Integer> quantity){
+    public PlayMessage(String sender, String move,  String id, Map<TeacherColor, Integer> quantity){
         super(sender, messageType);
+        this.move = move;
         teacherColorIntegerMap = new HashMap<>(quantity);
-        params = new Object[]{super.getPlayerName(), id, "getTeacherColorIntegerMap"};
+        params = new Object[]{super.getSenderName(), id, "getTeacherColorIntegerMap"};
         Class<?>[] tmp = new Class<?>[]{String.class, String.class, Map.class};
         paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
         super.message();
     }
 
-    public PlayMessage(String sender, String id, List<TeacherColor> which){
+    public PlayMessage(String sender, String move,  String id, List<TeacherColor> which){
         super(sender, messageType);
+        this.move = move;
         teacherColorList = new ArrayList<>(which);
-        params = new Object[]{super.getPlayerName(), id, "getTeacherColorList"};
+        params = new Object[]{super.getSenderName(), id, "getTeacherColorList"};
         Class<?>[] tmp = new Class<?>[]{String.class, String.class, List.class};
         paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
         super.message();
     }
 
-    public PlayMessage(String sender, Map<String, Optional<TowerColor>> conquests){
+    public PlayMessage(String sender, String move,  Map<String, Optional<TowerColor>> conquests){
         super(sender, messageType);
+        this.move = move;
         stringTowerColorMap = new HashMap<>();
         for (String place : conquests.keySet()) {
             if (conquests.get(place).isPresent()) {
                 stringTowerColorMap.put(place, conquests.get(place).get());
             }
         }
-        params = new Object[]{super.getPlayerName(), "getStringTowerColorMap"};
+        params = new Object[]{super.getSenderName(), "getStringTowerColorMap"};
         Class<?>[] tmp = new Class<?>[]{String.class, Map.class};
         paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
         super.message();

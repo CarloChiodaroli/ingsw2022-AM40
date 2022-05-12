@@ -3,6 +3,7 @@ package it.polimi.ingsw.manuel.model;
 import java.util.Objects;
 import java.util.Observable;
 
+@Deprecated
 public class Player extends Observable{
     private final String nickname;
     private PlayerState state;

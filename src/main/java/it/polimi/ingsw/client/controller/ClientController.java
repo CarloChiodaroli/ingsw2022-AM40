@@ -1,11 +1,11 @@
-package it.polimi.ingsw.manuel.controller;
+package it.polimi.ingsw.client.controller;
 
-import it.polimi.ingsw.manuel.network.client.Client;
-import it.polimi.ingsw.manuel.network.client.SocketClient;
-import it.polimi.ingsw.manuel.network.message.*;
-import it.polimi.ingsw.manuel.observer.Observer;
-import it.polimi.ingsw.manuel.observer.ViewObserver;
-import it.polimi.ingsw.manuel.view.View;
+import it.polimi.ingsw.Observer.Observer;
+import it.polimi.ingsw.Observer.ViewObserver;
+import it.polimi.ingsw.network.Client.Client;
+import it.polimi.ingsw.network.Client.SocketClient;
+import it.polimi.ingsw.network.Message.*;
+import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
 import java.util.Map;
@@ -29,15 +29,15 @@ public class ClientController implements ViewObserver, Observer {
 
     @Override
     public void onUpdateServerInfo(Map<String, String> serverInfo) {
-        try
-        {
+        try {
             client = new SocketClient(serverInfo.get("address"), Integer.parseInt(serverInfo.get("port")));
+            System.out.println("Pollo");
             client.addObserver(this);
+
             client.readMessage(); // Starts an asynchronous reading from the server.
             client.enablePinger(true);
             taskQueue.execute(view::askNickname);
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             taskQueue.execute(() -> view.showLoginResult(false, false, this.nickname));
         }
     }
@@ -90,6 +90,7 @@ public class ClientController implements ViewObserver, Observer {
                 break;
         }
     }
+
     //STACK OVERFLOW
     public static boolean isValidIpAddress(String ip) {
         String regex = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +

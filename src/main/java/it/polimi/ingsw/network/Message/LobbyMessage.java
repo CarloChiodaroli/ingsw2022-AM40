@@ -1,11 +1,11 @@
-package it.polimi.ingsw.manuel.network.message;
+package it.polimi.ingsw.network.Message;
 
 import it.polimi.ingsw.manuel.model.Game;
 
 import java.util.List;
 
 public class LobbyMessage extends Message {
-    private static final long serialVersionUID = -6886305903361404798L;
+
     private final List<String> nicknameList;
     private final int maxPlayers;
 
@@ -26,8 +26,8 @@ public class LobbyMessage extends Message {
     @Override
     public String toString() {
         return "LobbyMessage{" +
-                "nickname=" + getNickname() +
-                ", nicknameList=" + nicknameList +
+                "senderName=" + getSenderName() +
+                ", PlayerNameList=" + nicknameList +
                 ", numPlayers=" + maxPlayers +
                 '}';
     }

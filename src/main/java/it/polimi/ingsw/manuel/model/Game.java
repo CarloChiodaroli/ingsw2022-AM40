@@ -1,12 +1,13 @@
 package it.polimi.ingsw.manuel.model;
 
 
-import it.polimi.ingsw.manuel.network.message.LobbyMessage;
-import it.polimi.ingsw.manuel.observer.Observable;
+import it.polimi.ingsw.network.Message.LobbyMessage;
+import it.polimi.ingsw.Observer.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class Game extends Observable {
     private static Game instance;
     public static final int MAX_PLAYERS = 3;

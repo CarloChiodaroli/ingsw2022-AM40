@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 /**
- * Used only in GameController to keep track of the general state of the game
+ * Used only in GameManager to keep track of the general state of the game
  */
 enum GameState {
     INITIAL, PLANNING, ACTION;

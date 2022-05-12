@@ -278,9 +278,4 @@ public class GameController {
     {
         return playerNames.contains(username);
     }
-
-    public void onMessageReceived()
-    {
-        //Implementation and link with Input Controller
-    }
 }

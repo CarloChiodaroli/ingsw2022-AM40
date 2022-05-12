@@ -1,8 +1,8 @@
-package it.polimi.ingsw.manuel.controller;
+package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.manuel.model.Game;
-import it.polimi.ingsw.manuel.utils.StorageData;
-import it.polimi.ingsw.manuel.view.VirtualView;
+import it.polimi.ingsw.utils.StorageData;
+import it.polimi.ingsw.view.VirtualView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +15,14 @@ public class TurnController {
     private String activePlayer;
 
     transient Map<String, VirtualView> virtualViewMap;
-    private final GameController gameController;
+    private final GameManager gameManager;
 
-    public TurnController(Map<String, VirtualView> virtualViewMap, GameController gameController) {
+    public TurnController(Map<String, VirtualView> virtualViewMap, GameManager gameManager) {
         this.game = Game.getInstance();
         this.nicknameQueue = new ArrayList<>(game.getPlayersNicknames());
         this.activePlayer = nicknameQueue.get(0); // set first active player
         this.virtualViewMap = virtualViewMap;
-        this.gameController = gameController;
+        this.gameManager = gameManager;
     }
 
     public String getActivePlayer() {
@@ -51,7 +51,7 @@ public class TurnController {
         VirtualView vv = virtualViewMap.get(getActivePlayer());
         vv.showGenericMessage("It's your turn!");
         StorageData storageData = new StorageData();
-        storageData.store(gameController);
+        storageData.store(gameManager);
     }
 
     public void turnControllerNotify(String messageToNotify, String excludeNickname) {

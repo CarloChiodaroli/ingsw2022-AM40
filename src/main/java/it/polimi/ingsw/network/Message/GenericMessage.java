@@ -1,7 +1,6 @@
-package it.polimi.ingsw.manuel.network.message;
+package it.polimi.ingsw.network.Message;
 
 
-import it.polimi.ingsw.manuel.model.Game;
 
 public class GenericMessage extends Message {
     private static final long serialVersionUID = 934399396584368694L;
@@ -10,7 +9,7 @@ public class GenericMessage extends Message {
 
 
     public GenericMessage(String message) {
-        super(Game.SERVER_NICKNAME, MessageType.GENERIC_MESSAGE);
+        super("server", MessageType.GENERIC_MESSAGE);
         this.message = message;
     }
 
@@ -22,7 +21,7 @@ public class GenericMessage extends Message {
     @Override
     public String toString() {
         return "GenericMessage{" +
-                "nickname=" + getNickname() +
+                "senderName=" + getSenderName() +
                 ", message=" + message +
                 '}';
     }
