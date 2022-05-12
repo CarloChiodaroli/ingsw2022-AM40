@@ -3,12 +3,10 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.enums.Characters;
 import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.model.enums.TowerColor;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Game Controller which controls which commands are sent to the game mode
@@ -228,6 +226,35 @@ public class GameController {
     public void playCharacterCard(String playerName, Characters character, String islandId) {
         playCharacterCardPermit(playerName);
         model.playCharacterCard(playerName, character, islandId);
+    }
+
+    public Map<TeacherColor, Integer> getStudentInPlace(String playerName, String placeId){
+        if(getAllIslandIds().contains(placeId)) return model.getStudentsInIsland(placeId);
+        if(placeId.equals("Entrance")) return model.getStudentsInEntrance(playerName);
+        if(placeId.equals("Room")) return model.getStudentsInRoom(playerName);
+        else return new HashMap<>();
+    }
+
+    public Optional<TowerColor> getTowerInPlace(String placeId){
+        if(!getAllIslandIds().contains(placeId)) return Optional.empty();
+        return model.getTowerInIsland(placeId);
+    }
+
+    public List<TeacherColor> getTeacherInPlace(String playerName, String placeId){
+        if(!placeId.equals("Room")) return new ArrayList<>();
+        return model.getTeachersInRoom(playerName);
+    }
+
+    public String getMotherNaturePosition(){
+        return model.getMotherNaturePosition();
+    }
+
+    public List<String> getPlayerNames(){
+        return playerNames;
+    }
+
+    public int getPlayerTowers(String playerName){
+        return 0;
     }
 
     public GameModel getModel() {

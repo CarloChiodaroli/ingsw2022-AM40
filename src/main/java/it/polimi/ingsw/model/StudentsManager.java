@@ -3,17 +3,13 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.enums.TeacherColor;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 public abstract class StudentsManager {
-    private int studentYellow = 0;
-    private int studentPink = 0;
-    private int studentRed = 0;
-    private int studentGreen = 0;
-    private int studentBlue = 0;
-    private int studentTot = 0;
     private final int maxStudents;
     private final int maxStudentsColor;
+    private final HashMap<TeacherColor, Integer> manager;
 
     /**
      * Class Constructor
@@ -24,11 +20,19 @@ public abstract class StudentsManager {
     public StudentsManager(int maxStudents, int maxStudentsColor) {
         this.maxStudents = maxStudents;
         this.maxStudentsColor = maxStudentsColor;
+        this.manager = new HashMap<>();
+        for(TeacherColor color: TeacherColor.values()){
+            manager.put(color, 0);
+        }
     }
 
     public StudentsManager(int maxStudents) {
         this.maxStudents = maxStudents;
         this.maxStudentsColor = maxStudents;
+        this.manager = new HashMap<>();
+        for(TeacherColor color: TeacherColor.values()) {
+            manager.put(color, 0);
+        }
     }
 
     /**
@@ -38,36 +42,10 @@ public abstract class StudentsManager {
      * @return true if the student has been added
      */
     public boolean addStudent(TeacherColor color) {
-        boolean perm = false;
-        switch (color) {
-            case YELLOW -> {
-                perm = permissionAdd(studentYellow);
-                if (perm)
-                    studentYellow = indecrement(studentYellow, 1);
-            }
-            case PINK -> {
-                perm = permissionAdd(studentPink);
-                if (perm)
-                    studentPink = indecrement(studentPink, 1);
-            }
-            case RED -> {
-                perm = permissionAdd(studentRed);
-                if (perm)
-                    studentRed = indecrement(studentRed, 1);
-            }
-            case GREEN -> {
-                perm = permissionAdd(studentGreen);
-                if (perm)
-                    studentGreen = indecrement(studentGreen, 1);
-            }
-            case BLUE -> {
-                perm = permissionAdd(studentBlue);
-                if (perm)
-                    studentBlue = indecrement(studentBlue, 1);
-            }
-        }
-        if (perm) {
-            studentTot = indecrement(studentTot, 1);
+        boolean perm;
+        perm = permissionAdd(manager.get(color));
+        if(perm){
+            manager.replace(color, manager.get(color),manager.get(color) + 1);
             return true;
         }
         return false;
@@ -80,36 +58,10 @@ public abstract class StudentsManager {
      * @return true if the student has been removed
      */
     public boolean removeStudent(TeacherColor color) {
-        boolean perm = false;
-        switch (color) {
-            case YELLOW -> {
-                perm = permissionRemove(studentYellow);
-                if (perm)
-                    studentYellow = indecrement(studentYellow, -1);
-            }
-            case PINK -> {
-                perm = permissionRemove(studentPink);
-                if (perm)
-                    studentPink = indecrement(studentPink, -1);
-            }
-            case RED -> {
-                perm = permissionRemove(studentRed);
-                if (perm)
-                    studentRed = indecrement(studentRed, -1);
-            }
-            case GREEN -> {
-                perm = permissionRemove(studentGreen);
-                if (perm)
-                    studentGreen = indecrement(studentGreen, -1);
-            }
-            case BLUE -> {
-                perm = permissionRemove(studentBlue);
-                if (perm)
-                    studentBlue = indecrement(studentBlue, -1);
-            }
-        }
-        if (perm) {
-            studentTot = indecrement(studentTot, -1);
+        boolean perm;
+        perm = permissionRemove(manager.get(color));
+        if(perm){
+            manager.replace(color, manager.get(color),manager.get(color) - 1);
             return true;
         }
         return false;
@@ -121,7 +73,7 @@ public abstract class StudentsManager {
      * @param students number of students of the color want add
      */
     private boolean permissionAdd(int students) {
-        return students < maxStudentsColor && studentTot < maxStudents;
+        return students < maxStudentsColor && howManyTotStudents() < maxStudents;
     }
 
     /**
@@ -130,34 +82,24 @@ public abstract class StudentsManager {
      * @param students number of students of the color want remove
      */
     private boolean permissionRemove(int students) {
-        return students > 0 && studentTot > 0;
-    }
-
-    /**
-     * adder / remover
-     */
-    private int indecrement(int var, int val) {
-        var += val;
-        return var;
+        return students > 0 && howManyTotStudents() > 0;
     }
 
     /**
      * @return how many students there are of the desired color
      */
     public int howManyStudents(TeacherColor color) {
-        return switch (color) {
-            case YELLOW -> studentYellow;
-            case PINK -> studentPink;
-            case RED -> studentRed;
-            case GREEN -> studentGreen;
-            case BLUE -> studentBlue;
-        };
+        return manager.get(color);
     }
 
     /**
      * @return how many students there are
      */
     public int howManyTotStudents() {
+        int studentTot = 0;
+        for(TeacherColor color: TeacherColor.values()){
+            studentTot += manager.get(color);
+        }
         return studentTot;
     }
 
