@@ -3,6 +3,7 @@ package it.polimi.ingsw.manuel.view;
 import it.polimi.ingsw.manuel.model.Game;
 import it.polimi.ingsw.manuel.network.message.*;
 import it.polimi.ingsw.manuel.network.server.ClientHandler;
+import it.polimi.ingsw.manuel.observer.Observer;
 
 
 import java.util.List;
