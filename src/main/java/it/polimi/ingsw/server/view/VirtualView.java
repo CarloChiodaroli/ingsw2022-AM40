@@ -31,9 +31,10 @@ public class VirtualView implements View, Observer {
         return clientHandler;
     }
 
+    // not so good string
     @Override
     public void askNickname() {
-        clientHandler.sendMessage(new LoginReply(false, true));
+        clientHandler.sendMessage(new LoginMessage("Server",false, true));
     }
 
     @Override
@@ -41,9 +42,10 @@ public class VirtualView implements View, Observer {
         clientHandler.sendMessage(new PlayerNumberRequest());
     }
 
+    // not so good string
     @Override
     public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname) {
-        clientHandler.sendMessage(new LoginReply(nicknameAccepted, connectionSuccessful));
+        clientHandler.sendMessage(new LoginMessage("Server", nicknameAccepted, connectionSuccessful));
     }
 
     @Override

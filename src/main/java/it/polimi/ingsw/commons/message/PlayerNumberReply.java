@@ -3,6 +3,7 @@ package it.polimi.ingsw.commons.message;
 /**
  * Message used to send to the server the number of players picked by the client.
  */
+@Deprecated
 public class PlayerNumberReply extends Message {
 
     private final int playerNumber;

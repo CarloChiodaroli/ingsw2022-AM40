@@ -48,13 +48,13 @@ public class SocketClient extends Client {
     private Map<MessageType, Class<?>> instanceSetter(){
         Map<MessageType, Class<?>> map = new HashMap<>();
         map.put(MessageType.LOGIN_REQUEST, LoginRequest.class);
-        map.put(MessageType.LOGIN_REPLY, LoginReply.class);
+        //map.put(MessageType.LOGIN_REPLY, LoginReply.class);
         map.put(MessageType.DISCONNECTION, DisconnectionMessage.class);
         map.put(MessageType.PLAYER_NUMBER_REQUEST, PlayerNumberRequest.class);
         map.put(MessageType.PLAYER_NUMBER_REPLY, PlayerNumberReply.class);
         // map.put(MessageType.PICK_FIRST_PLAYER, no class);
 
-        // map.put(MessageType.LOGIN, no class);
+        map.put(MessageType.LOGIN, LoginMessage.class);
         map.put(MessageType.LOBBY, LobbyMessage.class);
         map.put(MessageType.PLAY, PlayMessage.class);
         map.put(MessageType.PING, PingMessage.class);

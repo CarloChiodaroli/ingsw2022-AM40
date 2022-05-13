@@ -4,6 +4,7 @@ package it.polimi.ingsw.commons.message;
 /**
  * Message used to ask the client the maximum number of players of the game.
  */
+@Deprecated
 public class PlayerNumberRequest extends Message {
 
     public PlayerNumberRequest() {

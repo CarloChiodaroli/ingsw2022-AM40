@@ -18,8 +18,13 @@ public class PlayMessage extends Message {
     private List<TeacherColor> teacherColorList;
     private final static MessageType messageType = MessageType.PLAY;
     private final String move;
-    
 
+
+    /**
+     * Initializes the map which associates the Class of a parameter and its parser method
+     * @return the associating map
+     * @throws NoSuchMethodException if one of the methods is not found... it should not be thrown
+     */
     private static Map<Class<?>, Method> getParserMap() throws NoSuchMethodException {
         Map<Class<?>, Method> result = new HashMap<>();
         result.put(Integer.class, PlayMessage.class.getDeclaredMethod("getInt", String.class));
@@ -32,6 +37,16 @@ public class PlayMessage extends Message {
         return result;
     }
 
+    /**
+     * Runs the Message content, calling the appropriate method with
+     * given name (Constructor's "move" parameter), and with given parameters (Other Constructor's parameter (wh\ sender))
+     * from the manager
+     * @param manager the manager class which needs to run the before mentioned method
+     * @throws IllegalAccessException {@link java.lang.reflect.Method}'s invoke
+     * @throws InvocationTargetException {@link java.lang.reflect.Method}'s invoke
+     * @throws NoSuchMethodException if sent move parameter is not valid
+     * @throws ClassNotFoundException if the parsing from class's name to class fails
+     */
     public void executeMessage(MessageReader manager) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException{
         super.controlWritten();
         Map<Class<?>, Method> parser = getParserMap();
@@ -48,20 +63,37 @@ public class PlayMessage extends Message {
     }
 
     // public only for testing
+    /**
+     * Getter of saved Map which saves how many students are in a place (For testing purposes)
+     * @return the map
+     */
     public Map<TeacherColor, Integer> getTeacherColorIntegerMap() {
         return this.teacherColorIntegerMap;
     }
 
     // public only for testing
+    /**
+     * Getter of saved Map which saves which islands have which towers (For testing purposes)
+     * @return the map
+     */
     public Map<String, TowerColor> getStringTowerColorMap() {
         return this.stringTowerColorMap;
     }
 
     // public only for testing
+    /**
+     * Getter of saved List which saves which Teachers a player has (For testing purposes)
+     * @return the map
+     */
     public List<TeacherColor> getTeacherColorList() {
         return this.teacherColorList;
     }
 
+    /**
+     * "Parser" of the Map equivalent string saved in command parameters
+     * @param data the string saved in the command parameters
+     * @return the map
+     */
     private Map<?, ?> getMap(String data) {
         Map<String, Map<?, ?>> baseMap = new HashMap<>();
         baseMap.put("getTeacherColorIntegerMap", teacherColorIntegerMap);
@@ -69,16 +101,34 @@ public class PlayMessage extends Message {
         return new HashMap<>(baseMap.get(data));
     }
 
+    /**
+     * "Parser" of the List equivalent string saved in command parameters
+     * @param data the string saved in the command parameters
+     * @return the list
+     * @throws IllegalAccessException {@link java.lang.reflect.Method}'s invoke
+     * @throws InvocationTargetException {@link java.lang.reflect.Method}'s invoke
+     * @throws NoSuchMethodException if sent move parameter is not valid
+     */
     private List<?> getList(String data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         return (List<?>) PlayMessage.class.getDeclaredMethod(data).invoke(this);
     }
 
+    /**
+     * Parser of a string to a string
+     * @param data the saved string
+     * @return the parsed string
+     */
     private String getString(String data) {
         return data;
     }
 
+    /**
+     * Parser of a string to an Integer
+     * @param data the saved string
+     * @return the parsed integer
+     */
     private Integer getInt(String data) {
-        Double tmp = Double.parseDouble(data);
+        Double tmp = Double.parseDouble(data); // Needs to be a Double... do not listen to intellij
         return  tmp.intValue();
     }
 

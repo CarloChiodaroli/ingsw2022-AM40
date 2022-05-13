@@ -76,9 +76,10 @@ public class GameManager implements Observer{
         }
     }
 
+    @Deprecated
     private void initState(Message receivedMessage, VirtualView virtualView) {
         switch (receivedMessage.getMessageType()) {
-            //INSERIRIRE IN SWITCH LE FASI DI INIZIALIZZAZIONE DEL GIOCO
+
         }
     }
 

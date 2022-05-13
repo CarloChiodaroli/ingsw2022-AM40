@@ -51,7 +51,7 @@ public class ClientController implements ViewObserver, Observer {
     @Override
     public void onUpdateNickname(String nickname) {
         this.nickname = nickname;
-        client.sendMessage(new LoginRequest(this.nickname));
+        client.sendMessage(new LoginMessage(this.nickname));
     }
 
     @Override
@@ -80,10 +80,13 @@ public class ClientController implements ViewObserver, Observer {
                 ErrorMessage em = (ErrorMessage) message;
                 view.showErrorAndExit(em.getError());
                 break;
-            case LOGIN_REPLY:
+            case LOGIN:
+                LoginMessage loginMessage = (LoginMessage) message;
+                taskQueue.execute(() -> view.showLoginResult(loginMessage.isNicknameAccepted(), loginMessage.isConnectionSuccessful(), this.nickname));
+            /*case LOGIN_REPLY:
                 LoginReply loginReply = (LoginReply) message;
                 taskQueue.execute(() -> view.showLoginResult(loginReply.isNicknameAccepted(), loginReply.isConnectionSuccessful(), this.nickname));
-                break;
+                break;*/
             case PLAYER_NUMBER_REQUEST:
                 taskQueue.execute(view::askPlayersNumber);
                 break;

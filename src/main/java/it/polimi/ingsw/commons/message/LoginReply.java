@@ -5,6 +5,7 @@ import it.polimi.ingsw.manuel.model.Game;
 /**
  * Message used to confirm or discard a login request of a client.
  */
+@Deprecated
 public class LoginReply extends Message {
 
     private final boolean nicknameAccepted;

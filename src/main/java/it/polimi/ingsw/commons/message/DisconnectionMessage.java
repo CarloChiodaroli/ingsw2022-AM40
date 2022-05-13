@@ -6,6 +6,7 @@ import it.polimi.ingsw.manuel.model.Game;
 /**
  * Message to notify a disconnection to the other players.
  */
+@Deprecated
 public class DisconnectionMessage extends Message {
 
     private final String nicknameDisconnected;
