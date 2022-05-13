@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.server.model.StudentsManager;
+import it.polimi.ingsw.commons.enums.TeacherColor;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -70,7 +71,7 @@ public class StudentsManagerTest {
 
 
 
-class StudentsManagerIstance extends StudentsManager{
+class StudentsManagerIstance extends StudentsManager {
     StudentsManagerIstance(int num, int numc){
         super(num, numc);
     }

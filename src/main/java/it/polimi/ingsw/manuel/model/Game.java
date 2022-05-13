@@ -1,8 +1,8 @@
 package it.polimi.ingsw.manuel.model;
 
 
-import it.polimi.ingsw.network.Message.LobbyMessage;
-import it.polimi.ingsw.Observer.Observable;
+import it.polimi.ingsw.commons.message.LobbyMessage;
+import it.polimi.ingsw.commons.observer.Observable;
 
 import java.util.ArrayList;
 import java.util.List;

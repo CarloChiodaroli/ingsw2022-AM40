@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.controller.ClientController;
-import it.polimi.ingsw.view.cli.Cli;
+import it.polimi.ingsw.client.view.cli.Cli;
 
 
 

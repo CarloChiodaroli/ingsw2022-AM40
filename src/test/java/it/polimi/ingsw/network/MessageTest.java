@@ -2,20 +2,17 @@ package it.polimi.ingsw.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.controller.GameManager;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.enums.Characters;
-import it.polimi.ingsw.model.enums.TeacherColor;
-import it.polimi.ingsw.model.enums.TowerColor;
-import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.table.Island;
-import it.polimi.ingsw.network.Message.Message;
-import it.polimi.ingsw.network.Message.MessageReader;
-import it.polimi.ingsw.network.Message.MessageType;
-import it.polimi.ingsw.network.Message.PlayMessage;
-import it.polimi.ingsw.network.Server.Server;
-import org.junit.jupiter.api.BeforeEach;
+import it.polimi.ingsw.server.controller.GameController;
+import it.polimi.ingsw.server.controller.GameManager;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.commons.enums.TowerColor;
+import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.server.model.table.Island;
+import it.polimi.ingsw.commons.message.MessageReader;
+import it.polimi.ingsw.commons.message.PlayMessage;
+import it.polimi.ingsw.server.network.Server;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
@@ -311,7 +308,7 @@ public class MessageTest {
     public void message10Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
         PlayMessage question;
-        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
+        GsonBuilder builder = new GsonBuilder();
         Gson gson;
         PlayMessage message;
         String gsonSerialization;

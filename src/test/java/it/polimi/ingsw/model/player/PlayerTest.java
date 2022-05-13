@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.StudentsManager;
-import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.StudentsManager;
+import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.player.AssistantCard;
+import it.polimi.ingsw.server.model.player.Player;
 import org.junit.jupiter.api.Test;
 
 import java.security.InvalidParameterException;

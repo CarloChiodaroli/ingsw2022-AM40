@@ -1,7 +1,8 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.enums.TeacherColor;
-import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.player.Player;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

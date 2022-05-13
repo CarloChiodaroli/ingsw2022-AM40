@@ -1,12 +1,12 @@
 package it.polimi.ingsw.model.phases.action;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.enums.Characters;
-import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
-import it.polimi.ingsw.model.phase.action.states.cards.MotherNatureCard;
-import it.polimi.ingsw.model.phase.action.states.MotherNatureState;
-import it.polimi.ingsw.model.table.Island;
-import it.polimi.ingsw.model.table.MotherNature;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
+import it.polimi.ingsw.server.model.phase.action.states.cards.MotherNatureCard;
+import it.polimi.ingsw.server.model.phase.action.states.MotherNatureState;
+import it.polimi.ingsw.server.model.table.Island;
+import it.polimi.ingsw.server.model.table.MotherNature;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;

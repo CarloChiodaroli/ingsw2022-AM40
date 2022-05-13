@@ -1,14 +1,15 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.GameModelException;
-import it.polimi.ingsw.model.enums.ActionPhaseStateType;
-import it.polimi.ingsw.model.enums.TeacherColor;
-import it.polimi.ingsw.model.enums.Characters;
-import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
-import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.table.Island;
-import it.polimi.ingsw.model.table.MotherNature;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.GameModel;
+import it.polimi.ingsw.server.model.GameModelException;
+import it.polimi.ingsw.server.model.StudentsManager;
+import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
+import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.server.model.table.Island;
+import it.polimi.ingsw.server.model.table.MotherNature;
 import org.junit.jupiter.api.*;
 
 import java.security.InvalidParameterException;

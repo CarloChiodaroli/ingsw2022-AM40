@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.server.model.player.AssistantCard;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,11 +1,11 @@
 package it.polimi.ingsw.client.controller;
 
-import it.polimi.ingsw.Observer.Observer;
-import it.polimi.ingsw.Observer.ViewObserver;
-import it.polimi.ingsw.network.Client.Client;
-import it.polimi.ingsw.network.Client.SocketClient;
-import it.polimi.ingsw.network.Message.*;
-import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.commons.message.*;
+import it.polimi.ingsw.commons.observer.Observer;
+import it.polimi.ingsw.commons.observer.ViewObserver;
+import it.polimi.ingsw.client.network.Client;
+import it.polimi.ingsw.client.network.SocketClient;
+import it.polimi.ingsw.commons.view.View;
 
 import java.io.IOException;
 import java.util.Map;
@@ -31,9 +31,7 @@ public class ClientController implements ViewObserver, Observer {
     public void onUpdateServerInfo(Map<String, String> serverInfo) {
         try {
             client = new SocketClient(serverInfo.get("address"), Integer.parseInt(serverInfo.get("port")));
-            System.out.println("Pollo");
             client.addObserver(this);
-
             client.readMessage(); // Starts an asynchronous reading from the server.
             client.enablePinger(true);
             taskQueue.execute(view::askNickname);
@@ -61,7 +59,6 @@ public class ClientController implements ViewObserver, Observer {
 
     @Override
     public void update(Message message) {
-
         switch (message.getMessageType()) {
             case GENERIC_MESSAGE:
                 taskQueue.execute(() -> view.showGenericMessage(((GenericMessage) message).getMessage()));
