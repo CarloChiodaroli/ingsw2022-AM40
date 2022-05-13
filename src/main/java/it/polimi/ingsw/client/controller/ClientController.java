@@ -8,6 +8,7 @@ import it.polimi.ingsw.client.network.SocketClient;
 import it.polimi.ingsw.commons.view.View;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,10 +22,17 @@ public class ClientController implements ViewObserver, Observer {
     private String nickname;
     private final ExecutorService taskQueue;
     public static final int UNDO_TIME = 5000;
+    //private final Map<MessageType, Runnable> runnables;
 
     public ClientController(View view) {
         this.view = view;
         taskQueue = Executors.newSingleThreadExecutor();
+    }
+
+    private Map<MessageType, Runnable> runnableBuilder(){
+        Map<MessageType, Runnable> map = new HashMap<>();
+        //map.put(MessageType.GENERIC, () -> view.showGenericMessage());
+        return map;
     }
 
     @Override
@@ -60,7 +68,7 @@ public class ClientController implements ViewObserver, Observer {
     @Override
     public void update(Message message) {
         switch (message.getMessageType()) {
-            case GENERIC_MESSAGE:
+            case GENERIC:
                 taskQueue.execute(() -> view.showGenericMessage(((GenericMessage) message).getMessage()));
                 break;
             case DISCONNECTION:
@@ -76,7 +84,7 @@ public class ClientController implements ViewObserver, Observer {
                 LoginReply loginReply = (LoginReply) message;
                 taskQueue.execute(() -> view.showLoginResult(loginReply.isNicknameAccepted(), loginReply.isConnectionSuccessful(), this.nickname));
                 break;
-            case PLAYERNUMBER_REQUEST:
+            case PLAYER_NUMBER_REQUEST:
                 taskQueue.execute(view::askPlayersNumber);
                 break;
             case LOBBY:

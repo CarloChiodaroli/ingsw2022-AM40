@@ -8,6 +8,7 @@ import java.util.concurrent.Callable;
 /**
  * This class is used to read the input stream and making the input kind of interruptible.
  */
+@Deprecated
 public class InputReadTask implements Callable<String> {
     private final BufferedReader br;
 

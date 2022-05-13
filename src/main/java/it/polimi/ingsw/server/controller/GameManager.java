@@ -66,7 +66,7 @@ public class GameManager implements Observer{
     }
 
     private void loginState(Message receivedMessage) {
-        if (receivedMessage.getMessageType() == MessageType.PLAYERNUMBER_REPLY) {
+        if (receivedMessage.getMessageType() == MessageType.PLAYER_NUMBER_REPLY) {
             if (inputController.verifyReceivedData(receivedMessage)) {
                 game.setChosenMaxPlayers(((PlayerNumberReply) receivedMessage).getPlayerNumber());
                 broadcastGenericMessage("Waiting for other Players . . .");

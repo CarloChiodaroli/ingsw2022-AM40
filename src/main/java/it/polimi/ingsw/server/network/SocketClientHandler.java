@@ -3,14 +3,16 @@ package it.polimi.ingsw.server.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.ingsw.commons.message.Message;
-import it.polimi.ingsw.commons.message.MessageType;
+import it.polimi.ingsw.client.network.Client;
+import it.polimi.ingsw.commons.message.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Socket implementation of the {@link ClientHandler} interface.
@@ -28,6 +30,7 @@ public class SocketClientHandler implements ClientHandler, Runnable {
     private BufferedReader input;
 
     private final Gson gson;
+    private final Map<MessageType, Class<?>> instance;
 
 
     /**
@@ -52,6 +55,26 @@ public class SocketClientHandler implements ClientHandler, Runnable {
         } catch (IOException e) {
             Server.LOGGER.severe(e.getMessage());
         }
+
+        this.instance = instanceSetter();
+    }
+
+    private Map<MessageType, Class<?>> instanceSetter(){
+        Map<MessageType, Class<?>> map = new HashMap<>();
+        map.put(MessageType.LOGIN_REQUEST, LoginRequest.class);
+        map.put(MessageType.LOGIN_REPLY, LoginReply.class);
+        map.put(MessageType.DISCONNECTION, DisconnectionMessage.class);
+        map.put(MessageType.PLAYER_NUMBER_REQUEST, PlayerNumberRequest.class);
+        map.put(MessageType.PLAYER_NUMBER_REPLY, PlayerNumberReply.class);
+        // map.put(MessageType.PICK_FIRST_PLAYER, no class);
+
+        // map.put(MessageType.LOGIN, no class);
+        map.put(MessageType.LOBBY, LobbyMessage.class);
+        map.put(MessageType.PLAY, PlayMessage.class);
+        map.put(MessageType.PING, PingMessage.class);
+        map.put(MessageType.ERROR, ErrorMessage.class);
+        map.put(MessageType.GENERIC, GenericMessage.class);
+        return map;
     }
 
     @Override
@@ -75,25 +98,26 @@ public class SocketClientHandler implements ClientHandler, Runnable {
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 synchronized (inputLock) {
-                    String line;
-                    String rawGson = "";
-                    int counter = 0;
-                    do {
-                        line = input.readLine();
-                        rawGson += line;
-                        if(line.contains("{")) counter++;
-                        if(line.contains("}")) counter--;
-                    } while(counter != 0);
-
-                    Message message = gson.fromJson(rawGson, Message.class);
-
-                    String goat = rawGson;
-
+                    Message message;
+                    try{
+                        String rawGson;
+                        do {
+                            rawGson = input.readLine();
+                        } while(rawGson == null);
+                        message = gson.fromJson(rawGson, Message.class);
+                        message = (Message) gson.fromJson(rawGson, instance.get(message.getMessageType()));
+                        String forLambda = rawGson;
+                        Client.LOGGER.info(() -> "Received: " + forLambda);
+                    } catch(IOException e){
+                        message = new ErrorMessage(null, "Message got wrongly");
+                        sendMessage(message);
+                    }
                     if (message != null && message.getMessageType() != MessageType.PING) {
                         if (message.getMessageType() == MessageType.LOGIN_REQUEST) {
                             socketServer.addClient(message.getSenderName(), this);
                         } else {
-                            Server.LOGGER.info(() -> "Received: " + message);
+                            Message forLambda = message;
+                            Server.LOGGER.info(() -> "Received: " + forLambda);
                             socketServer.onMessageReceived(message);
                         }
                     }

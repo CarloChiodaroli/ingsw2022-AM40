@@ -8,8 +8,6 @@ import it.polimi.ingsw.manuel.model.Game;
  */
 public class DisconnectionMessage extends Message {
 
-    private static final long serialVersionUID = -5422965079989607600L;
-
     private final String nicknameDisconnected;
     private final String messageStr;
 

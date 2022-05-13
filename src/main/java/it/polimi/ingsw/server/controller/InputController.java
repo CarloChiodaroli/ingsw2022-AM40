@@ -22,13 +22,13 @@ public class InputController {
 
     public boolean verifyReceivedData(Message message) {
         switch (message.getMessageType()) {
-            case GENERIC_MESSAGE: // server doesn't receive a GENERIC_MESSAGE.
+            case GENERIC: // server doesn't receive a GENERIC_MESSAGE.
                 return false;
             case LOGIN_REPLY: // server doesn't receive a LOGIN_REPLY.
                 return false;
-            case PLAYERNUMBER_REPLY:
+            case PLAYER_NUMBER_REPLY:
                 return playerNumberReplyCheck(message);
-            case PLAYERNUMBER_REQUEST: // server doesn't receive a GenericErrorMessage.
+            case PLAYER_NUMBER_REQUEST: // server doesn't receive a GenericErrorMessage.
                 return false;
             default: // Never should reach this statement.
                 return false;

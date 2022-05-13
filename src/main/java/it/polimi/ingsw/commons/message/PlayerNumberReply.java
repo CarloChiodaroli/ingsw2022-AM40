@@ -8,7 +8,7 @@ public class PlayerNumberReply extends Message {
     private final int playerNumber;
 
     public PlayerNumberReply(String senderName, int playerNumber) {
-        super(senderName, MessageType.PLAYERNUMBER_REPLY);
+        super(senderName, MessageType.PLAYER_NUMBER_REPLY);
         this.playerNumber = playerNumber;
     }
 
