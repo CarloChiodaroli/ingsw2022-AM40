@@ -1,7 +1,7 @@
 package it.polimi.ingsw.commons.message;
 
 
-import it.polimi.ingsw.manuel.model.Game;
+//import it.polimi.ingsw.manuel.model.Game;
 
 /**
  * Message to notify a disconnection to the other players.
@@ -13,7 +13,7 @@ public class DisconnectionMessage extends Message {
     private final String messageStr;
 
     public DisconnectionMessage(String nicknameDisconnected, String messageStr) {
-        super(Game.SERVER_NICKNAME, MessageType.DISCONNECTION);
+        super("server", MessageType.DISCONNECTION);
         this.nicknameDisconnected = nicknameDisconnected;
         this.messageStr = messageStr;
     }

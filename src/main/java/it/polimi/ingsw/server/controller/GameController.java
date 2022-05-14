@@ -13,7 +13,7 @@ import java.util.*;
  * Making commands and getting state changes from the model itself
  * <br>Manages:<br>
  * &emsp Game initial player registration<br>
- * &emsp GameState: Initial, Pianification or Action<br>
+ * &emsp PlayState: Initial, Pianification or Action<br>
  * &emsp Player order: if player send moves in the right order<br>
  * &emsp Player moves: runs commands and gets game state changes after each one<br>
  */

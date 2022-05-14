@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.view;
 
 import it.polimi.ingsw.commons.message.*;
-import it.polimi.ingsw.manuel.model.Game;
+//import it.polimi.ingsw.manuel.model.Game;
 import it.polimi.ingsw.server.network.ClientHandler;
 import it.polimi.ingsw.commons.observer.Observer;
 import it.polimi.ingsw.commons.view.View;
@@ -37,14 +37,27 @@ public class VirtualView implements View, Observer {
         clientHandler.sendMessage(new LoginMessage("Server",false, true));
     }
 
+    public void sendMainPlayer(String mainPlayerName){
+        clientHandler.sendMessage(new LobbyMessage("Server", mainPlayerName, false));
+    }
     @Override
     public void askPlayersNumber() {
         clientHandler.sendMessage(new PlayerNumberRequest());
     }
 
-    // not so good string
     @Override
     public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname) {
+
+    }
+
+    @Override
+    public void showError(String errorMessage) {
+        clientHandler.sendMessage(new ErrorMessage("Server", errorMessage));
+    }
+
+    // not so good string
+    @Override
+    public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful) {
         clientHandler.sendMessage(new LoginMessage("Server", nicknameAccepted, connectionSuccessful));
     }
 
@@ -59,8 +72,13 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
+    public void showOtherDisconnectionMessage(String nicknameDisconnected, String text) {
+        clientHandler.sendMessage(new LobbyMessage("Server", nicknameDisconnected, true));
+    }
+
+    @Override
     public void showErrorAndExit(String error) {
-        clientHandler.sendMessage(new ErrorMessage(Game.SERVER_NICKNAME, error));
+        clientHandler.sendMessage(new ErrorMessage("server", error));
     }
 
     @Override

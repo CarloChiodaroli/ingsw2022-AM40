@@ -14,12 +14,18 @@ public interface View {
 
     void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname);
 
+    void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful);
+
     void showGenericMessage(String genericMessage);
 
     void showDisconnectionMessage(String nicknameDisconnected, String text);
 
+    void showOtherDisconnectionMessage(String nicknameDisconnected, String text);
+
     void showErrorAndExit(String error);
 
     void showLobby(List<String> nicknameList, int numPlayers);
+
+    void showError(String errorMessage);
 
 }

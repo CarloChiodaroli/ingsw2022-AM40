@@ -3,23 +3,28 @@ package it.polimi.ingsw.manuel.model;
 import java.util.Objects;
 import java.util.Observable;
 
-@Deprecated
+// useless
+/*@Deprecated
 public class Player extends Observable{
     private final String nickname;
     private PlayerState state;
 
+    @Deprecated
     public Player(String nickname) {
         this.nickname = nickname;
     }
 
+    @Deprecated
     public String getNickname() {
         return nickname;
     }
 
+    @Deprecated
     public void setState(PlayerState state) {
         this.state = state;
     }
 
+    @Deprecated
     public PlayerState getState() {
         return state;
     }
@@ -38,3 +43,4 @@ public class Player extends Observable{
     }
 
 }
+*/

@@ -1,11 +1,11 @@
 package it.polimi.ingsw.commons.message;
 
-import it.polimi.ingsw.manuel.model.Game;
+//import it.polimi.ingsw.manuel.model.Game;
 
 /**
  * Message used to confirm or discard a login request of a client.
  */
-@Deprecated
+/*@Deprecated
 public class LoginReply extends Message {
 
     private final boolean nicknameAccepted;
@@ -33,4 +33,4 @@ public class LoginReply extends Message {
                 ", connectionSuccessful=" + connectionSuccessful +
                 '}';
     }
-}
+}*/

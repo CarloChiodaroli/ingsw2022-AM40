@@ -1,18 +1,103 @@
 package it.polimi.ingsw.commons.message;
 
-import it.polimi.ingsw.manuel.model.Game;
+import it.polimi.ingsw.commons.enums.Wizard;
+//import it.polimi.ingsw.manuel.model.Game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LobbyMessage extends Message {
 
     private final List<String> nicknameList;
-    private final int maxPlayers;
+    private final String stringArg;
+    private final int numOfPlayers;
+    private final boolean isDisconnection;
+    private final Wizard wizard;
 
-    public LobbyMessage(List<String> nicknameList, int maxPlayers) {
-        super(Game.SERVER_NICKNAME, MessageType.LOBBY);
+    // Sends all player names
+    public LobbyMessage(String sender, List<String> nicknameList) {
+        super(sender, MessageType.LOBBY);
         this.nicknameList = nicknameList;
-        this.maxPlayers = maxPlayers;
+        this.numOfPlayers = 0;
+        this.stringArg = null;
+        this.isDisconnection = false;
+        this.wizard = null;
+        super.message();
+    }
+
+    // sends a player name, if is disconnected shows a disconnection, else shows the main player
+    public LobbyMessage(String sender, String playerName, boolean isDisconnection){
+        super(sender, MessageType.LOBBY);
+        this.numOfPlayers = 0;
+        this.stringArg = playerName;
+        this.nicknameList = new ArrayList<>();
+        this.isDisconnection = isDisconnection;
+        this.wizard = null;
+        super.message();
+    }
+
+    // sends chosen wizard
+    public LobbyMessage(String sender, Wizard wizard){
+        super(sender, MessageType.LOBBY);
+        this.numOfPlayers = 0;
+        this.stringArg = null;
+        this.nicknameList = new ArrayList<>();
+        this.isDisconnection = false;
+        this.wizard = wizard;
+        super.message();
+    }
+
+    // sends an integer
+    public LobbyMessage(String sender, int players){
+        super(sender, MessageType.LOBBY);
+        this.numOfPlayers = players;
+        this.stringArg = null;
+        this.nicknameList = new ArrayList<>();
+        this.isDisconnection = false;
+        this.wizard = null;
+        super.message();
+    }
+
+
+
+    @Deprecated
+    public LobbyMessage(List<String> nicknameList, int maxPlayers) {
+        super("server", MessageType.LOBBY);
+        this.nicknameList = nicknameList;
+        this.numOfPlayers = maxPlayers;
+        this.stringArg = null;
+        this.isDisconnection = false;
+        this.wizard = null;
+        super.message();
+    }
+
+    public List<String> getLobbyPlayers() throws IllegalMessageException{
+        controlWritten();
+        return this.nicknameList;
+    }
+
+    public String getMainPlayerName() throws IllegalMessageException{
+        controlWritten();
+        if(isDisconnection) throw new IllegalMessageException();
+        return stringArg;
+    }
+
+    public String getDisconnection() throws IllegalMessageException{
+        controlWritten();
+        if(!isDisconnection) throw new IllegalMessageException();
+        return stringArg;
+    }
+
+    public int chosenStudentNumber() throws IllegalMessageException{
+        controlWritten();
+        if(numOfPlayers == 0) throw new IllegalMessageException();
+        return numOfPlayers;
+    }
+
+    public Wizard getWizard() throws IllegalMessageException{
+        controlWritten();
+        if(wizard == null) throw new IllegalMessageException();
+        return wizard;
     }
 
     public List<String> getNicknameList() {
@@ -20,7 +105,7 @@ public class LobbyMessage extends Message {
     }
 
     public int getMaxPlayers() {
-        return maxPlayers;
+        return numOfPlayers;
     }
 
     @Override
@@ -28,7 +113,7 @@ public class LobbyMessage extends Message {
         return "LobbyMessage{" +
                 "senderName=" + getSenderName() +
                 ", PlayerNameList=" + nicknameList +
-                ", numPlayers=" + maxPlayers +
+                ", numPlayers=" + numOfPlayers +
                 '}';
     }
 

@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import it.polimi.ingsw.client.network.Client;
 import it.polimi.ingsw.commons.message.*;
 
@@ -30,7 +31,6 @@ public class SocketClientHandler implements ClientHandler, Runnable {
     private BufferedReader input;
 
     private final Gson gson;
-    private final Map<MessageType, Class<?>> instance;
 
 
     /**
@@ -55,26 +55,6 @@ public class SocketClientHandler implements ClientHandler, Runnable {
         } catch (IOException e) {
             Server.LOGGER.severe(e.getMessage());
         }
-
-        this.instance = instanceSetter();
-    }
-
-    private Map<MessageType, Class<?>> instanceSetter(){
-        Map<MessageType, Class<?>> map = new HashMap<>();
-        map.put(MessageType.LOGIN_REQUEST, LoginRequest.class);
-        //map.put(MessageType.LOGIN_REPLY, LoginReply.class);
-        map.put(MessageType.DISCONNECTION, DisconnectionMessage.class);
-        map.put(MessageType.PLAYER_NUMBER_REQUEST, PlayerNumberRequest.class);
-        map.put(MessageType.PLAYER_NUMBER_REPLY, PlayerNumberReply.class);
-        // map.put(MessageType.PICK_FIRST_PLAYER, no class);
-
-        map.put(MessageType.LOGIN, LoginMessage.class);
-        map.put(MessageType.LOBBY, LobbyMessage.class);
-        map.put(MessageType.PLAY, PlayMessage.class);
-        map.put(MessageType.PING, PingMessage.class);
-        map.put(MessageType.ERROR, ErrorMessage.class);
-        map.put(MessageType.GENERIC, GenericMessage.class);
-        return map;
     }
 
     @Override
@@ -98,28 +78,31 @@ public class SocketClientHandler implements ClientHandler, Runnable {
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 synchronized (inputLock) {
-                    Message message;
-                    try{
+                    Message message = null;
+                    try {
                         String rawGson;
                         do {
                             rawGson = input.readLine();
-                        } while(rawGson == null);
+                        } while (rawGson == null);
                         message = gson.fromJson(rawGson, Message.class);
-                        message = (Message) gson.fromJson(rawGson, instance.get(message.getMessageType()));
+                        message = (Message) gson.fromJson(rawGson, message.getMessageType().getImplementingClass());
                         String forLambda = rawGson;
                         Client.LOGGER.info(() -> "Received: " + forLambda);
-                    } catch(IOException e){
+                    } catch (JsonSyntaxException e) {
                         message = new ErrorMessage(null, "Message got wrongly");
                         sendMessage(message);
+                    } catch (IOException e) {
+                        Server.LOGGER.info(() -> "Error in input stream");
+                        disconnect();
                     }
-                    if (message != null && message.getMessageType() != MessageType.PING) {
+                    if(message != null && message.getMessageType() != MessageType.PING){
                         if (message.getMessageType() == MessageType.LOGIN) {
                             socketServer.addClient(message.getSenderName(), this);
                         } else {
                             Message forLambda = message;
                             Server.LOGGER.info(() -> "Received: " + forLambda);
-                            socketServer.onMessageReceived(message);
                         }
+                        socketServer.onMessageReceived(message);
                     }
                 }
             }

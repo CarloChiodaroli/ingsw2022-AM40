@@ -3,7 +3,7 @@ package it.polimi.ingsw.commons.message;
 /**
  * Message used by the client to request a login to the server.
  */
-@Deprecated
+/*@Deprecated
 public class LoginRequest extends Message {
 
     public LoginRequest(String nickname) {
@@ -16,4 +16,4 @@ public class LoginRequest extends Message {
                 "senderName=" + getSenderName() +
                 '}';
     }
-}
+}*/

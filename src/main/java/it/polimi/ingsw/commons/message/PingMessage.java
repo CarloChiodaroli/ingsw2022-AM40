@@ -7,5 +7,6 @@ public class PingMessage extends Message {
 
     public PingMessage(String sender) {
         super(sender, MessageType.PING);
+        super.message();
     }
 }

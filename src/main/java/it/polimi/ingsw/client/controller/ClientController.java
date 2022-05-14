@@ -1,14 +1,16 @@
 package it.polimi.ingsw.client.controller;
 
+import it.polimi.ingsw.client.model.ClientPlayState;
+import it.polimi.ingsw.client.network.Client;
+import it.polimi.ingsw.client.network.SocketClient;
 import it.polimi.ingsw.commons.message.*;
 import it.polimi.ingsw.commons.observer.Observer;
 import it.polimi.ingsw.commons.observer.ViewObserver;
-import it.polimi.ingsw.client.network.Client;
-import it.polimi.ingsw.client.network.SocketClient;
 import it.polimi.ingsw.commons.view.View;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,14 +24,16 @@ public class ClientController implements ViewObserver, Observer {
     private String nickname;
     private final ExecutorService taskQueue;
     public static final int UNDO_TIME = 5000;
+    private final ClientPlayState playState;
     //private final Map<MessageType, Runnable> runnables;
 
     public ClientController(View view) {
         this.view = view;
         taskQueue = Executors.newSingleThreadExecutor();
+        this.playState = new ClientPlayState();
     }
 
-    private Map<MessageType, Runnable> runnableBuilder(){
+    private Map<MessageType, Runnable> runnableBuilder() {
         Map<MessageType, Runnable> map = new HashMap<>();
         //map.put(MessageType.GENERIC, () -> view.showGenericMessage());
         return map;
@@ -56,7 +60,8 @@ public class ClientController implements ViewObserver, Observer {
 
     @Override
     public void onUpdatePlayersNumber(int playersNumber) {
-        client.sendMessage(new PlayerNumberReply(this.nickname, playersNumber));
+        client.sendMessage(new LobbyMessage(this.nickname, playersNumber));
+        //client.sendMessage(new PlayerNumberReply(this.nickname, playersNumber));
     }
 
 
@@ -78,7 +83,8 @@ public class ClientController implements ViewObserver, Observer {
                 break;
             case ERROR:
                 ErrorMessage em = (ErrorMessage) message;
-                view.showErrorAndExit(em.getError());
+                //view.showErrorAndExit(em.getError());
+                view.showError(em.getError());
                 break;
             case LOGIN:
                 LoginMessage loginMessage = (LoginMessage) message;
@@ -88,14 +94,36 @@ public class ClientController implements ViewObserver, Observer {
                 taskQueue.execute(() -> view.showLoginResult(loginReply.isNicknameAccepted(), loginReply.isConnectionSuccessful(), this.nickname));
                 break;*/
             case PLAYER_NUMBER_REQUEST:
-                taskQueue.execute(view::askPlayersNumber);
+                //taskQueue.execute(view::askPlayersNumber);
                 break;
             case LOBBY:
-                LobbyMessage lobbyMessage = (LobbyMessage) message;
-                taskQueue.execute(() -> view.showLobby(lobbyMessage.getNicknameList(), lobbyMessage.getMaxPlayers()));
+                this.manageLobby((LobbyMessage) message);
+                //LobbyMessage lobbyMessage = (LobbyMessage) message;
+                //taskQueue.execute(() -> view.showLobby(lobbyMessage.getNicknameList(), lobbyMessage.getMaxPlayers()));
                 break;
             default: // Should never reach this condition
                 break;
+        }
+    }
+
+    private void manageLobby(LobbyMessage message) {
+        if (playState.getMainPlayer() == null) { // First message
+            playState.setMainPlayer(message.getMainPlayerName());
+            if(playState.getMainPlayer().equals(this.nickname)){ // First player to connect to the game
+                taskQueue.execute(view::askPlayersNumber);
+            }
+            return;
+        }
+        if (playState.getPlayerNames().isEmpty()) { //
+            playState.setPlayerNames(message.getNicknameList());
+            return;
+        }
+        List<String> players = message.getLobbyPlayers();
+        if(players.isEmpty()){
+            client.disconnect();
+            view.showOtherDisconnectionMessage(message.getDisconnection(), "Disconnection of ");
+        } else {
+            playState.setPlayerNames(players);
         }
     }
 

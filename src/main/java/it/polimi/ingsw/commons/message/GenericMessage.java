@@ -10,10 +10,12 @@ public class GenericMessage extends Message {
     public GenericMessage(String message) {
         super("server", MessageType.GENERIC);
         this.message = message;
+        super.message();
     }
 
 
     public String getMessage() {
+        controlWritten();
         return message;
     }
 

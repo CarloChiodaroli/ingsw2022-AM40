@@ -29,7 +29,6 @@ public class SocketClient extends Client {
     private final BufferedReader input;
 
     private final Gson gson;
-    private final Map<MessageType, Class<?>> instance;
 
     private static final int SOCKET_TIMEOUT = 10000;
 
@@ -42,25 +41,6 @@ public class SocketClient extends Client {
         this.pinger = Executors.newSingleThreadScheduledExecutor();
         GsonBuilder gsonBuilder = new GsonBuilder();
         this.gson = gsonBuilder.create();
-        this.instance = instanceSetter();
-    }
-
-    private Map<MessageType, Class<?>> instanceSetter(){
-        Map<MessageType, Class<?>> map = new HashMap<>();
-        map.put(MessageType.LOGIN_REQUEST, LoginRequest.class);
-        //map.put(MessageType.LOGIN_REPLY, LoginReply.class);
-        map.put(MessageType.DISCONNECTION, DisconnectionMessage.class);
-        map.put(MessageType.PLAYER_NUMBER_REQUEST, PlayerNumberRequest.class);
-        map.put(MessageType.PLAYER_NUMBER_REPLY, PlayerNumberReply.class);
-        // map.put(MessageType.PICK_FIRST_PLAYER, no class);
-
-        map.put(MessageType.LOGIN, LoginMessage.class);
-        map.put(MessageType.LOBBY, LobbyMessage.class);
-        map.put(MessageType.PLAY, PlayMessage.class);
-        map.put(MessageType.PING, PingMessage.class);
-        map.put(MessageType.ERROR, ErrorMessage.class);
-        map.put(MessageType.GENERIC, GenericMessage.class);
-        return map;
     }
 
     @Override
@@ -75,7 +55,7 @@ public class SocketClient extends Client {
                         rawGson = input.readLine();
                     } while(rawGson == null);
                     message = gson.fromJson(rawGson, Message.class);
-                    message = (Message) gson.fromJson(rawGson, instance.get(message.getMessageType()));
+                    message = (Message) gson.fromJson(rawGson, message.getMessageType().getImplementingClass());
                     String forLambda = rawGson;
                     Client.LOGGER.info(() -> "Received: " + forLambda);
                 } catch (IOException e) {

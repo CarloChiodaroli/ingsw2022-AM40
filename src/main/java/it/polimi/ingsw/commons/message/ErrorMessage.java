@@ -10,9 +10,11 @@ public class ErrorMessage extends Message {
     public ErrorMessage(String nickname, String error) {
         super(nickname, MessageType.ERROR);
         this.error = error;
+        super.message();
     }
 
     public String getError() {
+        controlWritten();
         return error;
     }
 

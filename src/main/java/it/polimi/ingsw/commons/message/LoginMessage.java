@@ -37,7 +37,7 @@ public class LoginMessage extends Message{
      * @return true if everything is ok, else false
      */
     public boolean readReply(){
-        super.controlWritten();
+        controlWritten();
         if(request) throw new IllegalStateException("This is a Login reply");
         return nicknameAccepted && connectionSuccessful;
     }
@@ -47,7 +47,7 @@ public class LoginMessage extends Message{
      * @return the name of the requester
      */
     public String readRequest(){
-        super.controlWritten();
+        controlWritten();
         if(!request) throw new IllegalStateException("This is a Login request");
         return getSenderName();
     }

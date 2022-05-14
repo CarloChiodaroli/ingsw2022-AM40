@@ -170,6 +170,15 @@ public class Cli extends ViewObservable implements View {
     }
 
     @Override
+    public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful) {
+
+    }
+
+    public void showError(String errorMessage){
+        out.println(errorMessage);
+    }
+
+    @Override
     public void showGenericMessage(String genericMessage) {
         out.println(genericMessage);
     }
@@ -180,6 +189,10 @@ public class Cli extends ViewObservable implements View {
         out.println("\n" + nicknameDisconnected + text);
 
         System.exit(1);
+    }
+
+    public void showOtherDisconnectionMessage(String nicknameDisconnected, String text) {
+        out.println("\n" + nicknameDisconnected + text);
     }
 
     @Override
