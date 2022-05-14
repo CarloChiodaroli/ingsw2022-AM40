@@ -1,22 +1,17 @@
 package it.polimi.ingsw.server.view;
 
 import it.polimi.ingsw.commons.message.*;
-//import it.polimi.ingsw.manuel.model.Game;
-import it.polimi.ingsw.server.network.ClientHandler;
 import it.polimi.ingsw.commons.observer.Observer;
 import it.polimi.ingsw.commons.view.View;
-
+import it.polimi.ingsw.server.network.ClientHandler;
 
 import java.util.List;
 
 /**
- * PER CONTROLLER VI E' CORRISPONDENZA BIUNIVOCA TRA CLIENT E VIRTUALVIEW
- * IL CONTROLLER PENSA CHE TUTTI I CLIENT SIANO IN LOCALE. QUINDI MANDA MESSSAGGI A QUESTA CLASSE PENSANDO SIA LA VIEW DI
- * CIASCUN CLIENT. IN REALTA VIRTUAL VIEW SERVENDOSI DELLA CLASSE SOCKETCLIENTHANLDER(QUI IMPLEMENTATA CON INTERFACCIA
- * CLIENT HANDLER) INVIERA' I MESSAGGI ATTTRAVERSO LA RETE
- * Hides the network implementation from the controller.
- * The controller calls methods from this class as if it was a normal view.
- * Instead, a network protocol is used to communicate with the real view on the client side.
+ * For the controller there is a one-to-one correspondence between client and virtual view.
+ * The Game Manager thinks that all client are local, so calls this class thinking that this is the view of a singular client.
+ * But what this class really does is building messages to send to the client via Socket Client Handler
+ * (here known as her interface Client Handler) effectively hiding the outgoing network implementation from the manager.
  */
 
 public class VirtualView implements View, Observer {
@@ -34,15 +29,16 @@ public class VirtualView implements View, Observer {
     // not so good string
     @Override
     public void askNickname() {
-        clientHandler.sendMessage(new LoginMessage("Server",false, true));
+        clientHandler.sendMessage(new LoginMessage("Server", false, true));
     }
 
-    public void sendMainPlayer(String mainPlayerName){
+    public void sendMainPlayer(String mainPlayerName) {
         clientHandler.sendMessage(new LobbyMessage("Server", mainPlayerName, false));
     }
+
     @Override
     public void askPlayersNumber() {
-        clientHandler.sendMessage(new PlayerNumberRequest());
+
     }
 
     @Override
@@ -68,7 +64,7 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void showDisconnectionMessage(String nicknameDisconnected, String text) {
-        clientHandler.sendMessage(new DisconnectionMessage(nicknameDisconnected, text));
+        clientHandler.sendMessage(new LobbyMessage("Server", nicknameDisconnected, true));
     }
 
     @Override
@@ -83,7 +79,7 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void showLobby(List<String> nicknameList, int numPlayers) {
-        clientHandler.sendMessage(new LobbyMessage(nicknameList, numPlayers));
+        clientHandler.sendMessage(new LobbyMessage("Server", nicknameList));
     }
 
     @Override

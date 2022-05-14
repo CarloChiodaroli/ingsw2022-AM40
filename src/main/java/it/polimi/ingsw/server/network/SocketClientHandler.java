@@ -4,16 +4,15 @@ package it.polimi.ingsw.server.network;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import it.polimi.ingsw.client.network.Client;
-import it.polimi.ingsw.commons.message.*;
+import it.polimi.ingsw.commons.message.ErrorMessage;
+import it.polimi.ingsw.commons.message.Message;
+import it.polimi.ingsw.commons.message.MessageType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Socket implementation of the {@link ClientHandler} interface.
@@ -87,7 +86,8 @@ public class SocketClientHandler implements ClientHandler, Runnable {
                         message = gson.fromJson(rawGson, Message.class);
                         message = (Message) gson.fromJson(rawGson, message.getMessageType().getImplementingClass());
                         String forLambda = rawGson;
-                        Client.LOGGER.info(() -> "Received: " + forLambda);
+                        if (!message.getMessageType().equals(MessageType.PING))
+                            Server.LOGGER.info(() -> "Received: " + forLambda);
                     } catch (JsonSyntaxException e) {
                         message = new ErrorMessage(null, "Message got wrongly");
                         sendMessage(message);
@@ -95,14 +95,14 @@ public class SocketClientHandler implements ClientHandler, Runnable {
                         Server.LOGGER.info(() -> "Error in input stream");
                         disconnect();
                     }
-                    if(message != null && message.getMessageType() != MessageType.PING){
+                    if (message != null && message.getMessageType() != MessageType.PING) {
                         if (message.getMessageType() == MessageType.LOGIN) {
                             socketServer.addClient(message.getSenderName(), this);
                         } else {
                             Message forLambda = message;
                             Server.LOGGER.info(() -> "Received: " + forLambda);
+                            socketServer.onMessageReceived(message);
                         }
-                        socketServer.onMessageReceived(message);
                     }
                 }
             }
@@ -139,7 +139,7 @@ public class SocketClientHandler implements ClientHandler, Runnable {
         synchronized (outputLock) {
             String rawGson = gson.toJson(message);
             output.println(rawGson);
-            Server.LOGGER.info(() -> "Sent: " + message);
+            if (!message.getMessageType().equals(MessageType.PING)) Server.LOGGER.info(() -> "Sent: " + rawGson);
         }
     }
 

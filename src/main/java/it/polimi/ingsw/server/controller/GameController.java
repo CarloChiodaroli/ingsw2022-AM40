@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.controller;
 
-import it.polimi.ingsw.server.model.GameModel;
-import it.polimi.ingsw.server.model.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
+import it.polimi.ingsw.server.model.GameModel;
+import it.polimi.ingsw.server.model.enums.Characters;
 
 import java.security.InvalidParameterException;
 import java.util.*;
@@ -228,32 +228,28 @@ public class GameController {
         model.playCharacterCard(playerName, character, islandId);
     }
 
-    public Map<TeacherColor, Integer> getStudentInPlace(String playerName, String placeId){
-        if(getAllIslandIds().contains(placeId)) return model.getStudentsInIsland(placeId);
-        if(placeId.equals("Entrance")) return model.getStudentsInEntrance(playerName);
-        if(placeId.equals("Room")) return model.getStudentsInRoom(playerName);
+    public Map<TeacherColor, Integer> getStudentInPlace(String playerName, String placeId) {
+        if (getAllIslandIds().contains(placeId)) return model.getStudentsInIsland(placeId);
+        if (placeId.equals("Entrance")) return model.getStudentsInEntrance(playerName);
+        if (placeId.equals("Room")) return model.getStudentsInRoom(playerName);
         else return new HashMap<>();
     }
 
-    public Optional<TowerColor> getTowerInPlace(String placeId){
-        if(!getAllIslandIds().contains(placeId)) return Optional.empty();
+    public Optional<TowerColor> getTowerInPlace(String placeId) {
+        if (!getAllIslandIds().contains(placeId)) return Optional.empty();
         return model.getTowerInIsland(placeId);
     }
 
-    public List<TeacherColor> getTeacherInPlace(String playerName, String placeId){
-        if(!placeId.equals("Room")) return new ArrayList<>();
+    public List<TeacherColor> getTeacherInPlace(String playerName, String placeId) {
+        if (!placeId.equals("Room")) return new ArrayList<>();
         return model.getTeachersInRoom(playerName);
     }
 
-    public String getMotherNaturePosition(){
-        return model.getMotherNaturePosition();
-    }
-
-    public List<String> getPlayerNames(){
+    public List<String> getPlayerNames() {
         return playerNames;
     }
 
-    public int getPlayerTowers(String playerName){
+    public int getPlayerTowers(String playerName) {
         return 0;
     }
 
@@ -269,13 +265,11 @@ public class GameController {
         return gameState;
     }
 
-    public boolean isStartGame()
-    {
+    public boolean isStartGame() {
         return getModel().getGame().isStartGame();
     }
 
-    public boolean checkLoginUser(String username)
-    {
+    public boolean checkLoginUser(String username) {
         return playerNames.contains(username);
     }
 }

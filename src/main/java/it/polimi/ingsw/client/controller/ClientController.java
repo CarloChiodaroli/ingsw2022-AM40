@@ -9,7 +9,6 @@ import it.polimi.ingsw.commons.observer.ViewObserver;
 import it.polimi.ingsw.commons.view.View;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -25,18 +24,11 @@ public class ClientController implements ViewObserver, Observer {
     private final ExecutorService taskQueue;
     public static final int UNDO_TIME = 5000;
     private final ClientPlayState playState;
-    //private final Map<MessageType, Runnable> runnables;
 
     public ClientController(View view) {
         this.view = view;
         taskQueue = Executors.newSingleThreadExecutor();
         this.playState = new ClientPlayState();
-    }
-
-    private Map<MessageType, Runnable> runnableBuilder() {
-        Map<MessageType, Runnable> map = new HashMap<>();
-        //map.put(MessageType.GENERIC, () -> view.showGenericMessage());
-        return map;
     }
 
     @Override
@@ -61,7 +53,6 @@ public class ClientController implements ViewObserver, Observer {
     @Override
     public void onUpdatePlayersNumber(int playersNumber) {
         client.sendMessage(new LobbyMessage(this.nickname, playersNumber));
-        //client.sendMessage(new PlayerNumberReply(this.nickname, playersNumber));
     }
 
 
@@ -72,44 +63,40 @@ public class ClientController implements ViewObserver, Observer {
 
     @Override
     public void update(Message message) {
-        switch (message.getMessageType()) {
-            case GENERIC:
-                taskQueue.execute(() -> view.showGenericMessage(((GenericMessage) message).getMessage()));
-                break;
-            case DISCONNECTION:
-                DisconnectionMessage dm = (DisconnectionMessage) message;
-                client.disconnect();
-                view.showDisconnectionMessage(dm.getNicknameDisconnected(), dm.getMessageStr());
-                break;
-            case ERROR:
-                ErrorMessage em = (ErrorMessage) message;
-                //view.showErrorAndExit(em.getError());
-                view.showError(em.getError());
-                break;
-            case LOGIN:
-                LoginMessage loginMessage = (LoginMessage) message;
-                taskQueue.execute(() -> view.showLoginResult(loginMessage.isNicknameAccepted(), loginMessage.isConnectionSuccessful(), this.nickname));
-            /*case LOGIN_REPLY:
-                LoginReply loginReply = (LoginReply) message;
-                taskQueue.execute(() -> view.showLoginResult(loginReply.isNicknameAccepted(), loginReply.isConnectionSuccessful(), this.nickname));
-                break;*/
-            case PLAYER_NUMBER_REQUEST:
-                //taskQueue.execute(view::askPlayersNumber);
-                break;
-            case LOBBY:
-                this.manageLobby((LobbyMessage) message);
-                //LobbyMessage lobbyMessage = (LobbyMessage) message;
-                //taskQueue.execute(() -> view.showLobby(lobbyMessage.getNicknameList(), lobbyMessage.getMaxPlayers()));
-                break;
-            default: // Should never reach this condition
-                break;
+        try {
+            switch (message.getMessageType()) {
+                case GENERIC:
+                    taskQueue.execute(() -> view.showGenericMessage(((GenericMessage) message).getMessage()));
+                    break;
+                case ERROR:
+                    ErrorMessage em = (ErrorMessage) message;
+                    view.showError(em.getError());
+                    break;
+                case LOGIN:
+                    LoginMessage loginMessage = (LoginMessage) message;
+                    taskQueue.execute(() -> view.showLoginResult(loginMessage.isNicknameAccepted(), loginMessage.isConnectionSuccessful(), this.nickname));
+                    break;
+                case LOBBY:
+                    LobbyMessage lm = (LobbyMessage) message;
+                    this.manageLobby(lm);
+                    break;
+                default: // Should never reach this condition
+                    client.sendMessage(new ErrorMessage(nickname, "Wrong message received"));
+                    Client.LOGGER.info(() -> "received wrong message from server");
+                    break;
+            }
+        } catch (ClassCastException e) {
+            // Should never reach this condition
+            client.sendMessage(new ErrorMessage(nickname, "Wrong message received"));
+            Client.LOGGER.info(() -> "received wrong message from server");
         }
+
     }
 
     private void manageLobby(LobbyMessage message) {
         if (playState.getMainPlayer() == null) { // First message
             playState.setMainPlayer(message.getMainPlayerName());
-            if(playState.getMainPlayer().equals(this.nickname)){ // First player to connect to the game
+            if (playState.getMainPlayer().equals(this.nickname)) { // First player to connect to the game
                 taskQueue.execute(view::askPlayersNumber);
             }
             return;
@@ -119,15 +106,18 @@ public class ClientController implements ViewObserver, Observer {
             return;
         }
         List<String> players = message.getLobbyPlayers();
-        if(players.isEmpty()){
-            client.disconnect();
-            view.showOtherDisconnectionMessage(message.getDisconnection(), "Disconnection of ");
+        if (players.isEmpty()) {
+            if (message.getDisconnection().equals(this.nickname)) {
+                client.disconnect();
+                taskQueue.execute(() -> view.showDisconnectionMessage(message.getDisconnection(), "Server has disconnected you"));
+            } else {
+                taskQueue.execute(() -> view.showOtherDisconnectionMessage(message.getDisconnection(), "Disconnection of "));
+            }
         } else {
             playState.setPlayerNames(players);
         }
     }
 
-    //STACK OVERFLOW
     public static boolean isValidIpAddress(String ip) {
         String regex = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                 "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +

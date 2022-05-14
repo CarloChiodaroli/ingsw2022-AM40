@@ -1,8 +1,6 @@
 package it.polimi.ingsw.server.controller;
 
-//import it.polimi.ingsw.manuel.model.Game;
 import it.polimi.ingsw.commons.message.Message;
-import it.polimi.ingsw.commons.message.PlayerNumberReply;
 import it.polimi.ingsw.commons.view.View;
 import it.polimi.ingsw.server.view.VirtualView;
 
@@ -11,14 +9,9 @@ import java.util.Map;
 // could be static
 public class InputController {
 
-    // private final Game game;
-    // private transient Map<String, VirtualView> virtualViewMap;
-    // private final Map<String, VirtualView> virtualViewMap;
     private final GameManager gameManager;
 
     public InputController(Map<String, VirtualView> virtualViewMap, GameManager gameManager) {
-        // this.game = Game.getInstance();
-        // this.virtualViewMap = virtualViewMap;
         this.gameManager = gameManager;
     }
 

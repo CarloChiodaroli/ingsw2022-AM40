@@ -6,7 +6,6 @@ import it.polimi.ingsw.commons.message.Message;
 import it.polimi.ingsw.commons.message.MessageType;
 import it.polimi.ingsw.commons.observer.Observer;
 import it.polimi.ingsw.commons.view.View;
-//import it.polimi.ingsw.manuel.model.Game;
 import it.polimi.ingsw.server.network.Server;
 import it.polimi.ingsw.server.utils.StorageData;
 import it.polimi.ingsw.server.view.VirtualView;
@@ -16,7 +15,6 @@ import java.util.*;
 
 public class GameManager implements Observer {
 
-    //private Game game;
     private transient Map<String, VirtualView> virtualViewMap;
     private PlayState playState;
     private TurnController turnController;
@@ -38,7 +36,7 @@ public class GameManager implements Observer {
         //this.game = Game.getInstance();
         this.virtualViewMap = Collections.synchronizedMap(new HashMap<>());
         this.inputController = new InputController(virtualViewMap, this);
-        setGameState(PlayState.PRE_INIT);
+        setPlayState(PlayState.PRE_INIT);
     }
 
     public void onMessageReceived(Message receivedMessage) {
@@ -92,7 +90,7 @@ public class GameManager implements Observer {
 
     }
 
-    private void setGameState(PlayState playState) {
+    private void setPlayState(PlayState playState) {
         this.playState = playState;
     }
 
@@ -137,7 +135,7 @@ public class GameManager implements Observer {
 
 
     private void initGame() {
-        setGameState(PlayState.INIT);
+        setPlayState(PlayState.INIT);
         turnController = new TurnController(virtualViewMap, this);
         broadcastGenericMessage("All Players are connected. Main player : " + turnController.getActivePlayer() + "\n" + "Good Luck!!!");
         VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
@@ -154,9 +152,7 @@ public class GameManager implements Observer {
 
     public void removeVirtualView(String nickname, boolean notifyEnabled) {
         VirtualView vv = virtualViewMap.remove(nickname);
-        // game.removeObserver(vv);
         playMessagesReader.deletePlayer(nickname);
-        // game.removePlayerByNickname(nickname, notifyEnabled);
     }
 
     public void broadcastGenericMessage(String messageToNotify, String excludeNickname) {
@@ -205,7 +201,7 @@ public class GameManager implements Observer {
         }
     }
 
-    public List<String> getPlayerNames(){
+    public List<String> getPlayerNames() {
         return virtualViewMap.keySet().stream().toList();
     }
 

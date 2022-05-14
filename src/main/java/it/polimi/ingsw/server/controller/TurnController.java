@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.controller;
 
-//import it.polimi.ingsw.manuel.model.Game;
 import it.polimi.ingsw.server.utils.StorageData;
 import it.polimi.ingsw.server.view.VirtualView;
 
@@ -10,7 +9,6 @@ import java.util.Map;
 
 public class TurnController {
 
-    //private final Game game;
     private final List<String> nicknameQueue;
     private String activePlayer;
 
@@ -18,7 +16,6 @@ public class TurnController {
     private final GameManager gameManager;
 
     public TurnController(Map<String, VirtualView> virtualViewMap, GameManager gameManager) {
-        //this.game = Game.getInstance();
         this.nicknameQueue = new ArrayList<>(gameManager.getPlayerNames());
         this.activePlayer = nicknameQueue.get(0); // set first active player
         this.virtualViewMap = virtualViewMap;

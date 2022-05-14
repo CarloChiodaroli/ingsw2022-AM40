@@ -96,7 +96,7 @@ public class MessageTest {
         Gson gson;
         PlayMessage message;
         String gsonSerialization;
-        question = new PlayMessage(aldoName, "move", TeacherColor.BLUE, "Entrance", "Room");
+        question = new PlayMessage(aldoName, "moveStudent", TeacherColor.BLUE, "Entrance", "Room");
         builder = new GsonBuilder().setPrettyPrinting();
         gson = builder.create();
         gsonSerialization = gson.toJson(question);
@@ -116,7 +116,7 @@ public class MessageTest {
         PlayMessage message;
         String gsonSerialization;
 
-        question = new PlayMessage(aldoName, "move", TeacherColor.BLUE, TeacherColor.GREEN, "Room");
+        question = new PlayMessage(aldoName, "moveStudent", TeacherColor.BLUE, TeacherColor.GREEN, "Room");
         gson = builder.create();
         gsonSerialization = gson.toJson(question);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
@@ -135,7 +135,7 @@ public class MessageTest {
         PlayMessage message;
         String gsonSerialization;
 
-        question = new PlayMessage(aldoName, "move", 2);
+        question = new PlayMessage(aldoName, "moveMotherNature", 2);
         gson = builder.create();
         gsonSerialization = gson.toJson(question);
 
@@ -158,7 +158,7 @@ public class MessageTest {
         PlayMessage message;
         String gsonSerialization;
 
-        question = new PlayMessage(aldoName,"move",  "c_1");
+        question = new PlayMessage(aldoName,"chooseCloud",  "c_1");
         gson = builder.create();
         gsonSerialization = gson.toJson(question);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
@@ -179,7 +179,7 @@ public class MessageTest {
         String gsonSerialization;
 
 
-        question = new PlayMessage(aldoName, "move", Characters.CRIER);
+        question = new PlayMessage(aldoName, "playCharacterCard", Characters.CRIER);
         gson = builder.create();
         gsonSerialization = gson.toJson(question);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
@@ -199,7 +199,7 @@ public class MessageTest {
         PlayMessage message;
         String gsonSerialization;
 
-        question = new PlayMessage(aldoName, "move", Characters.CRIER, "i_1");
+        question = new PlayMessage(aldoName, "playCharacterCard", Characters.CRIER, "i_1");
         gson = builder.create();
         gsonSerialization = gson.toJson(question);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
@@ -220,7 +220,7 @@ public class MessageTest {
         String gsonSerialization;
 
 
-        question = new PlayMessage(aldoName, "move", Characters.CRIER, TeacherColor.GREEN);
+        question = new PlayMessage(aldoName, "playCharacterCard", Characters.CRIER, TeacherColor.GREEN);
         gson = builder.create();
         gsonSerialization = gson.toJson(question);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
@@ -246,7 +246,7 @@ public class MessageTest {
         for (TeacherColor color : TeacherColor.values()) {
             testMapA.put(color, i++);
         }
-        question = new PlayMessage(serverName, "move", "Entrance", testMapA);
+        question = new PlayMessage(serverName, "statusStudent", "Entrance", testMapA);
         gson = builder.create();
         gsonSerialization = gson.toJson(question);
         System.out.println(gsonSerialization);
@@ -292,7 +292,7 @@ public class MessageTest {
         testMapC.put("i_8", TowerColor.WHITE);
         testMapC.put("i_10", TowerColor.BLACK);
         testMapC.put("i_11", TowerColor.WHITE);
-        question = new PlayMessage(serverName, "move", testMapB);
+        question = new PlayMessage(serverName, "statusTower", testMapB);
         gson = builder.create();
         gsonSerialization = gson.toJson(question);
         System.out.println(gsonSerialization);
@@ -320,7 +320,7 @@ public class MessageTest {
         testList.add(TeacherColor.BLUE);
         testList.add(TeacherColor.PINK);
         testList.add(TeacherColor.GREEN);
-        question = new PlayMessage(serverName, "move", aldoName, testList);
+        question = new PlayMessage(serverName, "statusTeacher", aldoName, testList);
         gson = builder.create();
         gsonSerialization = gson.toJson(question);
         System.out.println(gsonSerialization);
@@ -341,7 +341,7 @@ class FakeServer extends Server {
 class FakeGameManager implements MessageReader {
 
     @Override
-    public void move(String player, TeacherColor color, String fromId, String toId) {
+    public void moveStudent(String player, TeacherColor color, String fromId, String toId) {
         assertEquals(String.class, player.getClass());
         assertEquals(TeacherColor.class, color.getClass());
         assertEquals(String.class, fromId.getClass());
@@ -349,7 +349,7 @@ class FakeGameManager implements MessageReader {
     }
 
     @Override
-    public void move(String player, TeacherColor fromColor, TeacherColor toColor, String placeId) {
+    public void moveStudent(String player, TeacherColor fromColor, TeacherColor toColor, String placeId) {
         assertEquals(String.class, player.getClass());
         assertEquals(TeacherColor.class, fromColor.getClass());
         assertEquals(TeacherColor.class, toColor.getClass());
@@ -357,59 +357,59 @@ class FakeGameManager implements MessageReader {
     }
 
     @Override
-    public void move(String player, Integer hops) {
+    public void moveMotherNature(String player, Integer hops) {
         assertEquals(String.class, player.getClass());
         assertEquals(2, hops);
     }
 
     @Override
-    public void move(String player, String id) {
+    public void chooseCloud(String player, String id) {
         assertEquals(String.class, player.getClass());
         assertEquals(String.class, id.getClass());
     }
 
     @Override
-    public void move(String player, Characters character) {
+    public void playCharacterCard(String player, Characters character) {
         assertEquals(String.class, player.getClass());
         assertEquals(Characters.class, character.getClass());
     }
 
     @Override
-    public void move(String player, Characters character, String id) {
+    public void playCharacterCard(String player, Characters character, String id) {
         assertEquals(String.class, player.getClass());
         assertEquals(Characters.class, character.getClass());
         assertEquals(String.class, id.getClass());
     }
 
     @Override
-    public void move(String player, Characters character, TeacherColor color) {
+    public void playCharacterCard(String player, Characters character, TeacherColor color) {
         assertEquals(String.class, player.getClass());
         assertEquals(Characters.class, character.getClass());
         assertEquals(TeacherColor.class, color.getClass());
     }
 
     @Override
-    public void move(String sender, String id, Map<TeacherColor, Integer> quantity) {
+    public void statusStudent(String sender, String id, Map<TeacherColor, Integer> quantity) {
         assertEquals(String.class, sender.getClass());
         assertEquals(String.class, id.getClass());
         assertTrue(Arrays.stream(quantity.getClass().getInterfaces()).collect(Collectors.toList()).contains(Map.class));
     }
 
     @Override
-    public void move(String sender, String id, List<TeacherColor> which) {
+    public void statusTeacher(String sender, String id, List<TeacherColor> which) {
         assertEquals(String.class, sender.getClass());
         assertEquals(String.class, id.getClass());
         assertTrue(Arrays.stream(which.getClass().getInterfaces()).collect(Collectors.toList()).contains(List.class));
     }
 
     @Override
-    public void move(String sender, Map<String, Optional<TowerColor>> conquests) {
+    public void statusTower(String sender, Map<String, Optional<TowerColor>> conquests) {
         assertEquals(String.class, sender.getClass());
         assertTrue(Arrays.stream(conquests.getClass().getInterfaces()).collect(Collectors.toList()).contains(Map.class));
     }
 
     @Override
-    public void move(String sender, List<String> ids) {
+    public void statusIslandIds(String sender, List<String> ids) {
         assertEquals(String.class, sender.getClass());
         assertTrue(Arrays.stream(ids.getClass().getInterfaces()).collect(Collectors.toList()).contains(List.class));
     }

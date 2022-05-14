@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.model;
 
 
-import it.polimi.ingsw.server.model.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
+import it.polimi.ingsw.server.model.enums.Characters;
 import it.polimi.ingsw.server.model.player.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.table.Cloud;
@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 /**
  * This class manages all interactions between model and controller and handles model exceptions
  */
+// Removed Javadoc to make this class less overwhelming from 400+ lines to 300 lines
 public class GameModel {
 
     private final Game game;
@@ -25,18 +26,10 @@ public class GameModel {
         this.game = new Game();
     }
 
-    /**
-     * Adds a player to the game
-     *
-     * @param name is the name of the player to add, the name need to be different from each other
-     */
     public void addPlayer(String name) {
         game.addPlayer(name);
     }
 
-    /**
-     * Starts the game once there are enough players
-     */
     public void startGame() {
         try {
             game.gameStarter();
@@ -45,22 +38,12 @@ public class GameModel {
         }
     }
 
-    /**
-     * Switches the variant of the game between Expert or not Expert variants
-     */
     public void switchExpertVariant() {
         game.switchExpertVariant();
     }
 
     // Player moves
 
-    /**
-     * Gets a player from player name, used to get the right player to execute commands from
-     *
-     * @param playerName the name of the player who sent the command
-     * @return the player corresponding to the given name
-     * @throws NoSuchElementException if no player with that name was found
-     */
     private Player getPlayer(String playerName) throws NoSuchElementException {
         try {
             return game.getPlayers().stream()
@@ -72,22 +55,10 @@ public class GameModel {
         }
     }
 
-    /**
-     * Builds the message to send when a player was not found
-     *
-     * @param playerName the name of the not existing player
-     * @return the message
-     */
     private static String playerNotFoundMessage(String playerName) {
         return "No " + playerName + " player found";
     }
 
-    /**
-     * Makes a player play an assistant card
-     *
-     * @param playerName the name of the player who plays the card
-     * @param cardWeight the weight of the card the player wants to play
-     */
     public void playAssistantCard(String playerName, int cardWeight)
             throws GameModelException, NoSuchElementException {
         Player player = getPlayer(playerName);
@@ -98,14 +69,6 @@ public class GameModel {
         }
     }
 
-    /**
-     * Makes a player move a student
-     *
-     * @param playerName    the name of the player who makes the move
-     * @param color         the color of the student the player wants to move
-     * @param sourceId      the id of the source of the movement of the student
-     * @param destinationId the id og the destination of the movement of the student
-     */
     public void moveStudent(String playerName, TeacherColor color, String sourceId, String destinationId)
             throws GameModelException, NoSuchElementException {
         Player player = getPlayer(playerName);
@@ -116,13 +79,6 @@ public class GameModel {
         }
     }
 
-    /**
-     * Makes a player shift two students from two different places
-     *
-     * @param playerName      the name of the player who makes the move
-     * @param entranceStudent the color of the student ho is in the entrance
-     * @param otherStudent    the color of the student who is in the room or card
-     */
     public void moveStudent(String playerName, TeacherColor entranceStudent, TeacherColor otherStudent) {
         Player player = getPlayer(playerName);
         try {
@@ -134,12 +90,6 @@ public class GameModel {
         }
     }
 
-    /**
-     * Moves mother nature
-     *
-     * @param playerName the name of the player who makes the move
-     * @param steps      the number of steps he wants to move her
-     */
     public void moveMotherNature(String playerName, int steps) {
         Player player = getPlayer(playerName);
         try {
@@ -151,11 +101,6 @@ public class GameModel {
         }
     }
 
-    /**
-     * Makes the calculation of the influence
-     *
-     * @param playerName the name of the player who makes the move
-     */
     public void calcInfluence(String playerName) {
         Player player = getPlayer(playerName);
         try {
@@ -167,12 +112,6 @@ public class GameModel {
         }
     }
 
-    /**
-     * Executes the choice of the cloud by the player at the end of his action phase
-     *
-     * @param playerName the name of the player who makes the move
-     * @param cloudId    the id of the chosen cloud
-     */
     public void chooseCloud(String playerName, String cloudId) {
         Player player = getPlayer(playerName);
         try {
@@ -184,12 +123,6 @@ public class GameModel {
         }
     }
 
-    /**
-     * Makes the player play and pay a character card
-     *
-     * @param playerName the name of the player who makes the move
-     * @param character  the character of the card the player wants to use
-     */
     public void playCharacterCard(String playerName, Characters character) {
         Player player = getPlayer(playerName);
         try {
@@ -224,13 +157,6 @@ public class GameModel {
     }
 
     // Getter of the model state
-
-    /**
-     * Gets the detail of the student population on a specific island
-     *
-     * @param islandId is the island of which we want to know the population
-     * @return a map detailing the population of the island
-     */
     public Map<TeacherColor, Integer> getStudentsInIsland(String islandId) {
         Island island;
         try {
@@ -246,12 +172,6 @@ public class GameModel {
         return studentContent;
     }
 
-    /**
-     * Gets the detail of the presence of a tower on a specific island
-     *
-     * @param islandId is the island of which we want to know the tower
-     * @return an Optional containing the color of the tower if present
-     */
     public Optional<TowerColor> getTowerInIsland(String islandId) {
         Island island;
         try {
@@ -263,23 +183,12 @@ public class GameModel {
         return island.getTowerColor();
     }
 
-    /**
-     * Gets all IDs of all islands present on the table
-     *
-     * @return a List of all island IDs
-     */
     public List<String> getIslandIds() {
         return game.getTable().getIslandList().stream()
                 .map(Island::getId)
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Gets the detail of the student population on a specific Cloud
-     *
-     * @param cloudId is the cloud of which we want to know the population
-     * @return a map detailing the population of the cloud
-     */
     public Map<TeacherColor, Integer> getStudentsInCloud(String cloudId) {
         Cloud cloud;
         try {
@@ -295,60 +204,31 @@ public class GameModel {
         return studentContent;
     }
 
-    /**
-     * Gets all IDs of all clouds present on the table
-     *
-     * @return a List of all cloud IDs
-     */
     public List<String> getCloudIds() {
         return game.getTable().getCloudList().stream()
                 .map(Cloud::getId)
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Gets how many coins are on the table
-     *
-     * @return the number of coins on the table
-     */
     public Integer coinsOnTheTable() {
         return game.getTable().getNumCoin();
     }
 
-    /**
-     * Gets which cards Character cards are enabled to be chosen in an Action Phase round
-     *
-     * @return a list of Characters the cards of which are usable
-     */
     public List<Characters> getEnabledCharacterCards() {
         return Arrays.stream(Characters.values())
                 .filter(x -> game.getActionFase().canBeActivated(x))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Gets if the Game is played by three players
-     *
-     * @return true if it is, false if not
-     */
+
     public boolean isThreePlayerGame() {
         return game.isThreePlayerGame();
     }
 
-    /**
-     * Gets if the Game is in expert variant mode
-     *
-     * @return true if it is, false if not
-     */
     public boolean isExpertVariant() {
         return game.isExpertVariant();
     }
 
-    /**
-     * Gets the actual position of Mother Nature
-     *
-     * @return the id the island on which Mother Nature is sitting
-     */
     public String getMotherNaturePosition() {
         return MotherNature.getMotherNature().getPosition()
                 .map(Island::getId)
@@ -356,13 +236,6 @@ public class GameModel {
     }
 
     // Getter of the player state
-
-    /**
-     * Gets how many coins does a player have
-     *
-     * @param playerName the name of the player
-     * @return the number of coins the player has
-     */
     public Integer coinsOfThePlayer(String playerName) {
         Player player;
         try {
@@ -374,12 +247,6 @@ public class GameModel {
         return player.getMoney();
     }
 
-    /**
-     * Gets the detail of the student population in a school entrance
-     *
-     * @param playerName the name of the player
-     * @return a map detailing the population of the entrance
-     */
     public Map<TeacherColor, Integer> getStudentsInEntrance(String playerName) {
         Player player = getPlayer(playerName);
 
@@ -390,12 +257,6 @@ public class GameModel {
         return studentContent;
     }
 
-    /**
-     * Gets the detail of the student population in a schoolroom
-     *
-     * @param playerName the name of the player
-     * @return a map detailing the population of the room
-     */
     public Map<TeacherColor, Integer> getStudentsInRoom(String playerName) {
         Player player = getPlayer(playerName);
 

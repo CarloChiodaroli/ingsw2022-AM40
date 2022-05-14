@@ -1,8 +1,8 @@
 package it.polimi.ingsw.commons.message;
 
-import it.polimi.ingsw.server.model.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
+import it.polimi.ingsw.server.model.enums.Characters;
 
 import java.util.List;
 import java.util.Map;
@@ -10,25 +10,25 @@ import java.util.Optional;
 
 public interface MessageReader {
 
-    void move(String player, TeacherColor color, String fromId, String toId);
+    void moveStudent(String player, TeacherColor color, String fromId, String toId);
 
-    void move(String player, TeacherColor fromColor, TeacherColor toColor, String placeId);
+    void moveStudent(String player, TeacherColor fromColor, TeacherColor toColor, String placeId);
 
-    void move(String player, Integer hops);
+    void moveMotherNature(String player, Integer hops);
 
-    void move(String player, String id);
+    void chooseCloud(String player, String id);
 
-    void move(String player, Characters character);
+    void playCharacterCard(String player, Characters character);
 
-    void move(String player, Characters character, String id);
+    void playCharacterCard(String player, Characters character, String id);
 
-    void move(String player, Characters character, TeacherColor color);
+    void playCharacterCard(String player, Characters character, TeacherColor color);
 
-    void move(String sender, String id, Map<TeacherColor, Integer> quantity);
+    void statusStudent(String sender, String id, Map<TeacherColor, Integer> quantity);
 
-    void move(String sender, String id, List<TeacherColor> which);
+    void statusTeacher(String sender, String id, List<TeacherColor> which);
 
-    void move(String sender, Map<String, Optional<TowerColor>> conquests);
+    void statusTower(String sender, Map<String, Optional<TowerColor>> conquests);
 
-    void move(String sender, List<String> ids);
+    void statusIslandIds(String sender, List<String> ids);
 }
