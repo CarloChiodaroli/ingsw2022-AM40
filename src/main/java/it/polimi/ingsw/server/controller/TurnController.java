@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TurnController {
 
-    private final GameController gameController;
+    private final PlayMessagesReader reader;
 
     private List<String> nicknameQueue;
     private List<String> players;
@@ -15,10 +15,10 @@ public class TurnController {
     private Characters actualCharacter;
     private GameState state;
 
-    public TurnController(GameController gameController) {
-        this.nicknameQueue = new ArrayList<>(gameController.getPlayerNames());
+    public TurnController(PlayMessagesReader reader) {
+        this.nicknameQueue = new ArrayList<>(reader.getPlayerNames());
         this.activePlayer = nicknameQueue.get(0); // set first active player
-        this.gameController = gameController;
+        this.reader = reader;
     }
 
     public void setInitialState(){
@@ -35,15 +35,17 @@ public class TurnController {
         setActivePlayer();
     }
 
-    public void nextTurn() {
+    public boolean nextTurn() {
         if (state.equals(GameState.PLANNING)) {
             int i = players.indexOf(activePlayer) + 1;
             if (i >= players.size()) {
                 state = GameState.next(state);
-                nicknameQueue = gameController.getPlayersInOrder();
+                nicknameQueue = reader.getPlayersInOrder();
                 activePlayer = nicknameQueue.get(0);
+                return true;
             } else {
                 activePlayer = players.get(i);
+                return false;
             }
         } else if (state.equals(GameState.ACTION)) {
             actualCharacter = null;
@@ -51,10 +53,13 @@ public class TurnController {
             if (i >= nicknameQueue.size()) {
                 state = GameState.next(state);
                 activePlayer = players.get(0);
+                return true;
             } else {
                 activePlayer = nicknameQueue.get(i);
+                return false;
             }
         }
+        return false;
     }
 
     public String getActivePlayer() {

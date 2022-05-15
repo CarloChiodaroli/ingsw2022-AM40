@@ -7,44 +7,48 @@ import java.security.InvalidParameterException;
 
 public class InputController {
 
-    public InputController() {
+    private final PlayMessagesReader reader;
+
+    public InputController(PlayMessagesReader reader) {
+        this.reader = reader;
     }
 
-    public static void addPlayer(GameController gameController, String player){
-        if (gameController.getPlayerNames().contains(player)) throw new InvalidParameterException("Player name already present");
-        if (gameController.getPlayerNames().size() >= 3) throw new IllegalStateException("There are already 3 players");
+    public void addPlayer(String player) {
+        if (reader.getPlayerNames().contains(player))
+            throw new InvalidParameterException("Player name already present");
+        if (reader.getPlayerNames().size() >= 3) throw new IllegalStateException("There are already 3 players");
     }
 
-    public static void removePlayer(GameController gameController, String player){
-        if (!gameController.getPlayerNames().contains(player)) throw new InvalidParameterException("Player name not found");
+    public void removePlayer(String player) {
+        if (!reader.getPlayerNames().contains(player)) throw new InvalidParameterException("Player name not found");
     }
 
-    public static void controlActualPlayer(GameController gameController, String actualPlayer) throws InvalidParameterException {
-        if (!gameController.getPlayerNames().contains(actualPlayer))
+    public void controlActualPlayer(String actualPlayer) throws InvalidParameterException {
+        if (!reader.getPlayerNames().contains(actualPlayer))
             throw new InvalidParameterException("Player is not playing the game");
-        if (!actualPlayer.equals(gameController.getActualPlayer()))
+        if (!actualPlayer.equals(reader.getActualPlayer()))
             throw new InvalidParameterException("Player is not the actual player");
     }
 
-    public static void controlExpertVariant(GameController gameController) throws IllegalStateException {
-        if (!gameController.isExpertVariant()) throw new IllegalStateException("Game is not in Expert variant");
+    public void controlExpertVariant() throws IllegalStateException {
+        if (!reader.isExpertVariant()) throw new IllegalStateException("Game is not in Expert variant");
     }
 
-    public static void controlGameState(GameController gameController, GameState required) throws IllegalStateException {
-        if (!gameController.getState().equals(required))
-            throw new IllegalStateException("Actual state is " + gameController.getState() + " when " + required + " is required");
+    public void controlGameState(GameState required) throws IllegalStateException {
+        if (!reader.getState().equals(required))
+            throw new IllegalStateException("Actual state is " + reader.getState() + " when " + required + " is required");
     }
 
-    public static void excludeGameState(GameController gameController, GameState exclude) throws IllegalStateException {
-        if (gameController.getState().equals(exclude))
-            throw new IllegalStateException("Actual state is " + gameController.getState() + " and it's illegal for this action");
+    public void excludeGameState(GameState exclude) throws IllegalStateException {
+        if (reader.getState().equals(exclude))
+            throw new IllegalStateException("Actual state is " + reader.getState() + " and it's illegal for this action");
     }
 
-    public static  void playCharacterCardPermit(GameController gameController, String playerName) {
-        controlExpertVariant(gameController);
-        controlGameState(gameController, GameState.ACTION);
-        controlActualPlayer(gameController, playerName);
-        if(gameController.isCharacterActive()) throw new IllegalStateException("Character card has been already played");
+    public void playCharacterCardPermit(String playerName) {
+        controlExpertVariant();
+        controlGameState(GameState.ACTION);
+        controlActualPlayer(playerName);
+        if (reader.isCharacterActive()) throw new IllegalStateException("Character card has been already played");
     }
 
     /* @Deprecated
@@ -63,12 +67,12 @@ public class InputController {
         }
     }*/
 
-    public static boolean checkLoginNickname(GameController gameController, String nickname, View view) {
+    public boolean checkLoginNickname(String nickname, View view) {
         if (nickname.isEmpty() || nickname.equalsIgnoreCase("server")) {
             view.showGenericMessage("Forbidden name.");
             view.showLoginResult(false, true, null);
             return false;
-        } else if (gameController.getPlayerNames().contains(nickname)) {
+        } else if (reader.getPlayerNames().contains(nickname)) {
             view.showGenericMessage("Nickname already taken.");
             view.showLoginResult(false, true, null);
             return false;
@@ -88,8 +92,8 @@ public class InputController {
         }
     }*/
 
-    public static boolean checkUser(GameController gameController, Message receivedMessage) {
-        return receivedMessage.getSenderName().equals(gameController.getTurnController().getActivePlayer());
+    public boolean checkUser(Message receivedMessage) {
+        return receivedMessage.getSenderName().equals(reader.getTurnController().getActivePlayer());
     }
 
 }

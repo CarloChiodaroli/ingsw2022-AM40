@@ -10,11 +10,15 @@ import java.util.Optional;
 
 public interface MessageReader {
 
+    void playAssistantCard(String player, int weight);
+
     void moveStudent(String player, TeacherColor color, String fromId, String toId);
 
     void moveStudent(String player, TeacherColor fromColor, TeacherColor toColor, String placeId);
 
     void moveMotherNature(String player, Integer hops);
+
+    void calcInfluence(String player);
 
     void chooseCloud(String player, String id);
 
@@ -31,4 +35,10 @@ public interface MessageReader {
     void statusTower(String sender, Map<String, Optional<TowerColor>> conquests);
 
     void statusIslandIds(String sender, List<String> ids);
+
+    void statusMotherNature(String sender, String islandId);
+
+    void statusAction(String sender, String actualPlayer);
+
+    void statusPlanning(String sender, String actualPlayer);
 }

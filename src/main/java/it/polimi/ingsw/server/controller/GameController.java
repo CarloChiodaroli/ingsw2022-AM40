@@ -19,13 +19,13 @@ import java.util.*;
  */
 public class GameController {
 
-    private final GameModel model;
+    /*private final GameModel model;
     private final List<String> playerNames;
     private boolean expertVariant;
     private GameState gameState;
-    private final TurnController turnController;
+    private final TurnController turnController;*/
 
-    public GameController() {
+    /*public GameController() {
         this.model = new GameModel();
         this.playerNames = new ArrayList<>();
         this.expertVariant = model.isExpertVariant();
@@ -95,18 +95,19 @@ public class GameController {
 
     public boolean isExpertVariant() {
         return expertVariant;
-    }
+    }*/
 
     // Player Moves
 
-    public int playAssistantCard(String playerName, int cardWeight) {
+    /*@Deprecated
+    public void playAssistantCard(String playerName, int cardWeight) {
         InputController.controlGameState(this, GameState.PLANNING);
         InputController.controlActualPlayer(this, playerName);
         model.playAssistantCard(playerName, cardWeight);
         nextTurn();
-        return cardWeight;
-    }
+    }*/
 
+    /*@Deprecated
     private Map<TeacherColor, Integer> getStudentContainerStateFromId(String playerName, String Id) {
         InputController.controlActualPlayer(this, playerName);
         switch (Id) {
@@ -122,8 +123,9 @@ public class GameController {
                 else throw new InvalidParameterException("Invalid Parameter");
             }
         }
-    }
+    }*/
 
+    /*@Deprecated
     public void moveStudent(String playerName, TeacherColor color, String sourceId, String destinationId) {
         InputController.controlGameState(this, GameState.ACTION);
         InputController.controlActualPlayer(this, playerName);
@@ -172,9 +174,9 @@ public class GameController {
     public void playCharacterCard(String playerName, Characters character, String islandId) {
         InputController.playCharacterCardPermit(this, playerName);
         model.playCharacterCard(playerName, character, islandId);
-    }
+    }*/
 
-    public Map<TeacherColor, Integer> getStudentInPlace(String playerName, String placeId) {
+    /*public Map<TeacherColor, Integer> getStudentInPlace(String playerName, String placeId) {
         if (getAllIslandIds().contains(placeId)) return model.getStudentsInIsland(placeId);
         if (placeId.equals("Entrance")) return model.getStudentsInEntrance(playerName);
         if (placeId.equals("Room")) return model.getStudentsInRoom(playerName);
@@ -189,9 +191,9 @@ public class GameController {
     public List<TeacherColor> getTeacherInPlace(String playerName, String placeId) {
         if (!placeId.equals("Room")) return new ArrayList<>();
         return model.getTeachersInRoom(playerName);
-    }
+    }*/
 
-    public List<String> getPlayerNames() {
+    /*public List<String> getPlayerNames() {
         return new ArrayList<>(playerNames);
     }
 
@@ -217,5 +219,5 @@ public class GameController {
 
     public boolean checkLoginUser(String username) {
         return playerNames.contains(username);
-    }
+    }*/
 }

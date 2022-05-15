@@ -35,7 +35,7 @@ public class MessageTest {
     private GameManager manager;
     private FakeServer server;
 
-    public void initTest() {
+    /*public void initTest() {
         controller = new GameController();
 
         controller.addPlayer(aldoName);
@@ -64,7 +64,7 @@ public class MessageTest {
         controller.playAssistantCard(aldoName, aldoAssistantCardValue);
         controller.playAssistantCard(giovanniName, giovanniAssistantCardValue);
 
-    }
+    }*/
 
     /*
     @Test
