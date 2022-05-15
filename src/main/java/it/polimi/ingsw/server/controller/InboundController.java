@@ -5,7 +5,6 @@ import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.server.model.enums.Characters;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class InboundController {

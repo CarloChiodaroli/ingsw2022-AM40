@@ -29,11 +29,15 @@ public class VirtualView implements View, Observer {
     // not so good string
     @Override
     public void askNickname() {
-        clientHandler.sendMessage(new LoginMessage("Server", false, true));
+        sendMessage(new LoginMessage("Server", false, true));
     }
 
     public void sendMainPlayer(String mainPlayerName) {
-        clientHandler.sendMessage(new LobbyMessage("Server", mainPlayerName, false));
+        sendMessage(new LobbyMessage("Server", mainPlayerName, false));
+    }
+
+    public void sendMessage(Message message){
+        clientHandler.sendMessage(message);
     }
 
     @Override
@@ -48,42 +52,41 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void showError(String errorMessage) {
-        clientHandler.sendMessage(new ErrorMessage("Server", errorMessage));
+        sendMessage(new ErrorMessage("Server", errorMessage));
     }
 
-    // not so good string
     @Override
     public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful) {
-        clientHandler.sendMessage(new LoginMessage("Server", nicknameAccepted, connectionSuccessful));
+        sendMessage(new LoginMessage("Server", nicknameAccepted, connectionSuccessful));
     }
 
     @Override
     public void showGenericMessage(String genericMessage) {
-        clientHandler.sendMessage(new GenericMessage(genericMessage));
+        sendMessage(new GenericMessage(genericMessage));
     }
 
     @Override
     public void showDisconnectionMessage(String nicknameDisconnected, String text) {
-        clientHandler.sendMessage(new LobbyMessage("Server", nicknameDisconnected, true));
+        sendMessage(new LobbyMessage("Server", nicknameDisconnected, true));
     }
 
     @Override
     public void showOtherDisconnectionMessage(String nicknameDisconnected, String text) {
-        clientHandler.sendMessage(new LobbyMessage("Server", nicknameDisconnected, true));
+        sendMessage(new LobbyMessage("Server", nicknameDisconnected, true));
     }
 
     @Override
     public void showErrorAndExit(String error) {
-        clientHandler.sendMessage(new ErrorMessage("server", error));
+        sendMessage(new ErrorMessage("server", error));
     }
 
     @Override
     public void showLobby(List<String> nicknameList, int numPlayers) {
-        clientHandler.sendMessage(new LobbyMessage("Server", nicknameList));
+        sendMessage(new LobbyMessage("Server", nicknameList));
     }
 
     @Override
     public void update(Message message) {
-        clientHandler.sendMessage(message);
+        sendMessage(message);
     }
 }

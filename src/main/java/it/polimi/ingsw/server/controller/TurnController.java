@@ -19,6 +19,7 @@ public class TurnController {
         this.nicknameQueue = new ArrayList<>(reader.getPlayerNames());
         this.activePlayer = nicknameQueue.get(0); // set first active player
         this.reader = reader;
+        setInitialState();
     }
 
     public void setInitialState(){

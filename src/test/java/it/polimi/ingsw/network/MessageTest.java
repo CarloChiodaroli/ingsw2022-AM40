@@ -341,6 +341,11 @@ class FakeServer extends Server {
 class FakeGameManager implements MessageReader {
 
     @Override
+    public void playAssistantCard(String player, int weight) {
+
+    }
+
+    @Override
     public void moveStudent(String player, TeacherColor color, String fromId, String toId) {
         assertEquals(String.class, player.getClass());
         assertEquals(TeacherColor.class, color.getClass());
@@ -360,6 +365,11 @@ class FakeGameManager implements MessageReader {
     public void moveMotherNature(String player, Integer hops) {
         assertEquals(String.class, player.getClass());
         assertEquals(2, hops);
+    }
+
+    @Override
+    public void calcInfluence(String player) {
+
     }
 
     @Override
@@ -412,5 +422,25 @@ class FakeGameManager implements MessageReader {
     public void statusIslandIds(String sender, List<String> ids) {
         assertEquals(String.class, sender.getClass());
         assertTrue(Arrays.stream(ids.getClass().getInterfaces()).collect(Collectors.toList()).contains(List.class));
+    }
+
+    @Override
+    public void statusMotherNature(String sender, String islandId) {
+
+    }
+
+    @Override
+    public void statusAction(String sender, String actualPlayer) {
+
+    }
+
+    @Override
+    public void statusPlanning(String sender, String actualPlayer) {
+
+    }
+
+    @Override
+    public void statusCharacterCard(String sender, Characters character) {
+
     }
 }

@@ -4,6 +4,7 @@ import it.polimi.ingsw.commons.message.Message;
 import it.polimi.ingsw.commons.view.View;
 
 import java.security.InvalidParameterException;
+import java.util.Set;
 
 public class InputController {
 
@@ -67,12 +68,12 @@ public class InputController {
         }
     }*/
 
-    public boolean checkLoginNickname(String nickname, View view) {
+    public static boolean checkLoginNickname(String nickname, View view, Set<String> names) {
         if (nickname.isEmpty() || nickname.equalsIgnoreCase("server")) {
             view.showGenericMessage("Forbidden name.");
             view.showLoginResult(false, true, null);
             return false;
-        } else if (reader.getPlayerNames().contains(nickname)) {
+        } else if (names.contains(nickname)) {
             view.showGenericMessage("Nickname already taken.");
             view.showLoginResult(false, true, null);
             return false;

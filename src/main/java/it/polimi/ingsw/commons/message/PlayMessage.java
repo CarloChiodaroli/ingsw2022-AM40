@@ -17,6 +17,7 @@ public class PlayMessage extends Message {
     private Map<String, TowerColor> stringTowerColorMap = null;
     private Map<TeacherColor, Integer> teacherColorIntegerMap = null;
     private List<TeacherColor> teacherColorList;
+    private List<String> stringList;
     private final static MessageType messageType = MessageType.PLAY;
     private final String move;
 
@@ -27,9 +28,9 @@ public class PlayMessage extends Message {
         result.put(String.class, PlayMessage.class.getDeclaredMethod("getString", String.class));
         result.put(List.class, PlayMessage.class.getDeclaredMethod("getList", String.class));
         result.put(Map.class, PlayMessage.class.getDeclaredMethod("getMap", String.class));
-        result.put(TeacherColor.class, PlayMessage.class.getDeclaredMethod("getTeacherColor", String.class));
-        result.put(TowerColor.class, PlayMessage.class.getDeclaredMethod("getTowerColor", String.class));
-        result.put(Characters.class, PlayMessage.class.getDeclaredMethod("getCharacters", String.class));
+        result.put(TeacherColor.class, TeacherColor.class.getMethod("valueOf", String.class));
+        result.put(TowerColor.class, TowerColor.class.getMethod("valueOf", String.class));
+        result.put(Characters.class, Characters.class.getMethod("valueOf", String.class));
         return result;
     }
 
@@ -186,6 +187,16 @@ public class PlayMessage extends Message {
         super.message();
     }
 
+    public PlayMessage(String sender, String move, List<String> which) {
+        super(sender, messageType);
+        this.move = move;
+        stringList = new ArrayList<>(which);
+        params = new Object[]{super.getSenderName(), "getStringList"};
+        Class<?>[] tmp = new Class<?>[]{String.class, List.class};
+        paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
+        super.message();
+    }
+
     public PlayMessage(String sender, String move, Map<String, Optional<TowerColor>> conquests) {
         super(sender, messageType);
         this.move = move;
@@ -197,6 +208,15 @@ public class PlayMessage extends Message {
         }
         params = new Object[]{super.getSenderName(), "getStringTowerColorMap"};
         Class<?>[] tmp = new Class<?>[]{String.class, Map.class};
+        paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
+        super.message();
+    }
+
+    public PlayMessage(String sender, String move){
+        super(sender, MessageType.PLAY);
+        this.move = move;
+        params = new Object[]{super.getSenderName()};
+        Class<?>[] tmp = new Class<?>[]{String.class};
         paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
         super.message();
     }

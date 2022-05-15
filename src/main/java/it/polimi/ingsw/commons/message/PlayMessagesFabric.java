@@ -31,7 +31,7 @@ public class PlayMessagesFabric {
 
 
     public static PlayMessage calcInfluence(String player) {
-        //return new PlayMessage(player, "calcInfluence");
+        return new PlayMessage(player, "calcInfluence");
     }
 
 
@@ -66,7 +66,7 @@ public class PlayMessagesFabric {
 
 
     public static PlayMessage statusTower(String sender, Map<String, Optional<TowerColor>> conquests) {
-        return new PlayMessage(sender, conquests);
+        return new PlayMessage(sender,"statusTower", conquests);
     }
 
 
@@ -84,6 +84,10 @@ public class PlayMessagesFabric {
     }
 
     public static PlayMessage statusPlanning(String sender, String actualPlayer) {
-        return new PlayMessage(sender, "statusPlanning");
+        return new PlayMessage(sender, "statusPlanning", actualPlayer);
+    }
+
+    public static PlayMessage statusCharacterCard(String sender, Characters character){
+        return new PlayMessage(sender, "statusCharacterCard", character);
     }
 }

@@ -38,8 +38,7 @@ public class OutboundController {
         return model.getTowerInIsland(placeId);
     }
 
-    public List<TeacherColor> getTeacherInPlace(String playerName, String placeId) {
-        if (!placeId.equals("Room")) return new ArrayList<>();
+    public List<TeacherColor> getTeacherInPlace(String playerName) {
         return model.getTeachersInRoom(playerName);
     }
 

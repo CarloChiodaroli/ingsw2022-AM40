@@ -42,15 +42,8 @@ public class GameManager implements Observer {
             case PRE_INIT:
                 preInitState(receivedMessage); // only used by main player
                 break;
-            /*case INIT: useless
-                if (InputController.checkUser(playMessagesReader.getController(), receivedMessage)) {
-                    initState(receivedMessage, virtualView);
-                }
-                break;*/
             case IN_GAME:
-                if (InputController.checkUser(playMessagesReader.getController(), receivedMessage)) {
-                    inGameState(receivedMessage);
-                }
+                inGameState(receivedMessage);
                 break;
             default:
                 Server.LOGGER.warning(STR_INVALID_STATE);
@@ -59,7 +52,7 @@ public class GameManager implements Observer {
     }
 
     private void preInitState(Message receivedMessage) {
-        if (receivedMessage.getMessageType() == MessageType.LOBBY && playMessagesReader == null) {
+        if (receivedMessage.getMessageType() == MessageType.LOBBY) {
             LobbyMessage message = (LobbyMessage) receivedMessage;
             if (message.chosenStudentNumber() == 2 || message.chosenStudentNumber() == 3) {
                 this.maxPlayers = message.chosenStudentNumber();
@@ -75,12 +68,6 @@ public class GameManager implements Observer {
             virtualViewMap.get(receivedMessage.getSenderName()).showError("Wrong Message to be sent now");
         }
     }
-
-    /*private void initState(Message receivedMessage, VirtualView virtualView) {
-        switch (receivedMessage.getMessageType()) {
-
-        }
-    }*/
 
     private void inGameState(Message receivedMessage) {
         PlayMessage message = (PlayMessage) receivedMessage;
@@ -107,7 +94,7 @@ public class GameManager implements Observer {
             addVirtualView(nickname, virtualView);
             this.playerNames.add(nickname);
             this.mainPlayer = nickname;
-            this.playMessagesReader = new PlayMessagesReader(mainPlayer);
+            this.playMessagesReader = new PlayMessagesReader(mainPlayer, this);
             virtualView.showLoginResult(true, true);
             virtualView.sendMainPlayer(mainPlayer);
         } else if (virtualViewMap.size() < maxPlayers) {
@@ -139,14 +126,12 @@ public class GameManager implements Observer {
     private void initGame() {
         setPlayState(PlayState.INIT);
         playMessagesReader.startGame();
-        //turnController = new TurnController(virtualViewMap, this);
-        broadcastGenericMessage("All Players are connected. Main player : " + turnController.getActivePlayer() + "\n" + "Good Luck!!!");
-        VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
+        //broadcastGenericMessage("All Players are connected. Main player : " + turnController.getActivePlayer() + "\n" + "Good Luck!!!");
+        //VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
     }
 
     public void addVirtualView(String nickname, VirtualView virtualView) {
         virtualViewMap.put(nickname, virtualView);
-        //game.addObserver(virtualView);
     }
 
     public Map<String, VirtualView> getVirtualViewMap() {
@@ -171,6 +156,12 @@ public class GameManager implements Observer {
         }
     }
 
+    public void broadcastMessage(Message message){
+        for(VirtualView vv: virtualViewMap.values()){
+            vv.sendMessage(message);
+        }
+    }
+
     public void broadcastDisconnectionMessage(String nicknameDisconnected, String text) {
         for (VirtualView vv : virtualViewMap.values()) {
             vv.showDisconnectionMessage(nicknameDisconnected, text);
@@ -178,7 +169,7 @@ public class GameManager implements Observer {
     }
 
     public boolean checkLoginNickname(String nickname, View view) {
-        return InputController.checkLoginNickname(playMessagesReader.getController(), nickname, view);
+        return InputController.checkLoginNickname(nickname, view, virtualViewMap.keySet());
     }
 
 

@@ -41,4 +41,6 @@ public interface MessageReader {
     void statusAction(String sender, String actualPlayer);
 
     void statusPlanning(String sender, String actualPlayer);
+
+    void statusCharacterCard(String sender, Characters character);
 }
