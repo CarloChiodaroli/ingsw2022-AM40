@@ -21,116 +21,94 @@ public class GameController {
 
     private final GameModel model;
     private final List<String> playerNames;
-    private List<String> actionPlayerOrder;
     private boolean expertVariant;
-    private String actualPlayer;
-    private Characters actualCharacter;
     private GameState gameState;
+    private final TurnController turnController;
 
     public GameController() {
         this.model = new GameModel();
         this.playerNames = new ArrayList<>();
         this.expertVariant = model.isExpertVariant();
-        setInitialState();
+        this.turnController = new TurnController(this);
+        turnController.setInitialState();
     }
 
-    private void setInitialState() {
-        this.gameState = GameState.INITIAL;
+    public TurnController getTurnController(){
+        return turnController;
     }
 
-    private void controlGameState(GameState required) throws IllegalStateException {
-        if (!gameState.equals(required))
-            throw new IllegalStateException("Actual state is " + gameState + " when " + required + " is required");
+    public GameState getState(){
+        return turnController.getState();
     }
 
-    private void excludeGameState(GameState exclude) throws IllegalStateException {
-        if (gameState.equals(exclude))
-            throw new IllegalStateException("Actual state is " + gameState + " and it's illegal for this action");
+    public boolean isCharacterActive(){
+        return turnController.isCharacterActive();
     }
 
     public void addPlayer(String name) throws InvalidParameterException, IllegalStateException {
-        controlGameState(GameState.INITIAL);
-        if (this.playerNames.contains(name)) throw new InvalidParameterException("Player name already present");
-        if (this.playerNames.size() >= 3) throw new IllegalStateException("There are already 3 players");
+        InputController.controlGameState(this, GameState.INITIAL);
+        InputController.addPlayer(this, name);
         this.playerNames.add(name);
     }
 
     public void deletePlayer(String name) throws InvalidParameterException {
-        controlGameState(GameState.INITIAL);
-        if (!this.playerNames.contains(name)) throw new InvalidParameterException("Player name not found");
+        InputController.controlGameState(this, GameState.INITIAL);
+        InputController.removePlayer(this, name);
         this.playerNames.remove(name);
     }
 
-    public List<String> startGame() throws IllegalStateException {
-        controlGameState(GameState.INITIAL);
-        if (playerNames.size() <= 1) throw new IllegalStateException("Not enough players");
-        playerNames.forEach(model::addPlayer);
-        model.startGame();
-        gameState = GameState.next(gameState);
-        actualPlayer = playerNames.get(0);
-        return getAllIslandIds();
-    }
-
-    public String actualMotherNaturePosition() {
-        excludeGameState(GameState.INITIAL);
-        return model.getMotherNaturePosition();
-    }
-
-    public List<String> getAllIslandIds() {
-        excludeGameState(GameState.INITIAL);
-        return model.getAllIslandIds();
-    }
-
     public void switchExpertVariant() {
-        controlGameState(GameState.INITIAL);
+        InputController.controlGameState(this, GameState.INITIAL);
         model.switchExpertVariant();
         this.expertVariant = model.isExpertVariant();
     }
 
+    public void startGame() throws IllegalStateException {
+        InputController.controlGameState(this, GameState.INITIAL);
+        if (playerNames.size() <= 1) throw new IllegalStateException("Not enough players");
+        playerNames.forEach(model::addPlayer);
+        model.startGame();
+        turnController.startPlay(new ArrayList<>(playerNames));
+    }
+
+    public String actualMotherNaturePosition() {
+        InputController.excludeGameState(this, GameState.INITIAL);
+        return model.getMotherNaturePosition();
+    }
+
+    public List<String> getAllIslandIds() {
+        InputController.excludeGameState(this, GameState.INITIAL);
+        return model.getAllIslandIds();
+    }
+
     private void nextTurn() {
-        if (gameState.equals(GameState.PLANNING)) {
-            int i = playerNames.indexOf(actualPlayer) + 1;
-            if (i >= playerNames.size()) {
-                gameState = GameState.next(gameState);
-                actionPlayerOrder = model.getPlayersInOrder();
-                actualPlayer = actionPlayerOrder.get(0);
-            } else {
-                actualPlayer = playerNames.get(i);
-            }
-        } else if (gameState.equals(GameState.ACTION)) {
-            int i = actionPlayerOrder.indexOf(actualPlayer) + 1;
-            if (i >= actionPlayerOrder.size()) {
-                gameState = GameState.next(gameState);
-                actualPlayer = playerNames.get(0);
-            } else {
-                actualPlayer = actionPlayerOrder.get(i);
-            }
-        }
+        turnController.nextTurn();
     }
 
-    private void controlActualPlayer(String actualPlayer) throws InvalidParameterException {
-        if (!playerNames.contains(actualPlayer))
-            throw new InvalidParameterException("Player is not playing the game");
-        if (!actualPlayer.equals(this.actualPlayer))
-            throw new InvalidParameterException("Player is not the actual player");
+    public List<String> getPlayersInOrder(){
+        return model.getPlayersInOrder();
     }
 
-    private void controlExpertVariant() throws IllegalStateException {
-        if (!expertVariant) throw new IllegalStateException("Game is not in Expert variant");
+    public String getActualPlayer() {
+        return turnController.getActivePlayer();
+    }
+
+    public boolean isExpertVariant() {
+        return expertVariant;
     }
 
     // Player Moves
 
     public int playAssistantCard(String playerName, int cardWeight) {
-        controlGameState(GameState.PLANNING);
-        controlActualPlayer(playerName);
+        InputController.controlGameState(this, GameState.PLANNING);
+        InputController.controlActualPlayer(this, playerName);
         model.playAssistantCard(playerName, cardWeight);
         nextTurn();
         return cardWeight;
     }
 
     private Map<TeacherColor, Integer> getStudentContainerStateFromId(String playerName, String Id) {
-        controlActualPlayer(playerName);
+        InputController.controlActualPlayer(this, playerName);
         switch (Id) {
             case "Entrance" -> {
                 return model.getStudentsInEntrance(playerName);
@@ -146,85 +124,53 @@ public class GameController {
         }
     }
 
-    public Map<String, Integer> moveStudent(String playerName, TeacherColor color, String sourceId, String destinationId) {
-        Map<TeacherColor, Integer> beforeDestination;
-        Map<TeacherColor, Integer> beforeSource;
-        Map<TeacherColor, Integer> afterDestination;
-        Map<TeacherColor, Integer> afterSource;
-        Map<String, Integer> delta = new HashMap<>();
-        controlGameState(GameState.ACTION);
-        controlActualPlayer(playerName);
-        if (destinationId.contains("i") || destinationId.equals("Room")) {
-            beforeDestination = getStudentContainerStateFromId(playerName, destinationId);
-        } else {
-            throw new InvalidParameterException("Illegal destination id");
-        }
-        if (sourceId.equals("Entrance")) {
-            beforeSource = getStudentContainerStateFromId(playerName, sourceId);
-        } else {
-            throw new InvalidParameterException("Illegal source id");
-        }
+    public void moveStudent(String playerName, TeacherColor color, String sourceId, String destinationId) {
+        InputController.controlGameState(this, GameState.ACTION);
+        InputController.controlActualPlayer(this, playerName);
         model.moveStudent(playerName, color, sourceId, destinationId);
-        afterDestination = getStudentContainerStateFromId(playerName, destinationId);
-        afterSource = getStudentContainerStateFromId(playerName, sourceId);
-        for (TeacherColor iColor : TeacherColor.values()) {
-            if (!afterDestination.get(iColor).equals(beforeDestination.get(iColor))) {
-                delta.put(destinationId, afterDestination.get(iColor) - beforeDestination.get(iColor));
-            }
-            if (!afterSource.get(iColor).equals(beforeSource.get(iColor))) {
-                delta.put(sourceId, afterSource.get(iColor) - beforeSource.get(iColor));
-            }
-        }
-        return delta;
     }
 
     public void moveStudent(String playerName, TeacherColor entranceStudent, TeacherColor otherStudent, String placeId) {
-        controlExpertVariant();
-        controlGameState(GameState.ACTION);
-        controlActualPlayer(playerName);
+        InputController.controlExpertVariant(this);
+        InputController.controlGameState(this, GameState.ACTION);
+        InputController.controlActualPlayer(this, playerName);
         model.moveStudent(playerName, entranceStudent, otherStudent);
     }
 
     public String moveMotherNature(String playerName, int steps) {
-        controlGameState(GameState.ACTION);
-        controlActualPlayer(playerName);
+        InputController.controlGameState(this, GameState.ACTION);
+        InputController.controlActualPlayer(this, playerName);
         model.moveMotherNature(playerName, steps);
         return model.getMotherNaturePosition();
     }
 
     public void calcInfluence(String playerName) {
-        controlGameState(GameState.ACTION);
-        controlActualPlayer(playerName);
+        InputController.controlGameState(this, GameState.ACTION);
+        InputController.controlActualPlayer(this, playerName);
         model.calcInfluence(playerName);
     }
 
     public Map<TeacherColor, Integer> chooseCloud(String playerName, String cloudId) {
-        controlGameState(GameState.ACTION);
-        controlActualPlayer(playerName);
+        InputController.controlGameState(this, GameState.ACTION);
+        InputController.controlActualPlayer(this, playerName);
         if (!cloudId.contains("c_")) throw new InvalidParameterException("Gotten Id is not a cloud Id");
         model.chooseCloud(playerName, cloudId);
         nextTurn();
         return model.getStudentsInEntrance(playerName);
     }
 
-    private void playCharacterCardPermit(String playerName) {
-        controlExpertVariant();
-        controlGameState(GameState.ACTION);
-        controlActualPlayer(playerName);
-    }
-
     public void playCharacterCard(String playerName, Characters character) {
-        playCharacterCardPermit(playerName);
+        InputController.playCharacterCardPermit(this, playerName);
         model.playCharacterCard(playerName, character);
     }
 
     public void playCharacterCard(String playerName, Characters character, TeacherColor color) {
-        playCharacterCardPermit(playerName);
+        InputController.playCharacterCardPermit(this, playerName);
         model.playCharacterCard(playerName, character, color);
     }
 
     public void playCharacterCard(String playerName, Characters character, String islandId) {
-        playCharacterCardPermit(playerName);
+        InputController.playCharacterCardPermit(this, playerName);
         model.playCharacterCard(playerName, character, islandId);
     }
 
@@ -246,7 +192,7 @@ public class GameController {
     }
 
     public List<String> getPlayerNames() {
-        return playerNames;
+        return new ArrayList<>(playerNames);
     }
 
     public int getPlayerTowers(String playerName) {

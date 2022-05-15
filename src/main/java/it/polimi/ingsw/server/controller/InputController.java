@@ -2,17 +2,49 @@ package it.polimi.ingsw.server.controller;
 
 import it.polimi.ingsw.commons.message.Message;
 import it.polimi.ingsw.commons.view.View;
-import it.polimi.ingsw.server.view.VirtualView;
 
-import java.util.Map;
+import java.security.InvalidParameterException;
 
-// could be static
 public class InputController {
 
-    private final GameManager gameManager;
+    public InputController() {
+    }
 
-    public InputController(Map<String, VirtualView> virtualViewMap, GameManager gameManager) {
-        this.gameManager = gameManager;
+    public static void addPlayer(GameController gameController, String player){
+        if (gameController.getPlayerNames().contains(player)) throw new InvalidParameterException("Player name already present");
+        if (gameController.getPlayerNames().size() >= 3) throw new IllegalStateException("There are already 3 players");
+    }
+
+    public static void removePlayer(GameController gameController, String player){
+        if (!gameController.getPlayerNames().contains(player)) throw new InvalidParameterException("Player name not found");
+    }
+
+    public static void controlActualPlayer(GameController gameController, String actualPlayer) throws InvalidParameterException {
+        if (!gameController.getPlayerNames().contains(actualPlayer))
+            throw new InvalidParameterException("Player is not playing the game");
+        if (!actualPlayer.equals(gameController.getActualPlayer()))
+            throw new InvalidParameterException("Player is not the actual player");
+    }
+
+    public static void controlExpertVariant(GameController gameController) throws IllegalStateException {
+        if (!gameController.isExpertVariant()) throw new IllegalStateException("Game is not in Expert variant");
+    }
+
+    public static void controlGameState(GameController gameController, GameState required) throws IllegalStateException {
+        if (!gameController.getState().equals(required))
+            throw new IllegalStateException("Actual state is " + gameController.getState() + " when " + required + " is required");
+    }
+
+    public static void excludeGameState(GameController gameController, GameState exclude) throws IllegalStateException {
+        if (gameController.getState().equals(exclude))
+            throw new IllegalStateException("Actual state is " + gameController.getState() + " and it's illegal for this action");
+    }
+
+    public static  void playCharacterCardPermit(GameController gameController, String playerName) {
+        controlExpertVariant(gameController);
+        controlGameState(gameController, GameState.ACTION);
+        controlActualPlayer(gameController, playerName);
+        if(gameController.isCharacterActive()) throw new IllegalStateException("Character card has been already played");
     }
 
     /* @Deprecated
@@ -31,12 +63,12 @@ public class InputController {
         }
     }*/
 
-    public boolean checkLoginNickname(String nickname, View view) {
+    public static boolean checkLoginNickname(GameController gameController, String nickname, View view) {
         if (nickname.isEmpty() || nickname.equalsIgnoreCase("server")) {
             view.showGenericMessage("Forbidden name.");
             view.showLoginResult(false, true, null);
             return false;
-        } else if (gameManager.getPlayerNames().contains(nickname)) {
+        } else if (gameController.getPlayerNames().contains(nickname)) {
             view.showGenericMessage("Nickname already taken.");
             view.showLoginResult(false, true, null);
             return false;
@@ -56,8 +88,8 @@ public class InputController {
         }
     }*/
 
-    public boolean checkUser(Message receivedMessage) {
-        return receivedMessage.getSenderName().equals(gameManager.getTurnController().getActivePlayer());
+    public static boolean checkUser(GameController gameController, Message receivedMessage) {
+        return receivedMessage.getSenderName().equals(gameController.getTurnController().getActivePlayer());
     }
 
 }

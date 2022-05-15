@@ -1,15 +1,13 @@
 package it.polimi.ingsw.server.controller;
 
-import it.polimi.ingsw.commons.message.ErrorMessage;
-import it.polimi.ingsw.commons.message.LobbyMessage;
-import it.polimi.ingsw.commons.message.Message;
-import it.polimi.ingsw.commons.message.MessageType;
+import it.polimi.ingsw.commons.message.*;
 import it.polimi.ingsw.commons.observer.Observer;
 import it.polimi.ingsw.commons.view.View;
 import it.polimi.ingsw.server.network.Server;
 import it.polimi.ingsw.server.utils.StorageData;
 import it.polimi.ingsw.server.view.VirtualView;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 
@@ -18,7 +16,6 @@ public class GameManager implements Observer {
     private transient Map<String, VirtualView> virtualViewMap;
     private PlayState playState;
     private TurnController turnController;
-    private InputController inputController;
     private String mainPlayer;
     private int maxPlayers;
     private List<String> playerNames;
@@ -33,12 +30,11 @@ public class GameManager implements Observer {
     }
 
     public void initGameController() {
-        //this.game = Game.getInstance();
         this.virtualViewMap = Collections.synchronizedMap(new HashMap<>());
-        this.inputController = new InputController(virtualViewMap, this);
         setPlayState(PlayState.PRE_INIT);
     }
 
+    // switch to be removed soon
     public void onMessageReceived(Message receivedMessage) {
 
         VirtualView virtualView = virtualViewMap.get(receivedMessage.getSenderName());
@@ -46,13 +42,13 @@ public class GameManager implements Observer {
             case PRE_INIT:
                 preInitState(receivedMessage); // only used by main player
                 break;
-            case INIT:
-                if (inputController.checkUser(receivedMessage)) {
+            /*case INIT: useless
+                if (InputController.checkUser(playMessagesReader.getController(), receivedMessage)) {
                     initState(receivedMessage, virtualView);
                 }
-                break;
+                break;*/
             case IN_GAME:
-                if (inputController.checkUser(receivedMessage)) {
+                if (InputController.checkUser(playMessagesReader.getController(), receivedMessage)) {
                     inGameState(receivedMessage);
                 }
                 break;
@@ -68,7 +64,7 @@ public class GameManager implements Observer {
             if (message.chosenStudentNumber() == 2 || message.chosenStudentNumber() == 3) {
                 this.maxPlayers = message.chosenStudentNumber();
                 new LobbyMessage("Server", this.playerNames);
-                this.playMessagesReader = new PlayMessagesReader(mainPlayer, maxPlayers);
+                this.playMessagesReader.setNumOfPlayers(maxPlayers);
                 broadcastGenericMessage("Waiting for other Players . . .");
             } else {
                 Server.LOGGER.warning("Client has chosen a wrong number of players");
@@ -80,14 +76,19 @@ public class GameManager implements Observer {
         }
     }
 
-    private void initState(Message receivedMessage, VirtualView virtualView) {
+    /*private void initState(Message receivedMessage, VirtualView virtualView) {
         switch (receivedMessage.getMessageType()) {
 
         }
-    }
+    }*/
 
     private void inGameState(Message receivedMessage) {
-
+        PlayMessage message = (PlayMessage) receivedMessage;
+        try {
+            message.executeMessage(playMessagesReader);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
+            virtualViewMap.get(receivedMessage.getSenderName()).showError("Error while running message, please retry");
+        }
     }
 
     private void setPlayState(PlayState playState) {
@@ -106,6 +107,7 @@ public class GameManager implements Observer {
             addVirtualView(nickname, virtualView);
             this.playerNames.add(nickname);
             this.mainPlayer = nickname;
+            this.playMessagesReader = new PlayMessagesReader(mainPlayer);
             virtualView.showLoginResult(true, true);
             virtualView.sendMainPlayer(mainPlayer);
         } else if (virtualViewMap.size() < maxPlayers) {
@@ -136,7 +138,8 @@ public class GameManager implements Observer {
 
     private void initGame() {
         setPlayState(PlayState.INIT);
-        turnController = new TurnController(virtualViewMap, this);
+        playMessagesReader.startGame();
+        //turnController = new TurnController(virtualViewMap, this);
         broadcastGenericMessage("All Players are connected. Main player : " + turnController.getActivePlayer() + "\n" + "Good Luck!!!");
         VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
     }
@@ -175,7 +178,7 @@ public class GameManager implements Observer {
     }
 
     public boolean checkLoginNickname(String nickname, View view) {
-        return inputController.checkLoginNickname(nickname, view);
+        return InputController.checkLoginNickname(playMessagesReader.getController(), nickname, view);
     }
 
 
