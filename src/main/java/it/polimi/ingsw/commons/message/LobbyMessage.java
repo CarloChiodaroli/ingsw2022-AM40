@@ -7,31 +7,24 @@ import java.util.List;
 
 public class LobbyMessage extends Message {
 
-    private final List<String> nicknameList;
-    private final String stringArg;
-    private final int numOfPlayers;
-    private final boolean isDisconnection;
-    private final Wizard wizard;
+    private List<String> nicknameList;
+    private String stringArg;
+    private int numOfPlayers;
+    private boolean isDisconnection;
+    private Wizard wizard;
 
     // Sends all player names
     public LobbyMessage(String sender, List<String> nicknameList) {
         super(sender, MessageType.LOBBY);
         this.nicknameList = nicknameList;
-        this.numOfPlayers = 0;
-        this.stringArg = null;
-        this.isDisconnection = false;
-        this.wizard = null;
         super.message();
     }
 
     // sends a player name, if is disconnected shows a disconnection, else shows the main player
     public LobbyMessage(String sender, String playerName, boolean isDisconnection) {
         super(sender, MessageType.LOBBY);
-        this.numOfPlayers = 0;
         this.stringArg = playerName;
-        this.nicknameList = new ArrayList<>();
         this.isDisconnection = isDisconnection;
-        this.wizard = null;
         super.message();
     }
 
@@ -50,10 +43,6 @@ public class LobbyMessage extends Message {
     public LobbyMessage(String sender, int players) {
         super(sender, MessageType.LOBBY);
         this.numOfPlayers = players;
-        this.stringArg = null;
-        this.nicknameList = new ArrayList<>();
-        this.isDisconnection = false;
-        this.wizard = null;
         super.message();
     }
 

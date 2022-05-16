@@ -220,4 +220,13 @@ public class PlayMessage extends Message {
         paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
         super.message();
     }
+
+    public PlayMessage(String sender, String move, String player, Integer weight){
+        super(sender, MessageType.PLAY);
+        this.move = move;
+        params = new Object[]{super.getSenderName(), player, weight};
+        Class<?>[] tmp = new Class<?>[]{String.class, String.class, Integer.class};
+        paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
+        super.message();
+    }
 }

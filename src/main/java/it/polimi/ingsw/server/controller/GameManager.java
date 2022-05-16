@@ -124,7 +124,7 @@ public class GameManager implements Observer {
 
 
     private void initGame() {
-        setPlayState(PlayState.INIT);
+        setPlayState(PlayState.IN_GAME);
         playMessagesReader.startGame();
         //broadcastGenericMessage("All Players are connected. Main player : " + turnController.getActivePlayer() + "\n" + "Good Luck!!!");
         //VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());

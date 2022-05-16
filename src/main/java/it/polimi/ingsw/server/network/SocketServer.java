@@ -35,7 +35,7 @@ public class SocketServer implements Runnable {
 
                 Socket client = serverSocket.accept();
 
-                client.setSoTimeout(5000);
+                //client.setSoTimeout(5000); // Commented for testing with Netcat
 
                 SocketClientHandler clientHandler = new SocketClientHandler(this, client);
                 Thread thread = new Thread(clientHandler, "ss_handler" + client.getInetAddress());

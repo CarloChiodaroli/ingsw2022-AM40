@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.server.controller.GameController;
-import it.polimi.ingsw.server.controller.GameState;
+import it.polimi.ingsw.server.controller.*;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.GameModelException;
 import it.polimi.ingsw.server.model.StudentsManager;
@@ -37,8 +36,12 @@ public class GameControllerTest {
     public static void assertThrowsIllegalStateException(org.junit.jupiter.api.function.Executable executable) {
         assertThrows(IllegalStateException.class, executable);
     }
-/*
-    private GameController controller;
+    /*
+    //private GameController controller;
+    private InboundController inbound;
+    private OutboundController outbound;
+    private TurnController turn;
+    private InputController input;
     private Game game;
     private Player aldo;
     private Player giovanni;
@@ -50,6 +53,10 @@ public class GameControllerTest {
 
     @BeforeEach
     public void initTest() {
+
+        new
+        inbound = new InboundController();
+
         controller = new GameController();
 
         controller.addPlayer(aldoName);
@@ -378,6 +385,5 @@ public class GameControllerTest {
         controller.playCharacterCard(aldoName, Characters.CRIER, testIslandId);
 
         assertEquals(Characters.CRIER, game.getActionFase().getActualCharacter().get());
-    }
-*/
+    }*/
 }

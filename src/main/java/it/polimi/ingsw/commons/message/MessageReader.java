@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface MessageReader {
 
-    void playAssistantCard(String player, int weight);
+    void playAssistantCard(String player, Integer weight);
 
     void moveStudent(String player, TeacherColor color, String fromId, String toId);
 
@@ -43,4 +43,6 @@ public interface MessageReader {
     void statusPlanning(String sender, String actualPlayer);
 
     void statusCharacterCard(String sender, Characters character);
+
+    void statusAssistantCard(String sender, String player, Integer weight);
 }

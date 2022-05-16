@@ -84,15 +84,17 @@ public class SocketClientHandler implements ClientHandler, Runnable {
                             rawGson = input.readLine();
                         } while (rawGson == null);
                         message = gson.fromJson(rawGson, Message.class);
-                        message = (Message) gson.fromJson(rawGson, message.getMessageType().getImplementingClass());
-                        String forLambda = rawGson;
-                        if (!message.getMessageType().equals(MessageType.PING))
-                            Server.LOGGER.info(() -> "Received: " + forLambda);
+                        if(message != null) {
+                            message = (Message) gson.fromJson(rawGson, message.getMessageType().getImplementingClass());
+                            String forLambda = rawGson;
+                            if (!message.getMessageType().equals(MessageType.PING))
+                                Server.LOGGER.info(() -> "Received: " + forLambda);
+                        }
                     } catch (JsonSyntaxException e) {
                         message = new ErrorMessage(null, "Message got wrongly");
                         sendMessage(message);
                     } catch (IOException e) {
-                        Server.LOGGER.info(() -> "Error in input stream");
+                        Server.LOGGER.info(() -> "Error in input stream " + e.getMessage());
                         disconnect();
                     }
                     if (message != null && message.getMessageType() != MessageType.PING) {

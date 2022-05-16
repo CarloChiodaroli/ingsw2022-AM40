@@ -90,4 +90,8 @@ public class PlayMessagesFabric {
     public static PlayMessage statusCharacterCard(String sender, Characters character){
         return new PlayMessage(sender, "statusCharacterCard", character);
     }
+
+    public static PlayMessage statusAssistantCard(String sender, String playerName, int weight){
+        return new PlayMessage(sender, "statusAssistantCard", playerName, weight);
+    }
 }

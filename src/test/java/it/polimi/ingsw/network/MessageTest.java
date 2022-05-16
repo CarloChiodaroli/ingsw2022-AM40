@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import it.polimi.ingsw.commons.message.PlayMessagesFabric;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.server.controller.GameManager;
 import it.polimi.ingsw.server.model.Game;
@@ -9,10 +10,10 @@ import it.polimi.ingsw.server.model.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.server.model.player.Player;
-import it.polimi.ingsw.server.model.table.Island;
 import it.polimi.ingsw.commons.message.MessageReader;
 import it.polimi.ingsw.commons.message.PlayMessage;
 import it.polimi.ingsw.server.network.Server;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
@@ -34,6 +35,7 @@ public class MessageTest {
     private final int aldoAssistantCardValue = 3;
     private GameManager manager;
     private FakeServer server;
+    private Gson gson;
 
     /*public void initTest() {
         controller = new GameController();
@@ -88,18 +90,21 @@ public class MessageTest {
         assertEquals(1, aldo.getRoomTable(TeacherColor.BLUE).howManyTotStudents());
     }*/
 
+    @BeforeEach
+    public void initAll(){
+        GsonBuilder builder = new GsonBuilder();
+        gson = builder.create();
+    }
+
     @Test
     public void message1Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
         PlayMessage question;
-        GsonBuilder builder;
-        Gson gson;
         PlayMessage message;
         String gsonSerialization;
         question = new PlayMessage(aldoName, "moveStudent", TeacherColor.BLUE, "Entrance", "Room");
-        builder = new GsonBuilder().setPrettyPrinting();
-        gson = builder.create();
         gsonSerialization = gson.toJson(question);
+        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -111,14 +116,12 @@ public class MessageTest {
     public void message2Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
         PlayMessage question;
-        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
-        Gson gson;
         PlayMessage message;
         String gsonSerialization;
 
         question = new PlayMessage(aldoName, "moveStudent", TeacherColor.BLUE, TeacherColor.GREEN, "Room");
-        gson = builder.create();
         gsonSerialization = gson.toJson(question);
+        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -130,16 +133,13 @@ public class MessageTest {
     public void message3Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
         PlayMessage question;
-        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
-        Gson gson;
         PlayMessage message;
         String gsonSerialization;
 
         question = new PlayMessage(aldoName, "moveMotherNature", 2);
-        gson = builder.create();
         gsonSerialization = gson.toJson(question);
 
-        System.out.println(gsonSerialization);
+        //System.out.println(gsonSerialization);
 
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
@@ -153,14 +153,12 @@ public class MessageTest {
     public void message4Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
         PlayMessage question;
-        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
-        Gson gson;
         PlayMessage message;
         String gsonSerialization;
 
         question = new PlayMessage(aldoName,"chooseCloud",  "c_1");
-        gson = builder.create();
         gsonSerialization = gson.toJson(question);
+        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -173,15 +171,14 @@ public class MessageTest {
     public void message5Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
         PlayMessage question;
-        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
-        Gson gson;
+
         PlayMessage message;
         String gsonSerialization;
 
 
         question = new PlayMessage(aldoName, "playCharacterCard", Characters.CRIER);
-        gson = builder.create();
         gsonSerialization = gson.toJson(question);
+        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -194,14 +191,12 @@ public class MessageTest {
     public void message6Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
         PlayMessage question;
-        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
-        Gson gson;
         PlayMessage message;
         String gsonSerialization;
 
         question = new PlayMessage(aldoName, "playCharacterCard", Characters.CRIER, "i_1");
-        gson = builder.create();
         gsonSerialization = gson.toJson(question);
+        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -214,15 +209,13 @@ public class MessageTest {
     public void message7Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
         PlayMessage question;
-        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
-        Gson gson;
         PlayMessage message;
         String gsonSerialization;
 
 
         question = new PlayMessage(aldoName, "playCharacterCard", Characters.CRIER, TeacherColor.GREEN);
-        gson = builder.create();
         gsonSerialization = gson.toJson(question);
+        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -232,11 +225,43 @@ public class MessageTest {
     }
 
     @Test
+    public void message11Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
+        FakeGameManager manager = new FakeGameManager();
+        PlayMessage question;
+        PlayMessage message;
+        String gsonSerialization;
+
+        question = PlayMessagesFabric.playAssistantCard(aldoName, 7);
+        gsonSerialization = gson.toJson(question);
+        //System.out.println(gsonSerialization);
+        message = gson.fromJson(gsonSerialization, PlayMessage.class);
+        assertNull(message.getStringTowerColorMap());
+        assertNull(message.getTeacherColorIntegerMap());
+        assertNull(message.getTeacherColorList());
+        message.executeMessage(manager);
+    }
+
+    @Test
+    public void message12Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
+        FakeGameManager manager = new FakeGameManager();
+        PlayMessage question;
+        PlayMessage message;
+        String gsonSerialization;
+
+        question = PlayMessagesFabric.calcInfluence(aldoName);
+        gsonSerialization = gson.toJson(question);
+        //System.out.println(gsonSerialization);
+        message = gson.fromJson(gsonSerialization, PlayMessage.class);
+        assertNull(message.getStringTowerColorMap());
+        assertNull(message.getTeacherColorIntegerMap());
+        assertNull(message.getTeacherColorList());
+        message.executeMessage(manager);
+    }
+
+    @Test
     public void message8Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
         PlayMessage question;
-        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
-        Gson gson;
         PlayMessage message;
         String gsonSerialization;
 
@@ -247,9 +272,8 @@ public class MessageTest {
             testMapA.put(color, i++);
         }
         question = new PlayMessage(serverName, "statusStudent", "Entrance", testMapA);
-        gson = builder.create();
         gsonSerialization = gson.toJson(question);
-        System.out.println(gsonSerialization);
+        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertEquals(testMapA, message.getTeacherColorIntegerMap());
@@ -262,12 +286,10 @@ public class MessageTest {
     public void message9Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
         PlayMessage question;
-        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
-        Gson gson;
         PlayMessage message;
         String gsonSerialization;
 
-        System.out.println("--------------------------------");
+        //System.out.println("--------------------------------");
 
         Map<String, Optional<TowerColor>> testMapB = new HashMap<>();
         Map<String, TowerColor> testMapC = new HashMap<>();
@@ -293,9 +315,8 @@ public class MessageTest {
         testMapC.put("i_10", TowerColor.BLACK);
         testMapC.put("i_11", TowerColor.WHITE);
         question = new PlayMessage(serverName, "statusTower", testMapB);
-        gson = builder.create();
         gsonSerialization = gson.toJson(question);
-        System.out.println(gsonSerialization);
+        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertEquals(testMapC, message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -308,22 +329,19 @@ public class MessageTest {
     public void message10Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
         PlayMessage question;
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson;
         PlayMessage message;
         String gsonSerialization;
 
 
-        System.out.println("--------------------------------");
+        //System.out.println("--------------------------------");
 
         List<TeacherColor> testList = new ArrayList<>();
         testList.add(TeacherColor.BLUE);
         testList.add(TeacherColor.PINK);
         testList.add(TeacherColor.GREEN);
         question = new PlayMessage(serverName, "statusTeacher", aldoName, testList);
-        gson = builder.create();
         gsonSerialization = gson.toJson(question);
-        System.out.println(gsonSerialization);
+        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -341,7 +359,7 @@ class FakeServer extends Server {
 class FakeGameManager implements MessageReader {
 
     @Override
-    public void playAssistantCard(String player, int weight) {
+    public void playAssistantCard(String player, Integer weight) {
 
     }
 
@@ -441,6 +459,11 @@ class FakeGameManager implements MessageReader {
 
     @Override
     public void statusCharacterCard(String sender, Characters character) {
+
+    }
+
+    @Override
+    public void statusAssistantCard(String sender, String player, Integer weight) {
 
     }
 }
