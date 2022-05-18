@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.controller;
+package it.polimi.ingsw.server.controller.inner;
 
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.server.model.GameModel;
@@ -84,4 +84,7 @@ public class InboundController {
         return model.isExpertVariant();
     }
 
+    public GameModel getModel() {
+        return model;
+    }
 }

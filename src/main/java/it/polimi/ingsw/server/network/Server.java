@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.network;
 
 
-import it.polimi.ingsw.server.controller.GameManager;
+import it.polimi.ingsw.server.controller.outer.GameManager;
 import it.polimi.ingsw.commons.message.Message;
 import it.polimi.ingsw.server.view.VirtualView;
 
@@ -54,7 +54,7 @@ public class Server {
 
     /**
      * Disconnect Client
-     * @param clientHandler
+     * @param clientHandler the one to disconnect
      */
     public void onDisconnect(ClientHandler clientHandler) {
         synchronized (lock) {

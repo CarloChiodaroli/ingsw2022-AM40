@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.utils;
 
-import it.polimi.ingsw.server.controller.GameManager;
+import it.polimi.ingsw.server.controller.outer.GameManager;
 
 public class Persistence  {
 

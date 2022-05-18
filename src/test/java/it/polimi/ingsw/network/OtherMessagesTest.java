@@ -15,7 +15,6 @@ public class OtherMessagesTest {
 
     @BeforeEach
     public void initTest(){
-        //builder = new GsonBuilder().setPrettyPrinting();
         builder = new GsonBuilder();
         gson = builder.create();
     }
@@ -24,8 +23,6 @@ public class OtherMessagesTest {
     public void pingTest(){
         PingMessage pingMessage = new PingMessage("Server");
         String gsonSerialization = gson.toJson(pingMessage);
-
-        //System.out.println(gsonSerialization);
 
         Message message = gson.fromJson(gsonSerialization, Message.class);
         assertEquals(MessageType.PING, message.getMessageType());
@@ -39,8 +36,6 @@ public class OtherMessagesTest {
 
         LoginMessage loginMessage = new LoginMessage(requester);
         String gsonSerialization = gson.toJson(loginMessage);
-
-        //System.out.println(gsonSerialization);
 
         Message message = gson.fromJson(gsonSerialization, Message.class);
         assertEquals(MessageType.LOGIN, message.getMessageType());
@@ -56,8 +51,6 @@ public class OtherMessagesTest {
 
         loginMessage = new LoginMessage("Server", true, true);
         gsonSerialization = gson.toJson(loginMessage);
-
-        //System.out.println(gsonSerialization);
 
         message = gson.fromJson(gsonSerialization, Message.class);
         assertEquals(MessageType.LOGIN, message.getMessageType());

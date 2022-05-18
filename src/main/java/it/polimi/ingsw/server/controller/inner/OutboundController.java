@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.controller;
+package it.polimi.ingsw.server.controller.inner;
 
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;

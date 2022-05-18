@@ -16,7 +16,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
-    <sonar.exclusions>**/client/**/*, **/commons/**/*, **/server/network/**/*, **/server/utils/**/*, **/server/view/**/*, **/ServerApp.java, **/ClientApp.java, **/ClientApp2.java </sonar.exclusions>
+    <sonar.exclusions>**/client/**/*, **/commons/**/*, **/server/network/**/*, **/server/utils/**/*, **/server/view/**/*, **/server/controller/outer/**/*, **/ServerApp.java, **/ClientApp.java, **/ClientApp2.java </sonar.exclusions>
   </properties>
 
   <dependencies>

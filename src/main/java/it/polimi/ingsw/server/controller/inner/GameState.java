@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.controller;
+package it.polimi.ingsw.server.controller.inner;
 
 /**
  * Used only in GameManager to keep track of the general state of the game

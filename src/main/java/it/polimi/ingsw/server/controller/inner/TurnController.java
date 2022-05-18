@@ -1,5 +1,6 @@
-package it.polimi.ingsw.server.controller;
+package it.polimi.ingsw.server.controller.inner;
 
+import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
 import it.polimi.ingsw.server.model.enums.Characters;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class TurnController {
 
     public TurnController(PlayMessagesReader reader) {
         this.nicknameQueue = new ArrayList<>(reader.getPlayerNames());
-        this.activePlayer = nicknameQueue.get(0); // set first active player
+        //this.activePlayer = nicknameQueue.get(0); // set first active player
         this.reader = reader;
         setInitialState();
     }
@@ -111,5 +112,4 @@ public class TurnController {
     public List<String> getNicknameQueue() {
         return nicknameQueue;
     }
-
 }

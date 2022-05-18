@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.controller;
+package it.polimi.ingsw.server.controller.outer;
 
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
@@ -6,6 +6,7 @@ import it.polimi.ingsw.commons.message.ErrorMessage;
 import it.polimi.ingsw.commons.message.Message;
 import it.polimi.ingsw.commons.message.MessageReader;
 import it.polimi.ingsw.commons.message.PlayMessagesFabric;
+import it.polimi.ingsw.server.controller.inner.*;
 import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.server.model.enums.Characters;
 import it.polimi.ingsw.server.view.VirtualView;
@@ -295,6 +296,14 @@ public class PlayMessagesReader implements MessageReader {
 
     public TurnController getTurnController() {
         return turnController;
+    }
+
+    public InboundController getInbound(){
+        return inbound;
+    }
+
+    public OutboundController getOutbound(){
+        return outbound;
     }
 
     public GameState getState() {

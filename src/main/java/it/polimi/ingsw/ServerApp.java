@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.server.controller.GameManager;
+import it.polimi.ingsw.server.controller.outer.GameManager;
 import it.polimi.ingsw.server.network.Server;
 import it.polimi.ingsw.server.network.SocketServer;
 

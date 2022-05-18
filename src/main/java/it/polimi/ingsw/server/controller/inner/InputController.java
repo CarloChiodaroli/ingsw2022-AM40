@@ -1,7 +1,8 @@
-package it.polimi.ingsw.server.controller;
+package it.polimi.ingsw.server.controller.inner;
 
 import it.polimi.ingsw.commons.message.Message;
 import it.polimi.ingsw.commons.view.View;
+import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
 
 import java.security.InvalidParameterException;
 import java.util.Set;

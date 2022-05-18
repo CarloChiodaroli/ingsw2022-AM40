@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.controller;
+package it.polimi.ingsw.server.controller.outer;
 
 public enum PlayState {
     PRE_INIT,

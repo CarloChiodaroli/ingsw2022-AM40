@@ -1,8 +1,10 @@
-package it.polimi.ingsw.server.controller;
+package it.polimi.ingsw.server.controller.outer;
 
 import it.polimi.ingsw.commons.message.*;
 import it.polimi.ingsw.commons.observer.Observer;
 import it.polimi.ingsw.commons.view.View;
+import it.polimi.ingsw.server.controller.inner.InputController;
+import it.polimi.ingsw.server.controller.inner.TurnController;
 import it.polimi.ingsw.server.network.Server;
 import it.polimi.ingsw.server.utils.StorageData;
 import it.polimi.ingsw.server.view.VirtualView;

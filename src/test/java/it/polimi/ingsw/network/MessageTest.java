@@ -2,16 +2,19 @@ package it.polimi.ingsw.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.ingsw.commons.message.PlayMessagesFabric;
-import it.polimi.ingsw.server.controller.GameController;
-import it.polimi.ingsw.server.controller.GameManager;
+import it.polimi.ingsw.commons.message.*;
+import it.polimi.ingsw.server.controller.inner.InboundController;
+import it.polimi.ingsw.server.controller.inner.OutboundController;
+import it.polimi.ingsw.server.controller.inner.TurnController;
+import it.polimi.ingsw.server.controller.outer.GameManager;
+import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
 import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.server.model.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.server.model.player.Player;
-import it.polimi.ingsw.commons.message.MessageReader;
-import it.polimi.ingsw.commons.message.PlayMessage;
+import it.polimi.ingsw.server.model.table.Island;
 import it.polimi.ingsw.server.network.Server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MessageTest {
 
-    private GameController controller;
     private Game game;
     private Player aldo;
     private Player giovanni;
@@ -33,18 +35,24 @@ public class MessageTest {
     private final static String serverName = "Server";
     private final int giovanniAssistantCardValue = 5;
     private final int aldoAssistantCardValue = 3;
-    private GameManager manager;
     private FakeServer server;
     private Gson gson;
 
-    /*public void initTest() {
-        controller = new GameController();
+    @Test
+    public void minestroneTest() throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, NoSuchMethodException {
 
-        controller.addPlayer(aldoName);
-        controller.addPlayer(giovanniName);
-        controller.switchExpertVariant();
-        controller.startGame();
-        game = controller.getModel().getGame();
+        GameManager gameManager = new GameManager();
+        PlayMessagesReader reader = new PlayMessagesReader(aldoName, gameManager);
+        reader.setNumOfPlayers(2);
+
+        reader.addPlayer(giovanniName);
+        reader.startGame();
+
+        InboundController inbound = reader.getInbound();
+        OutboundController outbound = reader.getOutbound();
+        GameModel model = inbound.getModel();
+        game = model.getGame();
+        TurnController turn = reader.getTurnController();
 
         aldo = game.getPlayers().get(0);
         giovanni = game.getPlayers().get(1);
@@ -62,19 +70,12 @@ public class MessageTest {
                 }
             }
         }
+        reader.playAssistantCard(aldoName, aldoAssistantCardValue);
+        reader.playAssistantCard(giovanniName, giovanniAssistantCardValue);
 
-        controller.playAssistantCard(aldoName, aldoAssistantCardValue);
-        controller.playAssistantCard(giovanniName, giovanniAssistantCardValue);
-
-    }*/
-
-    /*
-    @Test
-    public void messageSendTest()
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         PlayMessage question;
         aldo.getEntrance().addStudent(TeacherColor.BLUE);
-        question = new PlayMessage(aldoName, "move", TeacherColor.BLUE, "Entrance", "Room");
+        question = PlayMessagesFabric.moveStudent(aldoName, TeacherColor.BLUE, "Entrance", "Room");
 
         GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
         Gson gson = builder.create();
@@ -86,9 +87,9 @@ public class MessageTest {
         assertEquals(MessageType.PLAY, missage.getMessageType());
 
         PlayMessage message = gson.fromJson(gsonSerialization, PlayMessage.class);
-        message.executeMessage(manager);
-        assertEquals(1, aldo.getRoomTable(TeacherColor.BLUE).howManyTotStudents());
-    }*/
+        message.executeMessage(reader);
+        assertEquals(1, outbound.getStudentInPlace(aldoName, "Room").get(TeacherColor.BLUE));
+    }
 
     @BeforeEach
     public void initAll(){
@@ -104,7 +105,6 @@ public class MessageTest {
         String gsonSerialization;
         question = new PlayMessage(aldoName, "moveStudent", TeacherColor.BLUE, "Entrance", "Room");
         gsonSerialization = gson.toJson(question);
-        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -121,7 +121,6 @@ public class MessageTest {
 
         question = new PlayMessage(aldoName, "moveStudent", TeacherColor.BLUE, TeacherColor.GREEN, "Room");
         gsonSerialization = gson.toJson(question);
-        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -138,8 +137,6 @@ public class MessageTest {
 
         question = new PlayMessage(aldoName, "moveMotherNature", 2);
         gsonSerialization = gson.toJson(question);
-
-        //System.out.println(gsonSerialization);
 
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
@@ -158,7 +155,6 @@ public class MessageTest {
 
         question = new PlayMessage(aldoName,"chooseCloud",  "c_1");
         gsonSerialization = gson.toJson(question);
-        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -178,7 +174,6 @@ public class MessageTest {
 
         question = new PlayMessage(aldoName, "playCharacterCard", Characters.CRIER);
         gsonSerialization = gson.toJson(question);
-        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -196,7 +191,6 @@ public class MessageTest {
 
         question = new PlayMessage(aldoName, "playCharacterCard", Characters.CRIER, "i_1");
         gsonSerialization = gson.toJson(question);
-        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -215,7 +209,6 @@ public class MessageTest {
 
         question = new PlayMessage(aldoName, "playCharacterCard", Characters.CRIER, TeacherColor.GREEN);
         gsonSerialization = gson.toJson(question);
-        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -233,7 +226,6 @@ public class MessageTest {
 
         question = PlayMessagesFabric.playAssistantCard(aldoName, 7);
         gsonSerialization = gson.toJson(question);
-        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -250,7 +242,6 @@ public class MessageTest {
 
         question = PlayMessagesFabric.calcInfluence(aldoName);
         gsonSerialization = gson.toJson(question);
-        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -273,7 +264,6 @@ public class MessageTest {
         }
         question = new PlayMessage(serverName, "statusStudent", "Entrance", testMapA);
         gsonSerialization = gson.toJson(question);
-        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertEquals(testMapA, message.getTeacherColorIntegerMap());
@@ -288,8 +278,6 @@ public class MessageTest {
         PlayMessage question;
         PlayMessage message;
         String gsonSerialization;
-
-        //System.out.println("--------------------------------");
 
         Map<String, Optional<TowerColor>> testMapB = new HashMap<>();
         Map<String, TowerColor> testMapC = new HashMap<>();
@@ -316,7 +304,6 @@ public class MessageTest {
         testMapC.put("i_11", TowerColor.WHITE);
         question = new PlayMessage(serverName, "statusTower", testMapB);
         gsonSerialization = gson.toJson(question);
-        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertEquals(testMapC, message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
@@ -332,16 +319,12 @@ public class MessageTest {
         PlayMessage message;
         String gsonSerialization;
 
-
-        //System.out.println("--------------------------------");
-
         List<TeacherColor> testList = new ArrayList<>();
         testList.add(TeacherColor.BLUE);
         testList.add(TeacherColor.PINK);
         testList.add(TeacherColor.GREEN);
         question = new PlayMessage(serverName, "statusTeacher", aldoName, testList);
         gsonSerialization = gson.toJson(question);
-        //System.out.println(gsonSerialization);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertNull(message.getStringTowerColorMap());
         assertNull(message.getTeacherColorIntegerMap());
