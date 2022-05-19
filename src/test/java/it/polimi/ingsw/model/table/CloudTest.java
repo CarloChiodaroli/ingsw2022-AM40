@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.table;
 
+import it.polimi.ingsw.server.model.table.Bag;
+import it.polimi.ingsw.server.model.table.Cloud;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

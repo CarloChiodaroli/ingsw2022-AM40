@@ -1,7 +1,10 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.server.model.StudentsManager;
+import it.polimi.ingsw.commons.enums.TeacherColor;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,52 +12,47 @@ public class StudentsManagerTest {
     @Test
     public void addStudentsTest(){
         StudentsManagerIstance manager = new StudentsManagerIstance(130, 26);
-        int studentsYellow = manager.howManyStudents(TeacherColor.YELLOW);
-        int studentsPink = manager.howManyStudents(TeacherColor.PINK);
-        int studentsRed = manager.howManyStudents(TeacherColor.RED);
-        int studentsGreen = manager.howManyStudents(TeacherColor.GREEN);
-        int studentsBlue = manager.howManyStudents(TeacherColor.BLUE);
+        HashMap<TeacherColor, Integer> managerTest = new HashMap<>();
+        for(TeacherColor color: TeacherColor.values()){
+            managerTest.put(color, 0);
+        }
 
         for(TeacherColor color : TeacherColor.values()) {
+            assertFalse(manager.removeStudent(color));
             assertTrue(manager.addStudent(color));
         }
 
         assertEquals(5, manager.howManyTotStudents());
-        assertEquals(studentsYellow + 1, manager.howManyStudents(TeacherColor.YELLOW));
-        assertEquals(studentsPink + 1, manager.howManyStudents(TeacherColor.PINK));
-        assertEquals(studentsRed + 1, manager.howManyStudents(TeacherColor.RED));
-        assertEquals(studentsGreen + 1, manager.howManyStudents(TeacherColor.GREEN));
-        assertEquals(studentsBlue + 1, manager.howManyStudents(TeacherColor.BLUE));
+        for(TeacherColor color: TeacherColor.values()){
+            assertEquals(managerTest.get(color) + 1, manager.howManyStudents(color));
+            managerTest.replace(color, managerTest.get(color), managerTest.get(color) + 1);
+        }
 
         for(TeacherColor color : TeacherColor.values()) {
             for (int i = 0; i < 25; i++) {
                 manager.addStudent(color);
+                managerTest.replace(color, managerTest.get(color), managerTest.get(color) + 1);
             }
             assertFalse(manager.addStudent(color));
             assertEquals(26, manager.howManyStudents(color));
         }
         assertEquals(130, manager.howManyTotStudents());
 
-        studentsYellow = 26;
-        studentsPink = 26;
-        studentsRed = 26;
-        studentsGreen = 26;
-        studentsBlue = 26;
-
         for(TeacherColor color : TeacherColor.values()) {
+            assertFalse(manager.addStudent(color));
             assertTrue(manager.removeStudent(color));
         }
 
         assertEquals(125, manager.howManyTotStudents());
-        assertEquals(studentsYellow - 1, manager.howManyStudents(TeacherColor.YELLOW));
-        assertEquals(studentsPink - 1, manager.howManyStudents(TeacherColor.PINK));
-        assertEquals(studentsRed - 1, manager.howManyStudents(TeacherColor.RED));
-        assertEquals(studentsGreen - 1, manager.howManyStudents(TeacherColor.GREEN));
-        assertEquals(studentsBlue - 1, manager.howManyStudents(TeacherColor.BLUE));
+        for(TeacherColor color: TeacherColor.values()){
+            assertEquals(managerTest.get(color) - 1, manager.howManyStudents(color));
+            managerTest.replace(color, managerTest.get(color), managerTest.get(color) - 1);
+        }
 
         for(TeacherColor color : TeacherColor.values()) {
             for (int i = 0; i < 25; i++) {
                 manager.removeStudent(color);
+                managerTest.replace(color, managerTest.get(color), managerTest.get(color) - 1);
             }
             assertFalse(manager.removeStudent(color));
             assertEquals(0, manager.howManyStudents(color));
@@ -73,7 +71,7 @@ public class StudentsManagerTest {
 
 
 
-class StudentsManagerIstance extends StudentsManager{
+class StudentsManagerIstance extends StudentsManager {
     StudentsManagerIstance(int num, int numc){
         super(num, numc);
     }

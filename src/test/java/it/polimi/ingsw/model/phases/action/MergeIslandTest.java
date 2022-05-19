@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.phases.action;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.enums.TowerColor;
-import it.polimi.ingsw.model.phase.action.states.MergeIsland;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.commons.enums.TowerColor;
+import it.polimi.ingsw.server.model.phase.action.states.MergeIsland;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

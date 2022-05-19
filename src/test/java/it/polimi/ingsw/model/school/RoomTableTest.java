@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.school;
 
-import it.polimi.ingsw.model.enums.TeacherColor;
-import it.polimi.ingsw.model.player.school.RoomTable;
+import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.player.school.RoomTable;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,7 +1,9 @@
 package it.polimi.ingsw.model.table;
 
-import it.polimi.ingsw.model.StudentsManager;
-import it.polimi.ingsw.model.enums.TeacherColor;
+import it.polimi.ingsw.server.model.StudentsManager;
+import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.table.Island;
+import it.polimi.ingsw.server.model.table.Table;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.phases.action;
 
-import it.polimi.ingsw.model.enums.TeacherColor;
-import it.polimi.ingsw.model.phase.action.StudentsContainer;
+import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.phase.action.StudentsContainer;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

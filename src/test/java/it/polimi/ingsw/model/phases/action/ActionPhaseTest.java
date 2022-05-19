@@ -1,19 +1,18 @@
 package it.polimi.ingsw.model.phases.action;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.enums.ActionPhaseStateType;
-import it.polimi.ingsw.model.enums.Characters;
-import it.polimi.ingsw.model.enums.TeacherColor;
-import it.polimi.ingsw.model.phase.action.ActionPhase;
-import it.polimi.ingsw.model.phase.action.states.CharacterCard;
-import it.polimi.ingsw.model.phase.action.states.cards.CharacterCardFabric;
-import it.polimi.ingsw.model.player.AssistantCard;
-import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.table.MotherNature;
-import it.polimi.ingsw.model.table.Island;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.enums.ActionPhaseStateType;
+import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.phase.action.ActionPhase;
+import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
+import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
+import it.polimi.ingsw.server.model.player.AssistantCard;
+import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.server.model.table.MotherNature;
+import it.polimi.ingsw.server.model.table.Island;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;

@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.phases;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.phase.PlanningPhase;
-import it.polimi.ingsw.model.player.AssistantCard;
-import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.phase.PlanningPhase;
+import it.polimi.ingsw.server.model.player.AssistantCard;
+import it.polimi.ingsw.server.model.player.Player;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

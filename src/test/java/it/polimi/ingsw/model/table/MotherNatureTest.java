@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.table;
 
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.server.model.table.Island;
+import it.polimi.ingsw.server.model.table.MotherNature;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;

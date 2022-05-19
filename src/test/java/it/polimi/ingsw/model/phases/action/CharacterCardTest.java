@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.phases.action;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.phase.action.ActionPhase;
-import it.polimi.ingsw.model.phase.action.states.CharacterCard;
-import it.polimi.ingsw.model.enums.Characters;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.phase.action.ActionPhase;
+import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
+import it.polimi.ingsw.server.model.enums.Characters;
 import org.junit.jupiter.api.Test;
 import java.util.Map;
 import java.util.HashMap;

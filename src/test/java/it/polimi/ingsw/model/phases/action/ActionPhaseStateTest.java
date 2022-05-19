@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.phases.action;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.phase.action.ActionPhase;
-import it.polimi.ingsw.model.phase.action.ActionFaseState;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.phase.action.ActionPhase;
+import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
