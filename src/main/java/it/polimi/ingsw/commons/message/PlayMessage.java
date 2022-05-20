@@ -197,15 +197,10 @@ public class PlayMessage extends Message {
         super.message();
     }
 
-    public PlayMessage(String sender, String move, Map<String, Optional<TowerColor>> conquests) {
+    public PlayMessage(String sender, String move, Map<String, TowerColor> conquests) {
         super(sender, messageType);
         this.move = move;
-        stringTowerColorMap = new HashMap<>();
-        for (String place : conquests.keySet()) {
-            if (conquests.get(place).isPresent()) {
-                stringTowerColorMap.put(place, conquests.get(place).get());
-            }
-        }
+        stringTowerColorMap = conquests;
         params = new Object[]{super.getSenderName(), "getStringTowerColorMap"};
         Class<?>[] tmp = new Class<?>[]{String.class, Map.class};
         paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());

@@ -166,10 +166,9 @@ public class PlayMessagesReader implements MessageReader {
         }
         // command to read model
         List<String> islandIds = outbound.getAllIslandIds();
-        Map<String, Optional<TowerColor>> domina = new HashMap<>();
-        for (String id : islandIds) {
-            domina.put(id, outbound.getTowerInPlace(id));
-        }
+        Map<String, TowerColor> domina = new HashMap<>();
+        islandIds.forEach(id ->
+                outbound.getTowerInPlace(id).ifPresent(tower -> domina.put(id, tower)));
         // building answer list
         answers.add(PlayMessagesFabric.statusIslandIds(server, islandIds));
         answers.add(PlayMessagesFabric.statusTower(server, domina));
@@ -260,7 +259,7 @@ public class PlayMessagesReader implements MessageReader {
     }
 
     @Override
-    public void statusTower(String sender, Map<String, Optional<TowerColor>> conquests) {
+    public void statusTower(String sender, Map<String, TowerColor> conquests) {
         errorIllegalMessage();
     }
 

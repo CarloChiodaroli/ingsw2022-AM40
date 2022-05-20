@@ -65,7 +65,7 @@ public class PlayMessagesFabric {
     }
 
 
-    public static PlayMessage statusTower(String sender, Map<String, Optional<TowerColor>> conquests) {
+    public static PlayMessage statusTower(String sender, Map<String, TowerColor> conquests) {
         return new PlayMessage(sender,"statusTower", conquests);
     }
 

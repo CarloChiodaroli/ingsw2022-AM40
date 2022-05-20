@@ -278,21 +278,7 @@ public class MessageTest {
         PlayMessage question;
         PlayMessage message;
         String gsonSerialization;
-
-        Map<String, Optional<TowerColor>> testMapB = new HashMap<>();
         Map<String, TowerColor> testMapC = new HashMap<>();
-        testMapB.put("i_1", Optional.empty());
-        testMapB.put("i_2", Optional.of(TowerColor.WHITE));
-        testMapB.put("i_3", Optional.of(TowerColor.BLACK));
-        testMapB.put("i_4", Optional.of(TowerColor.WHITE));
-        testMapB.put("i_5", Optional.of(TowerColor.BLACK));
-        testMapB.put("i_6", Optional.of(TowerColor.BLACK));
-        testMapB.put("i_7", Optional.of(TowerColor.BLACK));
-        testMapB.put("i_8", Optional.of(TowerColor.WHITE));
-        testMapB.put("i_9", Optional.empty());
-        testMapB.put("i_10", Optional.of(TowerColor.BLACK));
-        testMapB.put("i_11", Optional.of(TowerColor.WHITE));
-        testMapB.put("i_12", Optional.empty());
         testMapC.put("i_2", TowerColor.WHITE);
         testMapC.put("i_3", TowerColor.BLACK);
         testMapC.put("i_4", TowerColor.WHITE);
@@ -302,7 +288,7 @@ public class MessageTest {
         testMapC.put("i_8", TowerColor.WHITE);
         testMapC.put("i_10", TowerColor.BLACK);
         testMapC.put("i_11", TowerColor.WHITE);
-        question = new PlayMessage(serverName, "statusTower", testMapB);
+        question = new PlayMessage(serverName, "statusTower", testMapC);
         gsonSerialization = gson.toJson(question);
         message = gson.fromJson(gsonSerialization, PlayMessage.class);
         assertEquals(testMapC, message.getStringTowerColorMap());
@@ -414,7 +400,7 @@ class FakeGameManager implements MessageReader {
     }
 
     @Override
-    public void statusTower(String sender, Map<String, Optional<TowerColor>> conquests) {
+    public void statusTower(String sender, Map<String, TowerColor> conquests) {
         assertEquals(String.class, sender.getClass());
         assertTrue(Arrays.stream(conquests.getClass().getInterfaces()).collect(Collectors.toList()).contains(Map.class));
     }

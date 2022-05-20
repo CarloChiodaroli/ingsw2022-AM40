@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.controller;
 
-import it.polimi.ingsw.client.model.ClientPlayState;
+import it.polimi.ingsw.client.model.ClientStateController;
 import it.polimi.ingsw.client.network.Client;
 import it.polimi.ingsw.client.network.SocketClient;
 import it.polimi.ingsw.commons.message.*;
@@ -9,6 +9,7 @@ import it.polimi.ingsw.commons.observer.ViewObserver;
 import it.polimi.ingsw.commons.view.View;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -23,12 +24,12 @@ public class ClientController implements ViewObserver, Observer {
     private String nickname;
     private final ExecutorService taskQueue;
     public static final int UNDO_TIME = 5000;
-    private final ClientPlayState playState;
+    private final ClientStateController playState;
 
     public ClientController(View view) {
         this.view = view;
         taskQueue = Executors.newSingleThreadExecutor();
-        this.playState = new ClientPlayState();
+        this.playState = new ClientStateController(this, this.view);
     }
 
     @Override
@@ -80,12 +81,16 @@ public class ClientController implements ViewObserver, Observer {
                     LobbyMessage lm = (LobbyMessage) message;
                     this.manageLobby(lm);
                     break;
+                case PLAY:
+                    PlayMessage pm = (PlayMessage) message;
+                    pm.executeMessage(playState);
+                    break;
                 default: // Should never reach this condition
                     client.sendMessage(new ErrorMessage(nickname, "Wrong message received"));
                     Client.LOGGER.info(() -> "received wrong message from server");
                     break;
             }
-        } catch (ClassCastException e) {
+        } catch (ClassCastException | ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             // Should never reach this condition
             client.sendMessage(new ErrorMessage(nickname, "Wrong message received"));
             Client.LOGGER.info(() -> "received wrong message from server");
@@ -135,4 +140,7 @@ public class ClientController implements ViewObserver, Observer {
         }
     }
 
+    public void sendMessage(Message message){
+        client.sendMessage(message);
+    }
 }

@@ -32,7 +32,7 @@ public interface MessageReader {
 
     void statusTeacher(String sender, String id, List<TeacherColor> which);
 
-    void statusTower(String sender, Map<String, Optional<TowerColor>> conquests);
+    void statusTower(String sender, Map<String, TowerColor> conquests);
 
     void statusIslandIds(String sender, List<String> ids);
 
