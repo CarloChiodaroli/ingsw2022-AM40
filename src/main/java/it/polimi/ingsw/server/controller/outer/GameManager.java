@@ -158,6 +158,10 @@ public class GameManager implements Observer {
         }
     }
 
+    public void sendMessage(String playerName, Message message){
+        if(virtualViewMap.containsKey(playerName)) virtualViewMap.get(playerName).sendMessage(message);
+    }
+
     public void broadcastMessage(Message message){
         for(VirtualView vv: virtualViewMap.values()){
             vv.sendMessage(message);

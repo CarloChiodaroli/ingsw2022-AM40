@@ -74,6 +74,9 @@ public class PlayMessagesFabric {
         return new PlayMessage(sender, "statusIslandIds", ids);
     }
 
+    public static PlayMessage statusCloudIds(String sender, List<String> ids) {
+        return new PlayMessage(sender, "statusCloudIds", ids);
+    }
 
     public static PlayMessage statusMotherNature(String sender, String islandId) {
         return new PlayMessage(sender, "statusMotherNature", islandId);

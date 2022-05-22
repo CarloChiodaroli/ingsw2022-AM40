@@ -25,7 +25,7 @@ public class SocketClient extends Client {
     private final ExecutorService readExecutionQueue;
     private final ScheduledExecutorService pinger;
 
-    private final PrintWriter output;
+    private final PrintWriter   output;
     private final BufferedReader input;
 
     private final Gson gson;

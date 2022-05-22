@@ -113,5 +113,9 @@ public class Island extends StudentsManager {
         return id;
     }
 
+    public int getEquivalent(){
+        return equivalentIsland;
+    }
+
 
 }

@@ -66,27 +66,37 @@ public class PlayMessagesReader implements MessageReader {
         return playerNames.size();
     }
 
+    private void sendCompleteStatus(){
+        List<Message> commonAnswers = new ArrayList<>();
+        commonAnswers.add(PlayMessagesFabric.statusPlanning(server, turnController.getActivePlayer()));
+        List<String> islandIds = outbound.getAllIslandIds();
+        List<String> cloudIds = outbound.getAllCloudIds();
+        commonAnswers.add(PlayMessagesFabric.statusIslandIds(server, islandIds));
+        for(String islandId: islandIds){
+            commonAnswers.add(PlayMessagesFabric.statusStudent(server, islandId, outbound.getStudentInPlace(mainPlayer, islandId)));
+        }
+        commonAnswers.add(PlayMessagesFabric.statusMotherNature(server, outbound.actualMotherNaturePosition()));
+        commonAnswers.add(PlayMessagesFabric.statusCloudIds(server, cloudIds));
+        for(String id: cloudIds){
+            commonAnswers.add(PlayMessagesFabric.statusStudent(server, id, outbound.getStudentInPlace(mainPlayer, id)));
+        }
+        for(String name: playerNames){
+            List<Message> answers = new ArrayList<>(commonAnswers);
+            answers.add(PlayMessagesFabric.statusStudent(server, "Entrance", outbound.getStudentInPlace(name, "Entrance")));
+            answers.add(PlayMessagesFabric.statusStudent(server, "Room", outbound.getStudentInPlace(name, "Room")));
+            answers.forEach(answer -> gameManager.sendMessage(name, answer));
+        }
+    }
+
     public void startGame() {
-        List<Message> answers = new ArrayList<>();
         try {
             inbound.startGame(playerNames);
             turnController.startPlay(new ArrayList<>(playerNames));
-            answers.add(PlayMessagesFabric.statusPlanning(server, turnController.getActivePlayer()));
-            List<String> islandIds = outbound.getAllIslandIds();
-            answers.add(PlayMessagesFabric.statusIslandIds(server, islandIds));
-            for(String islandId: islandIds){
-                answers.add(PlayMessagesFabric.statusStudent(server, islandId, outbound.getStudentInPlace(mainPlayer, islandId)));
-            }
-            answers.add(PlayMessagesFabric.statusMotherNature(server, outbound.actualMotherNaturePosition()));
-            for(String name: playerNames){
-                answers.add(PlayMessagesFabric.statusStudent(server, "Entrance", outbound.getStudentInPlace(name, "Entrance")));
-                answers.add(PlayMessagesFabric.statusStudent(server, "Room", outbound.getStudentInPlace(name, "Room")));
-            }
         } catch (Exception e) {
             errorInExecution(e.getMessage());
             return;
         }
-        answers.forEach(gameManager::broadcastMessage);
+        sendCompleteStatus();
     }
 
     public void switchExpertVariant() {
@@ -103,7 +113,6 @@ public class PlayMessagesReader implements MessageReader {
             return;
         }
         answers.add(PlayMessagesFabric.statusAssistantCard(server, player, weight));
-        //turnController.nextTurn();
         if (turnController.nextTurn()) {
             answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         } else {
@@ -265,6 +274,11 @@ public class PlayMessagesReader implements MessageReader {
 
     @Override
     public void statusIslandIds(String sender, List<String> ids) {
+        errorIllegalMessage();
+    }
+
+    @Override
+    public void statusCloudIds(String sender, List<String> ids) {
         errorIllegalMessage();
     }
 

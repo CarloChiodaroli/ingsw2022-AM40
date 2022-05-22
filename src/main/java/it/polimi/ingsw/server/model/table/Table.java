@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model.table;
 
-import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.StudentsManager;
 
 import java.util.*;
 
@@ -55,7 +55,7 @@ public class Table {
         int emptyIsland2;
 
         Map<TeacherColor, Integer> assignsLeft = new HashMap<>();
-        for(TeacherColor color: TeacherColor.values()){
+        for (TeacherColor color : TeacherColor.values()) {
             assignsLeft.put(color, 2);
         }
 
@@ -67,16 +67,16 @@ public class Table {
             emptyIsland2 = randomFirstIsland + 6;
         }
 
-        for(int i = 0; i<12; i++){
-            if(i != emptyIsland1 && i != emptyIsland2){
+        for (int i = 0; i < 12; i++) {
+            if (i != emptyIsland1 && i != emptyIsland2) {
                 int indexColor;
                 TeacherColor actualColor;
                 do {
                     indexColor = (int) (Math.random() * 5);
                     actualColor = TeacherColor.values()[indexColor];
-                } while(assignsLeft.get(actualColor).equals(0));
+                } while (assignsLeft.get(actualColor).equals(0));
                 assignsLeft.computeIfPresent(actualColor, (k, val) -> val - 1);
-                if(bag.removeStudent(actualColor)) islandList.get(i).addStudent(actualColor);
+                if (bag.removeStudent(actualColor)) islandList.get(i).addStudent(actualColor);
             }
         }
     }
@@ -124,6 +124,9 @@ public class Table {
         islandList.add(FirstPositionOfIslandToAdd, IslandToAdd);
         islandList.remove(island1);
         islandList.remove(island2);
+        MotherNature.getMotherNature().getPosition().ifPresent(
+                position -> MotherNature.getMotherNature().setPosition(
+                        position.equals(island1) || position.equals(island2) ? IslandToAdd : position));
     }
 
     /**
@@ -160,11 +163,11 @@ public class Table {
                 .findAny();
     }
 
-    public Optional<TeacherColor> getStudentFromBag(){
+    public Optional<TeacherColor> getStudentFromBag() {
         return Optional.ofNullable(bag.getAStudent());
     }
 
-    public boolean isBagEmpty(){
+    public boolean isBagEmpty() {
         return bag.isEmpty();
     }
 }

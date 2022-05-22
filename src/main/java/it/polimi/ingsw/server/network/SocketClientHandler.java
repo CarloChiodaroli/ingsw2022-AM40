@@ -42,7 +42,8 @@ public class SocketClientHandler implements ClientHandler, Runnable {
         this.socketServer = socketServer;
         this.client = client;
         this.connected = true;
-        GsonBuilder gsonBuilder = new GsonBuilder();
+        GsonBuilder gsonBuilder = new GsonBuilder().setPrettyPrinting(); // needed while testing with netcat
+        // GsonBuilder gsonBuilder = new GsonBuilder();
         this.gson = gsonBuilder.create();
 
         this.inputLock = new Object();

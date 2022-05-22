@@ -49,13 +49,11 @@ public class PlayState {
         this.conquests = conquests;
     }
 
-    public void setIslandSize(Map<String, Integer> weights){
-        this.islandSize = weights;
-    }
-
     public void setIslandIds(List<String> islandIds){
+        islandSize = new HashMap<>();
         islandIds.stream()
                 .peek(this::isIslandId)         // control if all are island ids
+                .peek(id -> islandSize.put(id, id.compareTo("_")))
                 .filter(id -> !studentsInPlace.containsKey(id))  // add new ids
                 .forEach(id -> studentsInPlace.put(id, new HashMap<>()));
         studentsInPlace.keySet().stream()       // remove useless ids

@@ -256,7 +256,6 @@ public class GameControllerTest {
 
             assertDoesNotThrow(() -> inbound.chooseCloud(aldoName, "c_1"));
             turn.nextTurn();
-            assertDoesNotThrow(() -> inbound.moveStudent(giovanniName, TeacherColor.BLUE, "Entrance", "Room"));
         }
     }
 

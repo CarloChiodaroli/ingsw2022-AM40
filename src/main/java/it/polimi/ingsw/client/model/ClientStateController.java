@@ -149,6 +149,11 @@ public class ClientStateController implements MessageReader {
     }
 
     @Override
+    public void statusCloudIds(String sender, List<String> ids) {
+
+    }
+
+    @Override
     public void statusMotherNature(String sender, String islandId) {
         controlServer(sender);
         state.setMotherNature(islandId);

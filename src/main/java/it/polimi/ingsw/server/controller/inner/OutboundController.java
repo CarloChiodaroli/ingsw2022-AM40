@@ -19,13 +19,19 @@ public class OutboundController {
 
     public List<String> getAllIslandIds() {
         inputController.excludeGameState(GameState.INITIAL);
-        return model.getAllIslandIds();
+        return model.getIslandIds();
+    }
+
+    public List<String> getAllCloudIds() {
+        inputController.excludeGameState(GameState.INITIAL);
+        return model.getCloudIds();
     }
 
     public Map<TeacherColor, Integer> getStudentInPlace(String playerName, String placeId) {
         if (getAllIslandIds().contains(placeId)) return model.getStudentsInIsland(placeId);
-        if (placeId.equals("Entrance")) return model.getStudentsInEntrance(playerName);
-        if (placeId.equals("Room")) return model.getStudentsInRoom(playerName);
+        else if (getAllCloudIds().contains(placeId)) return model.getStudentsInCloud(placeId);
+        else if (placeId.equals("Entrance")) return model.getStudentsInEntrance(playerName);
+        else if (placeId.equals("Room")) return model.getStudentsInRoom(playerName);
         else return new HashMap<>();
     }
 

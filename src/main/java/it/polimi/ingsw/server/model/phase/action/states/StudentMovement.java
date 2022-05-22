@@ -21,6 +21,7 @@ public class StudentMovement extends ActionFaseState {
         if (from.isPresent() && to.isPresent())
             if (from.get().removeStudent(color))
                 to.get().addStudent(color);
+            else throw new IllegalStateException("There is no " + color + " student in from place");
         controlTeachers();
     }
 

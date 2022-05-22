@@ -412,6 +412,11 @@ class FakeGameManager implements MessageReader {
     }
 
     @Override
+    public void statusCloudIds(String sender, List<String> ids) {
+
+    }
+
+    @Override
     public void statusMotherNature(String sender, String islandId) {
 
     }

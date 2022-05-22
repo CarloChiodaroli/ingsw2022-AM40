@@ -36,6 +36,8 @@ public interface MessageReader {
 
     void statusIslandIds(String sender, List<String> ids);
 
+    void statusCloudIds(String sender, List<String> ids);
+
     void statusMotherNature(String sender, String islandId);
 
     void statusAction(String sender, String actualPlayer);

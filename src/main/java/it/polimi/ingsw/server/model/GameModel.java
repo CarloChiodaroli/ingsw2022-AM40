@@ -183,12 +183,6 @@ public class GameModel {
         return island.getTowerColor();
     }
 
-    public List<String> getIslandIds() {
-        return game.getTable().getIslandList().stream()
-                .map(Island::getId)
-                .collect(Collectors.toList());
-    }
-
     public Map<TeacherColor, Integer> getStudentsInCloud(String cloudId) {
         Cloud cloud;
         try {
@@ -203,6 +197,8 @@ public class GameModel {
         }
         return studentContent;
     }
+
+
 
     public List<String> getCloudIds() {
         return game.getTable().getCloudList().stream()
@@ -272,10 +268,17 @@ public class GameModel {
         return player.getTeachers();
     }
 
-    public List<String> getAllIslandIds() {
+    public List<String> getIslandIds() {
         return game.getTable().getIslandList().stream()
                 .map(Island::getId)
                 .collect(Collectors.toList());
+    }
+
+    public Map<String, Integer> getIslandSizes(){
+        Map<String, Integer> result = new HashMap<>();
+        game.getTable().getIslandList()
+                .forEach(island -> result.put(island.getId(), island.getEquivalent()));
+        return result;
     }
 
     public List<String> getPlayersInOrder() {
