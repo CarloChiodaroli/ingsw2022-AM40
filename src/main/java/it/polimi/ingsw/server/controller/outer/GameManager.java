@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.controller.outer;
 
 import it.polimi.ingsw.commons.message.*;
 import it.polimi.ingsw.commons.observer.Observer;
-import it.polimi.ingsw.commons.view.View;
+import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.server.controller.inner.InputController;
 import it.polimi.ingsw.server.controller.inner.TurnController;
 import it.polimi.ingsw.server.network.Server;
@@ -174,7 +174,7 @@ public class GameManager implements Observer {
         }
     }
 
-    public boolean checkLoginNickname(String nickname, View view) {
+    public boolean checkLoginNickname(String nickname, VirtualView view) {
         return InputController.checkLoginNickname(nickname, view, virtualViewMap.keySet());
     }
 

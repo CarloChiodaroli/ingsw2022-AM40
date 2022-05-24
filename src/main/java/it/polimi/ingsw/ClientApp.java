@@ -6,7 +6,7 @@ import it.polimi.ingsw.client.view.cli.Cli;
 
 public class ClientApp {
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         boolean cliParam = true; // default value
         if (cliParam) {
@@ -15,6 +15,17 @@ public class ClientApp {
             view.addObserver(clientcontroller);
             view.init();
             System.out.println("Finish client");
+        }
+    }*/
+
+    public static void main(String[] args) {
+
+        boolean cliParam = true; // default value
+        if (cliParam) {
+            Cli cli = new Cli();
+            ClientController clientcontroller = new ClientController(cli);
+            cli.addObserver(clientcontroller);
+            cli.init();
         }
     }
 }

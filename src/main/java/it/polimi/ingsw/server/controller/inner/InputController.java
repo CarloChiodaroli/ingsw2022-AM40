@@ -1,8 +1,9 @@
 package it.polimi.ingsw.server.controller.inner;
 
 import it.polimi.ingsw.commons.message.Message;
-import it.polimi.ingsw.commons.view.View;
+import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
+import it.polimi.ingsw.server.view.VirtualView;
 
 import java.security.InvalidParameterException;
 import java.util.Set;
@@ -69,7 +70,7 @@ public class InputController {
         }
     }*/
 
-    public static boolean checkLoginNickname(String nickname, View view, Set<String> names) {
+    public static boolean checkLoginNickname(String nickname, VirtualView view, Set<String> names) {
         if (nickname.isEmpty() || nickname.equalsIgnoreCase("server")) {
             view.showGenericMessage("Forbidden name.");
             view.showLoginResult(false, true, null);

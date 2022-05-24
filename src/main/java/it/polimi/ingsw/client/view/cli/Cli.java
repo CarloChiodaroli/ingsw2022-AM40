@@ -1,11 +1,14 @@
 package it.polimi.ingsw.client.view.cli;
 
-import it.polimi.ingsw.client.controller.ClientController;
+import it.polimi.ingsw.client.model.PlayMessageController;
+import it.polimi.ingsw.client.network.SocketClient;
+import it.polimi.ingsw.client.view.View;
+import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.observer.ViewObservable;
-import it.polimi.ingsw.commons.view.View;
-
+import it.polimi.ingsw.server.model.enums.Characters;
 
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -20,13 +23,172 @@ public class Cli extends ViewObservable implements View {
 
     private final PrintStream out;
     private Thread inputThread;
+    private final ClientInputDecoder inputDecoder;
+    private Object userInputLock;
+    private PlayMessageController playMessageController;
+    private boolean connected;
+    private StatePrinter statePrinter;
+    private Map<String, String> serverInfo = new HashMap<>();
 
     private static final String STR_INPUT_CANCELED = "User input canceled.";
 
     public Cli() {
         out = System.out;
+        this.inputDecoder = new ClientInputDecoder(this);
+        this.userInputLock = new Object();
+        connected = false;
     }
 
+    public void setStatePrinter(PlayMessageController playMessageController) {
+        this.playMessageController = playMessageController;
+        this.statePrinter = new StatePrinter(playMessageController.getState());
+    }
+
+    @Override
+    public void update() {
+        out.println(statePrinter.getState());
+    }
+
+    public void receivedCommand(String command) throws IllegalStateException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        synchronized (userInputLock) {
+            List<String> tiledCommand = Arrays.stream(command.split(" ")).toList();
+            tiledCommand = new ArrayList<>(tiledCommand);
+            String head = tiledCommand.get(0);
+            tiledCommand.remove(head);
+            this.getClass().getMethod(head, List.class).invoke(this, tiledCommand);
+        }
+    }
+
+    public void help(List<String> args) {
+        out.println("""
+                List of all possible commands:\s
+                \tConnection commands:\s
+                \t\tip <address> \t: sets the ip of the server to connect\s
+                \t\tport <number> \t: sets the server's listening port\s
+                \tLobby commands:\s
+                \t\tname <name> \t-\t: sets personal player name
+                \t\tnickname <name> \t: same as name
+                \t\tplayers <number> \t: sets the number of players\s
+                \t\texpert \t-\t-\t-\t: switches the game to and from expert variant\s
+                \tPlay commands:\s
+                \t\tassistant <weight> \t-\t-\t-\t-\t-\t-\t-\t: command used to play an assistant card
+                \t\tstudentmove <student color> <from id> <to id> \t: command to move a student
+                \t\tmnmove <hops> \t-\t-\t-\t-\t-\t-\t-\t-\t: command to move mother nature of x hops
+                \t\tinfluence \t-\t-\t-\t-\t-\t-\t-\t-\t-\t: command to calc influence
+                \t\tchoose <cloud id> \t-\t-\t-\t-\t-\t-\t-\t: command to choose a cloud
+                To send a valid command please write the command with arguments as for example:
+                \tstudentmove BLUE Entrance Room
+                """);
+    }
+
+    public void ip(List<String> args) throws IllegalStateException {
+        if (connected) throw new IllegalStateException("Connection already established");
+        if (args.isEmpty()) {
+            serverInfo.put("address", SocketClient.getDefaultAddress());
+            askForServerPort();
+        } else if (SocketClient.isValidIpAddress(args.get(0))) {
+            serverInfo.put("address", args.get(0));
+            askForServerPort();
+        } else {
+            out.println("Invalid address!");
+            clearCli();
+            askForServerIp();
+        }
+    }
+
+    public void port(List<String> args) throws IllegalStateException {
+        if (connected) throw new IllegalStateException("Connection already established");
+        if (args.isEmpty()) {
+            serverInfo.put("port", SocketClient.getDefaultPort());
+        } else {
+            if (SocketClient.isValidPort(args.get(0))) {
+                serverInfo.put("port", args.get(0));
+            } else {
+                out.println("Invalid port!");
+                clearCli();
+                askForServerPort();
+                return;
+            }
+        }
+        notifyObserver(obs -> obs.onUpdateServerInfo(serverInfo));
+        connected = true;
+    }
+
+    public void players(List<String> args) {
+        int number = Integer.parseInt(args.get(0));
+        notifyObserver(obs -> obs.onUpdatePlayersNumber(number));
+    }
+
+    public void name(List<String> args) {
+        notifyObserver(obs -> obs.onUpdateNickname(args.get(0)));
+    }
+
+    public void nickname(List<String> args) {
+        name(args);
+    }
+
+    public void assistant(List<String> args) {
+        int weight = Integer.parseInt(args.get(0));
+        playMessageController.playAssistantCard(playMessageController.getNickname(), weight);
+    }
+
+    public void studentmove(List<String> args) {
+        TeacherColor toMove = TeacherColor.valueOf(args.get(0).toUpperCase());
+        String toPlace = args.get(2);
+        Optional<String> secondArg = Arrays.stream(TeacherColor.values())
+                .map(Enum::toString)
+                .filter(x -> x.equalsIgnoreCase(args.get(1)))
+                .findFirst();
+        if (secondArg.isPresent()) {
+            TeacherColor secondToMove = TeacherColor.valueOf(secondArg.get());
+            playMessageController.moveStudent(playMessageController.getNickname(), toMove, secondToMove, toPlace);
+        } else {
+            String fromPlace = args.get(1);
+            playMessageController.moveStudent(playMessageController.getNickname(), toMove, fromPlace, toPlace);
+        }
+    }
+
+    public void mnmove(List<String> args) {
+        int hops = Integer.parseInt(args.get(0));
+        playMessageController.moveMotherNature(playMessageController.getNickname(), hops);
+    }
+
+    public void influence(List<String> args) {
+        playMessageController.calcInfluence(playMessageController.getNickname());
+    }
+
+    public void choose(List<String> args) {
+        playMessageController.chooseCloud(playMessageController.getNickname(), args.get(0));
+    }
+
+    public void character(List<String> args) {
+        Characters character = Characters.valueOf(args.get(0).toUpperCase());
+        if (args.size() == 1) {
+            playMessageController.playCharacterCard(playMessageController.getNickname(), character);
+            return;
+        }
+        Optional<String> secondArg = Arrays.stream(TeacherColor.values())
+                .map(Enum::toString)
+                .filter(x -> x.equalsIgnoreCase(args.get(1)))
+                .findFirst();
+        if (secondArg.isPresent()) {
+            playMessageController.playCharacterCard(playMessageController.getNickname(), character, TeacherColor.valueOf(args.get(1).toUpperCase()));
+        } else {
+            playMessageController.playCharacterCard(playMessageController.getNickname(), character, args.get(1).toLowerCase());
+        }
+    }
+
+    @Override
+    public void showActualState() {
+        out.println(statePrinter.roundState());
+    }
+
+    @Override
+    public void showMainPlayerName(String mainPlayerName) {
+        out.println("This play's main player is " + mainPlayerName);
+    }
+
+    @Deprecated
     public String readLine() throws ExecutionException {
         FutureTask<String> futureTask = new FutureTask<>(new InputReadTask());
         inputThread = new Thread(futureTask);
@@ -46,7 +208,6 @@ public class Cli extends ViewObservable implements View {
 
     public void init() {
         out.println("Welcome to Eriantys!");
-
         try {
             askServerInfo();
         } catch (ExecutionException e) {
@@ -54,77 +215,34 @@ public class Cli extends ViewObservable implements View {
         }
     }
 
+    public void askForServerIp() {
+        out.println("Please enter server's ip address [default is " + SocketClient.getDefaultAddress() + "].");
+        out.println("ip <address>");
+    }
+
+    public void askForServerPort() {
+        out.println("Please now enter game's listening port [default is " + SocketClient.getDefaultAddress() + "]");
+        out.println("port <port number>");
+    }
+
     public void askServerInfo() throws ExecutionException {
-        Map<String, String> serverInfo = new HashMap<>();
-        String defaultAddress = "localhost";
-        String defaultPort = "16847";
-        boolean validInput;
-
         out.println("Please specify the following settings. The default value is shown between brackets.");
-
-        do {
-            out.print("Enter the server address [" + defaultAddress + "]: ");
-
-            String address = readLine();
-
-            if (address.equals("")) {
-                serverInfo.put("address", defaultAddress);
-                validInput = true;
-            } else if (ClientController.isValidIpAddress(address)) {
-                serverInfo.put("address", address);
-                validInput = true;
-            } else {
-                out.println("Invalid address!");
-                clearCli();
-                validInput = false;
-            }
-        } while (!validInput);
-
-        do {
-            out.print("Enter the server port [" + defaultPort + "]: ");
-            String port = readLine();
-
-            if (port.equals("")) {
-                serverInfo.put("port", defaultPort);
-                validInput = true;
-            } else {
-                if (ClientController.isValidPort(port)) {
-                    serverInfo.put("port", port);
-                    validInput = true;
-                } else {
-                    out.println("Invalid port!");
-                    validInput = false;
-                }
-            }
-        } while (!validInput);
-
-        notifyObserver(obs -> obs.onUpdateServerInfo(serverInfo));
+        askForServerIp();
     }
 
     @Override
     public void askNickname() {
-        out.print("Enter your nickname: ");
-        try {
-            String nickname = readLine();
-            notifyObserver(obs -> obs.onUpdateNickname(nickname));
-        } catch (ExecutionException e) {
-            out.println(STR_INPUT_CANCELED);
-        }
+        out.println("To start the game, set your nickname with the nickname command: nickname <nickname>");
     }
 
     @Override
     public void askPlayersNumber() {
-        int playerNumber;
-        String question = "How many players are going to play? (You can choose between 2 or 3 players): ";
-
-        try {
-            playerNumber = numberInput(2, 3, null, question);
-            notifyObserver(obs -> obs.onUpdatePlayersNumber(playerNumber));
-        } catch (ExecutionException e) {
-            out.println(STR_INPUT_CANCELED);
-        }
+        out.println("You are the first player to connect to the server, please define the play details with these commands:");
+        out.println("players <num of players>\t// To set the number of players. acceptable numbers are 2 or 3");
+        out.println("expert\t\t\t// To set the game to expert variant or vice-versa");
     }
 
+    @Deprecated
     private int numberInput(int minValue, int maxValue, List<Integer> jumpList, String question) throws ExecutionException {
         int number = minValue - 1;
 
@@ -154,7 +272,6 @@ public class Cli extends ViewObservable implements View {
     @Override
     public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname) {
         clearCli();
-
         if (nicknameAccepted && connectionSuccessful) {
             out.println("Hi, " + nickname + "! You connected to the server.");
         } else if (connectionSuccessful) {
@@ -174,7 +291,7 @@ public class Cli extends ViewObservable implements View {
 
     }
 
-    public void showError(String errorMessage){
+    public void showError(String errorMessage) {
         out.println(errorMessage);
     }
 
@@ -198,10 +315,9 @@ public class Cli extends ViewObservable implements View {
     @Override
     public void showErrorAndExit(String error) {
         inputThread.interrupt();
-
+        inputDecoder.stopReading();
         out.println("\nERROR: " + error);
         out.println("EXIT.");
-
         System.exit(1);
     }
 
@@ -241,5 +357,4 @@ public class Cli extends ViewObservable implements View {
         out.print(ColorCli.CLEAR);
         out.flush();
     }
-
 }

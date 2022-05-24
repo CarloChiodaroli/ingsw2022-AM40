@@ -1,5 +1,7 @@
-package it.polimi.ingsw.commons.view;
+package it.polimi.ingsw.client.view;
 
+
+import it.polimi.ingsw.client.model.PlayMessageController;
 
 import java.util.List;
 
@@ -8,9 +10,15 @@ import java.util.List;
  */
 public interface View {
 
+    void setStatePrinter(PlayMessageController playMessageController);
+
     void askNickname();
 
     void askPlayersNumber();
+
+    void showMainPlayerName(String mainPlayerName);
+
+    void showActualState();
 
     void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname);
 
@@ -27,5 +35,7 @@ public interface View {
     void showLobby(List<String> nicknameList, int numPlayers);
 
     void showError(String errorMessage);
+
+    void update();
 
 }

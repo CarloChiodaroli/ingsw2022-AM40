@@ -8,7 +8,7 @@ import java.util.*;
 
 /**
  * Class which saves the state of the game in client.
- * Server sends status messages to the client which, via ClientStateController, change this class.
+ * Server sends status messages to the client which, via PlayMessageController, change this class.
  * Then the state can be read from this class to update the view.
  */
 public class PlayState {
@@ -37,12 +37,12 @@ public class PlayState {
         if(studentsInPlace.containsKey(placeId)){
             studentsInPlace.replace(placeId, studentsMap);
         } else {
-            // ERROR
+            studentsInPlace.put(placeId, studentsMap);
         }
     }
 
-    public Map<TeacherColor, Integer> getStudentsInAPlace(String placeId){
-        return studentsInPlace.get(placeId);
+    public Map<String, Map<TeacherColor, Integer>> getStudentsInPlaces(){
+        return new HashMap<>(studentsInPlace);
     }
 
     public void setConquests(Map<String, TowerColor> conquests) {
@@ -53,7 +53,7 @@ public class PlayState {
         islandSize = new HashMap<>();
         islandIds.stream()
                 .peek(this::isIslandId)         // control if all are island ids
-                .peek(id -> islandSize.put(id, id.compareTo("_")))
+                .peek(id -> islandSize.put(id, (int) id.chars().filter(x -> x == '_').count()))
                 .filter(id -> !studentsInPlace.containsKey(id))  // add new ids
                 .forEach(id -> studentsInPlace.put(id, new HashMap<>()));
         studentsInPlace.keySet().stream()       // remove useless ids
@@ -97,5 +97,30 @@ public class PlayState {
 
     private boolean isIslandId(String id){
         return id.toLowerCase().contains("i_");
+    }
+
+    public boolean isActionPhase(){
+        return actionPhase;
+    }
+
+    @Override
+    public String toString() {
+        String studentsInPlaceString = studentsInPlace.entrySet().stream()
+                .map(x -> "\t" + x.getKey() + ": " + x.getValue().toString() + "\n")
+                .reduce((x, y) -> x +y).orElse(studentsInPlace.toString() + "LOL did not work");
+
+        return "PlayState{" +
+                "playerNames=" + playerNames + "\n" +
+                ", mainPlayer='" + mainPlayer + '\'' + "\n" +
+                ", actualPlayer='" + actualPlayer + '\'' + "\n" +
+                ", actionPhase=" + actionPhase + "\n" +
+                ", actualCharacterCard=" + actualCharacterCard + "\n" +
+                ", studentsInPlace=\n" + studentsInPlaceString + "\n" +
+                ", conquests=" + conquests + "\n" +
+                ", islandSize=" + islandSize + "\n" +
+                ", teachers=" + teachers + "\n" +
+                ", motherNaturePosition='" + motherNaturePosition + '\'' + "\n" +
+                ", activeAssistantCards=" + activeAssistantCards + "\n" +
+                '}';
     }
 }

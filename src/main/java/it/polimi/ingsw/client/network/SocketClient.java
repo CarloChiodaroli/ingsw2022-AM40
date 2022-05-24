@@ -32,6 +32,34 @@ public class SocketClient extends Client {
 
     private static final int SOCKET_TIMEOUT = 10000;
 
+    private final static String defaultAddress = "localhost";
+    private final static String defaultPort = "16847";
+
+    public static String getDefaultAddress(){
+        return defaultAddress;
+    }
+
+    public static String getDefaultPort(){
+        return defaultPort;
+    }
+
+    public static boolean isValidPort(String portStr) {
+        try {
+            int port = Integer.parseInt(portStr);
+            return port >= 1 && port <= 65535;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static boolean isValidIpAddress(String ip) {
+        String regex = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+        return ip.matches(regex);
+    }
+
     public SocketClient(String address, int port) throws IOException {
         this.socket = new Socket();
         this.socket.connect(new InetSocketAddress(address, port), SOCKET_TIMEOUT);

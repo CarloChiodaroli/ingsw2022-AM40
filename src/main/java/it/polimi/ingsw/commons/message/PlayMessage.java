@@ -64,6 +64,10 @@ public class PlayMessage extends Message {
         return this.teacherColorList;
     }
 
+    public List<String> getStringList(){
+        return this.stringList;
+    }
+
     private Map<?, ?> getMap(String data) {
         Map<String, Map<?, ?>> baseMap = new HashMap<>();
         baseMap.put("getTeacherColorIntegerMap", teacherColorIntegerMap);

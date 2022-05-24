@@ -1,12 +1,12 @@
 package it.polimi.ingsw.client.controller;
 
-import it.polimi.ingsw.client.model.ClientStateController;
+import it.polimi.ingsw.client.model.PlayMessageController;
 import it.polimi.ingsw.client.network.Client;
 import it.polimi.ingsw.client.network.SocketClient;
 import it.polimi.ingsw.commons.message.*;
 import it.polimi.ingsw.commons.observer.Observer;
 import it.polimi.ingsw.commons.observer.ViewObserver;
-import it.polimi.ingsw.commons.view.View;
+import it.polimi.ingsw.client.view.View;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -24,12 +24,16 @@ public class ClientController implements ViewObserver, Observer {
     private String nickname;
     private final ExecutorService taskQueue;
     public static final int UNDO_TIME = 5000;
-    private final ClientStateController playState;
+    private final PlayMessageController playMessageReader;
 
     public ClientController(View view) {
         this.view = view;
         taskQueue = Executors.newSingleThreadExecutor();
-        this.playState = new ClientStateController(this, this.view);
+        this.playMessageReader = new PlayMessageController(this, this.view);
+    }
+
+    public ExecutorService getTaskQueue() {
+        return taskQueue;
     }
 
     @Override
@@ -83,31 +87,35 @@ public class ClientController implements ViewObserver, Observer {
                     break;
                 case PLAY:
                     PlayMessage pm = (PlayMessage) message;
-                    pm.executeMessage(playState);
+                    pm.executeMessage(playMessageReader);
                     break;
                 default: // Should never reach this condition
-                    client.sendMessage(new ErrorMessage(nickname, "Wrong message received"));
+                    // client.sendMessage(new ErrorMessage(nickname, "Wrong message received"));
                     Client.LOGGER.info(() -> "received wrong message from server");
                     break;
             }
         } catch (ClassCastException | ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             // Should never reach this condition
-            client.sendMessage(new ErrorMessage(nickname, "Wrong message received"));
-            Client.LOGGER.info(() -> "received wrong message from server");
+            // client.sendMessage(new ErrorMessage(nickname, "Wrong message received"));
+            Client.LOGGER.info(() -> "Error while managing message from server: " + e.getCause().getMessage());
         }
 
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
     private void manageLobby(LobbyMessage message) {
-        if (playState.getMainPlayer() == null) { // First message
-            playState.setMainPlayer(message.getMainPlayerName());
-            if (playState.getMainPlayer().equals(this.nickname)) { // First player to connect to the game
+        if (playMessageReader.getMainPlayer() == null) { // First message
+            playMessageReader.setMainPlayer(message.getMainPlayerName());
+            if (playMessageReader.getMainPlayer().equals(this.nickname)) { // First player to connect to the game
                 taskQueue.execute(view::askPlayersNumber);
             }
             return;
         }
-        if (playState.getPlayerNames().isEmpty()) { //
-            playState.setPlayerNames(message.getNicknameList());
+        if (playMessageReader.getPlayerNames().isEmpty()) { //
+            playMessageReader.setPlayerNames(message.getNicknameList());
             return;
         }
         List<String> players = message.getLobbyPlayers();
@@ -119,24 +127,7 @@ public class ClientController implements ViewObserver, Observer {
                 taskQueue.execute(() -> view.showOtherDisconnectionMessage(message.getDisconnection(), "Disconnection of "));
             }
         } else {
-            playState.setPlayerNames(players);
-        }
-    }
-
-    public static boolean isValidIpAddress(String ip) {
-        String regex = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
-        return ip.matches(regex);
-    }
-
-    public static boolean isValidPort(String portStr) {
-        try {
-            int port = Integer.parseInt(portStr);
-            return port >= 1 && port <= 65535;
-        } catch (NumberFormatException e) {
-            return false;
+            playMessageReader.setPlayerNames(players);
         }
     }
 

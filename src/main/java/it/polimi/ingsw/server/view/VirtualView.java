@@ -2,7 +2,6 @@ package it.polimi.ingsw.server.view;
 
 import it.polimi.ingsw.commons.message.*;
 import it.polimi.ingsw.commons.observer.Observer;
-import it.polimi.ingsw.commons.view.View;
 import it.polimi.ingsw.server.network.ClientHandler;
 
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
  * (here known as her interface Client Handler) effectively hiding the outgoing network implementation from the manager.
  */
 
-public class VirtualView implements View, Observer {
+public class VirtualView implements Observer {
 
     private final ClientHandler clientHandler;
 
@@ -27,7 +26,6 @@ public class VirtualView implements View, Observer {
     }
 
     // not so good string
-    @Override
     public void askNickname() {
         sendMessage(new LoginMessage("Server", false, true));
     }
@@ -40,52 +38,42 @@ public class VirtualView implements View, Observer {
         clientHandler.sendMessage(message);
     }
 
-    @Override
     public void askPlayersNumber() {
 
     }
 
-    @Override
     public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname) {
 
     }
 
-    @Override
     public void showError(String errorMessage) {
         sendMessage(new ErrorMessage("Server", errorMessage));
     }
 
-    @Override
     public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful) {
         sendMessage(new LoginMessage("Server", nicknameAccepted, connectionSuccessful));
     }
 
-    @Override
     public void showGenericMessage(String genericMessage) {
         sendMessage(new GenericMessage(genericMessage));
     }
 
-    @Override
     public void showDisconnectionMessage(String nicknameDisconnected, String text) {
         sendMessage(new LobbyMessage("Server", nicknameDisconnected, true));
     }
 
-    @Override
     public void showOtherDisconnectionMessage(String nicknameDisconnected, String text) {
         sendMessage(new LobbyMessage("Server", nicknameDisconnected, true));
     }
 
-    @Override
     public void showErrorAndExit(String error) {
         sendMessage(new ErrorMessage("server", error));
     }
 
-    @Override
     public void showLobby(List<String> nicknameList, int numPlayers) {
         sendMessage(new LobbyMessage("Server", nicknameList));
     }
 
-    @Override
     public void update(Message message) {
         sendMessage(message);
     }
