@@ -1,13 +1,13 @@
 package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.client.controller.ClientController;
+import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.commons.message.IllegalMessageException;
 import it.polimi.ingsw.commons.message.MessageReader;
 import it.polimi.ingsw.commons.message.PlayMessage;
 import it.polimi.ingsw.commons.message.PlayMessagesFabric;
-import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.server.model.enums.Characters;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class PlayMessageController implements MessageReader {
 
     public void setMainPlayer(String mainPlayer) {
         this.mainPlayer = mainPlayer;
-        controller.getTaskQueue().execute(() ->view.showMainPlayerName(mainPlayer));
+        controller.getTaskQueue().execute(() -> view.showMainPlayerName(mainPlayer));
     }
 
     public void setPlayerNames(List<String> playerNames) {
@@ -46,7 +46,7 @@ public class PlayMessageController implements MessageReader {
         // Update view of the change
     }
 
-    public String getNickname(){
+    public String getNickname() {
         return controller.getNickname();
     }
 
@@ -62,6 +62,7 @@ public class PlayMessageController implements MessageReader {
     @Override
     public void playAssistantCard(String player, Integer weight) {
         controlLegal(player);
+        //state.useAssistantCard(weight);
         PlayMessage message = PlayMessagesFabric.playAssistantCard(player, weight);
         controller.sendMessage(message);
     }
@@ -116,7 +117,7 @@ public class PlayMessageController implements MessageReader {
     }
 
     @Override
-    public void playCharacterCard(String player, Characters character, TeacherColor color) {
+    public synchronized void playCharacterCard(String player, Characters character, TeacherColor color) {
         // is sent by this player?
         controlLegal(player);
         // build message
@@ -127,74 +128,82 @@ public class PlayMessageController implements MessageReader {
 
     // Game state changes to store in client
     @Override
-    public void statusStudent(String sender, String id, Map<TeacherColor, Integer> quantity) {
+    public synchronized void statusStudent(String sender, String id, Map<TeacherColor, Integer> quantity) {
         // is sent by the server?
         controlServer(sender);
         // update Play state
         state.setStudentsInAPlace(id, quantity);
         // update view.
-        controller.getTaskQueue().execute(() -> view.update());
+        //controller.getTaskQueue().execute(() -> view.update());
     }
 
     @Override
-    public void statusTeacher(String sender, String id, List<TeacherColor> which) {
+    public synchronized void statusTeacher(String sender, String id, List<TeacherColor> which) {
         controlServer(sender);
         state.setTeachers(which);
-        controller.getTaskQueue().execute(() -> view.update());
     }
 
     @Override
-    public void statusTower(String sender, Map<String, TowerColor> conquests) {
+    public synchronized void statusTower(String sender, Map<String, TowerColor> conquests) {
         controlServer(sender);
         state.setConquests(conquests); // to change the message
-        controller.getTaskQueue().execute(() -> view.update());
     }
 
     @Override
-    public void statusIslandIds(String sender, List<String> ids) {
+    public synchronized void statusIslandIds(String sender, List<String> ids) {
         controlServer(sender);
         state.setIslandIds(ids);
-        controller.getTaskQueue().execute(() -> view.update());
     }
 
     @Override
-    public void statusCloudIds(String sender, List<String> ids) {
+    public synchronized void statusCloudIds(String sender, List<String> ids) {
 
     }
 
     @Override
-    public void statusMotherNature(String sender, String islandId) {
+    public synchronized void statusMotherNature(String sender, String islandId) {
         controlServer(sender);
         state.setMotherNature(islandId);
-        controller.getTaskQueue().execute(() -> view.update());
     }
 
+    /**
+     * Receives the status of the round setting it as "Action phase of actual player"
+     * Is one of the two status messages which updates the view (with the other being statusPlanning)
+     *
+     * @param sender       the entity which sends the message, must be server
+     * @param actualPlayer the enabled player of this phase
+     */
     @Override
-    public void statusAction(String sender, String actualPlayer) {
+    public synchronized void statusAction(String sender, String actualPlayer) {
         controlServer(sender);
         state.setActionPhase(actualPlayer);
         controller.getTaskQueue().execute(() -> view.update());
     }
 
+    /**
+     * Receives the status of the round setting it as "Planning phase of actual player"
+     * Is one of the two status messages which updates the view (with the other being statusAction)
+     *
+     * @param sender       the entity which sends the message, must be server
+     * @param actualPlayer the enabled player of this phase
+     */
     @Override
-    public void statusPlanning(String sender, String actualPlayer) {
+    public synchronized void statusPlanning(String sender, String actualPlayer) {
         controlServer(sender);
         state.setPlanningPhase(actualPlayer);
-        controller.getTaskQueue().execute(()-> view.showActualState());
+        controller.getTaskQueue().execute(() -> view.update());
     }
 
     @Override
-    public void statusCharacterCard(String sender, Characters character) {
+    public synchronized void statusCharacterCard(String sender, Characters character) {
         controlServer(sender);
         state.setActualCharacterCard(character);
-        controller.getTaskQueue().execute(() -> view.update());
     }
 
     @Override
-    public void statusAssistantCard(String sender, String player, Integer weight) {
+    public synchronized void statusAssistantCard(String sender, String player, Integer weight) {
         controlServer(sender);
         state.setActiveAssistantCard(player, weight);
-        controller.getTaskQueue().execute(() -> view.update());
     }
 
     private void controlLegal(String player) {

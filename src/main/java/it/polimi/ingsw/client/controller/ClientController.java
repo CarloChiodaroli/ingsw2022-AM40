@@ -87,14 +87,20 @@ public class ClientController implements ViewObserver, Observer {
                     break;
                 case PLAY:
                     PlayMessage pm = (PlayMessage) message;
-                    pm.executeMessage(playMessageReader);
+                    taskQueue.execute(() -> {
+                        try {
+                            pm.executeMessage(playMessageReader);
+                        } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                            Client.LOGGER.info(() -> "Error while managing message from server: " + e.getCause().getMessage());
+                        }
+                    });
                     break;
                 default: // Should never reach this condition
                     // client.sendMessage(new ErrorMessage(nickname, "Wrong message received"));
                     Client.LOGGER.info(() -> "received wrong message from server");
                     break;
             }
-        } catch (ClassCastException | ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+        } catch (ClassCastException e) {
             // Should never reach this condition
             // client.sendMessage(new ErrorMessage(nickname, "Wrong message received"));
             Client.LOGGER.info(() -> "Error while managing message from server: " + e.getCause().getMessage());

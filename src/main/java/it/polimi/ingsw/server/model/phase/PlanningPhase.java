@@ -52,6 +52,7 @@ public class PlanningPhase {
         playersInOrder = new ArrayList<>();
         playedCards = new IdentityHashMap<>();
         actualPlayer = 0;
+        game.buildClouds();
     }
 
     /**
@@ -135,7 +136,7 @@ public class PlanningPhase {
                 game.setEndgame(true);
                 game.setendplayer(game.searchPlayerWithMostTower());
             } else {
-                game.buildClouds();
+                //game.buildClouds();
                 actualPlayer = 0;
                 game.getActionFase().startPhase(playersInOrder.get(actualPlayer));
                 countRound++;

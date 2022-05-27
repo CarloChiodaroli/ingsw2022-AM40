@@ -68,7 +68,6 @@ public class PlayMessagesReader implements MessageReader {
 
     private void sendCompleteStatus(){
         List<Message> commonAnswers = new ArrayList<>();
-        commonAnswers.add(PlayMessagesFabric.statusPlanning(server, turnController.getActivePlayer()));
         List<String> islandIds = outbound.getAllIslandIds();
         List<String> cloudIds = outbound.getAllCloudIds();
         commonAnswers.add(PlayMessagesFabric.statusIslandIds(server, islandIds));
@@ -84,6 +83,7 @@ public class PlayMessagesReader implements MessageReader {
             List<Message> answers = new ArrayList<>(commonAnswers);
             answers.add(PlayMessagesFabric.statusStudent(server, "Entrance", outbound.getStudentInPlace(name, "Entrance")));
             answers.add(PlayMessagesFabric.statusStudent(server, "Room", outbound.getStudentInPlace(name, "Room")));
+            answers.add(PlayMessagesFabric.statusPlanning(server, turnController.getActivePlayer()));
             answers.forEach(answer -> gameManager.sendMessage(name, answer));
         }
     }
@@ -124,21 +124,27 @@ public class PlayMessagesReader implements MessageReader {
     @Override
     public void moveStudent(String player, TeacherColor color, String fromId, String toId) {
         List<Message> answers = new ArrayList<>();
+        List<Message> broadcastAnswers = new ArrayList<>();
         try {
             inbound.moveStudent(player, color, fromId, toId);
         } catch (Exception e) {
             errorInExecution(e.getMessage());
             return;
         }
-        answers.add(PlayMessagesFabric.statusStudent(server, toId, outbound.getStudentInPlace(player, toId)));
-        answers.add(PlayMessagesFabric.statusStudent(server, fromId, outbound.getStudentInPlace(player, fromId)));
+        if(fromId.equals("Entrance") || fromId.equals("Room")) answers.add(PlayMessagesFabric.statusStudent(server, fromId, outbound.getStudentInPlace(player, fromId)));
+        else broadcastAnswers.add(PlayMessagesFabric.statusStudent(server, toId, outbound.getStudentInPlace(player, fromId)));
+        if(toId.equals("Entrance") || toId.equals("Room")) answers.add(PlayMessagesFabric.statusStudent(server, toId, outbound.getStudentInPlace(player, toId)));
+        else broadcastAnswers.add(PlayMessagesFabric.statusStudent(server, toId, outbound.getStudentInPlace(player, toId)));
         answers.add(PlayMessagesFabric.statusTeacher(server, player, outbound.getTeacherInPlace(player)));
-        answers.forEach(gameManager::broadcastMessage);
+        broadcastAnswers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
+        answers.forEach(answer -> gameManager.sendMessage(player, answer)); // send specific
+        broadcastAnswers.forEach(gameManager::broadcastMessage); // send broadcast
     }
 
     @Override
     public void moveStudent(String player, TeacherColor fromColor, TeacherColor toColor, String placeId) {
         List<Message> answers = new ArrayList<>();
+        List<Message> broadcastAnswers = new ArrayList<>();
         try {
             inbound.moveStudent(player, fromColor, toColor, placeId);
         } catch (Exception e) {
@@ -146,8 +152,11 @@ public class PlayMessagesReader implements MessageReader {
             return;
         }
         answers.add(PlayMessagesFabric.statusStudent(server, "Entrance", outbound.getStudentInPlace(player, "Entrance")));
-        answers.add(PlayMessagesFabric.statusStudent(server, placeId, outbound.getStudentInPlace(player, placeId)));
-        answers.forEach(gameManager::broadcastMessage);
+        if(placeId.equals("Entrance") || placeId.equals("Room")) answers.add(PlayMessagesFabric.statusStudent(server, placeId, outbound.getStudentInPlace(player, placeId)));
+        else broadcastAnswers.add(PlayMessagesFabric.statusStudent(server, placeId, outbound.getStudentInPlace(player, placeId)));
+        broadcastAnswers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
+        answers.forEach(answer -> gameManager.sendMessage(player, answer)); // send specific
+        broadcastAnswers.forEach(gameManager::broadcastMessage); // send broadcast
     }
 
     @Override
@@ -160,6 +169,7 @@ public class PlayMessagesReader implements MessageReader {
             return;
         }
         answers.add(PlayMessagesFabric.statusMotherNature(server, outbound.actualMotherNaturePosition()));
+        answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         answers.forEach(gameManager::broadcastMessage);
     }
 
@@ -185,6 +195,7 @@ public class PlayMessagesReader implements MessageReader {
                 server,
                 outbound.actualMotherNaturePosition(),
                 outbound.getStudentInPlace(player, outbound.actualMotherNaturePosition())));
+        answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         // sending answers
         answers.forEach(gameManager::broadcastMessage);
     }
@@ -192,6 +203,7 @@ public class PlayMessagesReader implements MessageReader {
     @Override
     public void chooseCloud(String player, String id) {
         List<Message> answers = new ArrayList<>();
+        List<Message> broadcastAnswers = new ArrayList<>();
         try {
             inbound.chooseCloud(player, id);
         } catch (Exception e) {
@@ -200,12 +212,13 @@ public class PlayMessagesReader implements MessageReader {
         }
         answers.add(PlayMessagesFabric.statusStudent(server, "Entrance", outbound.getStudentInPlace(player, "Entrance")));
         if (turnController.nextTurn()) {
-            answers.add(PlayMessagesFabric.statusPlanning(server, getActualPlayer()));
+            broadcastAnswers.add(PlayMessagesFabric.statusPlanning(server, getActualPlayer()));
             // show new clouds
         } else {
-            answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
+            broadcastAnswers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         }
-        answers.forEach(gameManager::broadcastMessage);
+        answers.forEach(answer -> gameManager.sendMessage(player, answer)); // send specific
+        broadcastAnswers.forEach(gameManager::broadcastMessage); // send broadcast
     }
 
     @Override
@@ -218,6 +231,7 @@ public class PlayMessagesReader implements MessageReader {
             return;
         }
         answers.add(PlayMessagesFabric.statusCharacterCard(server, outbound.getActualCharacterCard()));
+        answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         answers.forEach(gameManager::broadcastMessage);
     }
 
@@ -231,6 +245,7 @@ public class PlayMessagesReader implements MessageReader {
             return;
         }
         answers.add(PlayMessagesFabric.statusCharacterCard(server, outbound.getActualCharacterCard()));
+        answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         answers.forEach(gameManager::broadcastMessage);
     }
 
@@ -244,6 +259,7 @@ public class PlayMessagesReader implements MessageReader {
             return;
         }
         answers.add(PlayMessagesFabric.statusCharacterCard(server, outbound.getActualCharacterCard()));
+        answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         answers.forEach(gameManager::broadcastMessage);
     }
 

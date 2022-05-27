@@ -24,6 +24,8 @@ public class PlayState {
     private List<TeacherColor> teachers;
     private String motherNaturePosition;
     private Map<String, Integer> activeAssistantCards;
+    private List<Integer> assistantCards;
+    private boolean editing;
 
     public PlayState(){
         this.playerNames = new ArrayList<>();
@@ -31,6 +33,7 @@ public class PlayState {
         this.studentsInPlace = new HashMap<>();
         this.conquests = new HashMap<>();
         this.teachers = new ArrayList<>();
+        this.assistantCards = List.of(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     }
 
     public void setStudentsInAPlace(String placeId, Map<TeacherColor, Integer> studentsMap){
@@ -56,7 +59,9 @@ public class PlayState {
                 .peek(id -> islandSize.put(id, (int) id.chars().filter(x -> x == '_').count()))
                 .filter(id -> !studentsInPlace.containsKey(id))  // add new ids
                 .forEach(id -> studentsInPlace.put(id, new HashMap<>()));
-        studentsInPlace.keySet().stream()       // remove useless ids
+        System.out.println(islandSize);
+        studentsInPlace.keySet().stream()// remove useless ids
+                .filter(id -> id.matches("^i_[0-9_]*"))
                 .filter(id -> !islandIds.contains(id))
                 .forEach(studentsInPlace::remove);
     }
@@ -64,6 +69,41 @@ public class PlayState {
     public void setMotherNature(String islandId){
         isIslandId(islandId);
         motherNaturePosition = islandId;
+    }
+
+    public String getMotherNature() {
+        return motherNaturePosition;
+    }
+
+    public Optional<String> getConquest(String id){
+        if(conquests.containsKey(id))
+            return Optional.of(conquests.get(id).toString());
+        else return Optional.empty();
+    }
+
+    public int getConquest(TowerColor color){
+        return (int) conquests.entrySet().stream().filter(x -> x.getValue().equals(color)).count();
+    }
+
+    public TowerColor getActualTowerColor(){
+        return TowerColor.BLACK;
+    }
+
+    public List<TeacherColor> getTeachers(){
+        return new ArrayList<>(teachers);
+    }
+
+    public String getSize(String id){
+        System.out.println(id);
+        return islandSize.get(id).toString();
+    }
+
+    public List<Integer> getAssistantCards(){
+        return new ArrayList<>(assistantCards);
+    }
+
+    public void useAssistantCard(Integer weight){
+        assistantCards.remove(weight);
     }
 
     public void setActionPhase(String actualPlayer) {

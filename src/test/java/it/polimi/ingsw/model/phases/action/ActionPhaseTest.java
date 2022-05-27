@@ -40,7 +40,6 @@ public class ActionPhaseTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        game.getPianificationFase().activate();
         AssistantCard card = new AssistantCard(4);
         AssistantCard card1 = game.getPianificationFase().play(card, game.getPlayers().get(0));
         AssistantCard card2 = new AssistantCard(6);
@@ -321,7 +320,6 @@ public class ActionPhaseTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        game.getPianificationFase().activate();
         AssistantCard card = new AssistantCard(4);
         AssistantCard card1 = game.getPianificationFase().play(card, game.getPlayers().get(0));
         AssistantCard card2 = new AssistantCard(6);
@@ -355,7 +353,7 @@ public class ActionPhaseTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        game.getPianificationFase().activate();
+        //game.getPianificationFase().activate();
         AssistantCard card = new AssistantCard(4);
         AssistantCard card1 = game.getPianificationFase().play(card, game.getPlayers().get(0));
         AssistantCard card2 = new AssistantCard(6);
@@ -383,7 +381,6 @@ public class ActionPhaseTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        game.getPianificationFase().activate();
         AssistantCard card = new AssistantCard(4);
         AssistantCard card1 = game.getPianificationFase().play(card, game.getPlayers().get(0));
         AssistantCard card2 = new AssistantCard(6);
@@ -411,7 +408,6 @@ public class ActionPhaseTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        game.getPianificationFase().activate();
         AssistantCard card = new AssistantCard(4);
         AssistantCard card1 = game.getPianificationFase().play(card, game.getPlayers().get(0));
         AssistantCard card2 = new AssistantCard(6);
@@ -431,7 +427,6 @@ public class ActionPhaseTest {
         game.switchExpertVariant();
         game.gameStarter();
         actionPhase = game.getActionFase();
-        game.getPianificationFase().activate();
         AssistantCard card = new AssistantCard(4);
         AssistantCard card1 = game.getPianificationFase().play(card, game.getPlayers().get(0));
         AssistantCard card2 = new AssistantCard(6);

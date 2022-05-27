@@ -46,9 +46,14 @@ public class Cli extends ViewObservable implements View {
 
     @Override
     public void update() {
-        out.println(statePrinter.getState());
+        try {
+            out.println(statePrinter.getState());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
+    // command reader
     public void receivedCommand(String command) throws IllegalStateException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         synchronized (userInputLock) {
             List<String> tiledCommand = Arrays.stream(command.split(" ")).toList();
@@ -59,6 +64,12 @@ public class Cli extends ViewObservable implements View {
         }
     }
 
+
+    // User commands
+    /**
+     * Command which lists the help
+     * @param args should be present but empty
+     */
     public void help(List<String> args) {
         out.println("""
                 List of all possible commands:\s
@@ -120,6 +131,7 @@ public class Cli extends ViewObservable implements View {
     }
 
     public void name(List<String> args) {
+        if(args.isEmpty()) throw new IllegalStateException();
         notifyObserver(obs -> obs.onUpdateNickname(args.get(0)));
     }
 
@@ -128,11 +140,13 @@ public class Cli extends ViewObservable implements View {
     }
 
     public void assistant(List<String> args) {
+        if(args.isEmpty()) throw new IllegalStateException();
         int weight = Integer.parseInt(args.get(0));
         playMessageController.playAssistantCard(playMessageController.getNickname(), weight);
     }
 
     public void studentmove(List<String> args) {
+        if(args.size() < 3) throw new IllegalStateException();
         TeacherColor toMove = TeacherColor.valueOf(args.get(0).toUpperCase());
         String toPlace = args.get(2);
         Optional<String> secondArg = Arrays.stream(TeacherColor.values())
@@ -149,6 +163,7 @@ public class Cli extends ViewObservable implements View {
     }
 
     public void mnmove(List<String> args) {
+        if(args.isEmpty()) throw new IllegalStateException();
         int hops = Integer.parseInt(args.get(0));
         playMessageController.moveMotherNature(playMessageController.getNickname(), hops);
     }
@@ -158,10 +173,12 @@ public class Cli extends ViewObservable implements View {
     }
 
     public void choose(List<String> args) {
+        if(args.isEmpty()) throw new IllegalStateException();
         playMessageController.chooseCloud(playMessageController.getNickname(), args.get(0));
     }
 
     public void character(List<String> args) {
+        if(args.isEmpty()) throw new IllegalStateException();
         Characters character = Characters.valueOf(args.get(0).toUpperCase());
         if (args.size() == 1) {
             playMessageController.playCharacterCard(playMessageController.getNickname(), character);

@@ -17,7 +17,6 @@ public class FinalizeTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        game.buildClouds();
         StudentMovement studentMovement = new StudentMovement(game.getActionFase());
         StudentsManager entrance0 = game.getPlayers().get(0).getEntrance();
         StudentsManager entrance1 = game.getPlayers().get(1).getEntrance();
@@ -126,7 +125,6 @@ public class FinalizeTest {
         game.addPlayer("Anja");
         game.addPlayer("Barbara");
         game.gameStarter();
-        game.buildClouds();
         StudentMovement studentMovement = new StudentMovement(game.getActionFase());
         StudentsManager entrance2 = game.getPlayers().get(2).getEntrance();
         Finalize finalize = new Finalize(game.getActionFase());

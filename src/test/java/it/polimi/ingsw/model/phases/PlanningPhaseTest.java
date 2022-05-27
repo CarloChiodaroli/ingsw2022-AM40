@@ -64,6 +64,8 @@ public class PlanningPhaseTest {
         phase.reset();
         assertFalse(phase.isInOrder());
         assertFalse(phase.isActivated());
+        game.getTable().getCloudList().remove(0);
+        game.getTable().getCloudList().remove(0);
 
         phase.activate();
         assertTrue(phase.isActivated());
@@ -109,6 +111,10 @@ public class PlanningPhaseTest {
         phase.reset();
         assertFalse(phase.isInOrder());
         assertFalse(phase.isActivated());
+
+        game.getTable().getCloudList().remove(0);
+        game.getTable().getCloudList().remove(0);
+        game.getTable().getCloudList().remove(0);
 
         phase.activate();
         assertTrue(phase.isActivated());

@@ -21,7 +21,6 @@ public class PlayerTest {
         game.addPlayer("Aldo");
         game.addPlayer("Giovanni");
         game.gameStarter();
-        game.getPianificationFase().activate();
 
         Player aldo = game.getPlayers().get(0);
         Player giovanni = game.getPlayers().get(1);
