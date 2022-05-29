@@ -60,6 +60,7 @@ public class Cli extends ViewObservable implements View {
             tiledCommand = new ArrayList<>(tiledCommand);
             String head = tiledCommand.get(0);
             tiledCommand.remove(head);
+            head = head.toLowerCase();
             this.getClass().getMethod(head, List.class).invoke(this, tiledCommand);
         }
     }
@@ -81,14 +82,16 @@ public class Cli extends ViewObservable implements View {
                 \t\tnickname <name> \t: same as name
                 \t\tplayers <number> \t: sets the number of players\s
                 \t\texpert \t-\t-\t-\t: switches the game to and from expert variant\s
-                \tPlay commands:\s
-                \t\tassistant <weight> \t-\t-\t-\t-\t-\t-\t-\t: command used to play an assistant card
-                \t\tstudentmove <student color> <from id> <to id> \t: command to move a student
-                \t\tmnmove <hops> \t-\t-\t-\t-\t-\t-\t-\t-\t: command to move mother nature of x hops
-                \t\tinfluence \t-\t-\t-\t-\t-\t-\t-\t-\t-\t: command to calc influence
-                \t\tchoose <cloud id> \t-\t-\t-\t-\t-\t-\t-\t: command to choose a cloud
+                \tPlay commands: abbreviation command <arg> <arg> <arg>\s
+                \tas\tassistant <weight> \t-\t-\t-\t-\t-\t-\t-\t: command used to play an assistant card
+                \tsm\tstudentmove <student color> <from id> <to id> \t: command to move a student
+                \tmnm\tmnmove <hops> \t-\t-\t-\t-\t-\t-\t-\t-\t: command to move mother nature of x hops
+                \tim\tinfluence \t-\t-\t-\t-\t-\t-\t-\t-\t-\t: command to calc influence
+                \tch\tchoose <cloud id> \t-\t-\t-\t-\t-\t-\t-\t: command to choose a cloud
                 To send a valid command please write the command with arguments as for example:
                 \tstudentmove BLUE Entrance Room
+                Or use the abbreviation in place of the command as for example:
+                \tsm BLUE Entrance Room
                 """);
     }
 
@@ -139,16 +142,24 @@ public class Cli extends ViewObservable implements View {
         name(args);
     }
 
+    public void as(List<String> args){
+        assistant(args);
+    }
+
     public void assistant(List<String> args) {
         if(args.isEmpty()) throw new IllegalStateException();
         int weight = Integer.parseInt(args.get(0));
         playMessageController.playAssistantCard(playMessageController.getNickname(), weight);
     }
 
-    public void studentmove(List<String> args) {
+    public void sm(List<String> args) throws IllegalAccessException {
+        studentmove(args);
+    }
+
+    public void studentmove(List<String> args) throws IllegalAccessException {
         if(args.size() < 3) throw new IllegalStateException();
         TeacherColor toMove = TeacherColor.valueOf(args.get(0).toUpperCase());
-        String toPlace = args.get(2);
+        String toPlace = verifyId(args.get(2));
         Optional<String> secondArg = Arrays.stream(TeacherColor.values())
                 .map(Enum::toString)
                 .filter(x -> x.equalsIgnoreCase(args.get(1)))
@@ -157,9 +168,20 @@ public class Cli extends ViewObservable implements View {
             TeacherColor secondToMove = TeacherColor.valueOf(secondArg.get());
             playMessageController.moveStudent(playMessageController.getNickname(), toMove, secondToMove, toPlace);
         } else {
-            String fromPlace = args.get(1);
+            String fromPlace = verifyId(args.get(1));
             playMessageController.moveStudent(playMessageController.getNickname(), toMove, fromPlace, toPlace);
         }
+    }
+
+    private String verifyId(String id) throws IllegalAccessException {
+        return playMessageController.getPlaceIds().stream()
+                .filter(x -> x.equalsIgnoreCase(id))
+                .findFirst()
+                .orElseThrow(() -> new IllegalAccessException("place " + id + " not found"));
+    }
+
+    public void mnm(List<String> args){
+        mnmove(args);
     }
 
     public void mnmove(List<String> args) {
@@ -168,8 +190,16 @@ public class Cli extends ViewObservable implements View {
         playMessageController.moveMotherNature(playMessageController.getNickname(), hops);
     }
 
+    public void in(List<String> args){
+        influence(args);
+    }
+
     public void influence(List<String> args) {
         playMessageController.calcInfluence(playMessageController.getNickname());
+    }
+
+    public void ch(List<String> args){
+        choose(args);
     }
 
     public void choose(List<String> args) {

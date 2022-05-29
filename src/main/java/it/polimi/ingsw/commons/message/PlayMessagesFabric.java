@@ -97,4 +97,8 @@ public class PlayMessagesFabric {
     public static PlayMessage statusAssistantCard(String sender, String playerName, int weight){
         return new PlayMessage(sender, "statusAssistantCard", playerName, weight);
     }
+
+    public static PlayMessage statusTower(String sender, String playerName, TowerColor color){
+        return new PlayMessage(sender, "statusTower", playerName, color);
+    }
 }

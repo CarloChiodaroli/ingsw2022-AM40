@@ -34,6 +34,8 @@ public interface MessageReader {
 
     void statusTower(String sender, Map<String, TowerColor> conquests);
 
+    void statusTower(String sender, String player, TowerColor color);
+
     void statusIslandIds(String sender, List<String> ids);
 
     void statusCloudIds(String sender, List<String> ids);

@@ -220,6 +220,15 @@ public class PlayMessage extends Message {
         super.message();
     }
 
+    public PlayMessage(String sender, String move, String player, TowerColor color){
+        super(sender, MessageType.PLAY);
+        this.move = move;
+        params = new Object[]{super.getSenderName(), player, color};
+        Class<?>[] tmp = new Class<?>[]{String.class, String.class, TowerColor.class};
+        paramsTypeNames = Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList());
+        super.message();
+    }
+
     public PlayMessage(String sender, String move, String player, Integer weight){
         super(sender, MessageType.PLAY);
         this.move = move;

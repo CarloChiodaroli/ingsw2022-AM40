@@ -80,6 +80,9 @@ public class PlayMessagesReader implements MessageReader {
             commonAnswers.add(PlayMessagesFabric.statusStudent(server, id, outbound.getStudentInPlace(mainPlayer, id)));
         }
         for(String name: playerNames){
+            commonAnswers.add(PlayMessagesFabric.statusTower(server, name, outbound.getPlayerTowerColor(name)));
+        }
+        for(String name: playerNames){
             List<Message> answers = new ArrayList<>(commonAnswers);
             answers.add(PlayMessagesFabric.statusStudent(server, "Entrance", outbound.getStudentInPlace(name, "Entrance")));
             answers.add(PlayMessagesFabric.statusStudent(server, "Room", outbound.getStudentInPlace(name, "Room")));
@@ -195,6 +198,7 @@ public class PlayMessagesReader implements MessageReader {
                 server,
                 outbound.actualMotherNaturePosition(),
                 outbound.getStudentInPlace(player, outbound.actualMotherNaturePosition())));
+        answers.add(PlayMessagesFabric.statusMotherNature(server, outbound.actualMotherNaturePosition()));
         answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         // sending answers
         answers.forEach(gameManager::broadcastMessage);
@@ -211,9 +215,9 @@ public class PlayMessagesReader implements MessageReader {
             return;
         }
         answers.add(PlayMessagesFabric.statusStudent(server, "Entrance", outbound.getStudentInPlace(player, "Entrance")));
+        broadcastAnswers.add(PlayMessagesFabric.statusCloudIds(server, outbound.getAllCloudIds()));
         if (turnController.nextTurn()) {
             broadcastAnswers.add(PlayMessagesFabric.statusPlanning(server, getActualPlayer()));
-            // show new clouds
         } else {
             broadcastAnswers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         }
@@ -285,6 +289,11 @@ public class PlayMessagesReader implements MessageReader {
 
     @Override
     public void statusTower(String sender, Map<String, TowerColor> conquests) {
+        errorIllegalMessage();
+    }
+
+    @Override
+    public void statusTower(String sender, String player, TowerColor color) {
         errorIllegalMessage();
     }
 

@@ -312,4 +312,8 @@ public class GameModel {
     public Game getGame() {
         return game;
     }
+
+    public TowerColor getPlayerTowerColor(String playerName){
+        return getPlayer(playerName).getTowerColor();
+    }
 }

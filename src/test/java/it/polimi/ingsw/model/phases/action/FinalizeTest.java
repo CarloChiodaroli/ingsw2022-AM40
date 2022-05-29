@@ -67,7 +67,6 @@ public class FinalizeTest {
         assertEquals(3, game.getTable().getCloudList().get(0).howManyTotStudents());
         finalize.handle(game.getPlayers().get(0), game.getTable().getCloudList().get(0));
         assertEquals(7, game.getPlayers().get(0).getEntrance().howManyTotStudents());
-        assertEquals(0, game.getTable().getCloudList().get(0).howManyTotStudents());
 
         for(int i = 0; i < 3; i++){
             int j = (int) (Math.random()*5);
@@ -111,10 +110,9 @@ public class FinalizeTest {
             }
         }
         assertEquals(4, game.getPlayers().get(1).getEntrance().howManyTotStudents());
-        assertEquals(3, game.getTable().getCloudList().get(1).howManyTotStudents());
-        finalize.handle(game.getPlayers().get(1), game.getTable().getCloudList().get(1));
+        assertEquals(3, game.getTable().getCloudList().get(0).howManyTotStudents());
+        finalize.handle(game.getPlayers().get(1), game.getTable().getCloudList().get(0));
         assertEquals(7, game.getPlayers().get(1).getEntrance().howManyTotStudents());
-        assertEquals(0, game.getTable().getCloudList().get(1).howManyTotStudents());
 
     }
 
@@ -174,7 +172,6 @@ public class FinalizeTest {
         assertEquals(4, game.getTable().getCloudList().get(2).howManyTotStudents());
         finalize.handle(game.getPlayers().get(2), game.getTable().getCloudList().get(2));
         assertEquals(9, game.getPlayers().get(2).getEntrance().howManyTotStudents());
-        assertEquals(0, game.getTable().getCloudList().get(2).howManyTotStudents());
     }
 
 }

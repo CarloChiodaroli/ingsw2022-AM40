@@ -253,7 +253,7 @@ public class GameModelTest {
         model.calcInfluence(giovanniName);
         assertEquals(island, MotherNature.getMotherNature().getPosition().get());
         assertEquals(aldo.getTowerColor(), island.getTowerColor().get());
-        model.chooseCloud(giovanniName, game.getTable().getCloudList().get(1).getId());
+        model.chooseCloud(giovanniName, game.getTable().getCloudList().get(0).getId());
         giovanni.disable();
 
         assertEquals(3, aldo.getEntrance().howManyTotStudents());
@@ -345,7 +345,7 @@ public class GameModelTest {
         model.calcInfluence(giovanniName);
         assertEquals(testIslandId, model.getMotherNaturePosition());
         assertEquals(giovanni.getTowerColor(), island.getTowerColor().get());
-        model.chooseCloud(giovanniName, game.getTable().getCloudList().get(1).getId());
+        model.chooseCloud(giovanniName, game.getTable().getCloudList().get(0).getId());
         giovanni.disable();
 
         assertEquals(3, aldo.getEntrance().howManyTotStudents());

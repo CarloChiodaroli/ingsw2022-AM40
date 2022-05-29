@@ -406,6 +406,11 @@ class FakeGameManager implements MessageReader {
     }
 
     @Override
+    public void statusTower(String sender, String player, TowerColor color) {
+
+    }
+
+    @Override
     public void statusIslandIds(String sender, List<String> ids) {
         assertEquals(String.class, sender.getClass());
         assertTrue(Arrays.stream(ids.getClass().getInterfaces()).collect(Collectors.toList()).contains(List.class));

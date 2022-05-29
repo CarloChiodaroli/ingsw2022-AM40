@@ -194,6 +194,10 @@ public class Game {
         table.FillCloudRound();
     }
 
+    public void removeCloud(StudentsManager cloud){
+        getTable().getCloudList().remove((Cloud) cloud);
+    }
+
     public int getNumOfRegisteredPlayers() {
         return numOfRegisteredPlayers;
     }

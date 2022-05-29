@@ -17,7 +17,7 @@ public class StudentMovement extends ActionFaseState {
     }
 
     @Override
-    public void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) {
+    public void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) throws IllegalStateException {
         if (from.isPresent() && to.isPresent())
             if (from.get().removeStudent(color))
                 to.get().addStudent(color);

@@ -29,6 +29,7 @@ public class PlayMessageController implements MessageReader {
         this.controller = controller;
         this.view = view;
         this.state = new PlayState();
+        this.state.setMyName(getMyName());
         view.setStatePrinter(this);
     }
 
@@ -39,6 +40,10 @@ public class PlayMessageController implements MessageReader {
     public void setMainPlayer(String mainPlayer) {
         this.mainPlayer = mainPlayer;
         controller.getTaskQueue().execute(() -> view.showMainPlayerName(mainPlayer));
+    }
+
+    public List<String> getPlaceIds(){
+        return state.getPlaceIds();
     }
 
     public void setPlayerNames(List<String> playerNames) {
@@ -56,6 +61,10 @@ public class PlayMessageController implements MessageReader {
 
     public List<String> getPlayerNames() {
         return playerNames;
+    }
+
+    public String getMyName(){
+        return controller.getNickname();
     }
 
     // playerCommands to send to the server
@@ -147,6 +156,12 @@ public class PlayMessageController implements MessageReader {
     public synchronized void statusTower(String sender, Map<String, TowerColor> conquests) {
         controlServer(sender);
         state.setConquests(conquests); // to change the message
+    }
+
+    @Override
+    public void statusTower(String sender, String player, TowerColor color) {
+        controlServer(sender);
+        state.setStatusTower(player, color);
     }
 
     @Override

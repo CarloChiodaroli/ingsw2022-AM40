@@ -32,10 +32,9 @@ public class ClientInputDecoder {
                     line = reader.readLine();
                     if (!line.isBlank()) readReceivedCommand(line);
                 } catch (InvocationTargetException e){
-                    inputError(e.getCause().getMessage());
+                    inputError("I didn't understand because: " + e.getCause().getMessage() + "\nPlease repeat!");
                 } catch (IOException | NoSuchMethodException | IllegalAccessException e) {
-                    //e.printStackTrace();
-                    inputError("I didn't understand, please repeat!");
+                    inputError("I didn't understand because: " + e.getMessage() + ", please repeat!");
                 }
             }
         });

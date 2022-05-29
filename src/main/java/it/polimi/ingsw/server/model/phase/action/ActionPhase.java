@@ -9,6 +9,7 @@ import it.polimi.ingsw.server.model.phase.action.states.*;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.server.model.phase.action.states.cards.InfluenceCard;
 import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.server.model.table.Cloud;
 import it.polimi.ingsw.server.model.table.Island;
 import it.polimi.ingsw.server.model.table.MotherNature;
 
@@ -107,6 +108,8 @@ public class ActionPhase {
         isStateActivated();
         if (possibleStudentMovements <= 0 || calculatedInfluence)
             throw new IllegalStateException("Cannot move any students");
+        if (from.isEmpty() || to.isEmpty())
+            throw new InvalidParameterException("from or to place not found");
         if (isExpertVariant() &&
                 getActualCard().isPresent() &&
                 actualCard.getCharacter().getType().equals(ActionPhaseStateType.STUDENT) &&

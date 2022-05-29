@@ -18,5 +18,6 @@ public class Finalize extends ActionFaseState {
         for (int i = 0; i < tmp; i++) {
             cloud.getStudent().ifPresent(destination::addStudent);
         }
+        getActionFase().getGame().removeCloud(cloud);
     }
 }

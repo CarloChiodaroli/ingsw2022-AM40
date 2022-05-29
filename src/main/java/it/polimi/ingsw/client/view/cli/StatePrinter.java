@@ -1,12 +1,9 @@
 package it.polimi.ingsw.client.view.cli;
 
-import it.polimi.ingsw.client.model.PlayMessageController;
 import it.polimi.ingsw.client.model.PlayState;
 import it.polimi.ingsw.commons.enums.TeacherColor;
-import it.polimi.ingsw.commons.enums.TowerColor;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Builds the view of the game state
@@ -34,8 +31,29 @@ public class StatePrinter {
         state += islandTable();
         state += cloudTable();
         state += printDashboard();
+        state += statusTowers();
         state += roundState();
         return state;
+    }
+
+    public String statusTowers(){
+        List<String> strings = playState.getPlayersTowerColors().keySet().stream().toList();
+        String line = verticalLineElement;
+        for(String string: strings){
+            line += string;
+            line += space + (8 - playState.getConquest(playState.getPlayersTowerColors().get(string)));
+            line += space + playState.getPlayersTowerColors().get(string);
+            line += verticalLineElement;
+        }
+        List<String> rows = new ArrayList<>();
+        rows.add(line);
+        rows.add(0, rowDivider(line.length()));
+        rows.add(rows.get(0));
+        line = "";
+        for(String row: rows){
+            line += row + '\n';
+        }
+        return line;
     }
 
     public String roundState(){
@@ -151,7 +169,7 @@ public class StatePrinter {
         List<String> rows = new ArrayList<>();
         String row = verticalLineElement + "Entrance ";
         row = studentPrinter(row, "Entrance");
-        row += verticalLineElement + (8 - playState.getConquest(playState.getActualTowerColor()));
+        row += verticalLineElement + (8 - playState.getMyConquests());
         rows.add(row);
         row = verticalLineElement + "Room     ";
         row = studentPrinter(row, "Room");
