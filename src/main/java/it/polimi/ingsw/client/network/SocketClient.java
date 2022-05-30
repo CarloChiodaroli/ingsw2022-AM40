@@ -74,7 +74,6 @@ public class SocketClient extends Client {
     @Override
     public void readMessage() {
         readExecutionQueue.execute(() -> {
-
             while (!readExecutionQueue.isShutdown()) {
                 Message message;
                 try {

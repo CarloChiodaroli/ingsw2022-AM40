@@ -2,9 +2,7 @@ package it.polimi.ingsw.server.controller.outer;
 
 import it.polimi.ingsw.commons.message.*;
 import it.polimi.ingsw.commons.observer.Observer;
-import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.server.controller.inner.InputController;
-import it.polimi.ingsw.server.controller.inner.TurnController;
 import it.polimi.ingsw.server.network.Server;
 import it.polimi.ingsw.server.utils.StorageData;
 import it.polimi.ingsw.server.view.VirtualView;
@@ -16,8 +14,6 @@ import java.util.*;
 public class GameManager implements Observer {
 
     private transient Map<String, VirtualView> virtualViewMap;
-    private PlayState playState;
-    private TurnController turnController;
     private String mainPlayer;
     private int maxPlayers;
     private List<String> playerNames;
@@ -33,24 +29,19 @@ public class GameManager implements Observer {
 
     public void initGameController() {
         this.virtualViewMap = Collections.synchronizedMap(new HashMap<>());
-        setPlayState(PlayState.PRE_INIT);
+        //setPlayState(PlayState.PRE_INIT);
     }
 
-    // switch to be removed soon
     public void onMessageReceived(Message receivedMessage) {
-
-        VirtualView virtualView = virtualViewMap.get(receivedMessage.getSenderName());
-        switch (playState) {
-            case PRE_INIT:
-                preInitState(receivedMessage); // only used by main player
-                break;
-            case IN_GAME:
-                inGameState(receivedMessage);
-                break;
-            default:
-                Server.LOGGER.warning(STR_INVALID_STATE);
-                break;
+        if(receivedMessage.getSenderName().equals(mainPlayer) && playMessagesReader != null && !playMessagesReader.isGameStarted()) {
+            preInitState(receivedMessage);
+            return;
         }
+        if(playMessagesReader != null && playMessagesReader.isGameStarted() && receivedMessage.getMessageType().equals(MessageType.PLAY)){
+            inGameState(receivedMessage);
+            return;
+        }
+        Server.LOGGER.warning(STR_INVALID_STATE);
     }
 
     private void preInitState(Message receivedMessage) {
@@ -80,9 +71,10 @@ public class GameManager implements Observer {
         }
     }
 
+    /*@Deprecated
     private void setPlayState(PlayState playState) {
         this.playState = playState;
-    }
+    }*/
 
     public void endGame() {
         StorageData storageData = new StorageData();
@@ -105,7 +97,7 @@ public class GameManager implements Observer {
             this.playMessagesReader.addPlayer(nickname);
             virtualView.sendMainPlayer(mainPlayer);
             virtualView.showLoginResult(true, true);
-            initGame();
+            if(virtualViewMap.size() == maxPlayers) initGame();
             /*if (game.getNumCurrentPlayers() == game.getChosenPlayersNumber()) { // If all players logged
                 // check saved matches.
                 // to redo better later
@@ -126,10 +118,8 @@ public class GameManager implements Observer {
 
 
     private void initGame() {
-        setPlayState(PlayState.IN_GAME);
+        //setPlayState(PlayState.IN_GAME);
         playMessagesReader.startGame();
-        //broadcastGenericMessage("All Players are connected. Main player : " + turnController.getActivePlayer() + "\n" + "Good Luck!!!");
-        //VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
     }
 
     public void addVirtualView(String nickname, VirtualView virtualView) {
@@ -142,7 +132,11 @@ public class GameManager implements Observer {
 
     public void removeVirtualView(String nickname, boolean notifyEnabled) {
         VirtualView vv = virtualViewMap.remove(nickname);
-        playMessagesReader.deletePlayer(nickname);
+        if(playMessagesReader.isGameStarted()){
+            playMessagesReader.stopPlayer(nickname);
+        } else {
+            playMessagesReader.deletePlayer(nickname);
+        }
     }
 
     public void broadcastGenericMessage(String messageToNotify, String excludeNickname) {
@@ -180,16 +174,12 @@ public class GameManager implements Observer {
 
 
     public boolean isGameStarted() {
-        return this.playState != PlayState.PRE_INIT;
+        return playMessagesReader != null && playMessagesReader.isGameStarted();
     }
 
-
-    public TurnController getTurnController() {
-        return turnController;
-    }
-
+    @Deprecated
     public void update(Message message) {
-        VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
+        //VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
         switch (message.getMessageType()) {
             case ERROR:
                 ErrorMessage errMsg = (ErrorMessage) message;

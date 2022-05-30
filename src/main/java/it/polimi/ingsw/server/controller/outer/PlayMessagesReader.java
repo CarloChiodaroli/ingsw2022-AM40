@@ -31,7 +31,6 @@ public class PlayMessagesReader implements MessageReader {
     private final String server;
     private transient Map<String, VirtualView> virtualViewMap;
 
-
     public PlayMessagesReader(String mainPlayer, GameManager gameManager) {
         this.mainPlayer = mainPlayer;
         this.playerNames = new ArrayList<>();
@@ -44,6 +43,8 @@ public class PlayMessagesReader implements MessageReader {
         this.server = "server";
         this.gameManager = gameManager;
     }
+
+
 
     public void setNumOfPlayers(int numOfPlayers) {
         if (numOfPlayers != 2 && numOfPlayers != 3) throw new IllegalArgumentException();
@@ -102,8 +103,17 @@ public class PlayMessagesReader implements MessageReader {
         sendCompleteStatus();
     }
 
+    public boolean isGameStarted(){
+        return turnController.isGameStarted();
+    }
+
     public void switchExpertVariant() {
         expertVariant = inbound.switchExpertVariant();
+    }
+
+    public void stopPlayer(String playerName){
+        //turnController.removePlayer(playerName);
+        //inbound.stopPlayer(playerName);
     }
 
     @Override

@@ -19,7 +19,6 @@ import java.util.Map;
  */
 public class PlayMessageController implements MessageReader {
 
-    private List<String> playerNames;
     private String mainPlayer;
     private final ClientController controller;
     private final View view;
@@ -46,11 +45,6 @@ public class PlayMessageController implements MessageReader {
         return state.getPlaceIds();
     }
 
-    public void setPlayerNames(List<String> playerNames) {
-        this.playerNames = playerNames;
-        // Update view of the change
-    }
-
     public String getNickname() {
         return controller.getNickname();
     }
@@ -60,7 +54,11 @@ public class PlayMessageController implements MessageReader {
     }
 
     public List<String> getPlayerNames() {
-        return playerNames;
+        return state.getPlayerNames();
+    }
+
+    public void setPlayerNames(List<String> playerNames){
+        
     }
 
     public String getMyName(){

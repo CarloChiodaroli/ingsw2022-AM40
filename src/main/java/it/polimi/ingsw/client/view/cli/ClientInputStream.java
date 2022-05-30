@@ -1,7 +1,5 @@
 package it.polimi.ingsw.client.view.cli;
 
-import it.polimi.ingsw.client.controller.ClientController;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,14 +7,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ClientInputDecoder {
+public class ClientInputStream {
 
     private ExecutorService readExecutionQueue;
-    private InputReadTask inputReadTask;
-    private Cli cli;
+    private final Cli cli;
     private boolean stop;
 
-    public ClientInputDecoder(Cli cli) {
+    public ClientInputStream(Cli cli) {
         this.cli = cli;
         stop = false;
         buildClient();
@@ -31,10 +28,10 @@ public class ClientInputDecoder {
                 try {
                     line = reader.readLine();
                     if (!line.isBlank()) readReceivedCommand(line);
-                } catch (InvocationTargetException e){
-                    inputError("I didn't understand because: " + e.getCause().getMessage() + "\nPlease repeat!");
-                } catch (IOException | NoSuchMethodException | IllegalAccessException e) {
-                    inputError("I didn't understand because: " + e.getMessage() + ", please repeat!");
+                } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e){
+                    inputError("I didn't understand, Please repeat!!");
+                } catch (IOException e) {
+                    inputError("Well something went wrong I didn't understand, Please repeat!!");
                 }
             }
         });
@@ -42,6 +39,7 @@ public class ClientInputDecoder {
 
     public void stopReading() {
         this.stop = true;
+        this.readExecutionQueue.shutdownNow();
     }
 
     private void readReceivedCommand(String line) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
