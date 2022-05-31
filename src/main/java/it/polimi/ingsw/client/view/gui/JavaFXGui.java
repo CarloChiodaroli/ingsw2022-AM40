@@ -20,7 +20,7 @@ public class JavaFXGui extends Application {
 
     @Override
     public void start(Stage stage) {
-        Gui view = new Gui();
+        Gui view = (Gui) new Object();//new Gui();
         ClientController clientController = new ClientController(view);
         view.addObserver(clientController);
 

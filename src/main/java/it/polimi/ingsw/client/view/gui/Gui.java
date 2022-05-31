@@ -7,7 +7,7 @@ import javafx.application.Platform;
 
 import java.util.List;
 
-public class Gui extends ViewObservable implements View {
+public abstract class Gui extends ViewObservable implements View {
     private static final String STR_ERROR = "ERROR";
     private static final String MENU_SCENE_FXML = "menu_scene.fxml";
 

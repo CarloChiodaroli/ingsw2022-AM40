@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
-public class Launcher {
+import it.polimi.ingsw.client.view.gui.App;
+
+public class Eriantys {
 
     public static void main(String[] args) {
         if(args.length < 1){
@@ -10,11 +12,13 @@ public class Launcher {
                     "\teriantys g - to launch a gui client (for now launches cli client) \n");
         }
         else if(args[0].equals("s")){
-            ServerApp.main(args);
+            ServerApp.server();
         } else if (args[0].equals("c")){
-            ClientApp.main(args);
+            ClientApp.client();
         } else if (args[0].equals("g")){
-            ClientApp.main(args);
+            ClientApp.client();
+        } else if (args[0].equals("conti")){
+            App.main(args); // https://github.com/ingconti/SampleJavaFx.git
         } else {
             System.out.println("Got wrong argument, please retry.\nCorrect arguments:\n" +
                     "\teriantys s - to launch a server \n" +
