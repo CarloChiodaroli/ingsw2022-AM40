@@ -65,17 +65,12 @@ public class Server {
                 boolean gameStarted = gameManager.isGameStarted();
                 removeClient(nickname, !gameStarted); // enable lobby notifications only if the game didn't start yet.
 
-                if(gameManager.getTurnController() != null &&
-                        !gameManager.getTurnController().getNicknameQueue().contains(nickname)) {
-                    return;
-                }
-
                 // Resets server status only if the game was already started.
                 // Otherwise the server will wait for a new player to connect.
                 if (gameStarted) {
                     gameManager.broadcastDisconnectionMessage(nickname, " disconnected from the server. GAME ENDED.");
-                    gameManager.endGame();
-                    clientHandlerMap.clear();
+                    //gameManager.endGame();
+                    //clientHandlerMap.clear();
                 }
             }
         }

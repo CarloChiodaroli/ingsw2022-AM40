@@ -37,6 +37,10 @@ public class TurnController {
         setActivePlayer();
     }
 
+    public boolean isGameStarted(){
+        return state != GameState.INITIAL;
+    }
+
     public boolean nextTurn() {
         if (state.equals(GameState.PLANNING)) {
             int i = players.indexOf(activePlayer) + 1;

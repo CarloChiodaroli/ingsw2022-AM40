@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.view.cli;
 
 import it.polimi.ingsw.client.model.PlayMessageController;
+import it.polimi.ingsw.client.network.Client;
 import it.polimi.ingsw.client.network.SocketClient;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.commons.enums.TeacherColor;
@@ -10,10 +11,6 @@ import it.polimi.ingsw.server.model.enums.Characters;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-
-import static it.polimi.ingsw.client.controller.ClientController.UNDO_TIME;
 
 
 /**
@@ -22,8 +19,7 @@ import static it.polimi.ingsw.client.controller.ClientController.UNDO_TIME;
 public class Cli extends ViewObservable implements View {
 
     private final PrintStream out;
-    private Thread inputThread;
-    private final ClientInputDecoder inputDecoder;
+    private final ClientInputStream inputStream;
     private Object userInputLock;
     private PlayMessageController playMessageController;
     private boolean connected;
@@ -34,7 +30,7 @@ public class Cli extends ViewObservable implements View {
 
     public Cli() {
         out = System.out;
-        this.inputDecoder = new ClientInputDecoder(this);
+        this.inputStream = new ClientInputStream(this);
         this.userInputLock = new Object();
         connected = false;
     }
@@ -65,10 +61,11 @@ public class Cli extends ViewObservable implements View {
         }
     }
 
-
     // User commands
+
     /**
      * Command which lists the help
+     *
      * @param args should be present but empty
      */
     public void help(List<String> args) {
@@ -134,30 +131,38 @@ public class Cli extends ViewObservable implements View {
     }
 
     public void name(List<String> args) {
-        if(args.isEmpty()) throw new IllegalStateException();
+        if (args.isEmpty()) throw new IllegalStateException();
         notifyObserver(obs -> obs.onUpdateNickname(args.get(0)));
     }
 
     public void nickname(List<String> args) {
-        name(args);
+        try {
+            name(args);
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        }
     }
 
-    public void as(List<String> args){
+    public void as(List<String> args) {
         assistant(args);
     }
 
     public void assistant(List<String> args) {
-        if(args.isEmpty()) throw new IllegalStateException();
+        if (args.isEmpty()) throw new IllegalStateException();
         int weight = Integer.parseInt(args.get(0));
         playMessageController.playAssistantCard(playMessageController.getNickname(), weight);
     }
 
     public void sm(List<String> args) throws IllegalAccessException {
-        studentmove(args);
+        try {
+            studentmove(args);
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        }
     }
 
     public void studentmove(List<String> args) throws IllegalAccessException {
-        if(args.size() < 3) throw new IllegalStateException();
+        if (args.size() < 3) throw new IllegalStateException();
         TeacherColor toMove = TeacherColor.valueOf(args.get(0).toUpperCase());
         String toPlace = verifyId(args.get(2));
         Optional<String> secondArg = Arrays.stream(TeacherColor.values())
@@ -180,17 +185,17 @@ public class Cli extends ViewObservable implements View {
                 .orElseThrow(() -> new IllegalAccessException("place " + id + " not found"));
     }
 
-    public void mnm(List<String> args){
+    public void mnm(List<String> args) {
         mnmove(args);
     }
 
     public void mnmove(List<String> args) {
-        if(args.isEmpty()) throw new IllegalStateException();
+        if (args.isEmpty()) throw new IllegalStateException();
         int hops = Integer.parseInt(args.get(0));
         playMessageController.moveMotherNature(playMessageController.getNickname(), hops);
     }
 
-    public void in(List<String> args){
+    public void in(List<String> args) {
         influence(args);
     }
 
@@ -198,17 +203,21 @@ public class Cli extends ViewObservable implements View {
         playMessageController.calcInfluence(playMessageController.getNickname());
     }
 
-    public void ch(List<String> args){
-        choose(args);
+    public void ch(List<String> args) throws IllegalAccessException {
+        try {
+            choose(args);
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        }
     }
 
-    public void choose(List<String> args) {
-        if(args.isEmpty()) throw new IllegalStateException();
-        playMessageController.chooseCloud(playMessageController.getNickname(), args.get(0));
+    public void choose(List<String> args) throws IllegalAccessException {
+        if (args.isEmpty()) throw new IllegalStateException();
+        playMessageController.chooseCloud(playMessageController.getNickname(), verifyId(args.get(0)));
     }
 
     public void character(List<String> args) {
-        if(args.isEmpty()) throw new IllegalStateException();
+        if (args.isEmpty()) throw new IllegalStateException();
         Characters character = Characters.valueOf(args.get(0).toUpperCase());
         if (args.size() == 1) {
             playMessageController.playCharacterCard(playMessageController.getNickname(), character);
@@ -235,31 +244,9 @@ public class Cli extends ViewObservable implements View {
         out.println("This play's main player is " + mainPlayerName);
     }
 
-    @Deprecated
-    public String readLine() throws ExecutionException {
-        FutureTask<String> futureTask = new FutureTask<>(new InputReadTask());
-        inputThread = new Thread(futureTask);
-        inputThread.start();
-
-        String input = null;
-
-        try {
-            input = futureTask.get();
-        } catch (InterruptedException e) {
-            futureTask.cancel(true);
-            Thread.currentThread().interrupt();
-        }
-        out.println(input);
-        return input;
-    }
-
     public void init() {
         out.println("Welcome to Eriantys!");
-        try {
-            askServerInfo();
-        } catch (ExecutionException e) {
-            out.println(STR_INPUT_CANCELED);
-        }
+        askServerInfo();
     }
 
     public void askForServerIp() {
@@ -272,14 +259,14 @@ public class Cli extends ViewObservable implements View {
         out.println("port <port number>");
     }
 
-    public void askServerInfo() throws ExecutionException {
+    public void askServerInfo() {
         out.println("Please specify the following settings. The default value is shown between brackets.");
         askForServerIp();
     }
 
     @Override
     public void askNickname() {
-        out.println("To start the game, set your nickname with the nickname command: nickname <nickname>");
+        out.println("To start the game, set your nickname with the nickname command:\nnickname <nickname>    or\nname <nickname>");
     }
 
     @Override
@@ -289,47 +276,21 @@ public class Cli extends ViewObservable implements View {
         out.println("expert\t\t\t// To set the game to expert variant or vice-versa");
     }
 
-    @Deprecated
-    private int numberInput(int minValue, int maxValue, List<Integer> jumpList, String question) throws ExecutionException {
-        int number = minValue - 1;
-
-        // A null jumpList will be transformed in a empty list.
-        if (jumpList == null) {
-            jumpList = List.of();
-        }
-
-        do {
-            try {
-                out.print(question);
-                number = Integer.parseInt(readLine());
-
-                if (number < minValue || number > maxValue) {
-                    out.println("Invalid number! Please try again.\n");
-                } else if (jumpList.contains(number)) {
-                    out.println("This number cannot be selected! Please try again.\n");
-                }
-            } catch (NumberFormatException e) {
-                out.println("Invalid input! Please try again.\n");
-            }
-        } while (number < minValue || number > maxValue || jumpList.contains(number));
-
-        return number;
-    }
-
     @Override
     public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname) {
         clearCli();
         if (nicknameAccepted && connectionSuccessful) {
             out.println("Hi, " + nickname + "! You connected to the server.");
         } else if (connectionSuccessful) {
+            out.println("Hi, seems like someone has already used your username... Please chose an other one");
             askNickname();
         } else if (nicknameAccepted) {
             out.println("Max players reached. Connection refused.");
             out.println("EXIT.");
-
             System.exit(1);
         } else {
             showErrorAndExit("Could not contact server.");
+            System.exit(1);
         }
     }
 
@@ -349,9 +310,8 @@ public class Cli extends ViewObservable implements View {
 
     @Override
     public void showDisconnectionMessage(String nicknameDisconnected, String text) {
-        inputThread.interrupt();
         out.println("\n" + nicknameDisconnected + text);
-
+        Client.LOGGER.info("Closing client for disconnection");
         System.exit(1);
     }
 
@@ -361,10 +321,10 @@ public class Cli extends ViewObservable implements View {
 
     @Override
     public void showErrorAndExit(String error) {
-        inputThread.interrupt();
-        inputDecoder.stopReading();
+        inputStream.stopReading();
         out.println("\nERROR: " + error);
         out.println("EXIT.");
+        Client.LOGGER.info("Closing client for error: error");
         System.exit(1);
     }
 
@@ -375,29 +335,6 @@ public class Cli extends ViewObservable implements View {
             out.println(nick + "\n");
         }
         out.println("Current players in lobby: " + nicknameList.size() + " / " + numPlayers);
-    }
-
-    private boolean waitForUndo() {
-        out.println("Waiting undo for " + UNDO_TIME / 1E3 + " seconds...");
-
-        Timer undoTimer = new Timer();
-        undoTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                inputThread.interrupt();
-            }
-        }, UNDO_TIME);
-
-        try {
-            out.print("Undo the last operation? [y/N]: ");
-            String undoConfirm = readLine();
-
-            undoTimer.cancel();
-            return undoConfirm.equalsIgnoreCase("y");
-        } catch (ExecutionException e) {
-            out.println(STR_INPUT_CANCELED);
-        }
-        return false;
     }
 
     public void clearCli() {

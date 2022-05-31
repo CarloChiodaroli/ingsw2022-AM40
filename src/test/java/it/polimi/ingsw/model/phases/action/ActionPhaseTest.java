@@ -7,10 +7,12 @@ import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
+import it.polimi.ingsw.server.model.phase.action.states.cards.StudentMovementCard;
 import it.polimi.ingsw.server.model.player.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.table.MotherNature;
 import it.polimi.ingsw.server.model.table.Island;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -428,14 +430,20 @@ public class ActionPhaseTest {
         game.gameStarter();
         actionPhase = game.getActionFase();
         AssistantCard card = new AssistantCard(4);
-        AssistantCard card1 = game.getPianificationFase().play(card, game.getPlayers().get(0));
+        game.getPianificationFase().play(card, game.getPlayers().get(0));
         AssistantCard card2 = new AssistantCard(6);
-        AssistantCard card3 = game.getPianificationFase().play(card2, game.getPlayers().get(1));
+        game.getPianificationFase().play(card2, game.getPlayers().get(1));
         actionPhase.startPhase(game.getPlayers().get(0));
 
         Map<Characters, CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
 
-        actualCharacterCards.putIfAbsent(Characters.JESTER, CharacterCardFabric.createCard(Characters.JESTER, actionPhase));
+        CharacterCard characterCard = CharacterCardFabric.createCard(Characters.JESTER, actionPhase);
+
+        actualCharacterCards.remove(Characters.JESTER);
+        actualCharacterCards.put(Characters.JESTER, characterCard);
+
+        characterCard.getStudentContainer().get().getStudent();
+        characterCard.getStudentContainer().get().addStudent(TeacherColor.PINK);
 
         assertTrue(game.isExpertVariant());
         assertThrowsIllegalStateException(() -> actionPhase.request(game.getPlayers().get(0), TeacherColor.PINK,

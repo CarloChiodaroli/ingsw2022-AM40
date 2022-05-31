@@ -23,7 +23,6 @@ public class ClientController implements ViewObserver, Observer {
     private Client client;
     private String nickname;
     private final ExecutorService taskQueue;
-    public static final int UNDO_TIME = 5000;
     private final PlayMessageController playMessageReader;
 
     public ClientController(View view) {
@@ -60,7 +59,6 @@ public class ClientController implements ViewObserver, Observer {
         client.sendMessage(new LobbyMessage(this.nickname, playersNumber));
     }
 
-
     @Override
     public void onDisconnection() {
         client.disconnect();
@@ -75,7 +73,7 @@ public class ClientController implements ViewObserver, Observer {
                     break;
                 case ERROR:
                     ErrorMessage em = (ErrorMessage) message;
-                    view.showError(em.getError());
+                    notCriticalError(em.getError());
                     break;
                 case LOGIN:
                     LoginMessage loginMessage = (LoginMessage) message;
@@ -91,21 +89,19 @@ public class ClientController implements ViewObserver, Observer {
                         try {
                             pm.executeMessage(playMessageReader);
                         } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                            Client.LOGGER.info(() -> "Error while managing message from server: " + e.getCause().getMessage());
+                            notCriticalError("Error while managing message from server: " + e.getCause().getMessage());
                         }
                     });
                     break;
                 default: // Should never reach this condition
                     // client.sendMessage(new ErrorMessage(nickname, "Wrong message received"));
-                    Client.LOGGER.info(() -> "received wrong message from server");
+                    notCriticalError("Received wrong message from server");
                     break;
             }
         } catch (ClassCastException e) {
             // Should never reach this condition
-            // client.sendMessage(new ErrorMessage(nickname, "Wrong message received"));
-            Client.LOGGER.info(() -> "Error while managing message from server: " + e.getCause().getMessage());
+            notCriticalError("Completely wrong message received from server");
         }
-
     }
 
     public String getNickname() {
@@ -120,7 +116,7 @@ public class ClientController implements ViewObserver, Observer {
             }
             return;
         }
-        if (playMessageReader.getPlayerNames().isEmpty()) { //
+        if (playMessageReader.getPlayerNames().isEmpty()) {
             playMessageReader.setPlayerNames(message.getNicknameList());
             return;
         }
@@ -139,5 +135,19 @@ public class ClientController implements ViewObserver, Observer {
 
     public void sendMessage(Message message){
         client.sendMessage(message);
+    }
+
+    private void notCriticalError(String error){
+        taskQueue.execute(() -> view.showError(error));
+        Client.LOGGER.severe(error);
+    }
+
+    public void criticalError(String error){
+        notCriticalError("Severe " + error);
+        killMe(1);
+    }
+
+    private void killMe(int status){
+        System.exit(status);
     }
 }

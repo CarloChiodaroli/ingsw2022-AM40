@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class PlayState {
 
-    private List<String> playerNames;
+    //private List<String> playerNames;
     private String mainPlayer;
     private String actualPlayer;
     private String myName;
@@ -27,10 +27,9 @@ public class PlayState {
     private Map<String, Integer> activeAssistantCards;
     private List<Integer> assistantCards;
     private Map<String, TowerColor> playersTowerColors;
-    private boolean editing;
 
     public PlayState(){
-        this.playerNames = new ArrayList<>();
+        //this.playerNames = new ArrayList<>();
         this.mainPlayer = null;
         this.studentsInPlace = new HashMap<>();
         this.conquests = new HashMap<>();
@@ -162,6 +161,10 @@ public class PlayState {
         return id.matches("^c_[0-9_]*");
     }
 
+    public List<String> getPlayerNames(){
+        return playersTowerColors.keySet().stream().toList();
+    }
+
     public boolean isActionPhase(){
         return actionPhase;
     }
@@ -182,7 +185,7 @@ public class PlayState {
                 .reduce((x, y) -> x +y).orElse(studentsInPlace.toString() + "LOL did not work");
 
         return "PlayState{" +
-                "playerNames=" + playerNames + "\n" +
+                //"playerNames=" + playerNames + "\n" +
                 ", mainPlayer='" + mainPlayer + '\'' + "\n" +
                 ", actualPlayer='" + actualPlayer + '\'' + "\n" +
                 ", actionPhase=" + actionPhase + "\n" +
