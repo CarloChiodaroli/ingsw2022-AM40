@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.view.gui.App;
+import it.polimi.ingsw.client.view.gui.JavaFXGui;
+import javafx.application.Application;
 
 public class Eriantys {
 
@@ -18,7 +20,8 @@ public class Eriantys {
         } else if (args[0].equals("g")){
             ClientApp.client();
         } else if (args[0].equals("conti")){
-            App.main(args); // https://github.com/ingconti/SampleJavaFx.git
+            Application.launch(JavaFXGui.class);
+
         } else {
             System.out.println("Got wrong argument, please retry.\nCorrect arguments:\n" +
                     "\teriantys s - to launch a server \n" +
