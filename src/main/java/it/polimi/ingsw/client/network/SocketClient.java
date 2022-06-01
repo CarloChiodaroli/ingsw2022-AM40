@@ -84,7 +84,7 @@ public class SocketClient extends Client {
                     message = gson.fromJson(rawGson, Message.class);
                     message = (Message) gson.fromJson(rawGson, message.getMessageType().getImplementingClass());
                     String forLambda = rawGson;
-                    Client.LOGGER.info(() -> "Received: " + forLambda);
+                    //Client.LOGGER.info(() -> "Received: " + forLambda);
                 } catch (IOException e) {
                     message = new ErrorMessage(null, "Connection lost with the server.");
                     disconnect();
@@ -99,7 +99,7 @@ public class SocketClient extends Client {
     public void sendMessage(Message message) {
         String rawGson = gson.toJson(message);
         output.println(rawGson);
-        if(!message.getMessageType().equals(MessageType.PING)) Client.LOGGER.info(() -> "Sent: " + rawGson);
+        //if(!message.getMessageType().equals(MessageType.PING)) Client.LOGGER.info(() -> "Sent: " + rawGson);
     }
 
     /**

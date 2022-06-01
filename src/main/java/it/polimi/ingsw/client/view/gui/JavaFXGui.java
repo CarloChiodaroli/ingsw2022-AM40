@@ -12,26 +12,34 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * Main JavaFX class which starts the main stage and scene.
  */
 public class JavaFXGui extends Application {
 
+    private final static String menuScene = "/fxml/menu_scene.fxml";
+
+    public static void loader(String[] args){
+        launch();
+    }
+
     @Override
     public void start(Stage stage) {
-        Gui view = (Gui) new Object();//new Gui();
+        Gui view = new Gui();
         ClientController clientController = new ClientController(view);
         view.addObserver(clientController);
 
         // Load root layout from fxml file.
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/menu_scene.fxml"));
+        loader.setLocation(getClass().getResource(menuScene));
         Parent rootLayout = null;
         try {
             rootLayout = loader.load();
         } catch (IOException e) {
             Client.LOGGER.severe(e.getMessage());
+            Client.LOGGER.log(Level.INFO, e.getMessage(), e);
             System.exit(1);
         }
         MenuSceneController controller = loader.getController();

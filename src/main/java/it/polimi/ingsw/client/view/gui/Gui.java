@@ -1,4 +1,5 @@
 package it.polimi.ingsw.client.view.gui;
+import it.polimi.ingsw.client.model.PlayMessageController;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.gui.scene.LobbySceneController;
 import it.polimi.ingsw.client.view.gui.scene.PlayersNumberSceneController;
@@ -7,7 +8,7 @@ import javafx.application.Platform;
 
 import java.util.List;
 
-public abstract class Gui extends ViewObservable implements View {
+public class Gui extends ViewObservable implements View {
     private static final String STR_ERROR = "ERROR";
     private static final String MENU_SCENE_FXML = "menu_scene.fxml";
 
@@ -79,6 +80,41 @@ public abstract class Gui extends ViewObservable implements View {
             LobbySceneController finalLsc = lsc;
             Platform.runLater(() -> SceneController.changeRootPane(finalLsc, "lobby_scene.fxml"));
         }
+    }
+
+    @Override
+    public void setStatePrinter(PlayMessageController playMessageController) {
+
+    }
+
+    @Override
+    public void showMainPlayerName(String mainPlayerName) {
+
+    }
+
+    @Override
+    public void showActualState() {
+
+    }
+
+    @Override
+    public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful) {
+
+    }
+
+    @Override
+    public void showOtherDisconnectionMessage(String nicknameDisconnected, String text) {
+
+    }
+
+    @Override
+    public void showError(String errorMessage) {
+
+    }
+
+    @Override
+    public void update() {
+
     }
 
 
