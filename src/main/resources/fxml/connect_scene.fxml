@@ -17,7 +17,7 @@
                 <AnchorPane prefHeight="550" prefWidth="500" styleClass="menuBanner"
                             stylesheets="@../css/connect_scene.css">
                     <children>
-                        <ImageView fitHeight="51.0" fitWidth="139.0" layoutX="185" layoutY="68" pickOnBounds="true"
+                        <ImageView fitHeight="51.0" fitWidth="138.0" layoutX="185" layoutY="68" pickOnBounds="true"
                                    preserveRatio="true">
                             <image>
                                 <Image url="@../images/joinAServer.png"/>

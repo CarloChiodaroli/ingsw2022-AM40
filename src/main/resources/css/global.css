@@ -104,6 +104,8 @@
     -fx-background-image: url("../images/bannerMenu.png");
     -fx-background-size: contain;
     -fx-background-repeat: no-repeat;
+    -fx-layoutX: "100";
+    -fx-layoutY: "100";
 
 }
 
