@@ -16,7 +16,6 @@ import java.util.*;
  */
 public class Game {
     private final List<Player> players;
-    //private Player actualPlayer = null;
     private Table table;
     private final List<TowerColor> order;
     private final Map<TowerColor, String> preGamePlayersList;
@@ -81,6 +80,10 @@ public class Game {
         }
     }
 
+    /**
+     * Initializes player's entrance with adequate number of students
+     * @param player the one to initialize
+     */
     private void initializePlayer(Player player) {
         Bag bag = (Bag) table.getBag().orElseThrow();
         for (int i = 0; i < player.getEntrance().getMaxStudents(); i++) {
@@ -130,11 +133,11 @@ public class Game {
     }
 
     /**
-     * Getter for the action fase
+     * Getter for the action phase
      *
-     * @return the action fase
+     * @return the action phase
      */
-    public ActionPhase getActionFase() {
+    public ActionPhase getActionPhase() {
         return actionPhase;
     }
 
@@ -186,57 +189,97 @@ public class Game {
         return isExpertVariant;
     }
 
+    /**
+     * Shows if the game is in three players mode
+     *
+     * @return true if it is, false if not
+     */
     public boolean isThreePlayerGame() {
         return isThreePlayerGame;
     }
 
+    /**
+     * Command to build new clouds
+     */
     public void buildClouds() {
-        table.FillCloudRound();
+        try{
+            table.buildClouds();
+        } catch (IllegalStateException e) {
+            this.endGame();
+        }
     }
 
-    public void removeCloud(StudentsManager cloud){
-        getTable().getCloudList().remove((Cloud) cloud);
+    /**
+     * Command to remove a cloud
+     *
+     * @param cloud the cloud to remove
+     */
+    public void removeCloud(StudentsManager cloud) {
+        getTable().removeCloud((Cloud) cloud);
     }
 
+    /**
+     * Getter of how many students are in this game
+     *
+     * @return the number of players
+     */
     public int getNumOfRegisteredPlayers() {
         return numOfRegisteredPlayers;
     }
 
+    /**
+     * Getter of endgame state
+     *
+     * @return true if the play is ended, false if not
+     */
     public boolean isGameEnded() {
         return endgame;
     }
 
+    /**
+     * Setter of the endgame
+     */
     public void endGame() {
         endgame = true;
+        this.endPlayer = searchPlayerWithMostTower();
     }
 
-    public void setEndgame(boolean endgame) {
-        this.endgame = endgame;
-    }
-
-    public Player getendplayer() {
+    /**
+     * Getter of the winning player.
+     *
+     * @return the winning player, null if even.
+     */
+    public Player getEndPlayer() {
         return endPlayer;
     }
 
-    public void setendplayer(Player endPlayer) {
-        this.endPlayer = endPlayer;
-    }
-
+    /**
+     * Finds the player who won the play
+     *
+     * @return the winner
+     */
     public Player searchPlayerWithMostTower() {
-        List<Player> PlayerWinner = new ArrayList<>();
+        List<Player> playerWinner = new ArrayList<>();
         int minimum = 1000;
         for (Player p : players)
             if (minimum >= p.getNumberTowersLeft())
                 minimum = p.getNumberTowersLeft();
         for (Player p : players)
             if (minimum == p.getNumberTowersLeft())
-                PlayerWinner.add(p);
-        if (PlayerWinner.size() == 1)
-            return PlayerWinner.get(0);
+                playerWinner.add(p);
+        if (playerWinner.size() == 1)
+            return playerWinner.get(0);
         else
-            return searchPlayerWithMostTeacher(PlayerWinner);
+            return searchPlayerWithMostTeacher(playerWinner);
     }
 
+    /**
+     * Finds the player with most Teachers.
+     * Used, as for game manual, to find the winner when towers are even.
+     *
+     * @param playerList the list of candidate winners
+     * @return the winning player
+     */
     private Player searchPlayerWithMostTeacher(List<Player> playerList) {
         int max = 0;
         Player maxPlayer = null;
@@ -248,6 +291,9 @@ public class Game {
         return maxPlayer;
     }
 
+    /**
+     * Needed to progress the turns and change the current active player
+     */
     public void nextPlayer() {
         actionPhase.reset();
         planningPhase.getActualPlayer().disable();
@@ -259,8 +305,12 @@ public class Game {
         }
     }
 
-    public boolean isStartGame()
-    {
+    /**
+     * Getter of if it is the start of the game
+     *
+     * @return true if it i, false if not
+     */
+    public boolean isStartGame() {
         return this.isInitial;
     }
 

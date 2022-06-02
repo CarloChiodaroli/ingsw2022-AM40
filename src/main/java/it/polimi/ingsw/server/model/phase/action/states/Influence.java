@@ -75,15 +75,13 @@ public class Influence extends ActionFaseState {
 
     private void possessionSwitcher(Island island, Optional<Player> outgoing, Player ingoing) {
         outgoing.ifPresent(x -> x.pushTower(island.howManyTowers()));
-        try {
+        if(ingoing.getNumberTowersLeft() < island.howManyEquivalents()){
+            island.setInfluence(ingoing.getTower(ingoing.getNumberTowersLeft()));
+        } else {
             island.setInfluence(ingoing.getTower(island.howManyEquivalents()));
-        } catch (InvalidParameterException e) {
-            this.getActionFase().getGame().setEndgame(true);
-            this.getActionFase().getGame().setendplayer(ingoing);
         }
         if (ingoing.getNumberTowersLeft() <= 0) {
-            this.getActionFase().getGame().setEndgame(true);
-            this.getActionFase().getGame().setendplayer(ingoing);
+            this.getActionFase().getGame().endGame();
         }
     }
 

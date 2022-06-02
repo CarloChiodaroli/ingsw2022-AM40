@@ -20,7 +20,7 @@ public class InfluenceTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        StudentMovement studentMovement = new StudentMovement(game.getActionFase());
+        StudentMovement studentMovement = new StudentMovement(game.getActionPhase());
         TowerColor towerColor0, towerColor1;
 
         towerColor0 = game.getPlayers().get(0).getTowerColor();
@@ -55,7 +55,7 @@ public class InfluenceTest {
                     Optional.of(game.getTable().getIslandList().get(7)));
         }
 
-        Influence influence = new Influence(game.getActionFase());
+        Influence influence = new Influence(game.getActionPhase());
         influence.handle(game.getPlayers().get(0), game.getTable().getIslandList().get(7));
 
         assertTrue(game.getTable().getIslandList().get(7).hasTowers());
@@ -79,7 +79,7 @@ public class InfluenceTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        StudentMovement studentMovement = new StudentMovement(game.getActionFase());
+        StudentMovement studentMovement = new StudentMovement(game.getActionPhase());
         TowerColor towerColor0;
 
         towerColor0 = game.getPlayers().get(0).getTowerColor();
@@ -101,7 +101,7 @@ public class InfluenceTest {
         studentMovement.handle(maxColor, Optional.of(game.getPlayers().get(0).getEntrance()),
                 Optional.of(game.getTable().getIslandList().get(7)));
 
-        Influence influence = new Influence(game.getActionFase());
+        Influence influence = new Influence(game.getActionPhase());
         influence.handle(game.getPlayers().get(0), game.getTable().getIslandList().get(7));
         assertTrue(game.getTable().getIslandList().get(7).hasTowers());
         assertEquals(Optional.of(towerColor0), game.getTable().getIslandList().get(7).getTowerColor());

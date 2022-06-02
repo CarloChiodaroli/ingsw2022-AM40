@@ -287,7 +287,7 @@ public class GameModelTest {
 
         model.playAssistantCard(aldo.getName(), 3);
         model.playAssistantCard(giovanni.getName(), 5);
-        model.getGame().getActionFase().getCharacterCards().putIfAbsent(Characters.CENTAUR,CharacterCardFabric.createCard(Characters.CENTAUR, model.getGame().getActionFase()));
+        model.getGame().getActionPhase().getCharacterCards().putIfAbsent(Characters.CENTAUR,CharacterCardFabric.createCard(Characters.CENTAUR, model.getGame().getActionPhase()));
 
         for(TeacherColor color: TeacherColor.values()){
             for(int i = aldo.getEntrance().howManyStudents(color); i > 0; i--){

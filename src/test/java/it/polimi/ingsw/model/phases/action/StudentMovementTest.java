@@ -18,7 +18,7 @@ public class StudentMovementTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        StudentMovement studentMovement = new StudentMovement(game.getActionFase());
+        StudentMovement studentMovement = new StudentMovement(game.getActionPhase());
 
         int max = 0;
         TeacherColor maxColor = TeacherColor.PINK;
@@ -95,7 +95,7 @@ public class StudentMovementTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        StudentMovement studentMovement = new StudentMovement(game.getActionFase());
+        StudentMovement studentMovement = new StudentMovement(game.getActionPhase());
 
         int max = 0;
         TeacherColor maxColor = TeacherColor.PINK;

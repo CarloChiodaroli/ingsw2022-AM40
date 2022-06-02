@@ -7,12 +7,10 @@ import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
-import it.polimi.ingsw.server.model.phase.action.states.cards.StudentMovementCard;
 import it.polimi.ingsw.server.model.player.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.table.MotherNature;
 import it.polimi.ingsw.server.model.table.Island;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -61,7 +59,7 @@ public class ActionPhaseTest {
         game.addPlayer("Anja");
         game.switchExpertVariant();
         game.gameStarter();
-        actionPhase = game.getActionFase();
+        actionPhase = game.getActionPhase();
 
         Map<Characters, CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
 
@@ -106,7 +104,7 @@ public class ActionPhaseTest {
         assertThrowsIllegalStateException(() -> actionPhase.request(camilla, "MotherNature"));
 
         actionPhase.setMovedMotherNature(true);
-        game.getActionFase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
+        game.getActionPhase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
         //camilla.calcInfluence();
         actionPhase.request(camilla, "MotherNature");
 
@@ -140,7 +138,7 @@ public class ActionPhaseTest {
         game.addPlayer("Anja");
         game.switchExpertVariant();
         game.gameStarter();
-        actionPhase = game.getActionFase();
+        actionPhase = game.getActionPhase();
 
         Map<Characters, CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
 
@@ -185,7 +183,7 @@ public class ActionPhaseTest {
         MotherNature.getMotherNature().setPosition(testIsland);
 
         actionPhase.setMovedMotherNature(true);
-        game.getActionFase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
+        game.getActionPhase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
 
         camilla.calcInfluence();
         assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
@@ -196,7 +194,7 @@ public class ActionPhaseTest {
         actionPhase.setMovedMotherNature(true);
         actionPhase.setCalculatedInfluence(false);
         actionPhase.setMergedIslands(false);
-        game.getActionFase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
+        game.getActionPhase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
 
         camilla.calcInfluence();
         assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
@@ -204,7 +202,7 @@ public class ActionPhaseTest {
         actionPhase.setMovedMotherNature(true);
         actionPhase.setCalculatedInfluence(false);
         actionPhase.setMergedIslands(false);
-        game.getActionFase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
+        game.getActionPhase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
 
         camilla.giveMoney(2);
         actionPhase.activateCard(Characters.SORCERER, game.getPlayers().get(0), TeacherColor.PINK);
@@ -212,7 +210,7 @@ public class ActionPhaseTest {
         assertThrowsIllegalStateException(() -> actionPhase.request(camilla, "c_1"));
         camilla.calcInfluence();
         actionPhase.setCalculatedInfluence(true);
-        game.getActionFase().setActualState(ActionPhaseStateType.CLOUD.getOrderPlace());
+        game.getActionPhase().setActualState(ActionPhaseStateType.CLOUD.getOrderPlace());
         assertEquals(camilla.getTowerColor(), testIsland.getTowerColor().get());
 
         assertThrowsNoSuchElementException(() -> actionPhase.request(camilla, "casual"));
@@ -221,9 +219,6 @@ public class ActionPhaseTest {
         assertThrowsIllegalStateException(() -> actionPhase.request(camilla, "c_1"));
 
         assertEquals(3, camilla.getEntrance().howManyTotStudents());
-
-
-
     }
 
     @Test
@@ -234,7 +229,7 @@ public class ActionPhaseTest {
         game.addPlayer("Anja");
         game.switchExpertVariant();
         game.gameStarter();
-        actionPhase = game.getActionFase();
+        actionPhase = game.getActionPhase();
 
         Map<Characters, CharacterCard> actualCharacterCards = actionPhase.getCharacterCards();
 
@@ -280,7 +275,7 @@ public class ActionPhaseTest {
         testIsland.addStudent(TeacherColor.PINK);
 
         camilla.giveMoney(2);
-        game.getActionFase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
+        game.getActionPhase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
         camilla.playCharacterCard(Characters.CRIER, specialTestIsland);
         //actionPhase.activateCard(Characters.CRIER, camilla, specialTestIsland);
 
@@ -302,7 +297,7 @@ public class ActionPhaseTest {
         game.addPlayer("Anja");
         game.switchExpertVariant();
         game.gameStarter();
-        actionPhase = game.getActionFase();
+        actionPhase = game.getActionPhase();
 
         Player camilla = game.getPlayers().get(0);
         Player anja = game.getPlayers().get(1);
@@ -428,7 +423,7 @@ public class ActionPhaseTest {
         game.addPlayer("Anja");
         game.switchExpertVariant();
         game.gameStarter();
-        actionPhase = game.getActionFase();
+        actionPhase = game.getActionPhase();
         AssistantCard card = new AssistantCard(4);
         game.getPianificationFase().play(card, game.getPlayers().get(0));
         AssistantCard card2 = new AssistantCard(6);

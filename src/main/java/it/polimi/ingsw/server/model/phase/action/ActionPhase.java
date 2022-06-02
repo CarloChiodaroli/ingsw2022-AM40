@@ -9,7 +9,6 @@ import it.polimi.ingsw.server.model.phase.action.states.*;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.server.model.phase.action.states.cards.InfluenceCard;
 import it.polimi.ingsw.server.model.player.Player;
-import it.polimi.ingsw.server.model.table.Cloud;
 import it.polimi.ingsw.server.model.table.Island;
 import it.polimi.ingsw.server.model.table.MotherNature;
 
@@ -215,12 +214,11 @@ public class ActionPhase {
         if (mergedIslands || !calculatedInfluence)
             throw new IllegalStateException("Cannot merge Islands now");
         states.get(ActionPhaseStateType.MERGE).handle();
-        if (game.getTable().getIslandList().size() == 3) {
-            this.getGame().setEndgame(true);
-            this.getGame().setendplayer(game.searchPlayerWithMostTower());
-        }
         mergedIslands = true;
         actualState++;
+        if (game.getTable().getIslandList().size() == 3) {
+            this.getGame().endGame();
+        }
     }
 
     // Activate Card methods

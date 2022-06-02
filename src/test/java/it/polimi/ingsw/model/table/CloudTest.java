@@ -29,12 +29,12 @@ public class CloudTest {
         Bag bag = new Bag(130, 26);
         int totStudents = bag.howManyTotStudents();
         Cloud cloud = new Cloud("c_1", 3);
-        cloud.buildClouds(bag);
+        cloud.buildCloud(bag);
         assertEquals(totStudents - 3, bag.howManyTotStudents());
         totStudents -= 3;
 
         cloud = new Cloud("c_2", 3);
-        cloud.buildClouds(bag);
+        cloud.buildCloud(bag);
         assertEquals(totStudents - 3, bag.howManyTotStudents());
         totStudents -= 3;
 
@@ -44,17 +44,17 @@ public class CloudTest {
         totStudents = bag.howManyTotStudents();
 
         cloud = new Cloud("c_1", 4);
-        cloud.buildClouds(bag);
+        cloud.buildCloud(bag);
         assertEquals(totStudents - 4, bag.howManyTotStudents());
         totStudents -= 4;
 
         cloud = new Cloud("c_2", 4);
-        cloud.buildClouds(bag);
+        cloud.buildCloud(bag);
         assertEquals(totStudents - 4, bag.howManyTotStudents());
         totStudents -= 4;
 
         cloud = new Cloud("c_3", 4);
-        cloud.buildClouds(bag);
+        cloud.buildCloud(bag);
         assertEquals(totStudents - 4, bag.howManyTotStudents());
         totStudents -= 4;
 

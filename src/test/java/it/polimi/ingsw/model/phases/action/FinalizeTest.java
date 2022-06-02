@@ -17,10 +17,10 @@ public class FinalizeTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        StudentMovement studentMovement = new StudentMovement(game.getActionFase());
+        StudentMovement studentMovement = new StudentMovement(game.getActionPhase());
         StudentsManager entrance0 = game.getPlayers().get(0).getEntrance();
         StudentsManager entrance1 = game.getPlayers().get(1).getEntrance();
-        Finalize finalize = new Finalize(game.getActionFase());
+        Finalize finalize = new Finalize(game.getActionPhase());
 
         for(int i = 0; i < 3; i++){
             int j = (int) (Math.random()*5);
@@ -123,9 +123,9 @@ public class FinalizeTest {
         game.addPlayer("Anja");
         game.addPlayer("Barbara");
         game.gameStarter();
-        StudentMovement studentMovement = new StudentMovement(game.getActionFase());
+        StudentMovement studentMovement = new StudentMovement(game.getActionPhase());
         StudentsManager entrance2 = game.getPlayers().get(2).getEntrance();
-        Finalize finalize = new Finalize(game.getActionFase());
+        Finalize finalize = new Finalize(game.getActionPhase());
 
         for(int i = 0; i < 4; i++){
             int j = (int) (Math.random()*5);
