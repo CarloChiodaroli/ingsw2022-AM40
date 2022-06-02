@@ -61,9 +61,20 @@ public class PlayState {
                 .peek(id -> islandSize.put(id, (int) id.chars().filter(x -> x == '_').count()))
                 .filter(id -> !studentsInPlace.containsKey(id))  // add new ids
                 .forEach(id -> studentsInPlace.put(id, new HashMap<>()));
-        studentsInPlace.keySet().stream()// remove useless ids
+        studentsInPlace.keySet().stream()         // remove useless ids
                 .filter(this::isIslandId)
                 .filter(id -> !islandIds.contains(id))
+                .forEach(studentsInPlace::remove);
+    }
+
+    public void setCloudIds(List<String> cloudIds){
+        cloudIds.stream()
+                .filter(this::isCloudId)         // control if all are cloud ids
+                .filter(id -> !studentsInPlace.containsKey(id))  // add new ids
+                .forEach(id -> studentsInPlace.put(id, new HashMap<>()));
+        studentsInPlace.keySet().stream()        // remove useless ids
+                .filter(this::isCloudId)
+                .filter(id -> !cloudIds.contains(id))
                 .forEach(studentsInPlace::remove);
     }
 

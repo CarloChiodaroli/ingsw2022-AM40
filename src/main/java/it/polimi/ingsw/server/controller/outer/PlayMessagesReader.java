@@ -225,7 +225,11 @@ public class PlayMessagesReader implements MessageReader {
             return;
         }
         answers.add(PlayMessagesFabric.statusStudent(server, "Entrance", outbound.getStudentInPlace(player, "Entrance")));
-        broadcastAnswers.add(PlayMessagesFabric.statusCloudIds(server, outbound.getAllCloudIds()));
+        List<String> cloudIds = outbound.getAllCloudIds();
+        broadcastAnswers.add(PlayMessagesFabric.statusCloudIds(server, cloudIds));
+        for(String cId: cloudIds){
+            broadcastAnswers.add(PlayMessagesFabric.statusStudent(server, cId, outbound.getStudentInPlace(mainPlayer, cId)));
+        }
         if (turnController.nextTurn()) {
             broadcastAnswers.add(PlayMessagesFabric.statusPlanning(server, getActualPlayer()));
         } else {

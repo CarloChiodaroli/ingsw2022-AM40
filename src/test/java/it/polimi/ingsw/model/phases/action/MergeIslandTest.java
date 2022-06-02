@@ -15,7 +15,7 @@ public class MergeIslandTest {
         game.addPlayer("Anja");
         game.gameStarter();
         assertEquals(12, game.getTable().getIslandList().size());
-        MergeIsland mergeIsland = new MergeIsland(game.getActionFase());
+        MergeIsland mergeIsland = new MergeIsland(game.getActionPhase());
 
         game.getTable().getIslandList().get(3).setInfluence(TowerColor.WHITE);
         game.getTable().getIslandList().get(4).setInfluence(TowerColor.WHITE);
@@ -48,7 +48,7 @@ public class MergeIslandTest {
         game.addPlayer("Barbara");
         game.gameStarter();
         assertEquals(12, game.getTable().getIslandList().size());
-        MergeIsland mergeIsland = new MergeIsland(game.getActionFase());
+        MergeIsland mergeIsland = new MergeIsland(game.getActionPhase());
 
         game.getTable().getIslandList().get(3).setInfluence(TowerColor.WHITE);
         game.getTable().getIslandList().get(4).setInfluence(TowerColor.WHITE);

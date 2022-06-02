@@ -12,11 +12,12 @@ import java.util.*;
 public class Table {
 
     private final List<Island> islandList;
-    private final List<Cloud> CloudList;
+    private final List<Cloud> cloudList;
     public static Bag bag;
     private int coinsLeft;
     private final static int numOfIslandsToCreate = 12;
     private final static int maxAvailableCoins = 20;
+    private final int numOfPlayers;
 
 
     /**
@@ -27,27 +28,31 @@ public class Table {
         bag = new Bag();
         coinsLeft = maxAvailableCoins;
         islandList = new ArrayList<>();
-        CloudList = new ArrayList<>();
+        cloudList = new ArrayList<>();
+        this.numOfPlayers = numberOfPlayer;
         buildIslands();
         FillCInitialIslandWithStudent(randomFirstIsland);
         MotherNature.getMotherNature().setPosition(islandList.get(randomFirstIsland));
-        buildsCloud(numberOfPlayer);
     }
-
-
-    public void FillCloudRound() {
-        for (Cloud cloud : CloudList)
-            cloud.buildClouds(bag);
-    }
-
 
     /**
      * @param numberOfPlayer number of player to create
      */
-    private void buildsCloud(int numberOfPlayer) {
+    public void buildClouds(int numberOfPlayer) throws IllegalStateException{
+        cloudList.clear();
         for (int i = 0; i < numberOfPlayer; i++) {
-            CloudList.add(new Cloud("c_" + (i + 1), numberOfPlayer + 1));
+            Cloud cloud = new Cloud("c_" + (i + 1), numberOfPlayer + 1);
+            cloud.buildCloud(bag);
+            cloudList.add(cloud);
         }
+    }
+
+    public void buildClouds() {
+        buildClouds(numOfPlayers);
+    }
+
+    public void removeCloud(Cloud cloud){
+        cloudList.remove(cloud);
     }
 
     public void FillCInitialIslandWithStudent(int randomFirstIsland) {
@@ -140,7 +145,7 @@ public class Table {
      * @return List of Cloud
      */
     public List<Cloud> getCloudList() {
-        return CloudList;
+        return cloudList;
     }
 
     /**
@@ -148,7 +153,7 @@ public class Table {
      * @return Cloud you are looking for
      */
     public Optional<Cloud> getCloudById(String id) {
-        return CloudList.stream()
+        return cloudList.stream()
                 .filter(cloud -> cloud.getId().equals(id))
                 .findAny();
     }

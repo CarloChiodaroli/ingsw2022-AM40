@@ -175,7 +175,7 @@ public class GameControllerTest {
             reader.playAssistantCard(aldoName, 1);
             reader.playAssistantCard(giovanniName, 5);
 
-            game.getActionFase().setPossibleStudentMovements(0);
+            game.getActionPhase().setPossibleStudentMovements(0);
             Island island = game.getTable().getIslandById(testIslandId).get();
             MotherNature.getMotherNature().setPosition(island);
 
@@ -208,9 +208,9 @@ public class GameControllerTest {
             MotherNature.getMotherNature().setPosition(testIsland);
             testIsland.addStudent(TeacherColor.BLUE);
 
-            game.getActionFase().setCalculatedInfluence(false);
-            game.getActionFase().setMovedMotherNature(true);
-            game.getActionFase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
+            game.getActionPhase().setCalculatedInfluence(false);
+            game.getActionPhase().setMovedMotherNature(true);
+            game.getActionPhase().setActualState(ActionPhaseStateType.INFLUENCE.getOrderPlace());
 
             inbound.calcInfluence(aldoName);
 
@@ -228,9 +228,9 @@ public class GameControllerTest {
 
             Cloud testCloud = game.getTable().getCloudById("c_1").orElseThrow();
 
-            game.getActionFase().setCalculatedInfluence(true);
-            game.getActionFase().setChosenCloud(false);
-            game.getActionFase().setActualState(ActionPhaseStateType.CLOUD.getOrderPlace());
+            game.getActionPhase().setCalculatedInfluence(true);
+            game.getActionPhase().setChosenCloud(false);
+            game.getActionPhase().setActualState(ActionPhaseStateType.CLOUD.getOrderPlace());
 
             Map<TeacherColor, Integer> cloudContent = new HashMap<>();
 
@@ -251,8 +251,8 @@ public class GameControllerTest {
             reader.playAssistantCard(aldoName, 1);
             reader.playAssistantCard(giovanniName, 5);
 
-            game.getActionFase().setCalculatedInfluence(true);
-            game.getActionFase().setChosenCloud(false);
+            game.getActionPhase().setCalculatedInfluence(true);
+            game.getActionPhase().setChosenCloud(false);
 
             assertDoesNotThrow(() -> inbound.chooseCloud(aldoName, "c_1"));
             turn.nextTurn();
@@ -307,12 +307,12 @@ public class GameControllerTest {
 
 
 
-            game.getActionFase().getCharacterCards().putIfAbsent(Characters.MINSTREL, CharacterCardFabric.createCard(Characters.MINSTREL, game.getActionFase()));
+            game.getActionPhase().getCharacterCards().putIfAbsent(Characters.MINSTREL, CharacterCardFabric.createCard(Characters.MINSTREL, game.getActionPhase()));
 
             aldo.giveMoney(3);
             inbound.playCharacterCard(aldoName, Characters.MINSTREL);
 
-            assertEquals(Characters.MINSTREL, game.getActionFase().getActualCharacter().get());
+            assertEquals(Characters.MINSTREL, game.getActionPhase().getActualCharacter().get());
 
             aldo.getEntrance().addStudent(TeacherColor.BLUE);
 
@@ -328,35 +328,35 @@ public class GameControllerTest {
 
         @Test
         public void playCharacterCardTest(){
-            game.getActionFase().getCharacterCards().putIfAbsent(Characters.FRIAR,CharacterCardFabric.createCard(Characters.FRIAR, game.getActionFase()));
+            game.getActionPhase().getCharacterCards().putIfAbsent(Characters.FRIAR,CharacterCardFabric.createCard(Characters.FRIAR, game.getActionPhase()));
 
-            inbound.getModel().getGame().getActionFase().setActualState(Characters.FRIAR.getType().getOrderPlace());
+            inbound.getModel().getGame().getActionPhase().setActualState(Characters.FRIAR.getType().getOrderPlace());
             aldo.giveMoney(3);
             inbound.playCharacterCard(aldoName, Characters.FRIAR);
 
-            assertEquals(Characters.FRIAR, game.getActionFase().getActualCharacter().get());
+            assertEquals(Characters.FRIAR, game.getActionPhase().getActualCharacter().get());
         }
 
         @Test
         public void playCharacterCardTeacherColorTest(){
-            game.getActionFase().getCharacterCards().putIfAbsent(Characters.SORCERER, CharacterCardFabric.createCard(Characters.SORCERER, game.getActionFase()));
+            game.getActionPhase().getCharacterCards().putIfAbsent(Characters.SORCERER, CharacterCardFabric.createCard(Characters.SORCERER, game.getActionPhase()));
 
-            inbound.getModel().getGame().getActionFase().setActualState(Characters.SORCERER.getType().getOrderPlace());
+            inbound.getModel().getGame().getActionPhase().setActualState(Characters.SORCERER.getType().getOrderPlace());
             aldo.giveMoney(3);
             inbound.playCharacterCard(aldoName, Characters.SORCERER, TeacherColor.PINK);
 
-            assertEquals(Characters.SORCERER, game.getActionFase().getActualCharacter().get());
+            assertEquals(Characters.SORCERER, game.getActionPhase().getActualCharacter().get());
         }
 
         @Test
         public void playCharacterCardIslandTest(){
-            game.getActionFase().getCharacterCards().putIfAbsent(Characters.CRIER,CharacterCardFabric.createCard(Characters.CRIER, game.getActionFase()));
+            game.getActionPhase().getCharacterCards().putIfAbsent(Characters.CRIER,CharacterCardFabric.createCard(Characters.CRIER, game.getActionPhase()));
 
-            inbound.getModel().getGame().getActionFase().setActualState(Characters.CRIER.getType().getOrderPlace());
+            inbound.getModel().getGame().getActionPhase().setActualState(Characters.CRIER.getType().getOrderPlace());
             aldo.giveMoney(3);
             inbound.playCharacterCard(aldoName, Characters.CRIER, testIslandId);
 
-            assertEquals(Characters.CRIER, game.getActionFase().getActualCharacter().get());
+            assertEquals(Characters.CRIER, game.getActionPhase().getActualCharacter().get());
         }
     }
 

@@ -170,7 +170,8 @@ public class PlayMessageController implements MessageReader {
 
     @Override
     public synchronized void statusCloudIds(String sender, List<String> ids) {
-
+        controlServer(sender);
+        state.setCloudIds(ids);
     }
 
     @Override

@@ -24,11 +24,11 @@ public class InfluenceCardTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        StudentMovement studentMovement = new StudentMovement(game.getActionFase());
+        StudentMovement studentMovement = new StudentMovement(game.getActionPhase());
         Characters sorceress = Characters.SORCERESS;
-        InfluenceCard sorceressCard = new InfluenceCard(sorceress, game.getActionFase(),
+        InfluenceCard sorceressCard = new InfluenceCard(sorceress, game.getActionPhase(),
                 CharacterCardFabric.getCharacterization(sorceress));
-        Influence influence = new Influence(game.getActionFase());
+        Influence influence = new Influence(game.getActionPhase());
 
         Player camilla = game.getPlayers().get(0);
         Player anja = game.getPlayers().get(1);
@@ -100,11 +100,11 @@ public class InfluenceCardTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        StudentMovement studentMovement = new StudentMovement(game.getActionFase());
+        StudentMovement studentMovement = new StudentMovement(game.getActionPhase());
         Characters sorcerer = Characters.SORCERER;
-        InfluenceCard sorcererCard = new InfluenceCard(sorcerer, game.getActionFase(),
+        InfluenceCard sorcererCard = new InfluenceCard(sorcerer, game.getActionPhase(),
                 CharacterCardFabric.getCharacterization(sorcerer));
-        Influence influence = new Influence(game.getActionFase());
+        Influence influence = new Influence(game.getActionPhase());
 
         Player camilla = game.getPlayers().get(0);
         Player anja = game.getPlayers().get(1);
@@ -170,11 +170,11 @@ public class InfluenceCardTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        StudentMovement studentMovement = new StudentMovement(game.getActionFase());
+        StudentMovement studentMovement = new StudentMovement(game.getActionPhase());
         Characters centaur = Characters.CENTAUR;
-        InfluenceCard centaurCard = new InfluenceCard(centaur, game.getActionFase(),
+        InfluenceCard centaurCard = new InfluenceCard(centaur, game.getActionPhase(),
                 CharacterCardFabric.getCharacterization(centaur));
-        Influence influence = new Influence(game.getActionFase());
+        Influence influence = new Influence(game.getActionPhase());
 
         Player camilla = game.getPlayers().get(0);
         Player anja = game.getPlayers().get(1);
@@ -260,11 +260,11 @@ public class InfluenceCardTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        StudentMovement studentMovement = new StudentMovement(game.getActionFase());
+        StudentMovement studentMovement = new StudentMovement(game.getActionPhase());
         Characters knight = Characters.KNIGHT;
-        InfluenceCard knightCard = new InfluenceCard(knight, game.getActionFase(),
+        InfluenceCard knightCard = new InfluenceCard(knight, game.getActionPhase(),
                 CharacterCardFabric.getCharacterization(knight));
-        Influence influence = new Influence(game.getActionFase());
+        Influence influence = new Influence(game.getActionPhase());
 
         Player camilla = game.getPlayers().get(0);
         Player anja = game.getPlayers().get(1);
@@ -335,11 +335,11 @@ public class InfluenceCardTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        StudentMovement studentMovement = new StudentMovement(game.getActionFase());
+        StudentMovement studentMovement = new StudentMovement(game.getActionPhase());
         Characters crier = Characters.CRIER;
-        InfluenceCard crierCard = new InfluenceCard(crier, game.getActionFase(),
+        InfluenceCard crierCard = new InfluenceCard(crier, game.getActionPhase(),
                 CharacterCardFabric.getCharacterization(crier));
-        Influence influence = new Influence(game.getActionFase());
+        Influence influence = new Influence(game.getActionPhase());
 
         Player camilla = game.getPlayers().get(0);
         Player anja = game.getPlayers().get(1);

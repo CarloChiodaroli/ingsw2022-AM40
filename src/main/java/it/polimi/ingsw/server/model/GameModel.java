@@ -212,7 +212,7 @@ public class GameModel {
 
     public List<Characters> getEnabledCharacterCards() {
         return Arrays.stream(Characters.values())
-                .filter(x -> game.getActionFase().canBeActivated(x))
+                .filter(x -> game.getActionPhase().canBeActivated(x))
                 .collect(Collectors.toList());
     }
 
@@ -288,13 +288,13 @@ public class GameModel {
     }
 
     public Map<TeacherColor, Integer> getActualCardMemory() {
-        return getCardMemory(game.getActionFase().getActualCharacter()
+        return getCardMemory(game.getActionPhase().getActualCharacter()
                 .orElseThrow(() -> new IllegalStateException("No card has been activated")));
     }
 
     public Map<TeacherColor, Integer> getCardMemory(Characters character) {
         Map<TeacherColor, Integer> studentContent = new HashMap<>();
-        Optional<StudentsManager> tmp = game.getActionFase().getCardMemory(character);
+        Optional<StudentsManager> tmp = game.getActionPhase().getCardMemory(character);
         for (TeacherColor color : TeacherColor.values()) {
             if (tmp.isEmpty()) {
                 studentContent.put(color, 0);

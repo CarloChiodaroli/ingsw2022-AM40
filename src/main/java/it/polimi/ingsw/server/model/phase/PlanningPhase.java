@@ -45,8 +45,8 @@ public class PlanningPhase {
      */
     public void activate() {
         if (countRound == 10) {
-            game.setEndgame(true);
-            game.setendplayer(game.searchPlayerWithMostTower());
+            game.endGame();
+            return;
         }
         activated = true;
         playersInOrder = new ArrayList<>();
@@ -123,22 +123,21 @@ public class PlanningPhase {
         return playersInOrder.contains(player);
     }
 
-    // Pianification phase part 2
+    // Planning phase part 2
 
     /**
-     * Determines if the pianification phase is ended and the order of players completely determined
+     * Determines if the planning phase is ended and the order of players completely determined
      * Asks the game to create new clouds with students
      */
     private void endPhase() {
         if (playersInOrder.size() == players) {
             determinedOrder = true;
             if (game.getTable().getBag().orElseThrow().howManyTotStudents() < game.getNumOfRegisteredPlayers() * game.getNumOfRegisteredPlayers() + 1) {
-                game.setEndgame(true);
-                game.setendplayer(game.searchPlayerWithMostTower());
+                game.endGame();
             } else {
                 //game.buildClouds();
                 actualPlayer = 0;
-                game.getActionFase().startPhase(playersInOrder.get(actualPlayer));
+                game.getActionPhase().startPhase(playersInOrder.get(actualPlayer));
                 countRound++;
             }
         }

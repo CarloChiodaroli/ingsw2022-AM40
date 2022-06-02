@@ -16,6 +16,7 @@ public class TableTest {
     @Test
     public void generateCloudsTest() {
         Table table = new Table(2);
+        table.buildClouds();
         assertEquals("c_1", table.getCloudList().get(0).getId());
         assertEquals("c_2", table.getCloudList().get(1).getId());
 
@@ -23,6 +24,7 @@ public class TableTest {
         assertEquals((StudentsManager) table.getCloudList().get(1), table.getCloudById("c_2").get());
 
         table = new Table(3);
+        table.buildClouds();
         assertEquals("c_1", table.getCloudList().get(0).getId());
         assertEquals("c_2", table.getCloudList().get(1).getId());
         assertEquals("c_3", table.getCloudList().get(2).getId());

@@ -30,7 +30,7 @@ public class CharacterCardFabricTest {
         game.addPlayer("Anja");
         game.gameStarter();
 
-        CharacterCard card = CharacterCardFabric.createCard(character, game.getActionFase());
+        CharacterCard card = CharacterCardFabric.createCard(character, game.getActionPhase());
 
         switch(character.getType()){
             case STUDENT -> {
@@ -59,7 +59,7 @@ public class CharacterCardFabricTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        Map<Characters, CharacterCard> cards = CharacterCardFabric.getCards(game.getActionFase());
+        Map<Characters, CharacterCard> cards = CharacterCardFabric.getCards(game.getActionPhase());
 
         assertEquals(3, cards.size());
 

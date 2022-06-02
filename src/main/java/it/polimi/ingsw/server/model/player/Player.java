@@ -112,12 +112,12 @@ public class Player {
         controlEnable();
         Optional<StudentsManager> from = getStudentsManagerById(sourceId, student);
         Optional<StudentsManager> to = getStudentsManagerById(destinationId, student);
-        game.getActionFase().request(student, from, to);
+        game.getActionPhase().request(student, from, to);
     }
 
     public void moveStudent(TeacherColor studentA, TeacherColor studentB) {
         controlEnable();
-        game.getActionFase().request(this, studentA, studentB);
+        game.getActionPhase().request(this, studentA, studentB);
     }
 
     /**
@@ -152,7 +152,7 @@ public class Player {
      */
     public void moveMotherNature(int steps) {
         controlEnable();
-        game.getActionFase().request(this, steps);
+        game.getActionPhase().request(this, steps);
     }
 
     /**
@@ -160,7 +160,7 @@ public class Player {
      */
     public void calcInfluence() {
         controlEnable();
-        game.getActionFase().request(this, "MotherNature");
+        game.getActionPhase().request(this, "MotherNature");
     }
 
     /**
@@ -232,7 +232,7 @@ public class Player {
      * @param cloudId is the id of the chosen cloud
      */
     public void chooseCloud(String cloudId) {
-        game.getActionFase().request(this, cloudId);
+        game.getActionPhase().request(this, cloudId);
     }
 
     /**
@@ -246,17 +246,17 @@ public class Player {
 
     public void playCharacterCard(Characters characters) {
         controlEnable();
-        game.getActionFase().activateCard(characters, this);
+        game.getActionPhase().activateCard(characters, this);
     }
 
     public void playCharacterCard(Characters characters, TeacherColor color) {
         controlEnable();
-        game.getActionFase().activateCard(characters, this, color);
+        game.getActionPhase().activateCard(characters, this, color);
     }
 
     public void playCharacterCard(Characters characters, Island island) {
         controlEnable();
-        game.getActionFase().activateCard(characters, this, island);
+        game.getActionPhase().activateCard(characters, this, island);
     }
 
     public boolean pay(int howMuch) {

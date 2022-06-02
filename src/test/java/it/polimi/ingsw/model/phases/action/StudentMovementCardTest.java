@@ -50,9 +50,9 @@ public class StudentMovementCardTest {
 
         custom.replace("Price", 1);
 
-        StudentMovement phase = new StudentMovement(game.getActionFase());
+        StudentMovement phase = new StudentMovement(game.getActionPhase());
 
-        StudentMovementCard card = new StudentMovementCard(Characters.HOST, game.getActionFase(), custom);
+        StudentMovementCard card = new StudentMovementCard(Characters.HOST, game.getActionPhase(), custom);
 
         assertEquals(1, card.getPrice());
 
@@ -74,9 +74,9 @@ public class StudentMovementCardTest {
         custom.replace("Usages", 1);
         custom.replace("Room", 1);
 
-        StudentMovement phase = new StudentMovement(game.getActionFase());
+        StudentMovement phase = new StudentMovement(game.getActionPhase());
 
-        StudentMovementCard card = new StudentMovementCard(Characters.HOST, game.getActionFase(), custom);
+        StudentMovementCard card = new StudentMovementCard(Characters.HOST, game.getActionPhase(), custom);
 
         assertEquals(7, game.getPlayers().get(0).getEntrance().howManyTotStudents());
 
@@ -140,9 +140,9 @@ public class StudentMovementCardTest {
         custom.replace("Usages", 1);
         custom.replace("Memory", 6);
 
-        StudentMovement phase = new StudentMovement(game.getActionFase());
+        StudentMovement phase = new StudentMovement(game.getActionPhase());
 
-        StudentMovementCard card = new StudentMovementCard(Characters.HOST, game.getActionFase(), custom);
+        StudentMovementCard card = new StudentMovementCard(Characters.HOST, game.getActionPhase(), custom);
 
         assertEquals(7, game.getPlayers().get(0).getEntrance().howManyTotStudents());
 
@@ -202,9 +202,9 @@ public class StudentMovementCardTest {
         custom.replace("Usages", 0);
         custom.replace("Student", 1);
 
-        StudentMovement phase = new StudentMovement(game.getActionFase());
+        StudentMovement phase = new StudentMovement(game.getActionPhase());
 
-        StudentMovementCard card = new StudentMovementCard(Characters.HOST, game.getActionFase(), custom);
+        StudentMovementCard card = new StudentMovementCard(Characters.HOST, game.getActionPhase(), custom);
 
         assertEquals(7, game.getPlayers().get(0).getEntrance().howManyTotStudents());
 
@@ -264,9 +264,9 @@ public class StudentMovementCardTest {
         custom.replace("Usages", 3);
         custom.replace("TeacherBehaviour", 1);
 
-        StudentMovement phase = new StudentMovement(game.getActionFase());
+        StudentMovement phase = new StudentMovement(game.getActionPhase());
 
-        StudentMovementCard card = new StudentMovementCard(Characters.HOST, game.getActionFase(), custom);
+        StudentMovementCard card = new StudentMovementCard(Characters.HOST, game.getActionPhase(), custom);
 
         assertEquals(7, game.getPlayers().get(0).getEntrance().howManyTotStudents());
 

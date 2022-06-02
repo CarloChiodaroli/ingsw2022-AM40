@@ -23,9 +23,9 @@ public class MotherNatureCardTest {
         game.addPlayer("Anja");
         game.gameStarter();
         Characters messenger = Characters.MESSENGER;
-        MotherNatureCard motherNatureCard = new MotherNatureCard(messenger, game.getActionFase(),
+        MotherNatureCard motherNatureCard = new MotherNatureCard(messenger, game.getActionPhase(),
                 CharacterCardFabric.getCharacterization(messenger));
-        MotherNatureState motherNatureState = new MotherNatureState(game.getActionFase());
+        MotherNatureState motherNatureState = new MotherNatureState(game.getActionPhase());
         motherNatureCard.activator(motherNatureState, game.getPlayers().get(0));
         Optional<Island> initialpos = MotherNature.getMotherNature().getPosition();
         Island inpos = initialpos.get();

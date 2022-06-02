@@ -18,7 +18,7 @@ public class MotherNatureStateTest {
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
         game.gameStarter();
-        MotherNatureState motherNatureState = new MotherNatureState(game.getActionFase());
+        MotherNatureState motherNatureState = new MotherNatureState(game.getActionPhase());
         Optional<Island> initialpos = MotherNature.getMotherNature().getPosition();
         Island inpos = initialpos.get();
         int firstposition = game.getTable().getIslandList().indexOf(inpos);
@@ -63,7 +63,7 @@ public class MotherNatureStateTest {
         game.addPlayer("Anja");
         game.addPlayer("Barbara");
         game.gameStarter();
-        MotherNatureState motherNatureState = new MotherNatureState(game.getActionFase());
+        MotherNatureState motherNatureState = new MotherNatureState(game.getActionPhase());
         Optional<Island> initialpos = MotherNature.getMotherNature().getPosition();
         Island inpos = initialpos.get();
         int firstposition = game.getTable().getIslandList().indexOf(inpos);

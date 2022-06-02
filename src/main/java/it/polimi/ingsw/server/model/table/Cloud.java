@@ -25,8 +25,10 @@ public class Cloud extends StudentsManager {
         return id;
     }
 
-    public void buildClouds(Bag bag) {
+    public void buildCloud(Bag bag) throws IllegalStateException{
         int color;
+        if(bag.howManyTotStudents() < this.getMaxStudents())
+            throw new IllegalStateException("Not enough students to fill the cloud");
         for (int i = 0; i < this.getMaxStudents(); i++) {
             color = (int) (Math.random() * 5);
             while (!this.addStudent(TeacherColor.values()[color])) {
