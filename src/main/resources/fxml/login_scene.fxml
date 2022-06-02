@@ -10,42 +10,47 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.*?>
 <?import java.net.URL?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import java.lang.String?>
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0"
            prefWidth="1300.0" styleClass="menuBackground" xmlns="http://javafx.com/javafx/11.0.1"
            xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.gui.scene.LoginSceneController">
     <children>
         <Group scaleX="1.5" scaleY="1.5" scaleZ="1.5">
             <children>
-                <AnchorPane layoutX="57.0" layoutY="62.0" prefHeight="452.0" prefWidth="453.0"
-                            styleClass="menuBanner">
-                    <children>
+                <VBox prefHeight="452.0" prefWidth="453.0"
+                      styleClass="menuBanner">
+                    <VBox styleClass="caption">
+                        <Text fill="#451616" strokeWidth="0.0"
+                              styleClass="customText" text="Nickname" wrappingWidth="182.49612426757812">
+                            <font>
+                                <Font size="17.0"/>
+                            </font>
+                        </Text>
+                    </VBox>
+                    <TextField id="nicknameField" fx:id="nicknameField" alignment="CENTER"
+                               prefHeight="42.0" prefWidth="229.0"
+                               promptText="Anonymous Wombat">
+                        <font>
+                            <Font size="16.0"/>
+                        </font>
+                        <styleClass>
+                            <String fx:value="customText"/>
+                            <String fx:value="menuField"/>
+                        </styleClass>
+                    </TextField>
+                    <HBox>
                         <Button fx:id="backToMenuBtn" layoutX="110.0" layoutY="320.0" mnemonicParsing="false"
                                 prefHeight="32.0" prefWidth="102" styleClass="smallButton" text="Menu">
                         </Button>
                         <Button fx:id="joinBtn" layoutX="110.0" layoutY="240.0" mnemonicParsing="false"
                                 prefHeight="32.0" prefWidth="102" styleClass="smallButton" text="Join">
                         </Button>
-                        <ImageView fitHeight="58.0" fitWidth="333.0" layoutX="56.0" layoutY="69.0" pickOnBounds="true"
-                                   preserveRatio="true">
-                            <image>
-                                <Image url="@../images/btn.png"/>
-                            </image>
-                        </ImageView>
-                        <Text fill="#451616" layoutX="135.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                              styleClass="customText" text="Nickname" wrappingWidth="182.49612426757812">
-                            <font>
-                                <Font size="17.0"/>
-                            </font>
-                        </Text>
-                        <TextField id="nicknameField" fx:id="nicknameField" alignment="CENTER" layoutX="84.0"
-                                   layoutY="167.0" prefHeight="51.0" prefWidth="285.0" promptText="Anonymous Wombat"
-                                   styleClass="customText">
-                            <font>
-                                <Font size="16.0"/>
-                            </font>
-                        </TextField>
-                    </children>
-                </AnchorPane>
+                    </HBox>
+                </VBox>
             </children>
         </Group>
     </children>
