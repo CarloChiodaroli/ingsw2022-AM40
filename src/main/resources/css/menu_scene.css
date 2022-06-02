@@ -1,6 +1,9 @@
+
 .rootPane {
     -fx-background-image: url("../images/eriantysLogo.png");
     -fx-background-size: stretch;
+    -fx-fitHeight:"427.5";
+    -fx-fitWidth:"900.0";
 }
 
 .playBtn {
