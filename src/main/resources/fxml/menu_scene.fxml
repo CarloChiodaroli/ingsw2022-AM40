@@ -13,7 +13,7 @@
       <AnchorPane fx:id="rootPane" layoutX="31.0" layoutY="18.0"
                   prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Button fx:id="playBtn" layoutX="580" layoutY="500" mnemonicParsing="false" prefHeight="98"
+            <Button fx:id="playBtn" layoutX="581" layoutY="500" mnemonicParsing="false" prefHeight="98"
                     prefWidth="270" styleClass="playBtn" stylesheets="@../css/menu_scene.css"/>
          </children>
       </AnchorPane>
