@@ -228,7 +228,7 @@ public class PlayMessagesReader implements MessageReader {
         List<String> cloudIds = outbound.getAllCloudIds();
         broadcastAnswers.add(PlayMessagesFabric.statusCloudIds(server, cloudIds));
         for(String cId: cloudIds){
-            broadcastAnswers.add(PlayMessagesFabric.statusStudent(server, id, outbound.getStudentInPlace(mainPlayer, cId)));
+            broadcastAnswers.add(PlayMessagesFabric.statusStudent(server, cId, outbound.getStudentInPlace(mainPlayer, cId)));
         }
         if (turnController.nextTurn()) {
             broadcastAnswers.add(PlayMessagesFabric.statusPlanning(server, getActualPlayer()));
