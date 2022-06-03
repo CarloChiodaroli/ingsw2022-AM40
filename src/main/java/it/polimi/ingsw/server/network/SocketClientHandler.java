@@ -103,7 +103,7 @@ public class SocketClientHandler implements ClientHandler, Runnable {
                             socketServer.addClient(message.getSenderName(), this);
                         } else {
                             Message forLambda = message;
-                            Server.LOGGER.info(() -> "Received: " + forLambda);
+                            //Server.LOGGER.info(() -> "Received: " + forLambda);
                             socketServer.onMessageReceived(message);
                         }
                     }

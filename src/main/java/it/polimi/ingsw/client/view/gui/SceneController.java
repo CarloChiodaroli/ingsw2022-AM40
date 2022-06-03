@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.client.network.Client;
+import it.polimi.ingsw.client.observer.ViewObserver;
 import it.polimi.ingsw.client.view.gui.scene.AlertSceneController;
 import it.polimi.ingsw.client.view.gui.scene.GenericSceneController;
-import it.polimi.ingsw.commons.observer.ViewObservable;
-import it.polimi.ingsw.commons.observer.ViewObserver;
+import it.polimi.ingsw.client.observer.ViewObservable;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;

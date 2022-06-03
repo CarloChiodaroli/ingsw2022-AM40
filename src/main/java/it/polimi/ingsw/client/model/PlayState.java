@@ -31,7 +31,6 @@ public class PlayState {
     private Wizard wizard;
 
     public PlayState(){
-        //this.playerNames = new ArrayList<>();
         this.mainPlayer = null;
         this.studentsInPlace = new HashMap<>();
         this.conquests = new HashMap<>();
@@ -198,7 +197,6 @@ public class PlayState {
                 .reduce((x, y) -> x +y).orElse(studentsInPlace.toString() + "LOL did not work");
 
         return "PlayState{" +
-                //"playerNames=" + playerNames + "\n" +
                 ", mainPlayer='" + mainPlayer + '\'' + "\n" +
                 ", actualPlayer='" + actualPlayer + '\'' + "\n" +
                 ", actionPhase=" + actionPhase + "\n" +

@@ -325,7 +325,7 @@ class FakeServer extends Server {
     }
 }
 
-class FakeGameManager implements MessageReader {
+class FakeGameManager implements PlayMessageReader {
 
     @Override
     public void playAssistantCard(String player, Integer weight) {

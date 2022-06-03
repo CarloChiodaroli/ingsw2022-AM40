@@ -4,7 +4,7 @@ import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.commons.message.ErrorMessage;
 import it.polimi.ingsw.commons.message.Message;
-import it.polimi.ingsw.commons.message.MessageReader;
+import it.polimi.ingsw.commons.message.PlayMessageReader;
 import it.polimi.ingsw.commons.message.PlayMessagesFabric;
 import it.polimi.ingsw.server.controller.inner.*;
 import it.polimi.ingsw.server.model.GameModel;
@@ -16,7 +16,7 @@ import java.util.*;
 /**
  * Executes PlayMessages and answers with other PlayMessages
  */
-public class PlayMessagesReader implements MessageReader {
+public class PlayMessagesReader implements PlayMessageReader {
 
     private final InboundController inbound;
     private final OutboundController outbound;

@@ -34,7 +34,7 @@ public class PlayMessage extends Message {
         return result;
     }
 
-    public void executeMessage(MessageReader manager) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
+    public void executeMessage(PlayMessageReader manager) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
         super.controlWritten();
         Map<Class<?>, Method> parser = getParserMap();
         List<Class<?>> paramClassList = new ArrayList<>();
@@ -45,7 +45,7 @@ public class PlayMessage extends Message {
         for (int i = 0; i < paramClassArray.length; i++) {
             params[i] = parser.get(paramClassArray[i]).invoke(this, params[i].toString());
         }
-        Method method = MessageReader.class.getMethod(move, paramClassArray);
+        Method method = PlayMessageReader.class.getMethod(move, paramClassArray);
         method.invoke(manager, params);
     }
 

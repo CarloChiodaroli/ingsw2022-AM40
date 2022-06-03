@@ -6,9 +6,8 @@ import it.polimi.ingsw.server.model.enums.Characters;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-public interface MessageReader {
+public interface PlayMessageReader {
 
     void playAssistantCard(String player, Integer weight);
 

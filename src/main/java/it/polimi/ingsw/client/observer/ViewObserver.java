@@ -1,4 +1,6 @@
-package it.polimi.ingsw.commons.observer;
+package it.polimi.ingsw.client.observer;
+import it.polimi.ingsw.commons.enums.Wizard;
+
 import java.util.Map;
 
 public interface ViewObserver {
@@ -10,4 +12,8 @@ public interface ViewObserver {
     void onUpdatePlayersNumber(int playersNumber);
 
     void onDisconnection();
+
+    void onUpdateWizard(Wizard wizard);
+
+    void onUpdateStart();
 }

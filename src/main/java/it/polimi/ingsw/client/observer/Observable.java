@@ -1,4 +1,4 @@
-package it.polimi.ingsw.commons.observer;
+package it.polimi.ingsw.client.observer;
 
 import it.polimi.ingsw.commons.message.Message;
 

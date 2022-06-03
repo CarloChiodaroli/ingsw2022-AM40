@@ -1,8 +1,6 @@
 package it.polimi.ingsw.server.view;
 
-import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.commons.message.*;
-import it.polimi.ingsw.commons.observer.Observer;
 import it.polimi.ingsw.server.network.ClientHandler;
 
 import java.util.List;
@@ -13,8 +11,7 @@ import java.util.List;
  * But what this class really does is building messages to send to the client via Socket Client Handler
  * (here known as her interface Client Handler) effectively hiding the outgoing network implementation from the manager.
  */
-
-public class VirtualView implements Observer {
+public class VirtualView {
 
     private final ClientHandler clientHandler;
 
@@ -32,10 +29,10 @@ public class VirtualView implements Observer {
     }
 
     public void sendMainPlayer(String mainPlayerName) {
-        sendMessage(new LobbyMessage("Server", mainPlayerName, false));
+        sendMessage(new LobbyMessage("Server", "mainPlayer", mainPlayerName));
     }
 
-    public void sendMessage(Message message){
+    public void sendMessage(Message message) {
         clientHandler.sendMessage(message);
     }
 
@@ -72,7 +69,7 @@ public class VirtualView implements Observer {
     }
 
     public void showLobby(List<String> nicknameList, int numPlayers) {
-        sendMessage(new LobbyMessage("Server", nicknameList));
+        sendMessage(new LobbyMessage("Server", nicknameList, numPlayers));
     }
 
     public void update(Message message) {

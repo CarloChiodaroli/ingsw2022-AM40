@@ -2,7 +2,6 @@ package it.polimi.ingsw.commons.message;
 
 import it.polimi.ingsw.commons.enums.Wizard;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LobbyMessage extends Message {
@@ -10,73 +9,98 @@ public class LobbyMessage extends Message {
     private List<String> nicknameList;
     private String stringArg;
     private int numOfPlayers;
-    private boolean isDisconnection;
+    //private boolean isDisconnection;
+    private boolean isStartGame = false;
+    private boolean boolArg;
     private Wizard wizard;
+    private String command;
 
     // Sends all player names
-    public LobbyMessage(String sender, List<String> nicknameList) {
+    public LobbyMessage(String sender, List<String> nicknameList, int numOfPlayers) {
         super(sender, MessageType.LOBBY);
+        this.command = "lobbyPlayers";
+        this.numOfPlayers = numOfPlayers;
         this.nicknameList = nicknameList;
         super.message();
     }
 
     // sends a player name, if is disconnected shows a disconnection, else shows the main player
-    public LobbyMessage(String sender, String playerName, boolean isDisconnection) {
+    public LobbyMessage(String sender, String command, String playerName) {
         super(sender, MessageType.LOBBY);
+        this.command = command;
         this.stringArg = playerName;
-        this.isDisconnection = isDisconnection;
         super.message();
     }
 
     // sends chosen wizard
     public LobbyMessage(String sender, Wizard wizard) {
         super(sender, MessageType.LOBBY);
-        this.numOfPlayers = 0;
-        this.stringArg = null;
-        this.nicknameList = new ArrayList<>();
-        this.isDisconnection = false;
+        this.command = "wizard";
         this.wizard = wizard;
         super.message();
     }
 
     // sends an integer
-    public LobbyMessage(String sender, int players) {
+    public LobbyMessage(String sender, String command, int number) {
         super(sender, MessageType.LOBBY);
-        this.numOfPlayers = players;
+        this.command = command;
+        this.numOfPlayers = number;
         super.message();
     }
 
-    public List<String> getLobbyPlayers() throws IllegalMessageException {
+    public LobbyMessage(String sender, String command){
+        super(sender, MessageType.LOBBY);
+        this.command = command;
+        isStartGame = true;
+        super.message();
+    }
+
+    public LobbyMessage(String sender, String command, boolean boolArg){
+        super(sender, MessageType.LOBBY);
+        this.command = command;
+        isStartGame = true;
+        this.boolArg = boolArg;
+        super.message();
+    }
+
+    public String getCommand(){
+        controlWritten();
+        return command;
+    }
+
+    public List<String> getLobbyPlayers() {
         controlWritten();
         return this.nicknameList;
     }
 
-    public String getMainPlayerName() throws IllegalMessageException {
+    public String getMainPlayerName() {
         controlWritten();
-        if (isDisconnection) throw new IllegalMessageException();
         return stringArg;
     }
 
-    public String getDisconnection() throws IllegalMessageException {
+    public String getDisconnection() {
         controlWritten();
-        if (!isDisconnection) throw new IllegalMessageException();
         return stringArg;
     }
 
-    public int chosenStudentNumber() throws IllegalMessageException {
+    public int studentNumber()  {
         controlWritten();
-        if (numOfPlayers == 0) throw new IllegalMessageException();
         return numOfPlayers;
     }
 
-    public Wizard getWizard() throws IllegalMessageException {
+    public Wizard getWizard() {
         controlWritten();
-        if (wizard == null) throw new IllegalMessageException();
         return wizard;
     }
 
-    public List<String> getNicknameList() {
-        return nicknameList;
+    public boolean getAccepted() {
+        controlWritten();
+        return boolArg;
+    }
+
+    public Boolean isStartGame() {
+        controlWritten();
+        return isStartGame;
     }
 
     public int getMaxPlayers() {

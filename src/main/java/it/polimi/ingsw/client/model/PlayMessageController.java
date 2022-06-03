@@ -5,7 +5,7 @@ import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.commons.message.IllegalMessageException;
-import it.polimi.ingsw.commons.message.MessageReader;
+import it.polimi.ingsw.commons.message.PlayMessageReader;
 import it.polimi.ingsw.commons.message.PlayMessage;
 import it.polimi.ingsw.commons.message.PlayMessagesFabric;
 import it.polimi.ingsw.server.model.enums.Characters;
@@ -17,7 +17,7 @@ import java.util.Map;
  * This class is run by the executeMessage method of the received PlayMessage to change the PlayState class,
  * and by the view when she needs to send PlayMessages to the server.
  */
-public class PlayMessageController implements MessageReader {
+public class PlayMessageController implements PlayMessageReader {
 
     private String mainPlayer;
     private final ClientController controller;
@@ -55,10 +55,6 @@ public class PlayMessageController implements MessageReader {
 
     public List<String> getPlayerNames() {
         return state.getPlayerNames();
-    }
-
-    public void setPlayerNames(List<String> playerNames){
-        
     }
 
     public String getMyName(){

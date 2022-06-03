@@ -3,9 +3,11 @@ package it.polimi.ingsw.client.view.cli;
 import it.polimi.ingsw.client.model.PlayMessageController;
 import it.polimi.ingsw.client.network.Client;
 import it.polimi.ingsw.client.network.SocketClient;
+import it.polimi.ingsw.client.observer.ViewObserver;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.commons.enums.TeacherColor;
-import it.polimi.ingsw.commons.observer.ViewObservable;
+import it.polimi.ingsw.commons.enums.Wizard;
+import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.server.model.enums.Characters;
 
 import java.io.PrintStream;
@@ -25,8 +27,6 @@ public class Cli extends ViewObservable implements View {
     private boolean connected;
     private StatePrinter statePrinter;
     private Map<String, String> serverInfo = new HashMap<>();
-
-    private static final String STR_INPUT_CANCELED = "User input canceled.";
 
     public Cli() {
         out = System.out;
@@ -70,25 +70,39 @@ public class Cli extends ViewObservable implements View {
      */
     public void help(List<String> args) {
         out.println("""
-                List of all possible commands:\s
-                \tConnection commands:\s
-                \t\tip <address> \t: sets the ip of the server to connect\s
-                \t\tport <number> \t: sets the server's listening port\s
-                \tLobby commands:\s
-                \t\tname <name> \t-\t: sets personal player name
-                \t\tnickname <name> \t: same as name
-                \t\tplayers <number> \t: sets the number of players\s
-                \t\texpert \t-\t-\t-\t: switches the game to and from expert variant\s
-                \tPlay commands: abbreviation command <arg> <arg> <arg>\s
-                \tas\tassistant <weight> \t-\t-\t-\t-\t-\t-\t-\t: command used to play an assistant card
-                \tsm\tstudentmove <student color> <from id> <to id> \t: command to move a student
-                \tmnm\tmnmove <hops> \t-\t-\t-\t-\t-\t-\t-\t-\t: command to move mother nature of x hops
-                \tim\tinfluence \t-\t-\t-\t-\t-\t-\t-\t-\t-\t: command to calc influence
-                \tch\tchoose <cloud id> \t-\t-\t-\t-\t-\t-\t-\t: command to choose a cloud
+                List of all possible commands:
+                    Connection commands:
+                        command <arg>   : description
+                        ip <address>    : sets the ip of the server to connect
+                        port <number>   : sets the server's listening port
+                        
+                    Lobby commands:
+                        command <arg>       : description
+                        name <name>         : sets personal player name
+                        nickname <name>     : same as name
+                        players <number>    : sets the number of players
+                        expert              : switches the game to and from expert variant
+                        wizard <which>      : allows to choose which wizard to be between: King, Fairy, Magician and Bamboo_Guy
+                        start               : starts the game
+                        
+                    Play commands: 
+                        abbreviation    command <arg> <arg> <arg>                       : description
+                        as              assistant <weight>  -   -   -   -   -   -   -   : command used to play an assistant card
+                        sm              studentmove <student color> <from id> <to id>   : command to move a student
+                        mnm             mnmove <hops>   -   -   -   -   -   -   -   -   : command to move mother nature of x hops
+                        im              influence   -   -   -   -   -   -   -   -   -   : command to calc influence
+                        ch              choose <cloud id>   -   -   -   -   -   -   -   : command to choose a cloud
+                
                 To send a valid command please write the command with arguments as for example:
-                \tstudentmove BLUE Entrance Room
+                    studentmove BLUE Entrance Room
+                    
                 Or use the abbreviation in place of the command as for example:
-                \tsm BLUE Entrance Room
+                    sm BLUE Entrance Room
+                    
+                Commands are not case sensitive so you can write:
+                    sm blue entrance room
+                
+                These three example commands do the same thing: move a blue student from the entrance to the room
                 """);
     }
 
@@ -125,6 +139,8 @@ public class Cli extends ViewObservable implements View {
         connected = true;
     }
 
+    // Lobby commands
+
     public void players(List<String> args) {
         int number = Integer.parseInt(args.get(0));
         notifyObserver(obs -> obs.onUpdatePlayersNumber(number));
@@ -142,6 +158,18 @@ public class Cli extends ViewObservable implements View {
             throw new IllegalStateException(e.getMessage());
         }
     }
+
+    public void wizard(List<String> args) {
+        if (args.isEmpty()) throw new IllegalStateException();
+        Wizard wizard = Wizard.valueOf(args.get(0).toUpperCase());
+        notifyObserver(obs -> obs.onUpdateWizard(wizard));
+    }
+
+    public void start(List<String> args) {
+        notifyObserver(ViewObserver::onUpdateStart);
+    }
+
+    // Play commands
 
     public void as(List<String> args) {
         assistant(args);
@@ -234,6 +262,14 @@ public class Cli extends ViewObservable implements View {
         }
     }
 
+    public void abbreviation(List<String> args){
+        command(args);
+    }
+
+    public void command(List<String> args) {
+        out.println("hahahahaha... Very clever!!");
+    }
+
     @Override
     public void showActualState() {
         out.println(statePrinter.roundState());
@@ -271,9 +307,21 @@ public class Cli extends ViewObservable implements View {
 
     @Override
     public void askPlayersNumber() {
-        out.println("You are the first player to connect to the server, please define the play details with these commands:");
+
+    }
+
+    @Override
+    public void askPlaySettings() {
+        out.println("\nYou are the first player to connect to the server, please define the play details with these commands:");
         out.println("players <num of players>\t// To set the number of players. acceptable numbers are 2 or 3");
         out.println("expert\t\t\t// To set the game to expert variant or vice-versa");
+        out.println("\nThan when you are finished use the command 'start' to start the game");
+    }
+
+    @Override
+    public void askPlayCustomization() {
+        out.println("\nYou are connected and the server has been correctly configured, now you can define your customizations with these commands:");
+        out.println("wizard <MAGICIAN, KING, FAIRY, BAMBOO_GUY> // To set the number of players. acceptable numbers are 2 or 3");
     }
 
     @Override
@@ -294,13 +342,18 @@ public class Cli extends ViewObservable implements View {
         }
     }
 
-    @Override
-    public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful) {
-
-    }
-
     public void showError(String errorMessage) {
         out.println(errorMessage);
+    }
+
+    @Override
+    public void showWizard() {
+        String wizard = statePrinter.wizard();
+        if(wizard != null) {
+            out.println("Your Wizard is " + wizard);
+        } else {
+            out.println("Your choice was not accepted, please choose an other one!");
+        }
     }
 
     @Override
@@ -311,8 +364,6 @@ public class Cli extends ViewObservable implements View {
     @Override
     public void showDisconnectionMessage(String nicknameDisconnected, String text) {
         out.println("\n" + nicknameDisconnected + text);
-        Client.LOGGER.info("Closing client for disconnection");
-        System.exit(1);
     }
 
     public void showOtherDisconnectionMessage(String nicknameDisconnected, String text) {

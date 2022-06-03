@@ -204,4 +204,12 @@ public class StatePrinter {
         }
         return heading;
     }
+
+    public String wizard(){
+        if(playState.getWizard() != null){
+            return playState.getWizard().toString();
+        } else {
+            return null;
+        }
+    }
 }

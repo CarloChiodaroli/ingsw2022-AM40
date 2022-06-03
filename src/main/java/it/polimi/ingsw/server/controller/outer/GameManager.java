@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.controller.outer;
 
+import it.polimi.ingsw.commons.enums.Wizard;
 import it.polimi.ingsw.commons.message.*;
-import it.polimi.ingsw.commons.observer.Observer;
 import it.polimi.ingsw.server.controller.inner.InputController;
 import it.polimi.ingsw.server.network.Server;
 import it.polimi.ingsw.server.utils.StorageData;
@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 
-public class GameManager implements Observer {
+public class GameManager implements LobbyMessageReader{
 
     private transient Map<String, VirtualView> virtualViewMap;
     private String mainPlayer;
@@ -20,21 +20,31 @@ public class GameManager implements Observer {
     private PlayMessagesReader playMessagesReader = null;
     private static final String STR_INVALID_STATE = "Invalid game state!";
     public static final String SAVED_GAME_FILE = "match.log";
+    private static final int DEFAULT_MAX_PLAYERS = 0;
+    private final Map<String, Wizard> assignedWizards;
 
 
     public GameManager() {
         this.playerNames = new ArrayList<>();
         initGameController();
+        this.maxPlayers = DEFAULT_MAX_PLAYERS;
+        this.assignedWizards = new HashMap<>();
     }
 
     public void initGameController() {
         this.virtualViewMap = Collections.synchronizedMap(new HashMap<>());
-        //setPlayState(PlayState.PRE_INIT);
     }
 
     public void onMessageReceived(Message receivedMessage) {
-        if(receivedMessage.getSenderName().equals(mainPlayer) && playMessagesReader != null && !playMessagesReader.isGameStarted()) {
-            preInitState(receivedMessage);
+        if(!playerNames.contains(receivedMessage.getSenderName())){
+            sendMessage(receivedMessage.getSenderName(), new ErrorMessage("server", "You have not logged in"));
+        }
+        if(playMessagesReader != null && !playMessagesReader.isGameStarted()) {
+            try {
+                preInitState(receivedMessage);
+            } catch (NoSuchMethodException| InvocationTargetException| IllegalAccessException e) {
+                sendMessage(receivedMessage.getSenderName(), new ErrorMessage("server", "Server Could not understand received lobby message"));
+            }
             return;
         }
         if(playMessagesReader != null && playMessagesReader.isGameStarted() && receivedMessage.getMessageType().equals(MessageType.PLAY)){
@@ -44,12 +54,20 @@ public class GameManager implements Observer {
         Server.LOGGER.warning(STR_INVALID_STATE);
     }
 
-    private void preInitState(Message receivedMessage) {
+    // LOBBY message part
+
+    private void preInitState(Message receivedMessage) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        if(receivedMessage.getMessageType() == MessageType.LOBBY){
+            LobbyMessage message = (LobbyMessage) receivedMessage;
+            LobbyMessageReader.class.getMethod(message.getCommand(), LobbyMessage.class).invoke(this, message);
+        }
+        /*
+
         if (receivedMessage.getMessageType() == MessageType.LOBBY) {
             LobbyMessage message = (LobbyMessage) receivedMessage;
-            if (message.chosenStudentNumber() == 2 || message.chosenStudentNumber() == 3) {
-                this.maxPlayers = message.chosenStudentNumber();
-                new LobbyMessage("Server", this.playerNames);
+            if (message.studentNumber() == 2 || message.studentNumber() == 3) {
+                this.maxPlayers = message.studentNumber();
+                new LobbyMessage("Server", this.playerNames, maxPlayers);
                 this.playMessagesReader.setNumOfPlayers(maxPlayers);
                 broadcastGenericMessage("Waiting for other Players . . .");
             } else {
@@ -59,8 +77,73 @@ public class GameManager implements Observer {
         } else {
             Server.LOGGER.warning("Wrong message received from client.");
             virtualViewMap.get(receivedMessage.getSenderName()).showError("Wrong Message to be sent now");
+        }*/
+    }
+
+    @Override
+    public void startGame(LobbyMessage message) {
+        if(virtualViewMap.size() == maxPlayers)
+            initGame();
+            /*if (game.getNumCurrentPlayers() == game.getChosenPlayersNumber()) { // If all players logged
+                // check saved matches.
+                // to redo better later
+                /*StorageData storageData = new StorageData();
+                GameManager savedGameManager = storageData.restore();
+                if (savedGameManager != null &&
+                        game.getPlayersNicknames().containsAll(savedGameManager.getTurnController().getNicknameQueue())) {
+                    Server.LOGGER.info("Saved Match restored.");
+                    turnController.newTurn();
+                } else {
+                    initGame();
+                }
+            }*/
+    }
+
+    @Override
+    public void lobbyPlayers(LobbyMessage message) {
+        // should not receive this
+    }
+
+    @Override
+    public void mainPlayer(LobbyMessage message) {
+        // should not receive this
+    }
+
+    @Override
+    public void wizard(LobbyMessage message) {
+        if(assignedWizards.entrySet().stream().noneMatch(x -> x.getValue().equals(message.getWizard()))){
+            if(!assignedWizards.containsKey(message.getSenderName())){
+                assignedWizards.put(message.getSenderName(), message.getWizard());
+            } else {
+                assignedWizards.replace(message.getSenderName(), message.getWizard());
+            }
+            sendMessage(message.getSenderName(), new LobbyMessage("server", "wizard", true));
+        } else {
+            sendMessage(message.getSenderName(), new LobbyMessage("server", "wizard", false));
         }
     }
+
+    @Override
+    public void numOfPlayers(LobbyMessage message) {
+        if(this.maxPlayers == DEFAULT_MAX_PLAYERS){
+            maxPlayers = message.getMaxPlayers();
+        } else {
+            sendMessage("server", new ErrorMessage(message.getSenderName(), "Max number of players has been already set"));
+        }
+    }
+
+    @Override
+    public void disconnection(LobbyMessage message) {
+        // should not receive this
+    }
+
+    // LOBBY message Utility
+
+    private void initGame() {
+        playMessagesReader.startGame();
+    }
+
+    // PLAY message part
 
     private void inGameState(Message receivedMessage) {
         PlayMessage message = (PlayMessage) receivedMessage;
@@ -71,17 +154,7 @@ public class GameManager implements Observer {
         }
     }
 
-    /*@Deprecated
-    private void setPlayState(PlayState playState) {
-        this.playState = playState;
-    }*/
-
-    public void endGame() {
-        StorageData storageData = new StorageData();
-        storageData.delete();
-        initGameController();
-        Server.LOGGER.info("Server ready for a new Game");
-    }
+    // LOGIN message part
 
     public void loginHandler(String nickname, VirtualView virtualView) {
         if (virtualViewMap.isEmpty()) { // First player logged. Ask number of players.
@@ -97,33 +170,22 @@ public class GameManager implements Observer {
             this.playMessagesReader.addPlayer(nickname);
             virtualView.sendMainPlayer(mainPlayer);
             virtualView.showLoginResult(true, true);
-            if(virtualViewMap.size() == maxPlayers) initGame();
-            /*if (game.getNumCurrentPlayers() == game.getChosenPlayersNumber()) { // If all players logged
-                // check saved matches.
-                // to redo better later
-                /*StorageData storageData = new StorageData();
-                GameManager savedGameManager = storageData.restore();
-                if (savedGameManager != null &&
-                        game.getPlayersNicknames().containsAll(savedGameManager.getTurnController().getNicknameQueue())) {
-                    Server.LOGGER.info("Saved Match restored.");
-                    turnController.newTurn();
-                } else {
-                    initGame();
-                }
-            }*/
         } else {
             virtualView.showLoginResult(true, false);
         }
     }
 
-
-    private void initGame() {
-        //setPlayState(PlayState.IN_GAME);
-        playMessagesReader.startGame();
-    }
-
     public void addVirtualView(String nickname, VirtualView virtualView) {
         virtualViewMap.put(nickname, virtualView);
+    }
+
+    // Resilience
+
+    public void endGame() {
+        StorageData storageData = new StorageData();
+        storageData.delete();
+        initGameController();
+        Server.LOGGER.info("Server ready for a new Game");
     }
 
     public Map<String, VirtualView> getVirtualViewMap() {
@@ -136,19 +198,6 @@ public class GameManager implements Observer {
             playMessagesReader.stopPlayer(nickname);
         } else {
             playMessagesReader.deletePlayer(nickname);
-        }
-    }
-
-    public void broadcastGenericMessage(String messageToNotify, String excludeNickname) {
-        virtualViewMap.entrySet().stream()
-                .filter(entry -> !excludeNickname.equals(entry.getKey()))
-                .map(Map.Entry::getValue)
-                .forEach(vv -> vv.showGenericMessage(messageToNotify));
-    }
-
-    public void broadcastGenericMessage(String messageToNotify) {
-        for (VirtualView vv : virtualViewMap.values()) {
-            vv.showGenericMessage(messageToNotify);
         }
     }
 
@@ -172,27 +221,30 @@ public class GameManager implements Observer {
         return InputController.checkLoginNickname(nickname, view, virtualViewMap.keySet());
     }
 
-
     public boolean isGameStarted() {
         return playMessagesReader != null && playMessagesReader.isGameStarted();
-    }
-
-    @Deprecated
-    public void update(Message message) {
-        //VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
-        switch (message.getMessageType()) {
-            case ERROR:
-                ErrorMessage errMsg = (ErrorMessage) message;
-                Server.LOGGER.warning(errMsg.getError());
-                break;
-            default:
-                Server.LOGGER.warning("Invalid effect request!");
-                break;
-        }
     }
 
     public List<String> getPlayerNames() {
         return virtualViewMap.keySet().stream().toList();
     }
+
+    // To be deleted candidates
+
+    @Deprecated
+    public void broadcastGenericMessage(String messageToNotify, String excludeNickname) {
+        virtualViewMap.entrySet().stream()
+                .filter(entry -> !excludeNickname.equals(entry.getKey()))
+                .map(Map.Entry::getValue)
+                .forEach(vv -> vv.showGenericMessage(messageToNotify));
+    }
+
+    @Deprecated
+    public void broadcastGenericMessage(String messageToNotify) {
+        for (VirtualView vv : virtualViewMap.values()) {
+            vv.showGenericMessage(messageToNotify);
+        }
+    }
+
 
 }

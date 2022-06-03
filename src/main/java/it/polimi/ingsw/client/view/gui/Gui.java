@@ -3,7 +3,7 @@ import it.polimi.ingsw.client.model.PlayMessageController;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.gui.scene.LobbySceneController;
 import it.polimi.ingsw.client.view.gui.scene.PlayersNumberSceneController;
-import it.polimi.ingsw.commons.observer.ViewObservable;
+import it.polimi.ingsw.client.observer.ViewObservable;
 import javafx.application.Platform;
 
 import java.util.List;
@@ -98,11 +98,6 @@ public class Gui extends ViewObservable implements View {
     }
 
     @Override
-    public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful) {
-
-    }
-
-    @Override
     public void showOtherDisconnectionMessage(String nicknameDisconnected, String text) {
 
     }
@@ -117,5 +112,18 @@ public class Gui extends ViewObservable implements View {
 
     }
 
+    @Override
+    public void askPlaySettings() {
 
+    }
+
+    @Override
+    public void askPlayCustomization() {
+
+    }
+
+    @Override
+    public void showWizard() {
+
+    }
 }
