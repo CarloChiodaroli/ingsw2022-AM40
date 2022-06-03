@@ -94,6 +94,14 @@
     -fx-opacity: 0.7;
 }
 
+.radBtn {
+    -fx-font-size: 16;
+}
+
+.radBtn:selected {
+    -fx-font-size: 16;
+}
+
 
 .menuBackground {
     -fx-background-image: url("../images/eriantysLogo.png");

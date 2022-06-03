@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
+import it.polimi.ingsw.commons.enums.Wizard;
 import it.polimi.ingsw.server.model.enums.Characters;
 
 import java.util.*;
@@ -27,6 +28,7 @@ public class PlayState {
     private Map<String, Integer> activeAssistantCards;
     private List<Integer> assistantCards;
     private Map<String, TowerColor> playersTowerColors;
+    private Wizard wizard;
 
     public PlayState(){
         //this.playerNames = new ArrayList<>();
@@ -208,5 +210,12 @@ public class PlayState {
                 ", motherNaturePosition='" + motherNaturePosition + '\'' + "\n" +
                 ", activeAssistantCards=" + activeAssistantCards + "\n" +
                 '}';
+    }
+
+    public void setWizard(Wizard wizardChoose){
+        wizard = wizardChoose;
+    }
+    public Wizard getWizard(){
+        return wizard;
     }
 }

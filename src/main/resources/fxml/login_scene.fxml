@@ -21,7 +21,7 @@
     <children>
         <Group scaleX="1.5" scaleY="1.5" scaleZ="1.5">
             <children>
-                <VBox prefHeight="452.0" prefWidth="453.0"
+                <VBox prefHeight="452.0" prefWidth="300"
                       styleClass="menuBanner">
                     <VBox styleClass="caption">
                         <Text fill="#451616" strokeWidth="0.0"
