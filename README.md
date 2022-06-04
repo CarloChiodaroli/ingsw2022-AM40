@@ -25,9 +25,9 @@ Implementation of Eriantys board game
 |  Communication protocol Implementation   |   Making   |
 |          Client Implementation           |   Making   |
 |                 CLI view                 |   Making   |
-|                 GUI view                 |     -      |
-| Application Testing for the 31st of may  |     -      |
+|                 GUI view                 |   Making   |
 |||
+|                 Javadoc                  |     -      |
 |        Final Application Testing         |     -      |
 | Delivery of "'deliveries' folder things" |     -      |
 |    __Final delivery__ on 25th of june    |     -      |

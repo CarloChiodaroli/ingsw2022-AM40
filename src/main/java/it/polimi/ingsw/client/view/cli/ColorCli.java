@@ -5,7 +5,7 @@ package it.polimi.ingsw.client.view.cli;
  */
 public enum ColorCli {
 
-    CLEAR("\033[H\033[2Jm"),
+    CLEAR("\033[2J"),
     BLUE("\u001B[34m"),
     PINK("\u001B[95m"),
     YELLOW("\u001B[93m"),

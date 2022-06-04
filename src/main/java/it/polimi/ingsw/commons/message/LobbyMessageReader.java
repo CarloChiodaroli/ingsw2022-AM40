@@ -14,5 +14,5 @@ public interface LobbyMessageReader {
 
     void disconnection(LobbyMessage message);
 
-    //void expert(LobbyMessage message);
+    void expert(LobbyMessage message);
 }

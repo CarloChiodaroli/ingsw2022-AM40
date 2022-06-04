@@ -36,6 +36,7 @@ public class PlayState {
         this.conquests = new HashMap<>();
         this.teachers = new ArrayList<>();
         this.assistantCards = List.of(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+        this.activeAssistantCards = new HashMap<>();
         this.playersTowerColors = new HashMap<>();
     }
 
@@ -132,8 +133,8 @@ public class PlayState {
         return new ArrayList<>(assistantCards);
     }
 
-    public void useAssistantCard(Integer weight){
-        assistantCards.remove(weight);
+    public boolean useAssistantCard(Integer weight){
+        return assistantCards.remove(weight);
     }
 
     public void setActionPhase(String actualPlayer) {
@@ -162,7 +163,14 @@ public class PlayState {
     }
 
     public void setActiveAssistantCard(String player, Integer weight){
+        if(player.equals(myName)){
+            useAssistantCard(weight);
+        }
         this.activeAssistantCards.put(player, weight);
+    }
+
+    public Map<String, Integer> getActiveAssistantCards(){
+        return new HashMap<>(activeAssistantCards);
     }
 
     private boolean isIslandId(String id){

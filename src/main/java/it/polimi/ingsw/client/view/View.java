@@ -21,6 +21,7 @@ public interface View {
      * When a client Finds out to be a main player client, will show to the user this screen "asking to set the game".
      * That is to say ask the number of players and the variant.
      */
+    // Incorporates old ask player number
     void askPlaySettings();
 
     /**
@@ -28,17 +29,7 @@ public interface View {
      */
     void askPlayCustomization();
 
-    @Deprecated
-    /*
-    There are two types of players: main Player and normal Player
-    this "Ask players numers" will be incorporated in "ask play settings"
-     */
-    void askPlayersNumber();
-
     void showMainPlayerName(String mainPlayerName);
-
-    @Deprecated
-    void showActualState();
 
     void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname);
 
@@ -55,6 +46,12 @@ public interface View {
     void showError(String errorMessage);
 
     void showWizard();
+
+    void showActualState();
+
+    void showChosenNumOfPlayers(int maxPlayers);
+
+    void showExpert(boolean expertStatus);
 
     void update();
 

@@ -3,11 +3,11 @@ package it.polimi.ingsw.client.view.cli;
 import it.polimi.ingsw.client.model.PlayMessageController;
 import it.polimi.ingsw.client.network.Client;
 import it.polimi.ingsw.client.network.SocketClient;
+import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.client.observer.ViewObserver;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.Wizard;
-import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.server.model.enums.Characters;
 
 import java.io.PrintStream;
@@ -27,6 +27,7 @@ public class Cli extends ViewObservable implements View {
     private boolean connected;
     private StatePrinter statePrinter;
     private Map<String, String> serverInfo = new HashMap<>();
+    private boolean expert;
 
     public Cli() {
         out = System.out;
@@ -92,7 +93,11 @@ public class Cli extends ViewObservable implements View {
                         mnm             mnmove <hops>   -   -   -   -   -   -   -   -   : command to move mother nature of x hops
                         im              influence   -   -   -   -   -   -   -   -   -   : command to calc influence
                         ch              choose <cloud id>   -   -   -   -   -   -   -   : command to choose a cloud
-                
+                        
+                    Expert Play commands:
+                        abbreviation    command <arg> <arg> <arg>                       : description
+                    
+                                
                 To send a valid command please write the command with arguments as for example:
                     studentmove BLUE Entrance Room
                     
@@ -101,7 +106,7 @@ public class Cli extends ViewObservable implements View {
                     
                 Commands are not case sensitive so you can write:
                     sm blue entrance room
-                
+                                
                 These three example commands do the same thing: move a blue student from the entrance to the room
                 """);
     }
@@ -169,6 +174,10 @@ public class Cli extends ViewObservable implements View {
         notifyObserver(ViewObserver::onUpdateStart);
     }
 
+    public void expert(List<String> args) {
+        notifyObserver(obs -> obs.onUpdateExpert(!expert));
+    }
+
     // Play commands
 
     public void as(List<String> args) {
@@ -178,6 +187,7 @@ public class Cli extends ViewObservable implements View {
     public void assistant(List<String> args) {
         if (args.isEmpty()) throw new IllegalStateException();
         int weight = Integer.parseInt(args.get(0));
+        if(!playMessageController.getState().getAssistantCards().contains(weight)) throw new IllegalStateException();
         playMessageController.playAssistantCard(playMessageController.getNickname(), weight);
     }
 
@@ -262,12 +272,8 @@ public class Cli extends ViewObservable implements View {
         }
     }
 
-    public void abbreviation(List<String> args){
+    public void abbreviation(List<String> args) {
         command(args);
-    }
-
-    public void command(List<String> args) {
-        out.println("hahahahaha... Very clever!!");
     }
 
     @Override
@@ -285,13 +291,17 @@ public class Cli extends ViewObservable implements View {
         askServerInfo();
     }
 
+    public void command(List<String> args) {
+        out.println("hahahahaha... Very clever!!");
+    }
+
     public void askForServerIp() {
         out.println("Please enter server's ip address [default is " + SocketClient.getDefaultAddress() + "].");
         out.println("ip <address>");
     }
 
     public void askForServerPort() {
-        out.println("Please now enter game's listening port [default is " + SocketClient.getDefaultAddress() + "]");
+        out.println("Please now enter game's listening port [default is " + SocketClient.getDefaultPort() + "]");
         out.println("port <port number>");
     }
 
@@ -303,11 +313,6 @@ public class Cli extends ViewObservable implements View {
     @Override
     public void askNickname() {
         out.println("To start the game, set your nickname with the nickname command:\nnickname <nickname>    or\nname <nickname>");
-    }
-
-    @Override
-    public void askPlayersNumber() {
-
     }
 
     @Override
@@ -343,17 +348,32 @@ public class Cli extends ViewObservable implements View {
     }
 
     public void showError(String errorMessage) {
-        out.println(errorMessage);
+        out.println(ColorCli.RED + errorMessage + ColorCli.DEFAULT);
     }
 
     @Override
     public void showWizard() {
         String wizard = statePrinter.wizard();
-        if(wizard != null) {
+        if (wizard != null) {
             out.println("Your Wizard is " + wizard);
         } else {
             out.println("Your choice was not accepted, please choose an other one!");
         }
+    }
+
+    @Override
+    public void showExpert(boolean expertStatus) {
+        expert = expertStatus;
+        if (expertStatus) {
+            out.println("The game was put in expert variant");
+        } else {
+            out.println("The game was put back in normal variant");
+        }
+    }
+
+    @Override
+    public void showChosenNumOfPlayers(int maxPlayers) {
+        out.println("Main player has set the game as a " + maxPlayers + " players game");
     }
 
     @Override

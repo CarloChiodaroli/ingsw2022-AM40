@@ -31,6 +31,7 @@ public class StatePrinter {
         String state = "\n" + ColorCli.CLEAR;
         state += islandTable();
         state += cloudTable();
+        state += assistantCards();
         state += printDashboard();
         state += statusTowers();
         state += roundState();
@@ -109,7 +110,7 @@ public class StatePrinter {
                             playState.getStudentsInPlaces().get(id).get(color) :
                             space);
             int spacesLeft = color.toString().length() -
-                    playState.getStudentsInPlaces().get(id).get(color).toString().length() ;
+                    playState.getStudentsInPlaces().get(id).get(color).toString().length();
             row = spacer(row, spacesLeft);
         }
         return row + ColorCli.DEFAULT;
@@ -173,7 +174,7 @@ public class StatePrinter {
             int oldSize = row.length();
             row += verticalLineElement + (playState.getTeachers().contains(color) ? yes : empty);
             int spacesLeft = color.toString().length() -
-                    (playState.getTeachers().contains(color) ? yes : empty).length() ;
+                    (playState.getTeachers().contains(color) ? yes : empty).length();
             row = spacer(row, spacesLeft);
         }
         row += verticalLineElement;
@@ -191,7 +192,7 @@ public class StatePrinter {
     }
 
     private String spacer(String string, int length) {
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             string += space;
         }
         return string;
@@ -205,11 +206,30 @@ public class StatePrinter {
         return heading;
     }
 
-    public String wizard(){
-        if(playState.getWizard() != null){
+    public String wizard() {
+        if (playState.getWizard() != null) {
             return playState.getWizard().toString();
         } else {
             return null;
         }
+    }
+
+    private String assistantCards() {
+        List<String> strings = playState.getActiveAssistantCards().keySet().stream().toList();
+        String line = verticalLineElement + "Actual Assistant Cards " + verticalLineElement;
+        for (String string : strings) {
+            line += string;
+            line += space + playState.getActiveAssistantCards().get(string);
+            line += verticalLineElement;
+        }
+        List<String> rows = new ArrayList<>();
+        rows.add(line);
+        rows.add(0, rowDivider(line.length()));
+        rows.add(rows.get(0));
+        line = "";
+        for (String row : rows) {
+            line += row + '\n';
+        }
+        return line;
     }
 }

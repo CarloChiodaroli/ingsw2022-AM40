@@ -71,6 +71,10 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         sendMessage(new LobbyMessage(nickname, "startGame"));
     }
 
+    public void onUpdateExpert(boolean how) {
+        sendMessage(new LobbyMessage(nickname, "expert", how));
+    }
+
     @Override
     public void onDisconnection() {
         client.disconnect();
@@ -90,7 +94,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
                     break;
                 case ERROR:
                     ErrorMessage em = (ErrorMessage) message;
-                    notCriticalError(em.getError());
+                    taskQueue.execute(() -> view.showError(em.getError()));
                     break;
                 case LOGIN:
                     LoginMessage loginMessage = (LoginMessage) message;
@@ -115,7 +119,6 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
                     });
                     break;
                 default: // Should never reach this condition
-                    // client.sendMessage(new ErrorMessage(nickname, "Wrong message received"));
                     notCriticalError("Received wrong message from server");
                     break;
             }
@@ -131,6 +134,11 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     private void manageLobby(LobbyMessage message) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         LobbyMessageReader.class.getMethod(message.getCommand(), LobbyMessage.class).invoke(this, message);
+    }
+
+    @Override
+    public void expert(LobbyMessage message) {
+        taskQueue.execute(() -> view.showExpert(message.isExpert()));
     }
 
     @Override
@@ -164,7 +172,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     @Override
     public void numOfPlayers(LobbyMessage message) {
-        notCriticalError("Received wrong message from server");
+        taskQueue.execute(() -> view.showChosenNumOfPlayers(message.getMaxPlayers()));
     }
 
     @Override

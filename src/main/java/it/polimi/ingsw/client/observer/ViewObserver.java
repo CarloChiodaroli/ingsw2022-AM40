@@ -16,4 +16,6 @@ public interface ViewObserver {
     void onUpdateWizard(Wizard wizard);
 
     void onUpdateStart();
+
+    void onUpdateExpert(boolean choice);
 }

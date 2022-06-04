@@ -58,11 +58,12 @@ public class Player {
      * @param which to define which card we need to get from the deck
      */
     public void playAssistantCard(AssistantCard which) {
-        personalDeck.stream()
+        AssistantCard actual = personalDeck.stream()
                 .filter(which::equals)
                 .findAny()
-                .map(card -> game.getPianificationFase().play(card, this))
-                .ifPresent(personalDeck::remove);
+                .orElseThrow(() -> new NoSuchElementException("Chosen card is no more available in personal deck"));
+        game.getPianificationFase().play(actual, this);
+        personalDeck.remove(actual);
         game.updateState();
     }
 

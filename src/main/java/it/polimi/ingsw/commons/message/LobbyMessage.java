@@ -103,6 +103,11 @@ public class LobbyMessage extends Message {
         return isStartGame;
     }
 
+    public boolean isExpert() {
+        controlWritten();
+        return boolArg;
+    }
+
     public int getMaxPlayers() {
         return numOfPlayers;
     }

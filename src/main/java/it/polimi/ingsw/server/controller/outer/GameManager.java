@@ -22,6 +22,7 @@ public class GameManager implements LobbyMessageReader{
     public static final String SAVED_GAME_FILE = "match.log";
     private static final int DEFAULT_MAX_PLAYERS = 0;
     private final Map<String, Wizard> assignedWizards;
+    private String server = "server";
 
 
     public GameManager() {
@@ -37,13 +38,13 @@ public class GameManager implements LobbyMessageReader{
 
     public void onMessageReceived(Message receivedMessage) {
         if(!playerNames.contains(receivedMessage.getSenderName())){
-            sendMessage(receivedMessage.getSenderName(), new ErrorMessage("server", "You have not logged in"));
+            sendMessage(receivedMessage.getSenderName(), new ErrorMessage(server, "You have not logged in"));
         }
         if(playMessagesReader != null && !playMessagesReader.isGameStarted()) {
             try {
                 preInitState(receivedMessage);
             } catch (NoSuchMethodException| InvocationTargetException| IllegalAccessException e) {
-                sendMessage(receivedMessage.getSenderName(), new ErrorMessage("server", "Server Could not understand received lobby message"));
+                sendError(receivedMessage.getSenderName(), "Server Could not understand received lobby message");
             }
             return;
         }
@@ -82,7 +83,11 @@ public class GameManager implements LobbyMessageReader{
 
     @Override
     public void startGame(LobbyMessage message) {
-        if(virtualViewMap.size() == maxPlayers)
+        if(!message.getSenderName().equals(mainPlayer)) {
+            sendError(message.getSenderName(), "You can't start the game");
+            return;
+        }
+        if(virtualViewMap.size() == maxPlayers && !playMessagesReader.isGameStarted())
             initGame();
             /*if (game.getNumCurrentPlayers() == game.getChosenPlayersNumber()) { // If all players logged
                 // check saved matches.
@@ -117,24 +122,39 @@ public class GameManager implements LobbyMessageReader{
             } else {
                 assignedWizards.replace(message.getSenderName(), message.getWizard());
             }
-            sendMessage(message.getSenderName(), new LobbyMessage("server", "wizard", true));
+            sendMessage(message.getSenderName(), new LobbyMessage(server, "wizard", true));
         } else {
-            sendMessage(message.getSenderName(), new LobbyMessage("server", "wizard", false));
+            sendMessage(message.getSenderName(), new LobbyMessage(server, "wizard", false));
         }
     }
 
     @Override
     public void numOfPlayers(LobbyMessage message) {
-        if(this.maxPlayers == DEFAULT_MAX_PLAYERS){
-            maxPlayers = message.getMaxPlayers();
-        } else {
-            sendMessage("server", new ErrorMessage(message.getSenderName(), "Max number of players has been already set"));
+        if(maxPlayers != DEFAULT_MAX_PLAYERS) {
+            sendError(message.getSenderName(), "Max number of players has been already set and it is: " + maxPlayers);
+            return;
         }
+        if(!message.getSenderName().equals(mainPlayer)) {
+            sendError(message.getSenderName(), "You can't set the max number of players");
+            return;
+        }
+        maxPlayers = message.getMaxPlayers();
+        broadcastMessage(new LobbyMessage(server, "numOfPlayers", maxPlayers));
     }
 
     @Override
     public void disconnection(LobbyMessage message) {
         // should not receive this
+    }
+
+    @Override
+    public void expert(LobbyMessage message) {
+        if(playMessagesReader == null || playMessagesReader.isGameStarted() || !message.getSenderName().equals(mainPlayer)){
+            sendError(message.getSenderName(), "Player can't set nor unset expert variant");
+            return;
+        }
+        playMessagesReader.switchExpertVariant();
+        broadcastMessage(new LobbyMessage(server, "expert", playMessagesReader.isExpertVariant()));
     }
 
     // LOBBY message Utility
@@ -150,7 +170,7 @@ public class GameManager implements LobbyMessageReader{
         try {
             message.executeMessage(playMessagesReader);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
-            virtualViewMap.get(receivedMessage.getSenderName()).showError("Error while running message, please retry");
+            sendError(message.getSenderName(), "Error while running message, please retry");
         }
     }
 
@@ -188,12 +208,14 @@ public class GameManager implements LobbyMessageReader{
         Server.LOGGER.info("Server ready for a new Game");
     }
 
+    // outbound communication utilities
+
     public Map<String, VirtualView> getVirtualViewMap() {
         return virtualViewMap;
     }
 
     public void removeVirtualView(String nickname, boolean notifyEnabled) {
-        VirtualView vv = virtualViewMap.remove(nickname);
+        virtualViewMap.remove(nickname);
         if(playMessagesReader.isGameStarted()){
             playMessagesReader.stopPlayer(nickname);
         } else {
@@ -202,13 +224,25 @@ public class GameManager implements LobbyMessageReader{
     }
 
     public void sendMessage(String playerName, Message message){
-        if(virtualViewMap.containsKey(playerName)) virtualViewMap.get(playerName).sendMessage(message);
+        virtualViewMap.entrySet().stream()
+                .filter(x -> x.getKey().equals(playerName))
+                .findAny()
+                .map(Map.Entry::getValue)
+                .ifPresent(x -> x.sendMessage(message));
+    }
+
+    public void sendError(String playerName, String message){
+        virtualViewMap.entrySet().stream()
+                .filter(x -> x.getKey().equals(playerName))
+                .findFirst()
+                .map(Map.Entry::getValue)
+                .ifPresent(x -> x.showError(message));
     }
 
     public void broadcastMessage(Message message){
-        for(VirtualView vv: virtualViewMap.values()){
-            vv.sendMessage(message);
-        }
+        virtualViewMap.entrySet().stream()
+                .map(Map.Entry::getValue)
+                .forEach(x -> x.sendMessage(message));
     }
 
     public void broadcastDisconnectionMessage(String nicknameDisconnected, String text) {
