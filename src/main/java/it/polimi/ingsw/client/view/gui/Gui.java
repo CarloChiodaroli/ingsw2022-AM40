@@ -1,24 +1,34 @@
 package it.polimi.ingsw.client.view.gui;
+
 import it.polimi.ingsw.client.model.PlayMessageController;
+import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.gui.scene.LobbySceneController;
 import it.polimi.ingsw.client.view.gui.scene.PlayersNumberSceneController;
-import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.client.view.gui.scene.WizardSceneController;
 import it.polimi.ingsw.commons.enums.Wizard;
 import javafx.application.Platform;
 
 import java.util.List;
 
+/**
+ * This class offers a Graphical User Interface. It is an implementation of the {@link View} interface.
+ */
 public class Gui extends ViewObservable implements View {
     private static final String STR_ERROR = "ERROR";
     private static final String MENU_SCENE_FXML = "menu_scene.fxml";
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void askNickname() {
         Platform.runLater(() -> SceneController.changeRootPane(observers, "login_scene.fxml"));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void askPlaySettings() {
         PlayersNumberSceneController pnsc = new PlayersNumberSceneController();
@@ -27,6 +37,9 @@ public class Gui extends ViewObservable implements View {
         Platform.runLater(() -> SceneController.changeRootPane(pnsc, "players_number_scene.fxml"));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname) {
         if (!nicknameAccepted || !connectionSuccessful) {
@@ -44,11 +57,17 @@ public class Gui extends ViewObservable implements View {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showGenericMessage(String genericMessage) {
         Platform.runLater(() -> SceneController.showAlert("Info Message", genericMessage));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showDisconnectionMessage(String nicknameDisconnected, String text) {
         Platform.runLater(() -> {
@@ -57,6 +76,9 @@ public class Gui extends ViewObservable implements View {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showErrorAndExit(String errorMsg) {
         Platform.runLater(() -> {
@@ -65,6 +87,9 @@ public class Gui extends ViewObservable implements View {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showLobby(List<String> nicknameList, int maxPlayers) {
         LobbySceneController lsc;
@@ -84,31 +109,49 @@ public class Gui extends ViewObservable implements View {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setStatePrinter(PlayMessageController playMessageController) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showMainPlayerName(String mainPlayerName) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showOtherDisconnectionMessage(String nicknameDisconnected, String text) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showError(String errorMessage) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void update() {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void askPlayCustomization(List<Wizard> wizards) {
         WizardSceneController wsc = new WizardSceneController();
@@ -117,21 +160,33 @@ public class Gui extends ViewObservable implements View {
         Platform.runLater(() -> SceneController.changeRootPane(wsc, "wizard_scene.fxml"));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showWizard() {
 
     }
 
-    @Override
-    public void showActualState() {
-
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showExpert(boolean expertStatus) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void showEndGame() {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showChosenNumOfPlayers(int maxPlayers) {
 

@@ -1,9 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.client.view.cli.ColorCli;
 import it.polimi.ingsw.client.view.gui.JavaFXGui;
-import it.polimi.ingsw.client.view.gui.JavaFXGui;
-import javafx.application.Application;
 
 public class Eriantys {
 

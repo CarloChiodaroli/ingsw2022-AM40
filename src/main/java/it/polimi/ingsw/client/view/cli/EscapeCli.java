@@ -1,9 +1,9 @@
 package it.polimi.ingsw.client.view.cli;
 
 /**
- * This class contains all colors used in Cli.
+ * This enum contains all Escape characters used in the cli.
  */
-public enum ColorCli {
+public enum EscapeCli {
 
     CLEAR("\033[2J"),
     BLUE("\u001B[34m"),
@@ -15,7 +15,12 @@ public enum ColorCli {
 
     private final String code;
 
-    ColorCli(String code) {
+    /**
+     * Constructor
+     *
+     * @param code
+     */
+    EscapeCli(String code) {
         this.code = code;
     }
 

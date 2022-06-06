@@ -216,6 +216,13 @@ public class PlayMessageController implements PlayMessageReader {
         state.setActiveAssistantCard(player, weight);
     }
 
+    @Override
+    public synchronized void statusEndGame(String sender, String winner) {
+        controlServer(sender);
+        //state.setWinner(winner);
+        controller.getTaskQueue().execute(() -> view.showEndGame());
+    }
+
     private void controlLegal(String player) {
         if (player.equals("server")) throw new IllegalMessageException("Illegal sender");
     }

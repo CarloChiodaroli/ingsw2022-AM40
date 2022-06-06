@@ -48,4 +48,6 @@ public interface PlayMessageReader {
     void statusCharacterCard(String sender, Characters character);
 
     void statusAssistantCard(String sender, String player, Integer weight);
+
+    void statusEndGame(String sender, String winner);
 }

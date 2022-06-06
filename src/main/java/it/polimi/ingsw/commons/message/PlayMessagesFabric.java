@@ -101,4 +101,8 @@ public class PlayMessagesFabric {
     public static PlayMessage statusTower(String sender, String playerName, TowerColor color){
         return new PlayMessage(sender, "statusTower", playerName, color);
     }
+
+    public static PlayMessage statusEndGame(String sender, String winnerName){
+        return new PlayMessage(sender, "statusEndGame", winnerName);
+    }
 }

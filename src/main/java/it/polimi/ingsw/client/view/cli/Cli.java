@@ -12,11 +12,13 @@ import it.polimi.ingsw.server.model.enums.Characters;
 
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 
 /**
- * This class offers a User Interface to the user via terminal. It is an implementation of the {@link View}.
+ * This class offers a Command Line User Interface. It is an implementation of the {@link View} interface.
+ *
  */
 public class Cli extends ViewObservable implements View {
 
@@ -29,6 +31,9 @@ public class Cli extends ViewObservable implements View {
     private Map<String, String> serverInfo = new HashMap<>();
     private boolean expert;
 
+    /**
+     * Constructor
+     */
     public Cli() {
         out = System.out;
         this.inputStream = new ClientInputStream(this);
@@ -36,21 +41,63 @@ public class Cli extends ViewObservable implements View {
         connected = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setStatePrinter(PlayMessageController playMessageController) {
         this.playMessageController = playMessageController;
         this.statePrinter = new StatePrinter(playMessageController.getState());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void update() {
-        try {
-            out.println(statePrinter.getState());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        out.println(statePrinter.getState());
     }
 
     // command reader
+
+    /**
+     * Called from the Client Input Stream class which manages the input stream of commands.
+     * This method divides the received command argument in parts and calls the correct method to run the user desired command.
+     *
+     * The Accepted commands are:
+     * <pre>
+     *  Connection commands:
+     *     {@link #command(List) command}  arg      : description
+     *     {@link #ip(List) ip}       address  : sets the ip of the server to connect
+     *     {@link #port(List) port}     number   : sets the server's listening port
+     *
+     *  Lobby commands:
+     *     {@link #command(List) command}  arg      : description
+     *     {@link #name(List) name}     name     : sets personal player name
+     *     {@link #nickname(List) nickname} name     : same as name
+     *     {@link #players(List) players}   number  : sets the number of players
+     *     {@link #expert(List) expert}            : switches the game to and from expert variant
+     *     {@link #wizard(List) wizard}   which    : allows to choose which wizard to be between: King, Fairy, Magician and Bamboo_Guy
+     *     {@link #start(List) start}             : starts the game
+     *
+     *  Play commands:
+     *     {@link #abbreviation(List) abbreviation}     {@link #command(List) command}      arg             arg     arg      : description
+     *     {@link #as(List) as}              {@link #assistant(List) assistant}    weight                           : command used to play an assistant card
+     *     {@link #sm(List) sm}              {@link #studentmove(List) studentmove}  student color   from id to id    : command to move a student
+     *     {@link #mnm(List) mnm}             {@link #mnmove(List) mnmove}       hops                             : command to move mother nature of x hops
+     *     {@link #in(List) im}              {@link #influence(List) influence}                                     : command to calc influence
+     *     {@link #ch(List) ch}              {@link #choose(List) choose}       cloud id                         : command to choose a cloud
+     *
+     *  Expert Play commands:
+     *     abbreviation    command                      : description
+     * </pre>
+     *
+     * @param command the raw command received from the user.
+     * @throws IllegalStateException     exception launched when the user writes wrongly a message - wrong arguments
+     * @throws NoSuchMethodException     exception launched when the user writes wrongly a message - wrong command {@link Class#getMethod(String, Class[])}
+     * @throws InvocationTargetException exception launched when the user writes wrongly a message - wrong arguments or state {@link Method#invoke(Object, Object...)}
+     * @throws IllegalAccessException    exception launched when the user writes wrongly a message - wrong command {@link Method#invoke(Object, Object...)}
+     */
     public void receivedCommand(String command) throws IllegalStateException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         synchronized (userInputLock) {
             List<String> tiledCommand = Arrays.stream(command.split(" ")).toList();
@@ -67,7 +114,7 @@ public class Cli extends ViewObservable implements View {
     /**
      * Command which lists the help
      *
-     * @param args should be present but empty
+     * @param args {@link #receivedCommand(String)}
      */
     public void help(List<String> args) {
         out.println("""
@@ -111,6 +158,12 @@ public class Cli extends ViewObservable implements View {
                 """);
     }
 
+    /**
+     * Command which sets the ip to connect to the server.
+     *
+     * @param args {@link #receivedCommand(String)}
+     * @throws IllegalStateException thrown when the connection has been already established.
+     */
     public void ip(List<String> args) throws IllegalStateException {
         if (connected) throw new IllegalStateException("Connection already established");
         if (args.isEmpty()) {
@@ -126,6 +179,12 @@ public class Cli extends ViewObservable implements View {
         }
     }
 
+    /**
+     * Command which sets the listening port of the server.
+     *
+     * @param args {@link #receivedCommand(String)}
+     * @throws IllegalStateException thrown when the connection has been already established.
+     */
     public void port(List<String> args) throws IllegalStateException {
         if (connected) throw new IllegalStateException("Connection already established");
         if (args.isEmpty()) {
@@ -146,17 +205,33 @@ public class Cli extends ViewObservable implements View {
 
     // Lobby commands
 
-    public void players(List<String> args) {
+    /**
+     * Command which sets the number of players.
+     *
+     * @param args {@link #receivedCommand(String)}
+     * @throws IllegalStateException thrown when the command has no arguments.
+     */
+    public void players(List<String> args) throws IllegalStateException {
+        if (args.isEmpty()) throw new IllegalStateException();
         int number = Integer.parseInt(args.get(0));
         notifyObserver(obs -> obs.onUpdatePlayersNumber(number));
     }
 
-    public void name(List<String> args) {
+    /**
+     * Command which sets the client's nickname.
+     *
+     * @param args {@link #receivedCommand(String)}
+     * @throws IllegalStateException thrown when the command receives no arguments.
+     */
+    public void name(List<String> args) throws IllegalStateException {
         if (args.isEmpty()) throw new IllegalStateException();
         notifyObserver(obs -> obs.onUpdateNickname(args.get(0)));
     }
 
-    public void nickname(List<String> args) {
+    /**
+     * {@link #name(List)}
+     */
+    public void nickname(List<String> args) throws IllegalStateException {
         try {
             name(args);
         } catch (IllegalStateException e) {
@@ -164,33 +239,63 @@ public class Cli extends ViewObservable implements View {
         }
     }
 
-    public void wizard(List<String> args) {
+    /**
+     * Command which sets and sends the user's wizard preference.
+     *
+     * @param args {@link #receivedCommand(String)}
+     * @throws IllegalStateException thrown when the command receives no arguments.
+     */
+    public void wizard(List<String> args) throws IllegalStateException {
         if (args.isEmpty()) throw new IllegalStateException();
         Wizard wizard = Wizard.valueOf(args.get(0).toUpperCase());
         notifyObserver(obs -> obs.onUpdateWizard(wizard));
     }
 
+    /**
+     * Command which starts the game;
+     *
+     * @param args {@link #receivedCommand(String)}
+     */
     public void start(List<String> args) {
         notifyObserver(ViewObserver::onUpdateStart);
     }
 
+    /**
+     * Command which switches the expert variant selection.
+     *
+     * @param args {@link #receivedCommand(String)}
+     */
     public void expert(List<String> args) {
         notifyObserver(obs -> obs.onUpdateExpert(!expert));
     }
 
     // Play commands
 
-    public void as(List<String> args) {
+    /**
+     * {@link #abbreviation(List)}
+     * {@link #assistant(List)}
+     */
+    public void as(List<String> args) throws IllegalStateException {
         assistant(args);
     }
 
-    public void assistant(List<String> args) {
+    /**
+     * Command which sets and sends the user's wizard preference.
+     *
+     * @param args {@link #receivedCommand(String)}
+     * @throws IllegalStateException thrown when the command receives no arguments.
+     */
+    public void assistant(List<String> args) throws IllegalStateException {
         if (args.isEmpty()) throw new IllegalStateException();
         int weight = Integer.parseInt(args.get(0));
-        if(!playMessageController.getState().getAssistantCards().contains(weight)) throw new IllegalStateException();
+        if (!playMessageController.getState().getAssistantCards().contains(weight)) throw new IllegalStateException();
         playMessageController.playAssistantCard(playMessageController.getNickname(), weight);
     }
 
+    /**
+     * {@link #abbreviation(List) abbreviation} of
+     * {@link #assistant(List) assistant}
+     */
     public void sm(List<String> args) throws IllegalAccessException {
         try {
             studentmove(args);
@@ -199,6 +304,12 @@ public class Cli extends ViewObservable implements View {
         }
     }
 
+    /**
+     * Command used to move students
+     *
+     * @param args {@link #receivedCommand(String)}
+     * @throws IllegalAccessException thrown when there are not enough arguments.
+     */
     public void studentmove(List<String> args) throws IllegalAccessException {
         if (args.size() < 3) throw new IllegalStateException();
         TeacherColor toMove = TeacherColor.valueOf(args.get(0).toUpperCase());
@@ -216,6 +327,13 @@ public class Cli extends ViewObservable implements View {
         }
     }
 
+    /**
+     * Method used by the studentmove command to check if the id arguments on the command are valid ids or not.
+     *
+     * @param id the id to verify.
+     * @return the case corrected verified id.
+     * @throws IllegalAccessException thrown when the gotten id does not exist in the Play State class.
+     */
     private String verifyId(String id) throws IllegalAccessException {
         return playMessageController.getPlaceIds().stream()
                 .filter(x -> x.equalsIgnoreCase(id))
@@ -223,24 +341,47 @@ public class Cli extends ViewObservable implements View {
                 .orElseThrow(() -> new IllegalAccessException("place " + id + " not found"));
     }
 
-    public void mnm(List<String> args) {
+    /**
+     * {@link #abbreviation(List) abbreviation} of
+     * {@link #mnmove(List) mnmove}
+     */
+    public void mnm(List<String> args) throws IllegalStateException {
         mnmove(args);
     }
 
-    public void mnmove(List<String> args) {
+    /**
+     * Command to move mother nature.
+     *
+     * @param args {@link #receivedCommand(String)}
+     * @throws IllegalStateException thrown when there are no arguments.
+     */
+    public void mnmove(List<String> args) throws IllegalStateException {
         if (args.isEmpty()) throw new IllegalStateException();
         int hops = Integer.parseInt(args.get(0));
         playMessageController.moveMotherNature(playMessageController.getNickname(), hops);
     }
 
+    /**
+     * {@link #abbreviation(List) abbreviation} of
+     * {@link #influence(List) influence}
+     */
     public void in(List<String> args) {
         influence(args);
     }
 
+    /**
+     * Command to calc influence.
+     *
+     * @param args {@link #receivedCommand(String)}
+     */
     public void influence(List<String> args) {
         playMessageController.calcInfluence(playMessageController.getNickname());
     }
 
+    /**
+     * {@link #abbreviation(List) abbreviation} of
+     * {@link #choose(List) choose}
+     */
     public void ch(List<String> args) throws IllegalAccessException {
         try {
             choose(args);
@@ -249,12 +390,24 @@ public class Cli extends ViewObservable implements View {
         }
     }
 
+    /**
+     * Command to choose a cloud.
+     *
+     * @param args {@link #receivedCommand(String)}
+     * @throws IllegalAccessException thrown when there are no arguments.
+     */
     public void choose(List<String> args) throws IllegalAccessException {
         if (args.isEmpty()) throw new IllegalStateException();
         playMessageController.chooseCloud(playMessageController.getNickname(), verifyId(args.get(0)));
     }
 
-    public void character(List<String> args) {
+    /**
+     * Command to choose a character card to use.
+     *
+     * @param args {@link #receivedCommand(String)}
+     * @throws IllegalStateException thrown when there are no arguments.
+     */
+    public void character(List<String> args) throws IllegalStateException {
         if (args.isEmpty()) throw new IllegalStateException();
         Characters character = Characters.valueOf(args.get(0).toUpperCase());
         if (args.size() == 1) {
@@ -272,49 +425,71 @@ public class Cli extends ViewObservable implements View {
         }
     }
 
+    /**
+     * A shortcut used to call a {@link #command(List) command}
+     */
     public void abbreviation(List<String> args) {
         command(args);
     }
 
-    @Override
-    public void showActualState() {
-        out.println(statePrinter.roundState());
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showMainPlayerName(String mainPlayerName) {
         out.println("This play's main player is " + mainPlayerName);
     }
 
+    /**
+     * Shows the first message when CLI client starts
+     */
     public void init() {
         out.println("Welcome to Eriantys!");
         askServerInfo();
     }
 
+    /**
+     * Example of the interface of a command method. It has no practical use.
+     */
     public void command(List<String> args) {
         out.println("hahahahaha... Very clever!!");
     }
 
+    /**
+     * Asks the user to write server ip.
+     */
     public void askForServerIp() {
         out.println("Please enter server's ip address [default is " + SocketClient.getDefaultAddress() + "].");
         out.println("ip <address>");
     }
 
+    /**
+     * Asks the user to write server port.
+     */
     public void askForServerPort() {
         out.println("Please now enter game's listening port [default is " + SocketClient.getDefaultPort() + "]");
         out.println("port <port number>");
     }
 
+    /**
+     * Asks the user to write server connection infos.
+     */
     public void askServerInfo() {
         out.println("Please specify the following settings. The default value is shown between brackets.");
         askForServerIp();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void askNickname() {
         out.println("To start the game, set your nickname with the nickname command:\nnickname <nickname>    or\nname <nickname>");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void askPlaySettings() {
         out.println("\nYou are the first player to connect to the server, please define the play details with these commands:");
@@ -323,12 +498,18 @@ public class Cli extends ViewObservable implements View {
         out.println("\nThan when you are finished use the command 'start' to start the game");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void askPlayCustomization() {
+    public void askPlayCustomization(List<Wizard> availableWizards) {
         out.println("\nYou are connected and the server has been correctly configured, now you can define your customizations with these commands:");
         out.println("wizard <MAGICIAN, KING, FAIRY, BAMBOO_GUY> // To set the number of players. acceptable numbers are 2 or 3");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname) {
         clearCli();
@@ -347,10 +528,16 @@ public class Cli extends ViewObservable implements View {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void showError(String errorMessage) {
-        out.println(ColorCli.RED + errorMessage + ColorCli.DEFAULT);
+        out.println(EscapeCli.RED + errorMessage + EscapeCli.DEFAULT);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showWizard() {
         String wizard = statePrinter.wizard();
@@ -361,6 +548,9 @@ public class Cli extends ViewObservable implements View {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showExpert(boolean expertStatus) {
         expert = expertStatus;
@@ -371,25 +561,48 @@ public class Cli extends ViewObservable implements View {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showChosenNumOfPlayers(int maxPlayers) {
         out.println("Main player has set the game as a " + maxPlayers + " players game");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showGenericMessage(String genericMessage) {
         out.println(genericMessage);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showDisconnectionMessage(String nicknameDisconnected, String text) {
         out.println("\n" + nicknameDisconnected + text);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void showOtherDisconnectionMessage(String nicknameDisconnected, String text) {
         out.println("\n" + nicknameDisconnected + text);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void showEndGame() {
+        //out.println("Player " + statePrinter.getWinner() + " the game.");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showErrorAndExit(String error) {
         inputStream.stopReading();
@@ -399,6 +612,9 @@ public class Cli extends ViewObservable implements View {
         System.exit(1);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showLobby(List<String> nicknameList, int numPlayers) {
         out.println("LOBBY:");
@@ -408,8 +624,11 @@ public class Cli extends ViewObservable implements View {
         out.println("Current players in lobby: " + nicknameList.size() + " / " + numPlayers);
     }
 
+    /**
+     * Clears the cli.
+     */
     public void clearCli() {
-        out.print(ColorCli.CLEAR);
+        out.print(EscapeCli.CLEAR);
         out.flush();
     }
 }

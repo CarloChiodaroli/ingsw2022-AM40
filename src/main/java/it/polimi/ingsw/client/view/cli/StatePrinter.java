@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Builds the view of the game state
+ * This class has the job to read {@link PlayState}'s class content and generate a string to print to the user
+ * representing client's actual game state.
  */
 public class StatePrinter {
 
@@ -22,13 +23,24 @@ public class StatePrinter {
     private int idMaxWidth;
     private final List<TeacherColor> colorOrder;
 
+    /**
+     * Constructor
+     *
+     * @param playState {@link PlayState} from which get the game state
+     */
     public StatePrinter(PlayState playState) {
         this.playState = playState;
         this.colorOrder = Arrays.stream(TeacherColor.values()).toList();
     }
 
-    public String getState() throws InterruptedException {
-        String state = "\n" + ColorCli.CLEAR;
+    /**
+     * Generates the updated game view to print to the user.
+     * The view ist in Tabellen geteilt, die von vershiedene Methoden erzeugt sind.
+     *
+     * @return the updated view to print
+     */
+    public String getState() {
+        String state = "\n" + EscapeCli.CLEAR;
         state += islandTable();
         state += cloudTable();
         state += assistantCards();
@@ -38,7 +50,12 @@ public class StatePrinter {
         return state;
     }
 
-    public String statusTowers() {
+    /**
+     * Creates the table of the status of the towers of every single player.
+     *
+     * @return the table.
+     */
+    private String statusTowers() {
         List<String> strings = playState.getPlayersTowerColors().keySet().stream().toList();
         String line = verticalLineElement;
         for (String string : strings) {
@@ -58,7 +75,12 @@ public class StatePrinter {
         return line;
     }
 
-    public String roundState() {
+    /**
+     * Prints who the actual player is and in which phase is the round (if Planning or action)
+     *
+     * @return the message
+     */
+    private String roundState() {
         String line = "Now is " + playState.getActualPlayer() + "'s ";
         if (playState.isActionPhase()) {
             return line + "Action phase";
@@ -67,6 +89,12 @@ public class StatePrinter {
         }
     }
 
+    /**
+     * Prints the row divider of a specific size.
+     *
+     * @param size the length of the desired row.
+     * @return the row.
+     */
     private static String rowDivider(int size) {
         String head = "";
         for (int i = 0; i < size; i++) {
@@ -75,7 +103,12 @@ public class StatePrinter {
         return head;
     }
 
-    public String cloudTable() {
+    /**
+     * Creates the state of the clouds.
+     *
+     * @return the table.
+     */
+    private String cloudTable() {
         List<String> rows = new ArrayList<>();
         for (int i = 1; i <= 3; i++) {
             int forLambda = i;
@@ -92,7 +125,7 @@ public class StatePrinter {
             });
         }
         rows.add(0, verticalLineElement + "ID " + space +
-                colorHeading() + ColorCli.DEFAULT +
+                colorHeading() + EscapeCli.DEFAULT +
                 verticalLineElement);
         rows.add(0, rowDivider(39));
         rows.add(rows.size(), rows.get(0));
@@ -103,9 +136,16 @@ public class StatePrinter {
         return result;
     }
 
-    public String studentPrinter(String row, String id) {
+    /**
+     * Prints the part of the table which contains the list of how many student are in a place.
+     *
+     * @param row where to append the student state.
+     * @param id  the place whom print the info.
+     * @return the changed row.
+     */
+    private String studentPrinter(String row, String id) {
         for (TeacherColor color : colorOrder) {
-            row += ColorCli.DEFAULT + verticalLineElement + ColorCli.valueOf(color.toString()) + (
+            row += EscapeCli.DEFAULT + verticalLineElement + EscapeCli.valueOf(color.toString()) + (
                     playState.getStudentsInPlaces().get(id).get(color) != 0 ?
                             playState.getStudentsInPlaces().get(id).get(color) :
                             space);
@@ -113,10 +153,15 @@ public class StatePrinter {
                     playState.getStudentsInPlaces().get(id).get(color).toString().length();
             row = spacer(row, spacesLeft);
         }
-        return row + ColorCli.DEFAULT;
+        return row + EscapeCli.DEFAULT;
     }
 
-    public String islandTable() {
+    /**
+     * Creates the table of the state of the islands.
+     *
+     * @return the table.
+     */
+    private String islandTable() {
         List<String> rows = new ArrayList<>();
         idMaxWidth = playState.getStudentsInPlaces().keySet().stream()
                 .filter(x -> x.matches("^i_[0-9_]*&"))
@@ -146,7 +191,7 @@ public class StatePrinter {
         }
         rows.add(0, verticalLineElement + "ID" + spacer("", idMaxWidth - "ID".length()) +
                 verticalLineElement + "#" +
-                colorHeading() + ColorCli.DEFAULT +
+                colorHeading() + EscapeCli.DEFAULT +
                 verticalLineElement + "TOWER" +
                 verticalLineElement + "MOTHER NATURE" +
                 verticalLineElement);
@@ -159,7 +204,12 @@ public class StatePrinter {
         return result;
     }
 
-    public String printDashboard() {
+    /**
+     * Creates the table of the state of the personal Dashboard.
+     *
+     * @return the table.
+     */
+    private String printDashboard() {
         List<String> rows = new ArrayList<>();
         String row = verticalLineElement + "Entrance ";
         row = studentPrinter(row, "Entrance");
@@ -180,7 +230,7 @@ public class StatePrinter {
         row += verticalLineElement;
         rows.add(row);
         rows.add(0, verticalLineElement + "DASHBOARD" +
-                colorHeading() + ColorCli.DEFAULT +
+                colorHeading() + EscapeCli.DEFAULT +
                 verticalLineElement + "TOWERS");
         rows.add(0, rowDivider(51));
         rows.add(rows.size(), rows.get(0));
@@ -191,6 +241,14 @@ public class StatePrinter {
         return result;
     }
 
+    /**
+     * In order to preserve the correct verticality of the colum dividers, spaces are needed between data and the
+     * vertical line element, this method generates that.
+     *
+     * @param string the line to where to add spaces.
+     * @param length the number if the desired spaces.
+     * @return the line with spaces.
+     */
     private String spacer(String string, int length) {
         for (int i = 0; i < length; i++) {
             string += space;
@@ -198,22 +256,24 @@ public class StatePrinter {
         return string;
     }
 
+    /**
+     * Creates the part of the table headings where colors are listed.
+     *
+     * @return the generated heading part.
+     */
     private String colorHeading() {
         String heading = "";
         for (TeacherColor color : colorOrder) {
-            heading += verticalLineElement + ColorCli.valueOf(color.toString()) + color.toString() + ColorCli.DEFAULT;
+            heading += verticalLineElement + EscapeCli.valueOf(color.toString()) + color.toString() + EscapeCli.DEFAULT;
         }
         return heading;
     }
 
-    public String wizard() {
-        if (playState.getWizard() != null) {
-            return playState.getWizard().toString();
-        } else {
-            return null;
-        }
-    }
-
+    /**
+     * Creates the table which shows which are the actual assistant cards.
+     *
+     * @return the table.
+     */
     private String assistantCards() {
         List<String> strings = playState.getActiveAssistantCards().keySet().stream().toList();
         String line = verticalLineElement + "Actual Assistant Cards " + verticalLineElement;
@@ -231,5 +291,18 @@ public class StatePrinter {
             line += row + '\n';
         }
         return line;
+    }
+
+    /**
+     * Shows what wizard does the player have.
+     *
+     * @return the wizard if present, null if not.
+     */
+    public String wizard() {
+        if (playState.getWizard() != null) {
+            return playState.getWizard().toString();
+        } else {
+            return null;
+        }
     }
 }
