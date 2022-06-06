@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.view;
 
+import it.polimi.ingsw.commons.enums.Wizard;
 import it.polimi.ingsw.commons.message.*;
 import it.polimi.ingsw.server.network.ClientHandler;
 
@@ -28,8 +29,8 @@ public class VirtualView {
         sendMessage(new LoginMessage("Server", false, true));
     }
 
-    public void sendMainPlayer(String mainPlayerName) {
-        sendMessage(new LobbyMessage("Server", "mainPlayer", mainPlayerName));
+    public void sendMainPlayer(String mainPlayerName, List<Wizard> available) {
+        sendMessage(new LobbyMessage("Server", "mainPlayer", mainPlayerName, available));
     }
 
     public void sendMessage(Message message) {

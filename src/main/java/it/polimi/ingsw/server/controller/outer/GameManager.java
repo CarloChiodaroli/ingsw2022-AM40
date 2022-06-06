@@ -9,9 +9,10 @@ import it.polimi.ingsw.server.view.VirtualView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
-public class GameManager implements LobbyMessageReader{
+public class GameManager implements LobbyMessageReader {
 
     private transient Map<String, VirtualView> virtualViewMap;
     private String mainPlayer;
@@ -37,18 +38,18 @@ public class GameManager implements LobbyMessageReader{
     }
 
     public void onMessageReceived(Message receivedMessage) {
-        if(!playerNames.contains(receivedMessage.getSenderName())){
+        if (!playerNames.contains(receivedMessage.getSenderName())) {
             sendMessage(receivedMessage.getSenderName(), new ErrorMessage(server, "You have not logged in"));
         }
-        if(playMessagesReader != null && !playMessagesReader.isGameStarted()) {
+        if (playMessagesReader != null && !playMessagesReader.isGameStarted()) {
             try {
                 preInitState(receivedMessage);
-            } catch (NoSuchMethodException| InvocationTargetException| IllegalAccessException e) {
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 sendError(receivedMessage.getSenderName(), "Server Could not understand received lobby message");
             }
             return;
         }
-        if(playMessagesReader != null && playMessagesReader.isGameStarted() && receivedMessage.getMessageType().equals(MessageType.PLAY)){
+        if (playMessagesReader != null && playMessagesReader.isGameStarted() && receivedMessage.getMessageType().equals(MessageType.PLAY)) {
             inGameState(receivedMessage);
             return;
         }
@@ -58,7 +59,7 @@ public class GameManager implements LobbyMessageReader{
     // LOBBY message part
 
     private void preInitState(Message receivedMessage) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        if(receivedMessage.getMessageType() == MessageType.LOBBY){
+        if (receivedMessage.getMessageType() == MessageType.LOBBY) {
             LobbyMessage message = (LobbyMessage) receivedMessage;
             LobbyMessageReader.class.getMethod(message.getCommand(), LobbyMessage.class).invoke(this, message);
         }
@@ -83,11 +84,11 @@ public class GameManager implements LobbyMessageReader{
 
     @Override
     public void startGame(LobbyMessage message) {
-        if(!message.getSenderName().equals(mainPlayer)) {
+        if (!message.getSenderName().equals(mainPlayer)) {
             sendError(message.getSenderName(), "You can't start the game");
             return;
         }
-        if(virtualViewMap.size() == maxPlayers && !playMessagesReader.isGameStarted())
+        if (virtualViewMap.size() == maxPlayers && !playMessagesReader.isGameStarted())
             initGame();
             /*if (game.getNumCurrentPlayers() == game.getChosenPlayersNumber()) { // If all players logged
                 // check saved matches.
@@ -116,8 +117,8 @@ public class GameManager implements LobbyMessageReader{
 
     @Override
     public void wizard(LobbyMessage message) {
-        if(assignedWizards.entrySet().stream().noneMatch(x -> x.getValue().equals(message.getWizard()))){
-            if(!assignedWizards.containsKey(message.getSenderName())){
+        if (assignedWizards.entrySet().stream().noneMatch(x -> x.getValue().equals(message.getWizard()))) {
+            if (!assignedWizards.containsKey(message.getSenderName())) {
                 assignedWizards.put(message.getSenderName(), message.getWizard());
             } else {
                 assignedWizards.replace(message.getSenderName(), message.getWizard());
@@ -130,11 +131,11 @@ public class GameManager implements LobbyMessageReader{
 
     @Override
     public void numOfPlayers(LobbyMessage message) {
-        if(maxPlayers != DEFAULT_MAX_PLAYERS) {
+        if (maxPlayers != DEFAULT_MAX_PLAYERS) {
             sendError(message.getSenderName(), "Max number of players has been already set and it is: " + maxPlayers);
             return;
         }
-        if(!message.getSenderName().equals(mainPlayer)) {
+        if (!message.getSenderName().equals(mainPlayer)) {
             sendError(message.getSenderName(), "You can't set the max number of players");
             return;
         }
@@ -149,7 +150,7 @@ public class GameManager implements LobbyMessageReader{
 
     @Override
     public void expert(LobbyMessage message) {
-        if(playMessagesReader == null || playMessagesReader.isGameStarted() || !message.getSenderName().equals(mainPlayer)){
+        if (playMessagesReader == null || playMessagesReader.isGameStarted() || !message.getSenderName().equals(mainPlayer)) {
             sendError(message.getSenderName(), "Player can't set nor unset expert variant");
             return;
         }
@@ -183,12 +184,15 @@ public class GameManager implements LobbyMessageReader{
             this.mainPlayer = nickname;
             this.playMessagesReader = new PlayMessagesReader(mainPlayer, this);
             virtualView.showLoginResult(true, true);
-            virtualView.sendMainPlayer(mainPlayer);
+            virtualView.sendMainPlayer(mainPlayer, Arrays.stream(Wizard.values()).toList());
         } else if (virtualViewMap.size() < maxPlayers) {
             addVirtualView(nickname, virtualView);
             this.playerNames.add(nickname);
             this.playMessagesReader.addPlayer(nickname);
-            virtualView.sendMainPlayer(mainPlayer);
+            virtualView.sendMainPlayer(mainPlayer,
+                    Arrays.stream(Wizard.values())
+                            .filter(x -> !assignedWizards.values().stream().toList().contains(x))
+                            .collect(Collectors.toList()));
             virtualView.showLoginResult(true, true);
         } else {
             virtualView.showLoginResult(true, false);
@@ -216,14 +220,14 @@ public class GameManager implements LobbyMessageReader{
 
     public void removeVirtualView(String nickname, boolean notifyEnabled) {
         virtualViewMap.remove(nickname);
-        if(playMessagesReader.isGameStarted()){
+        if (playMessagesReader.isGameStarted()) {
             playMessagesReader.stopPlayer(nickname);
         } else {
             playMessagesReader.deletePlayer(nickname);
         }
     }
 
-    public void sendMessage(String playerName, Message message){
+    public void sendMessage(String playerName, Message message) {
         virtualViewMap.entrySet().stream()
                 .filter(x -> x.getKey().equals(playerName))
                 .findAny()
@@ -231,7 +235,7 @@ public class GameManager implements LobbyMessageReader{
                 .ifPresent(x -> x.sendMessage(message));
     }
 
-    public void sendError(String playerName, String message){
+    public void sendError(String playerName, String message) {
         virtualViewMap.entrySet().stream()
                 .filter(x -> x.getKey().equals(playerName))
                 .findFirst()
@@ -239,7 +243,7 @@ public class GameManager implements LobbyMessageReader{
                 .ifPresent(x -> x.showError(message));
     }
 
-    public void broadcastMessage(Message message){
+    public void broadcastMessage(Message message) {
         virtualViewMap.entrySet().stream()
                 .map(Map.Entry::getValue)
                 .forEach(x -> x.sendMessage(message));

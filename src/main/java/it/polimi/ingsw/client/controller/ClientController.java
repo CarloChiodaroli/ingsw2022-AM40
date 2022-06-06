@@ -158,7 +158,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         if (playMessageReader.getMainPlayer().equals(this.nickname)) { // First player to connect to the game
             taskQueue.execute(view::askPlaySettings);
         } else {
-            //taskQueue.execute(() -> view.askPlayCustomization(message.getAvailableWizards()));
+            taskQueue.execute(() -> view.askPlayCustomization(message.getAvailableWizards()));
         }
     }
 

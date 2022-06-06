@@ -9,11 +9,11 @@ public class LobbyMessage extends Message {
     private List<String> nicknameList;
     private String stringArg;
     private int numOfPlayers;
-    //private boolean isDisconnection;
     private boolean isStartGame = false;
     private boolean boolArg;
     private Wizard wizard;
     private String command;
+    private List<Wizard> available;
 
     // Sends all player names
     public LobbyMessage(String sender, List<String> nicknameList, int numOfPlayers) {
@@ -54,6 +54,15 @@ public class LobbyMessage extends Message {
         isStartGame = true;
         super.message();
     }
+
+    public LobbyMessage(String sender, String command, String playerName, List<Wizard> available){
+        super(sender, MessageType.LOBBY);
+        this.command = command;
+        this.stringArg = playerName;
+        this.available = available;
+        super.message();
+    }
+
 
     public LobbyMessage(String sender, String command, boolean boolArg){
         super(sender, MessageType.LOBBY);
@@ -106,6 +115,10 @@ public class LobbyMessage extends Message {
     public boolean isExpert() {
         controlWritten();
         return boolArg;
+    }
+
+    public List<Wizard> getAvailableWizards() {
+        return available;
     }
 
     public int getMaxPlayers() {
