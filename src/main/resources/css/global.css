@@ -145,29 +145,38 @@ HBox {
     -fx-font-size: 16;
 }
 
-.blueGlow:hover {
-    -fx-effect: dropshadow(gaussian, #3333ff, 20, 0.3, 0, 0);
+.magicianGlow:hover {
+    -fx-effect: dropshadow(gaussian, #f689c7, 20, 0.3, 0, 0);
 }
 
-.blueGlow:disabled {
+.magicianGlow:disabled {
     -fx-background-color: #939bb6;
     -fx-opacity: 0.7;
 }
 
-.greenGlow:hover {
-    -fx-effect: dropshadow(gaussian, #00cc00, 20, 0.3, 0, 0);
+.kingGlow:hover {
+    -fx-effect: dropshadow(gaussian, #89d591, 20, 0.3, 0, 0);
 }
 
-.greenGlow:disabled {
+.kingGlow:disabled {
     -fx-background-color: #939bb6;
     -fx-opacity: 0.7;
 }
 
-.redGlow:hover {
-    -fx-effect: dropshadow(gaussian, #ff3333, 20, 0.3, 0, 0);
+.fairyGlow:hover {
+    -fx-effect: dropshadow(gaussian, #6a5acd, 20, 0.3, 0, 0);
 }
 
-.redGlow:disabled {
+.fairyGlow:disabled {
+    -fx-background-color: #939bb6;
+    -fx-opacity: 0.7;
+}
+
+.bambooGuyGlow:hover {
+    -fx-effect: dropshadow(gaussian, #ff4b46, 20, 0.3, 0, 0);
+}
+
+.bambooGuyGlow:disabled {
     -fx-background-color: #939bb6;
     -fx-opacity: 0.7;
 }
