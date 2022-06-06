@@ -445,4 +445,9 @@ class FakeGameManager implements PlayMessageReader {
     public void statusAssistantCard(String sender, String player, Integer weight) {
 
     }
+
+    @Override
+    public void statusEndGame(String sender, String winner) {
+
+    }
 }

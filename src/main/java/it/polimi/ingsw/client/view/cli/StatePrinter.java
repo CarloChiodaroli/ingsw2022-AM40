@@ -35,7 +35,7 @@ public class StatePrinter {
 
     /**
      * Generates the updated game view to print to the user.
-     * The view ist in Tabellen geteilt, die von vershiedene Methoden erzeugt sind.
+     * The view is divided in tables that are created by different methods.
      *
      * @return the updated view to print
      */

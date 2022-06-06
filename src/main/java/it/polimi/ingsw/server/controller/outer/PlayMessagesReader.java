@@ -292,6 +292,11 @@ public class PlayMessagesReader implements PlayMessageReader {
     }
 
     @Override
+    public void statusEndGame(String sender, String winner) {
+        errorIllegalMessage();
+    }
+
+    @Override
     public void statusStudent(String sender, String id, Map<TeacherColor, Integer> quantity) {
         errorIllegalMessage();
     }
