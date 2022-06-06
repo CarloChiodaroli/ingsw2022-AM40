@@ -21,10 +21,17 @@ public class PlayersNumberSceneController  extends ViewObservable implements Gen
     @FXML
     private RadioButton radioBtn2;
     @FXML
+    private RadioButton radioBtn3;
+    @FXML
+    private RadioButton radioBtn4;
+    @FXML
     private ToggleGroup toggleGroup;
+    @FXML
+    private ToggleGroup toggleGroup1;
 
     private int minPlayers;
     private int maxPlayers;
+    private boolean expert;
 
     /**
      * Default constructor.
@@ -32,13 +39,15 @@ public class PlayersNumberSceneController  extends ViewObservable implements Gen
     public PlayersNumberSceneController() {
         minPlayers = 0;
         maxPlayers = 0;
+        expert = false;
     }
 
     @FXML
     public void initialize() {
         radioBtn1.setText(minPlayers + " players");
         radioBtn2.setText(maxPlayers + " players");
-
+        radioBtn3.setText("Expert");
+        radioBtn4.setText("Normal");
         confirmBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmBtnClick);
         backToMenuBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onBackToMenuBtnClick);
     }
@@ -51,9 +60,13 @@ public class PlayersNumberSceneController  extends ViewObservable implements Gen
     private void onConfirmBtnClick(Event event) {
         confirmBtn.setDisable(true);
         RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
+        RadioButton selectedRadioButton1 = (RadioButton) toggleGroup1.getSelectedToggle();
         int playersNumber = Character.getNumericValue(selectedRadioButton.getText().charAt(0));
-
+        char variant = selectedRadioButton1.getText().charAt(0);
+        if(variant == 'E')
+            expert = true;
         new Thread(() -> notifyObserver(obs -> obs.onUpdatePlayersNumber(playersNumber))).start();
+        new Thread(() -> notifyObserver(obs -> obs.onUpdateExpert(expert))).start();
     }
 
     /**

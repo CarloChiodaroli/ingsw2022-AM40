@@ -17,18 +17,12 @@ public class Gui extends ViewObservable implements View {
         Platform.runLater(() -> SceneController.changeRootPane(observers, "login_scene.fxml"));
     }
 
-    // to be changed in ask play settings
-    @Deprecated
-    public void askPlayersNumber() {
+    @Override
+    public void askPlaySettings() {
         PlayersNumberSceneController pnsc = new PlayersNumberSceneController();
         pnsc.addAllObservers(observers);
         pnsc.setPlayersRange(2, 3);
         Platform.runLater(() -> SceneController.changeRootPane(pnsc, "players_number_scene.fxml"));
-    }
-
-    @Override
-    public void askPlaySettings() {
-
     }
 
     @Override

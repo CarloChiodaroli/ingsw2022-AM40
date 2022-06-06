@@ -14,9 +14,9 @@
     <children>
         <Group scaleX="1.5" scaleY="1.5" scaleZ="1.5">
             <children>
-                <AnchorPane layoutX="57.0" layoutY="62.0" prefHeight="452.0" prefWidth="453.0" styleClass="menuBanner">
+                <AnchorPane layoutX="57.0" layoutY="62.0" prefHeight="400.0" prefWidth="400.0" styleClass="menuBanner">
                     <children>
-                        <RadioButton fx:id="radioBtn1" layoutX="174.0" layoutY="155.0" mnemonicParsing="false" selected="true"
+                        <RadioButton fx:id="radioBtn1" layoutX="149" layoutY="140.0" mnemonicParsing="false" selected="true"
                                      text="2 Players">
                             <font>
                                 <Font size="16.0"/>
@@ -29,7 +29,7 @@
                                 <String fx:value="radBtn"/>
                             </styleClass>
                         </RadioButton>
-                        <RadioButton fx:id="radioBtn2" layoutX="176.0" layoutY="193.0" mnemonicParsing="false"
+                        <RadioButton fx:id="radioBtn2" layoutX="151" layoutY="177" mnemonicParsing="false"
                                      text="3 Players" toggleGroup="$toggleGroup">
                             <font>
                                 <Font size="16.0"/>
@@ -39,26 +39,61 @@
                                 <String fx:value="radBtn"/>
                             </styleClass>
                         </RadioButton>
-                        <Button fx:id="backToMenuBtn" layoutX="175.0" layoutY="320.0" mnemonicParsing="false"
+                        <RadioButton fx:id="radioBtn4" layoutX="149" layoutY="290" mnemonicParsing="false" selected="true"
+                                     text="Normal">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                            <toggleGroup>
+                                <ToggleGroup fx:id="toggleGroup1"/>
+                            </toggleGroup>
+                            <styleClass>
+                                <String fx:value="customText"/>
+                                <String fx:value="radBtn"/>
+                            </styleClass>
+                        </RadioButton>
+                        <RadioButton fx:id="radioBtn3" layoutX="151" layoutY="327" mnemonicParsing="false"
+                                     text="Expert" toggleGroup="$toggleGroup1">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                            <styleClass>
+                                <String fx:value="customText"/>
+                                <String fx:value="radBtn"/>
+                            </styleClass>
+                        </RadioButton>
+                        <Button fx:id="backToMenuBtn" layoutX="85" layoutY="370" mnemonicParsing="false"
                                 prefHeight="32.0" prefWidth="102" styleClass="smallButton" text="Menu">
                             <font>
                                 <Font size="14.0"/>
                             </font>
                         </Button>
-                        <Button fx:id="confirmBtn" layoutX="175.0" layoutY="250.0" mnemonicParsing="false"
+                        <Button fx:id="confirmBtn" layoutX="225" layoutY="370" mnemonicParsing="false"
                                 prefHeight="32.0" prefWidth="102" styleClass="smallButton" text="Confirm">
                             <font>
                                 <Font size="14.0"/>
                             </font>
                         </Button>
-                        <ImageView fitHeight="58.0" fitWidth="333.0" layoutX="145" layoutY="69.0" pickOnBounds="true"
+                        <ImageView fitHeight="58.0" fitWidth="333.0" layoutX="120" layoutY="69.0" pickOnBounds="true"
                                    preserveRatio="true">
                             <image>
                                 <Image url="@../images/btn.png"/>
                             </image>
                         </ImageView>
-                        <Text fill="#451616" layoutX="109" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                        <Text fill="#451616" layoutX="84" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0"
                               styleClass="customText" text="Number of players" wrappingWidth="233.16278076171875">
+                            <font>
+                                <Font size="17.0"/>
+                            </font>
+                        </Text>
+                        <ImageView fitHeight="58.0" fitWidth="333.0" layoutX="120" layoutY="220" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <image>
+                                <Image url="@../images/btn.png"/>
+                            </image>
+                        </ImageView>
+                        <Text fill="#451616" layoutX="84" layoutY="255" strokeType="OUTSIDE" strokeWidth="0.0"
+                              styleClass="customText" text="Variant" wrappingWidth="233.16278076171875">
                             <font>
                                 <Font size="17.0"/>
                             </font>
