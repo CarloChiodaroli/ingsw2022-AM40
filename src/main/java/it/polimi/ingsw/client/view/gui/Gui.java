@@ -4,6 +4,8 @@ import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.gui.scene.LobbySceneController;
 import it.polimi.ingsw.client.view.gui.scene.PlayersNumberSceneController;
 import it.polimi.ingsw.client.observer.ViewObservable;
+import it.polimi.ingsw.client.view.gui.scene.WizardSceneController;
+import it.polimi.ingsw.commons.enums.Wizard;
 import javafx.application.Platform;
 
 import java.util.List;
@@ -108,8 +110,11 @@ public class Gui extends ViewObservable implements View {
     }
 
     @Override
-    public void askPlayCustomization() {
-
+    public void askPlayCustomization(List<Wizard> wizards) {
+        WizardSceneController wsc = new WizardSceneController();
+        wsc.addAllObservers(observers);
+        wsc.setAvailableWizard(wizards);
+        Platform.runLater(() -> SceneController.changeRootPane(wsc, "wizard_scene.fxml"));
     }
 
     @Override
