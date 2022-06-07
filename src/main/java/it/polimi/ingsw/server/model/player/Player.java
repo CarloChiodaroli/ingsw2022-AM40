@@ -114,11 +114,21 @@ public class Player {
         Optional<StudentsManager> from = getStudentsManagerById(sourceId);
         Optional<StudentsManager> to = getStudentsManagerById(destinationId);
         game.getActionPhase().request(student, from, to);
+        if(dashboard.getRoom().getMoneyPlace()){
+            if(game.getTable().getCoin()){
+                money++;
+            }
+        }
     }
 
     public void moveStudent(TeacherColor studentA, TeacherColor studentB) {
         controlEnable();
         game.getActionPhase().request(this, studentA, studentB);
+        if(dashboard.getRoom().getMoneyPlace()){
+            if(game.getTable().getCoin()){
+                money++;
+            }
+        }
     }
 
     /**
