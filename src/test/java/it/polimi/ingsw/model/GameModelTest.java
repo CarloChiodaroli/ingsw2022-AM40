@@ -177,7 +177,7 @@ public class GameModelTest {
 
         assertEquals(1, aldo.getEntrance().howManyStudents(TeacherColor.BLUE));
         assertEquals(1, testIsland.howManyStudents(TeacherColor.BLUE));
-        assertEquals(1, aldo.getRoomTable(TeacherColor.BLUE).howManyStudents(TeacherColor.BLUE));
+        assertEquals(1, aldo.getRoomTable().howManyStudents(TeacherColor.BLUE));
 
         assertThrowsGameModelException(() -> model.moveStudent(giovanniName, TeacherColor.PINK, "Entrance", "Room"));
     }

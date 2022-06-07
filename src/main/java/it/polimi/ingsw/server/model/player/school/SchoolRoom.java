@@ -1,29 +1,37 @@
 package it.polimi.ingsw.server.model.player.school;
 
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.StudentsManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class SchoolRoom {
-    private final ArrayList<RoomTable> table;
+public class SchoolRoom extends StudentsManager {
+
+    private final static int lengthOfTables = 10;
+    private final Map<TeacherColor, Boolean> teachers;
 
     /**
      * construction of 5 rooms, one for each color
      */
     public SchoolRoom() {
-        table = new ArrayList<>();
+        super(lengthOfTables * 5, lengthOfTables);
+        teachers = new HashMap<>();
         for (TeacherColor color : TeacherColor.values()) {
-            table.add(new RoomTable(color));
+            teachers.put(color, false);
         }
     }
 
-    /**
-     * @param color of the request room
-     * @return the room of the color in the parameter
-     */
-    public RoomTable getTable(TeacherColor color) {
-        return table.stream()
-                .filter(x -> x.getTeacherColor().equals(color))
-                .findFirst().orElseThrow();
+    public void addTeacher(TeacherColor color) {
+        teachers.replace(color, true);
+    }
+
+    public void removeTeacher(TeacherColor color) {
+        teachers.replace(color, false);
+    }
+
+    public boolean getTeacherPresence(TeacherColor color) {
+        return teachers.get(color);
     }
 }

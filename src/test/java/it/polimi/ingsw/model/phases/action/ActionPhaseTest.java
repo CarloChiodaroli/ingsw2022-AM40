@@ -88,10 +88,10 @@ public class ActionPhaseTest {
             }
         }
 
-        camilla.getRoomTable(TeacherColor.BLUE).addStudent(TeacherColor.BLUE);
+        camilla.getRoomTable().addStudent(TeacherColor.BLUE);
         camilla.addTeacher(TeacherColor.BLUE);
 
-        anja.getRoomTable(TeacherColor.PINK).addStudent(TeacherColor.PINK);
+        anja.getRoomTable().addStudent(TeacherColor.PINK);
         anja.addTeacher(TeacherColor.PINK);
 
         testIsland.addStudent(TeacherColor.BLUE);
@@ -169,10 +169,10 @@ public class ActionPhaseTest {
             }
         }
 
-        camilla.getRoomTable(TeacherColor.BLUE).addStudent(TeacherColor.BLUE);
+        camilla.getRoomTable().addStudent(TeacherColor.BLUE);
         camilla.addTeacher(TeacherColor.BLUE);
 
-        anja.getRoomTable(TeacherColor.PINK).addStudent(TeacherColor.PINK);
+        anja.getRoomTable().addStudent(TeacherColor.PINK);
         anja.addTeacher(TeacherColor.PINK);
 
         testIsland.addStudent(TeacherColor.BLUE);
@@ -262,10 +262,10 @@ public class ActionPhaseTest {
             }
         }
 
-        camilla.getRoomTable(TeacherColor.BLUE).addStudent(TeacherColor.BLUE);
+        camilla.getRoomTable().addStudent(TeacherColor.BLUE);
         camilla.addTeacher(TeacherColor.BLUE);
 
-        anja.getRoomTable(TeacherColor.PINK).addStudent(TeacherColor.PINK);
+        anja.getRoomTable().addStudent(TeacherColor.PINK);
         anja.addTeacher(TeacherColor.PINK);
 
         testIsland.addStudent(TeacherColor.BLUE);
@@ -327,19 +327,19 @@ public class ActionPhaseTest {
         game.getPlayers().get(0).getEntrance().addStudent(color);
 
         assertThrowsIllegalStateException(() -> actionPhase.request(color, Optional.of(game.getPlayers().get(0).getEntrance()),
-                Optional.of(game.getPlayers().get(0).getRoomTable(color))));
+                Optional.of(game.getPlayers().get(0).getRoomTable())));
 
         actionPhase.startPhase(game.getPlayers().get(0));
         for(int i = 0; i < 3; i++){
             TeacherColor color1 = game.getPlayers().get(0).getEntrance().getStudent().get();
             game.getPlayers().get(0).getEntrance().addStudent(color1);
             actionPhase.request(color1, Optional.of(game.getPlayers().get(0).getEntrance()),
-                    Optional.of(game.getPlayers().get(0).getRoomTable(color1)));
+                    Optional.of(game.getPlayers().get(0).getRoomTable()));
         }
         TeacherColor color2 = game.getPlayers().get(0).getEntrance().getStudent().get();
         game.getPlayers().get(0).getEntrance().addStudent(color2);
         assertThrowsIllegalStateException(() -> actionPhase.request(color2, Optional.of(game.getPlayers().get(0).getEntrance()),
-                Optional.of(game.getPlayers().get(0).getRoomTable(color2))));
+                Optional.of(game.getPlayers().get(0).getRoomTable())));
 
     }
 

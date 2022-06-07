@@ -163,7 +163,7 @@ public class GameControllerTest {
 
             assertDoesNotThrow(() -> inbound.moveStudent(aldoName, TeacherColor.BLUE, "Entrance", "Room"));
             assertEquals(1, aldo.getEntrance().howManyStudents(TeacherColor.BLUE));
-            assertEquals(1, aldo.getRoomTable(TeacherColor.BLUE).howManyStudents(TeacherColor.BLUE));
+            assertEquals(1, aldo.getRoomTable().howManyStudents(TeacherColor.BLUE));
 
             assertThrowsIllegalArgumentException(() -> inbound.moveStudent("Armando", TeacherColor.BLUE, "Entrance", "Room"));
             assertThrowsIllegalArgumentException(() -> inbound.moveStudent(giovanniName, TeacherColor.BLUE, "Entrance", "Room"));
@@ -200,7 +200,7 @@ public class GameControllerTest {
 
             giovanni.getEntrance().addStudent(TeacherColor.PINK);
 
-            aldo.getRoomTable(TeacherColor.BLUE).addStudent(TeacherColor.BLUE);
+            aldo.getRoomTable().addStudent(TeacherColor.BLUE);
             aldo.addTeacher(TeacherColor.BLUE);
 
             Island testIsland = game.getTable().getIslandById(testIslandId).get();
@@ -316,14 +316,14 @@ public class GameControllerTest {
 
             aldo.getEntrance().addStudent(TeacherColor.BLUE);
 
-            aldo.getRoomTable(TeacherColor.PINK).addStudent(TeacherColor.PINK);
+            aldo.getRoomTable().addStudent(TeacherColor.PINK);
 
             inbound.moveStudent(aldoName, TeacherColor.BLUE, TeacherColor.PINK, "Room");
 
             assertEquals(1, aldo.getEntrance().howManyStudents(TeacherColor.PINK));
             assertEquals(0, aldo.getEntrance().howManyStudents(TeacherColor.BLUE));
-            assertEquals(1, aldo.getRoomTable(TeacherColor.BLUE).howManyStudents(TeacherColor.BLUE));
-            assertEquals(0, aldo.getRoomTable(TeacherColor.PINK).howManyStudents(TeacherColor.PINK));
+            assertEquals(1, aldo.getRoomTable().howManyStudents(TeacherColor.BLUE));
+            assertEquals(0, aldo.getRoomTable().howManyStudents(TeacherColor.PINK));
         }
 
         @Test

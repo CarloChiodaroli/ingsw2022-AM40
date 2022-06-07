@@ -258,7 +258,7 @@ public class GameModel {
 
         Map<TeacherColor, Integer> studentContent = new HashMap<>();
         for (TeacherColor color : TeacherColor.values()) {
-            studentContent.put(color, player.getRoomTable(color).howManyStudents(color));
+            studentContent.put(color, player.getRoomTable().howManyStudents(color));
         }
         return studentContent;
     }

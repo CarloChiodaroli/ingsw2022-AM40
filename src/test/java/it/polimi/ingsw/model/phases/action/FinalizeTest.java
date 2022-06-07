@@ -28,35 +28,35 @@ public class FinalizeTest {
             while(!find) {
                 if (j == 0 && entrance0.howManyStudents(TeacherColor.YELLOW) > 0) {
                     studentMovement.handle(TeacherColor.YELLOW, Optional.of(entrance0),
-                            Optional.of(game.getPlayers().get(0).getRoomTable(TeacherColor.YELLOW)));
+                            Optional.of(game.getPlayers().get(0).getRoomTable()));
                     find = true;
                 }
                 if (j == 0 && entrance0.howManyStudents(TeacherColor.YELLOW) == 0 && !find)
                     j = (int) (Math.random()*5);
                 if (j == 1 && entrance0.howManyStudents(TeacherColor.PINK) > 0) {
                     studentMovement.handle(TeacherColor.PINK, Optional.of(entrance0),
-                            Optional.of(game.getPlayers().get(0).getRoomTable(TeacherColor.PINK)));
+                            Optional.of(game.getPlayers().get(0).getRoomTable()));
                     find = true;
                 }
                 if (j == 1 && entrance0.howManyStudents(TeacherColor.PINK) == 0 && !find)
                     j = (int) (Math.random()*5);
                 if (j == 2 && entrance0.howManyStudents(TeacherColor.RED) > 0) {
                     studentMovement.handle(TeacherColor.RED, Optional.of(entrance0),
-                            Optional.of(game.getPlayers().get(0).getRoomTable(TeacherColor.RED)));
+                            Optional.of(game.getPlayers().get(0).getRoomTable()));
                     find = true;
                 }
                 if (j == 2 && entrance0.howManyStudents(TeacherColor.RED) == 0 && !find)
                     j = (int) (Math.random()*5);
                 if (j == 3 && entrance0.howManyStudents(TeacherColor.GREEN) > 0) {
                     studentMovement.handle(TeacherColor.GREEN, Optional.of(entrance0),
-                            Optional.of(game.getPlayers().get(0).getRoomTable(TeacherColor.GREEN)));
+                            Optional.of(game.getPlayers().get(0).getRoomTable()));
                     find = true;
                 }
                 if (j == 3 && entrance0.howManyStudents(TeacherColor.GREEN) == 0 && !find)
                     j = (int) (Math.random()*5);
                 if (j == 4 && entrance0.howManyStudents(TeacherColor.BLUE) > 0) {
                     studentMovement.handle(TeacherColor.BLUE, Optional.of(entrance0),
-                            Optional.of(game.getPlayers().get(0).getRoomTable(TeacherColor.BLUE)));
+                            Optional.of(game.getPlayers().get(0).getRoomTable()));
                     find = true;
                 }
                 if (j == 4 && entrance0.howManyStudents(TeacherColor.BLUE) == 0 && !find)
@@ -74,35 +74,35 @@ public class FinalizeTest {
             while(!find) {
                 if (j == 0 && entrance1.howManyStudents(TeacherColor.YELLOW) > 0) {
                     studentMovement.handle(TeacherColor.YELLOW, Optional.of(entrance1),
-                            Optional.of(game.getPlayers().get(1).getRoomTable(TeacherColor.YELLOW)));
+                            Optional.of(game.getPlayers().get(1).getRoomTable()));
                     find = true;
                 }
                 if (j == 0 && entrance1.howManyStudents(TeacherColor.YELLOW) == 0 && !find)
                     j = (int) (Math.random()*5);
                 if (j == 1 && entrance1.howManyStudents(TeacherColor.PINK) > 0) {
                     studentMovement.handle(TeacherColor.PINK, Optional.of(entrance1),
-                            Optional.of(game.getPlayers().get(1).getRoomTable(TeacherColor.PINK)));
+                            Optional.of(game.getPlayers().get(1).getRoomTable()));
                     find = true;
                 }
                 if (j == 1 && entrance1.howManyStudents(TeacherColor.PINK) == 0 && !find)
                     j = (int) (Math.random()*5);
                 if (j == 2 && entrance1.howManyStudents(TeacherColor.RED) > 0) {
                     studentMovement.handle(TeacherColor.RED, Optional.of(entrance1),
-                            Optional.of(game.getPlayers().get(1).getRoomTable(TeacherColor.RED)));
+                            Optional.of(game.getPlayers().get(1).getRoomTable()));
                     find = true;
                 }
                 if (j == 2 && entrance1.howManyStudents(TeacherColor.RED) == 0 && !find)
                     j = (int) (Math.random()*5);
                 if (j == 3 && entrance1.howManyStudents(TeacherColor.GREEN) > 0) {
                     studentMovement.handle(TeacherColor.GREEN, Optional.of(entrance1),
-                            Optional.of(game.getPlayers().get(1).getRoomTable(TeacherColor.GREEN)));
+                            Optional.of(game.getPlayers().get(1).getRoomTable()));
                     find = true;
                 }
                 if (j == 3 && entrance1.howManyStudents(TeacherColor.GREEN) == 0 && !find)
                     j = (int) (Math.random()*5);
                 if (j == 4 && entrance1.howManyStudents(TeacherColor.BLUE) > 0) {
                     studentMovement.handle(TeacherColor.BLUE, Optional.of(entrance1),
-                            Optional.of(game.getPlayers().get(1).getRoomTable(TeacherColor.BLUE)));
+                            Optional.of(game.getPlayers().get(1).getRoomTable()));
                     find = true;
                 }
                 if (j == 4 && entrance1.howManyStudents(TeacherColor.BLUE) == 0 && !find)
@@ -133,35 +133,35 @@ public class FinalizeTest {
             while(!find) {
                 if (j == 0 && entrance2.howManyStudents(TeacherColor.YELLOW) > 0) {
                     studentMovement.handle(TeacherColor.YELLOW, Optional.of(entrance2),
-                            Optional.of(game.getPlayers().get(2).getRoomTable(TeacherColor.YELLOW)));
+                            Optional.of(game.getPlayers().get(2).getRoomTable()));
                     find = true;
                 }
                 if (j == 0 && entrance2.howManyStudents(TeacherColor.YELLOW) == 0 && !find)
                     j = (int) (Math.random()*5);
                 if (j == 1 && entrance2.howManyStudents(TeacherColor.PINK) > 0) {
                     studentMovement.handle(TeacherColor.PINK, Optional.of(entrance2),
-                            Optional.of(game.getPlayers().get(2).getRoomTable(TeacherColor.PINK)));
+                            Optional.of(game.getPlayers().get(2).getRoomTable()));
                     find = true;
                 }
                 if (j == 1 && entrance2.howManyStudents(TeacherColor.PINK) == 0 && !find)
                     j = (int) (Math.random()*5);
                 if (j == 2 && entrance2.howManyStudents(TeacherColor.RED) > 0) {
                     studentMovement.handle(TeacherColor.RED, Optional.of(entrance2),
-                            Optional.of(game.getPlayers().get(2).getRoomTable(TeacherColor.RED)));
+                            Optional.of(game.getPlayers().get(2).getRoomTable()));
                     find = true;
                 }
                 if (j == 2 && entrance2.howManyStudents(TeacherColor.RED) == 0 && !find)
                     j = (int) (Math.random()*5);
                 if (j == 3 && entrance2.howManyStudents(TeacherColor.GREEN) > 0) {
                     studentMovement.handle(TeacherColor.GREEN, Optional.of(entrance2),
-                            Optional.of(game.getPlayers().get(2).getRoomTable(TeacherColor.GREEN)));
+                            Optional.of(game.getPlayers().get(2).getRoomTable()));
                     find = true;
                 }
                 if (j == 3 && entrance2.howManyStudents(TeacherColor.GREEN) == 0 && !find)
                     j = (int) (Math.random()*5);
                 if (j == 4 && entrance2.howManyStudents(TeacherColor.BLUE) > 0) {
                     studentMovement.handle(TeacherColor.BLUE, Optional.of(entrance2),
-                            Optional.of(game.getPlayers().get(2).getRoomTable(TeacherColor.BLUE)));
+                            Optional.of(game.getPlayers().get(2).getRoomTable()));
                     find = true;
                 }
                 if (j == 4 && entrance2.howManyStudents(TeacherColor.BLUE) == 0 && !find)

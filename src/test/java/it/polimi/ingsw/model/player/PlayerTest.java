@@ -58,13 +58,13 @@ public class PlayerTest {
         assertThrows(InvalidParameterException.class, () -> aldo.getTower(10));
 
         Optional<StudentsManager> expected = Optional.of(aldo.getEntrance());
-        assertEquals(expected, aldo.getStudentsManagerById("Entrance", TeacherColor.PINK));
+        assertEquals(expected, aldo.getStudentsManagerById("Entrance"));
 
-        expected = Optional.of(aldo.getRoomTable(TeacherColor.PINK));
-        assertEquals(expected, aldo.getStudentsManagerById("Room", TeacherColor.PINK));
+        expected = Optional.of(aldo.getRoomTable());
+        assertEquals(expected, aldo.getStudentsManagerById("Room"));
 
         expected = game.getStudentsManagerById("I_1");
-        assertEquals(expected, aldo.getStudentsManagerById("I_1", TeacherColor.PINK));
+        assertEquals(expected, aldo.getStudentsManagerById("I_1"));
 
     }
 

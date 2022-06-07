@@ -44,7 +44,7 @@ public class InfluenceCardTest {
         }
 
         studentMovement.handle(firstMaxColor, Optional.of(camilla.getEntrance()),
-                Optional.of(camilla.getRoomTable(firstMaxColor)));
+                Optional.of(camilla.getRoomTable()));
         assertTrue(camilla.hasTeacher(firstMaxColor));
 
         for (int i = 0; i < 3; i++) {
@@ -65,7 +65,7 @@ public class InfluenceCardTest {
             }
         }
         studentMovement.handle(secondMaxColor, Optional.of(anja.getEntrance()),
-                Optional.of(anja.getRoomTable(secondMaxColor)));
+                Optional.of(anja.getRoomTable()));
         assertTrue(anja.hasTeacher(secondMaxColor));
 
         for (int i = 0; i < 1; i++) {
@@ -121,7 +121,7 @@ public class InfluenceCardTest {
         }
 
         studentMovement.handle(firstMaxColor, Optional.of(camilla.getEntrance()),
-                Optional.of(camilla.getRoomTable(firstMaxColor)));
+                Optional.of(camilla.getRoomTable()));
         assertTrue(camilla.hasTeacher(firstMaxColor));
 
         for (int i = 0; i < 3; i++) {
@@ -139,7 +139,7 @@ public class InfluenceCardTest {
             }
         }
         studentMovement.handle(secondMaxColor, Optional.of(anja.getEntrance()),
-                Optional.of(anja.getRoomTable(secondMaxColor)));
+                Optional.of(anja.getRoomTable()));
         assertTrue(anja.hasTeacher(secondMaxColor));
 
         influence.handle(camilla, testIsland);
@@ -191,7 +191,7 @@ public class InfluenceCardTest {
         }
 
         studentMovement.handle(firstMaxColor, Optional.of(camilla.getEntrance()),
-                Optional.of(camilla.getRoomTable(firstMaxColor)));
+                Optional.of(camilla.getRoomTable()));
         assertTrue(camilla.hasTeacher(firstMaxColor));
         if (testIsland.howManyStudents(firstMaxColor) == 0) {
             for (int i = 0; i < 3; i++) {
@@ -217,7 +217,7 @@ public class InfluenceCardTest {
             }
         }
         studentMovement.handle(secondMaxColor, Optional.of(anja.getEntrance()),
-                Optional.of(anja.getRoomTable(secondMaxColor)));
+                Optional.of(anja.getRoomTable()));
         assertTrue(anja.hasTeacher(secondMaxColor));
 
         influence.handle(camilla, testIsland);
@@ -227,7 +227,7 @@ public class InfluenceCardTest {
         for (int i = 0; i < 5; i++) {
             anja.getEntrance().addStudent(secondMaxColor);
             studentMovement.handle(secondMaxColor, Optional.of(anja.getEntrance()),
-                    Optional.of(anja.getRoomTable(secondMaxColor)));
+                    Optional.of(anja.getRoomTable()));
         }
 
         if (testIsland.howManyStudents(secondMaxColor) == 0) {
@@ -280,7 +280,7 @@ public class InfluenceCardTest {
         }
 
         studentMovement.handle(firstMaxColor, Optional.of(camilla.getEntrance()),
-                Optional.of(camilla.getRoomTable(firstMaxColor)));
+                Optional.of(camilla.getRoomTable()));
         assertTrue(camilla.hasTeacher(firstMaxColor));
 
         int qnt = 3;
@@ -305,7 +305,7 @@ public class InfluenceCardTest {
             }
         }
         studentMovement.handle(secondMaxColor, Optional.of(anja.getEntrance()),
-                Optional.of(anja.getRoomTable(secondMaxColor)));
+                Optional.of(anja.getRoomTable()));
         assertTrue(anja.hasTeacher(secondMaxColor));
 
         qnt = 3;

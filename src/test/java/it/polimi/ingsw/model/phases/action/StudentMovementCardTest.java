@@ -104,7 +104,7 @@ public class StudentMovementCardTest {
         int beforeMaxColor2 = game.getPlayers().get(0).getEntrance().howManyStudents(maxColor2);
 
         phase.handle(maxColor1, Optional.of(game.getPlayers().get(0).getEntrance()),
-                Optional.of(game.getPlayers().get(0).getRoomTable(maxColor1)));
+                Optional.of(game.getPlayers().get(0).getRoomTable()));
 
         assertNotEquals(maxColor1, maxColor2);
 
@@ -223,31 +223,31 @@ public class StudentMovementCardTest {
         for (Player player : players) {
             for (TeacherColor color : TeacherColor.values()) {
                 for (int i = 0; i < player.getEntrance().howManyStudents(color); i++) {
-                    phase.handle(color, Optional.of(player.getEntrance()), Optional.of(player.getRoomTable(color)));
+                    phase.handle(color, Optional.of(player.getEntrance()), Optional.of(player.getRoomTable()));
                 }
             }
         }
 
-        int playerBeforeMaxColor1 = players.get(0).getRoomTable(maxColor1).howManyTotStudents();
-        int playerBeforeMaxColor2 = players.get(1).getRoomTable(maxColor1).howManyTotStudents();
+        int playerBeforeMaxColor1 = players.get(0).getRoomTable().howManyTotStudents();
+        int playerBeforeMaxColor2 = players.get(1).getRoomTable().howManyTotStudents();
 
         card.activator(phase, game.getPlayers().get(0), maxColor1);
 
         assertEqualsWithDelta(0, game.getPlayers().get(0).getMoney(), "1");
 
-        assertTrue(players.get(0).getRoomTable(maxColor1).howManyStudents(maxColor1) <= playerBeforeMaxColor1);
-        assertTrue(players.get(1).getRoomTable(maxColor1).howManyStudents(maxColor1) <= playerBeforeMaxColor2);
+        assertTrue(players.get(0).getRoomTable().howManyStudents(maxColor1) <= playerBeforeMaxColor1);
+        assertTrue(players.get(1).getRoomTable().howManyStudents(maxColor1) <= playerBeforeMaxColor2);
 
-        if (players.get(0).getRoomTable(maxColor1).howManyStudents(maxColor1) > 0) {
-            assertEqualsWithDelta(playerBeforeMaxColor1 - 3, players.get(0).getRoomTable(maxColor1).howManyStudents(maxColor1), "2");
+        if (players.get(0).getRoomTable().howManyStudents(maxColor1) > 0) {
+            assertEqualsWithDelta(playerBeforeMaxColor1 - 3, players.get(0).getRoomTable().howManyStudents(maxColor1), "2");
         } else {
-            assertEqualsWithDelta(0, players.get(0).getRoomTable(maxColor1).howManyStudents(maxColor1), "3");
+            assertEqualsWithDelta(0, players.get(0).getRoomTable().howManyStudents(maxColor1), "3");
         }
 
-        if (players.get(1).getRoomTable(maxColor1).howManyStudents(maxColor1) > 0) {
-            assertEqualsWithDelta(playerBeforeMaxColor2 - 3, players.get(1).getRoomTable(maxColor1).howManyStudents(maxColor1), "4");
+        if (players.get(1).getRoomTable().howManyStudents(maxColor1) > 0) {
+            assertEqualsWithDelta(playerBeforeMaxColor2 - 3, players.get(1).getRoomTable().howManyStudents(maxColor1), "4");
         } else {
-            assertEqualsWithDelta(0, players.get(1).getRoomTable(maxColor1).howManyStudents(maxColor1), "5");
+            assertEqualsWithDelta(0, players.get(1).getRoomTable().howManyStudents(maxColor1), "5");
         }
     }
 
@@ -285,7 +285,7 @@ public class StudentMovementCardTest {
         for (Player player : players) {
             for (TeacherColor color : TeacherColor.values()) {
                 for (int i = 0; i < player.getEntrance().howManyStudents(color); i++) {
-                    phase.handle(color, Optional.of(player.getEntrance()), Optional.of(player.getRoomTable(color)));
+                    phase.handle(color, Optional.of(player.getEntrance()), Optional.of(player.getRoomTable()));
                 }
             }
         }
@@ -302,14 +302,14 @@ public class StudentMovementCardTest {
         }
 
         if (oldTableContent1 == oldTableContent2) {
-            players.get(1).getRoomTable(maxColor).removeStudent(maxColor);
+            players.get(1).getRoomTable().removeStudent(maxColor);
             oldTableContent2--;
         }
         if (oldTableContent1 < oldTableContent2) {
             card.activator(phase, players.get(0));
             for (int i = 0; i < (oldTableContent2 - oldTableContent1); i++) {
                 players.get(0).getEntrance().addStudent(maxColor);
-                card.handle(maxColor, Optional.of(players.get(0).getEntrance()), Optional.of(players.get(0).getRoomTable(maxColor)));
+                card.handle(maxColor, Optional.of(players.get(0).getEntrance()), Optional.of(players.get(0).getRoomTable()));
             }
 
             int tableContent1 = players.get(0).howManyStudentsInRoom(maxColor);
@@ -324,7 +324,7 @@ public class StudentMovementCardTest {
             card.activator(phase, players.get(1));
             for (int i = 0; i < (oldTableContent1 - oldTableContent2); i++) {
                 players.get(1).getEntrance().addStudent(maxColor);
-                card.handle(maxColor, Optional.of(players.get(1).getEntrance()), Optional.of(players.get(1).getRoomTable(maxColor)));
+                card.handle(maxColor, Optional.of(players.get(1).getEntrance()), Optional.of(players.get(1).getRoomTable()));
             }
 
             int tableContent1 = players.get(0).howManyStudentsInRoom(maxColor);

@@ -111,8 +111,8 @@ public class Player {
      */
     public void moveStudent(TeacherColor student, String sourceId, String destinationId) {
         controlEnable();
-        Optional<StudentsManager> from = getStudentsManagerById(sourceId, student);
-        Optional<StudentsManager> to = getStudentsManagerById(destinationId, student);
+        Optional<StudentsManager> from = getStudentsManagerById(sourceId);
+        Optional<StudentsManager> to = getStudentsManagerById(destinationId);
         game.getActionPhase().request(student, from, to);
     }
 
@@ -125,13 +125,12 @@ public class Player {
      * Utility method to find the precise places to move the player to and from
      *
      * @param id    is the ID of the desired students manager
-     * @param color is the color of the student which is moving
      * @return the wanted student manager
      */
-    public Optional<StudentsManager> getStudentsManagerById(String id, TeacherColor color) {
+    public Optional<StudentsManager> getStudentsManagerById(String id) {
         switch (id) {
             case "Room" -> {
-                return Optional.of(dashboard.getRoom().getTable(color));
+                return Optional.of(dashboard.getRoom());
             }
             case "Entrance" -> {
                 return Optional.of(getEntrance());
@@ -172,7 +171,7 @@ public class Player {
     public List<TeacherColor> getTeachers() {
         List<TeacherColor> teachers = new ArrayList<>();
         for (TeacherColor color : TeacherColor.values()) {
-            if (dashboard.getRoom().getTable(color).hasTeacher()) {
+            if (dashboard.getRoom().getTeacherPresence(color)) {
                 teachers.add(color);
             }
         }
@@ -198,10 +197,16 @@ public class Player {
         return dashboard.getTowerColor();
     }
 
+    /*@Deprecated
     public StudentsManager getRoomTable(TeacherColor color) {
         return dashboard.getRoom().getTable(color);
+    }*/
+
+    public StudentsManager getRoomTable() {
+        return dashboard.getRoom();
     }
 
+    /*
     public void addTeacher(TeacherColor color){
         dashboard.getRoom().getTable(color).setTeacherPresence(true);
     }
@@ -213,9 +218,22 @@ public class Player {
     public boolean hasTeacher(TeacherColor color){
         return dashboard.getRoom().getTable(color).hasTeacher();
     }
+     */
+
+    public void addTeacher(TeacherColor color) {
+        dashboard.getRoom().addTeacher(color);
+    }
+
+    public void removeTeacher(TeacherColor color) {
+        dashboard.getRoom().removeTeacher(color);
+    }
+
+    public boolean hasTeacher(TeacherColor color) {
+        return dashboard.getRoom().getTeacherPresence(color);
+    }
 
     public int howManyStudentsInRoom(TeacherColor color){
-        return dashboard.getRoom().getTable(color).howManyStudents();
+        return dashboard.getRoom().howManyStudents(color);
     }
 
     /**

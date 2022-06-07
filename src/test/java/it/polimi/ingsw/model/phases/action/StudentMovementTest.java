@@ -31,7 +31,7 @@ public class StudentMovementTest {
         }
 
         studentMovement.handle(maxColor, Optional.of(game.getPlayers().get(0).getEntrance()),
-                Optional.of(game.getPlayers().get(0).getRoomTable(maxColor)));
+                Optional.of(game.getPlayers().get(0).getRoomTable()));
         assertTrue(game.getPlayers().get(0).hasTeacher(maxColor), "" + max);
 
         max = 0;
@@ -46,12 +46,12 @@ public class StudentMovementTest {
         int total1 = game.getPlayers().get(0).getEntrance().howManyStudents(secondMaxColor);
         for (int i = 0; i < total1; i++) {
             studentMovement.handle(secondMaxColor, Optional.of(game.getPlayers().get(0).getEntrance()),
-                    Optional.of(game.getPlayers().get(0).getRoomTable(secondMaxColor)));
+                    Optional.of(game.getPlayers().get(0).getRoomTable()));
         }
 
         for (int i = 0; i < max; i++) {
             studentMovement.handle(secondMaxColor, Optional.of(game.getPlayers().get(1).getEntrance()),
-                    Optional.of(game.getPlayers().get(1).getRoomTable(secondMaxColor)));
+                    Optional.of(game.getPlayers().get(1).getRoomTable()));
         }
 
         if(total1 >= max){
@@ -77,7 +77,7 @@ public class StudentMovementTest {
         for (int i = 0; i < delta; i++) {
             actualPlayer.getEntrance().addStudent(secondMaxColor);
             studentMovement.handle(secondMaxColor, Optional.of(actualPlayer.getEntrance()),
-                    Optional.of(actualPlayer.getRoomTable(secondMaxColor)));
+                    Optional.of(actualPlayer.getRoomTable()));
         }
 
         if(total1 >= max){

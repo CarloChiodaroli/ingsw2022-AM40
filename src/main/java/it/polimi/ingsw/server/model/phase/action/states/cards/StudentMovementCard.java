@@ -54,8 +54,8 @@ public class StudentMovementCard extends CharacterCard {
     public void handle(Player player, TeacherColor fromEntrance, TeacherColor toColor) {
         if (!isInUse()) return;
         if (super.getCharacterization("Room") != 0) {
-            decorated.handle(fromEntrance, Optional.of(player.getEntrance()), Optional.of(player.getRoomTable(fromEntrance)));
-            decorated.handle(toColor, Optional.of(player.getRoomTable(toColor)), Optional.of(player.getEntrance()));
+            decorated.handle(fromEntrance, Optional.of(player.getEntrance()), Optional.of(player.getRoomTable()));
+            decorated.handle(toColor, Optional.of(player.getRoomTable()), Optional.of(player.getEntrance()));
             super.updateUse();
         } else if (super.getCharacterization("Memory") == 6) {
             TeacherColor tmp = null;
@@ -90,7 +90,7 @@ public class StudentMovementCard extends CharacterCard {
             List<Player> players = super.getActionFase().getGame().getPlayers();
             for (Player player1 : players) {
                 for (int i = 0; i < 3; i++)
-                    player1.getRoomTable(color).removeStudent(color);
+                    player1.getRoomTable().removeStudent(color);
             }
         }
     }

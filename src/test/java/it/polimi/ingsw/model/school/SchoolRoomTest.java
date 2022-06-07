@@ -7,13 +7,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SchoolRoomTest {
     @Test
-    public void schoolRoomTest(){
+    public void creationTest() {
         SchoolRoom room = new SchoolRoom();
-        assertEquals(TeacherColor.YELLOW, room.getTable(TeacherColor.YELLOW).getTeacherColor());
-        assertEquals(TeacherColor.PINK, room.getTable(TeacherColor.PINK).getTeacherColor());
-        assertEquals(TeacherColor.RED, room.getTable(TeacherColor.RED).getTeacherColor());
-        assertEquals(TeacherColor.GREEN, room.getTable(TeacherColor.GREEN).getTeacherColor());
-        assertEquals(TeacherColor.BLUE, room.getTable(TeacherColor.BLUE).getTeacherColor());
+
+        for(TeacherColor color: TeacherColor.values()){
+            assertFalse(room.getTeacherPresence(color));
+            room.addTeacher(color);
+            assertTrue(room.getTeacherPresence(color));
+        }
+
+        for(TeacherColor color: TeacherColor.values()){
+            assertTrue(room.getTeacherPresence(color));
+            room.removeTeacher(color);
+            assertFalse(room.getTeacherPresence(color));
+        }
     }
 
 }
