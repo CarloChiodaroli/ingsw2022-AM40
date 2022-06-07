@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.gui.scene.LobbySceneController;
 import it.polimi.ingsw.client.view.gui.scene.PlayersNumberSceneController;
+import it.polimi.ingsw.client.view.gui.scene.StartSceneController;
 import it.polimi.ingsw.client.view.gui.scene.WizardSceneController;
 import it.polimi.ingsw.commons.enums.Wizard;
 import javafx.application.Platform;
@@ -17,6 +18,10 @@ import java.util.List;
 public class Gui extends ViewObservable implements View {
     private static final String STR_ERROR = "ERROR";
     private static final String MENU_SCENE_FXML = "menu_scene.fxml";
+    private boolean okNumber = false;
+    private boolean okVariant = false;
+    private boolean status = false;
+    private int players = 0;
 
     /**
      * {@inheritDoc}
@@ -165,7 +170,10 @@ public class Gui extends ViewObservable implements View {
      */
     @Override
     public void showWizard() {
-
+        StartSceneController ssc = new StartSceneController();
+        ssc.addAllObservers(observers);
+        ssc.getGameParams(status, players);
+        Platform.runLater(() -> SceneController.changeRootPane(ssc, "start_scene.fxml"));
     }
 
     /**
@@ -173,7 +181,10 @@ public class Gui extends ViewObservable implements View {
      */
     @Override
     public void showExpert(boolean expertStatus) {
-
+        okVariant = true;
+        status = expertStatus;
+        if(okNumber)
+            askPlayCustomization();
     }
 
     /**
@@ -189,6 +200,9 @@ public class Gui extends ViewObservable implements View {
      */
     @Override
     public void showChosenNumOfPlayers(int maxPlayers) {
-
+        okNumber = true;
+        players = maxPlayers;
+        if(okVariant)
+            askPlayCustomization();
     }
 }
