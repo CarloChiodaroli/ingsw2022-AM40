@@ -105,4 +105,8 @@ public class PlayMessagesFabric {
     public static PlayMessage statusEndGame(String sender, String winnerName){
         return new PlayMessage(sender, "statusEndGame", winnerName);
     }
+    /*
+    public static PlayMessage statusAvailableCharacters(String sender, List<Characters> available){
+        //return new PlayMessage(sender, "statusAvailableCharacters", available);
+    }*/
 }

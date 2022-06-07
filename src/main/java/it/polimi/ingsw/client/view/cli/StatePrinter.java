@@ -305,4 +305,8 @@ public class StatePrinter {
             return null;
         }
     }
+
+    public String getWinner(){
+        return playState.getWinner();
+    }
 }

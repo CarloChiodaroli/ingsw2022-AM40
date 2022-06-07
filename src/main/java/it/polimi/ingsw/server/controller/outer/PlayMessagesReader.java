@@ -83,6 +83,9 @@ public class PlayMessagesReader implements PlayMessageReader {
         for(String name: playerNames){
             commonAnswers.add(PlayMessagesFabric.statusTower(server, name, outbound.getPlayerTowerColor(name)));
         }
+        if(expertVariant){
+            //commonAnswers.add(PlayMessagesFabric.statusAvailableCharacters(server, outbound.getAvailableCharacters()));
+        }
         for(String name: playerNames){
             List<Message> answers = new ArrayList<>(commonAnswers);
             answers.add(PlayMessagesFabric.statusStudent(server, "Entrance", outbound.getStudentInPlace(name, "Entrance")));
@@ -132,6 +135,9 @@ public class PlayMessagesReader implements PlayMessageReader {
             answers.add(PlayMessagesFabric.statusPlanning(server, turnController.getActivePlayer()));
         }
         answers.forEach(gameManager::broadcastMessage);
+        if(outbound.endGame()){
+            sendEndGame(outbound.winner());
+        }
     }
 
     @Override
@@ -152,6 +158,9 @@ public class PlayMessagesReader implements PlayMessageReader {
         broadcastAnswers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         answers.forEach(answer -> gameManager.sendMessage(player, answer)); // send specific
         broadcastAnswers.forEach(gameManager::broadcastMessage); // send broadcast
+        if(outbound.endGame()){
+            sendEndGame(outbound.winner());
+        }
     }
 
     @Override
@@ -170,6 +179,9 @@ public class PlayMessagesReader implements PlayMessageReader {
         broadcastAnswers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         answers.forEach(answer -> gameManager.sendMessage(player, answer)); // send specific
         broadcastAnswers.forEach(gameManager::broadcastMessage); // send broadcast
+        if(outbound.endGame()){
+            sendEndGame(outbound.winner());
+        }
     }
 
     @Override
@@ -212,6 +224,10 @@ public class PlayMessagesReader implements PlayMessageReader {
         answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         // sending answers
         answers.forEach(gameManager::broadcastMessage);
+        // sending endgame if reached
+        if(outbound.endGame()){
+            sendEndGame(outbound.winner());
+        }
     }
 
     @Override
@@ -237,6 +253,10 @@ public class PlayMessagesReader implements PlayMessageReader {
         }
         answers.forEach(answer -> gameManager.sendMessage(player, answer)); // send specific
         broadcastAnswers.forEach(gameManager::broadcastMessage); // send broadcast
+        if(outbound.endGame()){
+            sendEndGame(outbound.winner());
+        }
+
     }
 
     @Override
@@ -251,6 +271,9 @@ public class PlayMessagesReader implements PlayMessageReader {
         answers.add(PlayMessagesFabric.statusCharacterCard(server, outbound.getActualCharacterCard()));
         answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         answers.forEach(gameManager::broadcastMessage);
+        if(outbound.endGame()){
+            sendEndGame(outbound.winner());
+        }
     }
 
     @Override
@@ -265,6 +288,9 @@ public class PlayMessagesReader implements PlayMessageReader {
         answers.add(PlayMessagesFabric.statusCharacterCard(server, outbound.getActualCharacterCard()));
         answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         answers.forEach(gameManager::broadcastMessage);
+        if(outbound.endGame()){
+            sendEndGame(outbound.winner());
+        }
     }
 
     @Override
@@ -279,6 +305,9 @@ public class PlayMessagesReader implements PlayMessageReader {
         answers.add(PlayMessagesFabric.statusCharacterCard(server, outbound.getActualCharacterCard()));
         answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         answers.forEach(gameManager::broadcastMessage);
+        if(outbound.endGame()){
+            sendEndGame(outbound.winner());
+        }
     }
 
     @Override
@@ -339,6 +368,10 @@ public class PlayMessagesReader implements PlayMessageReader {
     @Override
     public void statusPlanning(String sender, String actualPlayer) {
         errorIllegalMessage();
+    }
+
+    private void sendEndGame(String winner){
+        gameManager.broadcastMessage(PlayMessagesFabric.statusEndGame(server, winner));
     }
 
     private void errorIllegalMessage() {

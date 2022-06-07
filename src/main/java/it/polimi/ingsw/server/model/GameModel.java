@@ -309,6 +309,10 @@ public class GameModel {
         return game.isGameEnded();
     }
 
+    public String getWinner(){
+        return game.getEndPlayer();
+    }
+
     public Game getGame() {
         return game;
     }

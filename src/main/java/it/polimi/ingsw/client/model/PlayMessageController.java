@@ -219,7 +219,7 @@ public class PlayMessageController implements PlayMessageReader {
     @Override
     public synchronized void statusEndGame(String sender, String winner) {
         controlServer(sender);
-        //state.setWinner(winner);
+        state.setWinner(winner);
         controller.getTaskQueue().execute(() -> view.showEndGame());
     }
 

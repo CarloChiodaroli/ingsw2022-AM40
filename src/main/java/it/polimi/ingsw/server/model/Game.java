@@ -26,7 +26,8 @@ public class Game {
     private ActionPhase actionPhase;
     private int numOfRegisteredPlayers = 0;
     private boolean endgame = false;
-    private Player endPlayer = null;
+    private String endPlayer = null;
+    private static final String draw = "No one";
 
 
     /**
@@ -249,7 +250,7 @@ public class Game {
      *
      * @return the winning player, null if even.
      */
-    public Player getEndPlayer() {
+    public String getEndPlayer() {
         return endPlayer;
     }
 
@@ -258,7 +259,7 @@ public class Game {
      *
      * @return the winner
      */
-    public Player searchPlayerWithMostTower() {
+    public String searchPlayerWithMostTower() {
         List<Player> playerWinner = new ArrayList<>();
         int minimum = 1000;
         for (Player p : players)
@@ -268,7 +269,7 @@ public class Game {
             if (minimum == p.getNumberTowersLeft())
                 playerWinner.add(p);
         if (playerWinner.size() == 1)
-            return playerWinner.get(0);
+            return playerWinner.get(0).getName();
         else
             return searchPlayerWithMostTeacher(playerWinner);
     }
@@ -280,7 +281,7 @@ public class Game {
      * @param playerList the list of candidate winners
      * @return the winning player
      */
-    private Player searchPlayerWithMostTeacher(List<Player> playerList) {
+    private String searchPlayerWithMostTeacher(List<Player> playerList) {
         int max = 0;
         Player maxPlayer = null;
         for (Player p : playerList)
@@ -288,7 +289,11 @@ public class Game {
                 max = p.getTeachers().size();
                 maxPlayer = p;
             }
-        return maxPlayer;
+        if(maxPlayer == null){
+            return draw;
+        } else {
+            return maxPlayer.getName();
+        }
     }
 
     /**

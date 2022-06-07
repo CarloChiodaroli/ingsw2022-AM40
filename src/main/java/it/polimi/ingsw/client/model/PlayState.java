@@ -29,8 +29,9 @@ public class PlayState {
     private List<Integer> assistantCards;
     private Map<String, TowerColor> playersTowerColors;
     private Wizard wizard;
+    private String winner;
 
-    public PlayState(){
+    public PlayState() {
         this.mainPlayer = null;
         this.studentsInPlace = new HashMap<>();
         this.conquests = new HashMap<>();
@@ -40,15 +41,15 @@ public class PlayState {
         this.playersTowerColors = new HashMap<>();
     }
 
-    public void setStudentsInAPlace(String placeId, Map<TeacherColor, Integer> studentsMap){
-        if(studentsInPlace.containsKey(placeId)){
+    public void setStudentsInAPlace(String placeId, Map<TeacherColor, Integer> studentsMap) {
+        if (studentsInPlace.containsKey(placeId)) {
             studentsInPlace.replace(placeId, studentsMap);
         } else {
             studentsInPlace.put(placeId, studentsMap);
         }
     }
 
-    public Map<String, Map<TeacherColor, Integer>> getStudentsInPlaces(){
+    public Map<String, Map<TeacherColor, Integer>> getStudentsInPlaces() {
         return new HashMap<>(studentsInPlace);
     }
 
@@ -56,7 +57,7 @@ public class PlayState {
         this.conquests = conquests;
     }
 
-    public void setIslandIds(List<String> islandIds){
+    public void setIslandIds(List<String> islandIds) {
         islandSize = new HashMap<>();
         islandIds.stream()
                 .filter(this::isIslandId)         // control if all are island ids
@@ -69,7 +70,7 @@ public class PlayState {
                 .forEach(studentsInPlace::remove);
     }
 
-    public void setCloudIds(List<String> cloudIds){
+    public void setCloudIds(List<String> cloudIds) {
         cloudIds.stream()
                 .filter(this::isCloudId)         // control if all are cloud ids
                 .filter(id -> !studentsInPlace.containsKey(id))  // add new ids
@@ -84,16 +85,16 @@ public class PlayState {
         this.myName = myName;
     }
 
-    public int getMyConquests(){
+    public int getMyConquests() {
         return getConquest(playersTowerColors.get(myName));
     }
 
-    public List<String> getPlaceIds(){
+    public List<String> getPlaceIds() {
         return studentsInPlace.keySet().stream().toList();
     }
 
-    public void setMotherNature(String islandId){
-        if(!isIslandId(islandId)) return;
+    public void setMotherNature(String islandId) {
+        if (!isIslandId(islandId)) return;
         motherNaturePosition = islandId;
     }
 
@@ -101,13 +102,13 @@ public class PlayState {
         return motherNaturePosition;
     }
 
-    public Optional<String> getConquest(String id){
-        if(conquests.containsKey(id))
+    public Optional<String> getConquest(String id) {
+        if (conquests.containsKey(id))
             return Optional.of(conquests.get(id).toString());
         else return Optional.empty();
     }
 
-    public int getConquest(TowerColor color){
+    public int getConquest(TowerColor color) {
         return conquests.entrySet().stream()
                 .filter(x -> x.getValue().equals(color))
                 .map(Map.Entry::getKey)
@@ -117,23 +118,23 @@ public class PlayState {
                 .orElse(0);
     }
 
-    public TowerColor getActualTowerColor(){
+    public TowerColor getActualTowerColor() {
         return TowerColor.BLACK;
     }
 
-    public List<TeacherColor> getTeachers(){
+    public List<TeacherColor> getTeachers() {
         return new ArrayList<>(teachers);
     }
 
-    public String getSize(String id){
+    public String getSize(String id) {
         return islandSize.get(id).toString();
     }
 
-    public List<Integer> getAssistantCards(){
+    public List<Integer> getAssistantCards() {
         return new ArrayList<>(assistantCards);
     }
 
-    public boolean useAssistantCard(Integer weight){
+    public boolean useAssistantCard(Integer weight) {
         return assistantCards.remove(weight);
     }
 
@@ -143,57 +144,57 @@ public class PlayState {
     }
 
     public void setPlanningPhase(String actualPlayer) {
-        if(actionPhase){
+        if (actionPhase) {
             activeAssistantCards = new HashMap<>();
         }
         actionPhase = false;
         this.actualPlayer = actualPlayer;
     }
 
-    public void setActualCharacterCard(Characters characterCard){
+    public void setActualCharacterCard(Characters characterCard) {
         actualCharacterCard = characterCard;
     }
 
-    public String getActualPlayer(){
+    public String getActualPlayer() {
         return actualPlayer;
     }
 
-    public void setTeachers(List<TeacherColor> teachers){
+    public void setTeachers(List<TeacherColor> teachers) {
         this.teachers = teachers;
     }
 
-    public void setActiveAssistantCard(String player, Integer weight){
-        if(player.equals(myName)){
+    public void setActiveAssistantCard(String player, Integer weight) {
+        if (player.equals(myName)) {
             useAssistantCard(weight);
         }
         this.activeAssistantCards.put(player, weight);
     }
 
-    public Map<String, Integer> getActiveAssistantCards(){
+    public Map<String, Integer> getActiveAssistantCards() {
         return new HashMap<>(activeAssistantCards);
     }
 
-    private boolean isIslandId(String id){
+    private boolean isIslandId(String id) {
         return id.matches("^i_[0-9_]*");
     }
 
-    private boolean isCloudId(String id){
+    private boolean isCloudId(String id) {
         return id.matches("^c_[0-9_]*");
     }
 
-    public List<String> getPlayerNames(){
+    public List<String> getPlayerNames() {
         return playersTowerColors.keySet().stream().toList();
     }
 
-    public boolean isActionPhase(){
+    public boolean isActionPhase() {
         return actionPhase;
     }
 
-    public void setStatusTower(String playerName, TowerColor color){
+    public void setStatusTower(String playerName, TowerColor color) {
         playersTowerColors.putIfAbsent(playerName, color);
     }
 
-    public Map<String, TowerColor> getPlayersTowerColors(){
+    public Map<String, TowerColor> getPlayersTowerColors() {
         return new HashMap<>(playersTowerColors);
     }
 
@@ -202,7 +203,7 @@ public class PlayState {
     public String toString() {
         String studentsInPlaceString = studentsInPlace.entrySet().stream()
                 .map(x -> "\t" + x.getKey() + ": " + x.getValue().toString() + "\n")
-                .reduce((x, y) -> x +y).orElse(studentsInPlace.toString() + "LOL did not work");
+                .reduce((x, y) -> x + y).orElse(studentsInPlace.toString() + "LOL did not work");
 
         return "PlayState{" +
                 ", mainPlayer='" + mainPlayer + '\'' + "\n" +
@@ -218,10 +219,19 @@ public class PlayState {
                 '}';
     }
 
-    public void setWizard(Wizard wizardChoose){
+    public void setWizard(Wizard wizardChoose) {
         wizard = wizardChoose;
     }
-    public Wizard getWizard(){
+
+    public Wizard getWizard() {
         return wizard;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
+    }
+
+    public String getWinner() {
+        return winner;
     }
 }

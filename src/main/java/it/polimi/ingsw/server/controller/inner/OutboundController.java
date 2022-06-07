@@ -60,4 +60,12 @@ public class OutboundController {
     public TowerColor getPlayerTowerColor(String playerName){
         return model.getPlayerTowerColor(playerName);
     }
+
+    public boolean endGame(){
+        return model.isGameEnded();
+    }
+
+    public String winner(){
+        return model.getWinner();
+    }
 }

@@ -59,13 +59,13 @@ public class GameTest {
 
         aldo.getTower(3);
 
-        assertEquals(aldo, game.searchPlayerWithMostTower());
+        assertEquals(aldo.getName(), game.searchPlayerWithMostTower());
 
         giovanni.getTower(3);
 
         aldo.addTeacher(TeacherColor.BLUE);
 
-        assertEquals(aldo, game.searchPlayerWithMostTower());
+        assertEquals(aldo.getName(), game.searchPlayerWithMostTower());
     }
 
 }
