@@ -3,7 +3,7 @@ package it.polimi.ingsw.server.controller.inner;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.server.model.GameModel;
-import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.Characters;
 
 import java.util.*;
 

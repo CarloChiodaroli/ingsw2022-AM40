@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model.enums;
 
-
 public enum ActionPhaseStateType {
     STUDENT(0),
     MOTHER(1),
@@ -10,6 +9,7 @@ public enum ActionPhaseStateType {
 
     private final int orderPlace;
 
+
     ActionPhaseStateType(int orderPlace) {
         this.orderPlace = orderPlace;
     }
@@ -17,4 +17,7 @@ public enum ActionPhaseStateType {
     public int getOrderPlace() {
         return orderPlace;
     }
+
+
+
 }

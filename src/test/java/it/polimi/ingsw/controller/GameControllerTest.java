@@ -10,8 +10,9 @@ import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.server.model.GameModelException;
 import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.server.model.enums.ActionPhaseStateType;
-import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.enums.CharactersLookup;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.table.Cloud;
@@ -330,7 +331,7 @@ public class GameControllerTest {
         public void playCharacterCardTest(){
             game.getActionPhase().getCharacterCards().putIfAbsent(Characters.FRIAR,CharacterCardFabric.createCard(Characters.FRIAR, game.getActionPhase()));
 
-            inbound.getModel().getGame().getActionPhase().setActualState(Characters.FRIAR.getType().getOrderPlace());
+            inbound.getModel().getGame().getActionPhase().setActualState(CharactersLookup.getType(Characters.FRIAR).getOrderPlace());
             aldo.giveMoney(3);
             inbound.playCharacterCard(aldoName, Characters.FRIAR);
 
@@ -341,7 +342,7 @@ public class GameControllerTest {
         public void playCharacterCardTeacherColorTest(){
             game.getActionPhase().getCharacterCards().putIfAbsent(Characters.SORCERER, CharacterCardFabric.createCard(Characters.SORCERER, game.getActionPhase()));
 
-            inbound.getModel().getGame().getActionPhase().setActualState(Characters.SORCERER.getType().getOrderPlace());
+            inbound.getModel().getGame().getActionPhase().setActualState(CharactersLookup.getType(Characters.SORCERER).getOrderPlace());
             aldo.giveMoney(3);
             inbound.playCharacterCard(aldoName, Characters.SORCERER, TeacherColor.PINK);
 
@@ -352,7 +353,7 @@ public class GameControllerTest {
         public void playCharacterCardIslandTest(){
             game.getActionPhase().getCharacterCards().putIfAbsent(Characters.CRIER,CharacterCardFabric.createCard(Characters.CRIER, game.getActionPhase()));
 
-            inbound.getModel().getGame().getActionPhase().setActualState(Characters.CRIER.getType().getOrderPlace());
+            inbound.getModel().getGame().getActionPhase().setActualState(CharactersLookup.getType(Characters.CRIER).getOrderPlace());
             aldo.giveMoney(3);
             inbound.playCharacterCard(aldoName, Characters.CRIER, testIslandId);
 

@@ -1,7 +1,8 @@
 package it.polimi.ingsw.server.model.phase.action.states.cards;
 
 import it.polimi.ingsw.server.model.enums.ActionPhaseStateType;
-import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.Characters;
+import it.polimi.ingsw.server.model.enums.CharactersLookup;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 
@@ -27,7 +28,7 @@ public class CharacterCardFabric {
         possibleCards.put(ActionPhaseStateType.STUDENT, new StudentMovementCard(type, actionPhase, getCharacterization(type)));
         possibleCards.put(ActionPhaseStateType.MOTHER, new MotherNatureCard(type, actionPhase, getCharacterization(type)));
         possibleCards.put(ActionPhaseStateType.INFLUENCE, new InfluenceCard(type, actionPhase, getCharacterization(type)));
-        return possibleCards.get(type.getType());
+        return possibleCards.get(CharactersLookup.getType(type));
     }
 
     public static Characters getRandomCharacter() {

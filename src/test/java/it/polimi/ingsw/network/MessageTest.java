@@ -10,7 +10,7 @@ import it.polimi.ingsw.server.controller.outer.GameManager;
 import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.GameModel;
-import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.server.model.player.Player;

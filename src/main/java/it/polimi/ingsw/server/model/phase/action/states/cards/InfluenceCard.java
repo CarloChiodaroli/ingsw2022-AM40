@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.model.phase.action.states.cards;
 
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
-import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.server.model.phase.action.states.Influence;

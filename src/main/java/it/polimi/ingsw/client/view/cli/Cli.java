@@ -8,7 +8,7 @@ import it.polimi.ingsw.client.observer.ViewObserver;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.Wizard;
-import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.Characters;
 
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;

@@ -5,7 +5,7 @@ import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.server.model.GameModelException;
 import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.commons.enums.TeacherColor;
-import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.table.Island;

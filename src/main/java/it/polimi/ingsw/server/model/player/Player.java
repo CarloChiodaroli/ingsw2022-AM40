@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.model.player;
 
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.StudentsManager;
-import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.server.model.player.school.SchoolDashboard;

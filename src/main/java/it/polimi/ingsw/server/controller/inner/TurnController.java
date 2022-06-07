@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.controller.inner;
 
 import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
-import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.Characters;
 
 import java.util.ArrayList;
 import java.util.List;

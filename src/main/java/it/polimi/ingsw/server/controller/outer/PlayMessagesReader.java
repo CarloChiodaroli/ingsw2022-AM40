@@ -8,7 +8,7 @@ import it.polimi.ingsw.commons.message.PlayMessageReader;
 import it.polimi.ingsw.commons.message.PlayMessagesFabric;
 import it.polimi.ingsw.server.controller.inner.*;
 import it.polimi.ingsw.server.model.GameModel;
-import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.server.view.VirtualView;
 
 import java.util.*;

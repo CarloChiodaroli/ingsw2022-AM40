@@ -2,7 +2,7 @@ package it.polimi.ingsw.commons.message;
 
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
-import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.Characters;
 
 import java.util.List;
 import java.util.Map;

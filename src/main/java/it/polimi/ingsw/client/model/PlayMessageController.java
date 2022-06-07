@@ -8,7 +8,7 @@ import it.polimi.ingsw.commons.message.IllegalMessageException;
 import it.polimi.ingsw.commons.message.PlayMessageReader;
 import it.polimi.ingsw.commons.message.PlayMessage;
 import it.polimi.ingsw.commons.message.PlayMessagesFabric;
-import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.Characters;
 
 import java.util.List;
 import java.util.Map;

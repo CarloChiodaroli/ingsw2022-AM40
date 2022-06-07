@@ -3,8 +3,9 @@ package it.polimi.ingsw.server.model.phase.action;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.server.model.enums.ActionPhaseStateType;
-import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.enums.CharactersLookup;
 import it.polimi.ingsw.server.model.phase.action.states.*;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.server.model.phase.action.states.cards.InfluenceCard;
@@ -111,7 +112,7 @@ public class ActionPhase {
             throw new InvalidParameterException("from or to place not found");
         if (isExpertVariant() &&
                 getActualCard().isPresent() &&
-                actualCard.getCharacter().getType().equals(ActionPhaseStateType.STUDENT) &&
+                CharactersLookup.getType(actualCard.getCharacter()).equals(ActionPhaseStateType.STUDENT) &&
                 actualCard.isInUse()) {
             actualCard.handle(teacherColor, from, to);
         } else {
@@ -162,7 +163,7 @@ public class ActionPhase {
         } else {
             if (getActualCard().isPresent() &&
                     actualCard.isInUse() &&
-                    actualCard.getCharacter().getType().equals(ActionPhaseStateType.MOTHER)) {
+                    CharactersLookup.getType(actualCard.getCharacter()).equals(ActionPhaseStateType.MOTHER)) {
                 actualCard.handle(player, motherNatureHops, maxHops);
             } else {
                 states.get(ActionPhaseStateType.MOTHER).handle(player, motherNatureHops, maxHops);
@@ -188,7 +189,7 @@ public class ActionPhase {
                 throw new RuntimeException("Mother Nature does not know where she is");
             if (actualCard != null &&
                     actualCard.isInUse() &&
-                    actualCard.getCharacter().getType().equals(ActionPhaseStateType.INFLUENCE))
+                    CharactersLookup.getType(actualCard.getCharacter()).equals(ActionPhaseStateType.INFLUENCE))
                 actualCard.handle(player, MotherNature.getMotherNature().getPosition().get());
             else
                 states.get(ActionPhaseStateType.INFLUENCE).handle(player, MotherNature.getMotherNature().getPosition().get());
@@ -235,7 +236,7 @@ public class ActionPhase {
     public void activateCard(Characters characters, Player player)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(tmp.getCharacter().getType());
+        ActionFaseState decorated = states.get(CharactersLookup.getType(tmp.getCharacter()));
         tmp.activator(decorated, player);
         actualCard = tmp;
     }
@@ -254,7 +255,7 @@ public class ActionPhase {
     public void activateCard(Characters characters, Player player, TeacherColor color)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(tmp.getCharacter().getType());
+        ActionFaseState decorated = states.get(CharactersLookup.getType(tmp.getCharacter()));
         tmp.activator(decorated, player, color);
         actualCard = tmp;
     }
@@ -273,7 +274,7 @@ public class ActionPhase {
     public void activateCard(Characters characters, Player player, Island island)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(tmp.getCharacter().getType());
+        ActionFaseState decorated = states.get(CharactersLookup.getType(tmp.getCharacter()));
         tmp.activator(decorated, player, island);
         actualCard = tmp;
     }
@@ -301,7 +302,7 @@ public class ActionPhase {
         controlExpertVariant();
         if (getActualCard().isPresent())
             throw new IllegalStateException("Character Card already chosen");
-        if (character.getType().getOrderPlace() > actualState) {
+        if (CharactersLookup.getType(character).getOrderPlace() > actualState) {
             throw new IllegalStateException("The round has progressed too much to play this card");
         }
         if (!characterCards.containsKey(character)) {

@@ -1,7 +1,8 @@
 package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.server.model.enums.ActionPhaseStateType;
-import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.Characters;
+import it.polimi.ingsw.server.model.enums.CharactersLookup;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -21,18 +22,18 @@ public class CharactersTest {
     @Test
     @DisplayName("Control if the right class of card is given")
     public void getClassOfCardTest() {
-        assertEquals(ActionPhaseStateType.STUDENT, Characters.HOST.getType());
-        assertEquals(ActionPhaseStateType.STUDENT, Characters.FRIAR.getType());
-        assertEquals(ActionPhaseStateType.STUDENT, Characters.QUEEN.getType());
-        assertEquals(ActionPhaseStateType.STUDENT, Characters.THIEF.getType());
-        assertEquals(ActionPhaseStateType.STUDENT, Characters.JESTER.getType());
-        assertEquals(ActionPhaseStateType.STUDENT, Characters.MINSTREL.getType());
-        assertEquals(ActionPhaseStateType.MOTHER, Characters.MESSENGER.getType());
-        assertEquals(ActionPhaseStateType.INFLUENCE, Characters.SORCERESS.getType());
-        assertEquals(ActionPhaseStateType.INFLUENCE, Characters.SORCERER.getType());
-        assertEquals(ActionPhaseStateType.INFLUENCE, Characters.CENTAUR.getType());
-        assertEquals(ActionPhaseStateType.INFLUENCE, Characters.KNIGHT.getType());
-        assertEquals(ActionPhaseStateType.INFLUENCE, Characters.CRIER.getType());
+        assertEquals(ActionPhaseStateType.STUDENT, CharactersLookup.getType(Characters.HOST));
+        assertEquals(ActionPhaseStateType.STUDENT, CharactersLookup.getType(Characters.FRIAR));
+        assertEquals(ActionPhaseStateType.STUDENT, CharactersLookup.getType(Characters.QUEEN));
+        assertEquals(ActionPhaseStateType.STUDENT, CharactersLookup.getType(Characters.THIEF));
+        assertEquals(ActionPhaseStateType.STUDENT, CharactersLookup.getType(Characters.JESTER));
+        assertEquals(ActionPhaseStateType.STUDENT, CharactersLookup.getType(Characters.MINSTREL));
+        assertEquals(ActionPhaseStateType.MOTHER, CharactersLookup.getType(Characters.MESSENGER));
+        assertEquals(ActionPhaseStateType.INFLUENCE, CharactersLookup.getType(Characters.SORCERESS));
+        assertEquals(ActionPhaseStateType.INFLUENCE, CharactersLookup.getType(Characters.SORCERER));
+        assertEquals(ActionPhaseStateType.INFLUENCE, CharactersLookup.getType(Characters.CENTAUR));
+        assertEquals(ActionPhaseStateType.INFLUENCE, CharactersLookup.getType(Characters.KNIGHT));
+        assertEquals(ActionPhaseStateType.INFLUENCE, CharactersLookup.getType(Characters.CRIER));
     }
 
     /**

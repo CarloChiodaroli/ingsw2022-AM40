@@ -2,7 +2,7 @@ package it.polimi.ingsw.commons.message;
 
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
-import it.polimi.ingsw.server.model.enums.Characters;
+import it.polimi.ingsw.commons.enums.Characters;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
