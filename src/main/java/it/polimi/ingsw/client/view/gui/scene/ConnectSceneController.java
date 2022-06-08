@@ -32,13 +32,10 @@ public class ConnectSceneController extends ViewObservable implements GenericSce
 
     @FXML
     private Button connectBtn;
-    @FXML
-    private Button backBtn;
 
     @FXML
     public void initialize() {
         connectBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConnectBtnClick);
-        backBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onBackBtnClick);
     }
 
     /**
@@ -57,24 +54,11 @@ public class ConnectSceneController extends ViewObservable implements GenericSce
         serverPortField.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, !isValidPort);
 
         if (isValidIpAddress && isValidPort) {
-            backBtn.setDisable(true);
             connectBtn.setDisable(true);
 
             Map<String, String> serverInfo = Map.of("address", address, "port", port);
             new Thread(() -> notifyObserver(obs -> obs.onUpdateServerInfo(serverInfo))).start();
         }
-    }
-
-    /**
-     * Handle the click on the back button.
-     *
-     * @param event the mouse click event.
-     */
-    private void onBackBtnClick(Event event) {
-        backBtn.setDisable(true);
-        connectBtn.setDisable(true);
-
-        SceneController.changeRootPane(observers, event, "menu_scene.fxml");
     }
 
     @Override

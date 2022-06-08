@@ -28,8 +28,6 @@ public class WizardSceneController extends ViewObservable implements GenericScen
     private ImageView fairyWizard;
     @FXML
     private ImageView bambooGuyWizard;
-    @FXML
-    private Button backToMenuBtn;
 
     /**
      * Default constructor.
@@ -50,7 +48,6 @@ public class WizardSceneController extends ViewObservable implements GenericScen
         fairyWizard.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> onWorkerClick(Wizard.FAIRY));
         bambooGuyWizard.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> onWorkerClick(Wizard.BAMBOO_GUY));
 
-        backToMenuBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onBackToMenuBtnClick);
     }
 
     /**
@@ -64,15 +61,6 @@ public class WizardSceneController extends ViewObservable implements GenericScen
         fairyWizard.setDisable(true);
         bambooGuyWizard.setDisable(true);
         new Thread(() -> notifyObserver(obs -> obs.onUpdateWizard(wizard))).start();
-    }
-
-    /**
-     * Handle the click on the back to menu button.
-     */
-    private void onBackToMenuBtnClick(Event event) {
-        backToMenuBtn.setDisable(true);
-        new Thread(() -> notifyObserver(ViewObserver::onDisconnection)).start();
-        SceneController.changeRootPane(observers, event, "menu_scene.fxml");
     }
 
     /**

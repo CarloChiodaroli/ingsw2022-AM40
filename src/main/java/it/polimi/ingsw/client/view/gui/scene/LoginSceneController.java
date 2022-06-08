@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view.gui.scene;
 
+import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.client.view.gui.SceneController;
 import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.client.observer.ViewObserver;
@@ -19,13 +20,10 @@ public class LoginSceneController extends ViewObservable implements GenericScene
 
     @FXML
     private Button joinBtn;
-    @FXML
-    private Button backToMenuBtn;
 
     @FXML
     public void initialize() {
         joinBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onJoinBtnClick);
-        backToMenuBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onBackToMenuBtnClick);
     }
 
     /**
@@ -34,24 +32,11 @@ public class LoginSceneController extends ViewObservable implements GenericScene
      * @param event the mouse click event.
      */
     private void onJoinBtnClick(Event event) {
-        joinBtn.setDisable(true);
 
         String nickname = nicknameField.getText();
+        
 
         new Thread(() -> notifyObserver(obs -> obs.onUpdateNickname(nickname))).start();
-    }
-
-    /**
-     * Handle click on back to menu button.
-     *
-     * @param event the mouse click event.
-     */
-    private void onBackToMenuBtnClick(Event event) {
-        joinBtn.setDisable(true);
-        backToMenuBtn.setDisable(true);
-
-        new Thread(() -> notifyObserver(ViewObserver::onDisconnection)).start();
-        SceneController.changeRootPane(observers, event, "menu_scene.fxml");
     }
 
     @Override

@@ -62,13 +62,7 @@
                                 <String fx:value="radBtn"/>
                             </styleClass>
                         </RadioButton>
-                        <Button fx:id="backToMenuBtn" layoutX="85" layoutY="370" mnemonicParsing="false"
-                                prefHeight="32.0" prefWidth="102" styleClass="smallButton" text="Menu">
-                            <font>
-                                <Font size="14.0"/>
-                            </font>
-                        </Button>
-                        <Button fx:id="confirmBtn" layoutX="225" layoutY="370" mnemonicParsing="false"
+                        <Button fx:id="confirmBtn" layoutX="150" layoutY="370" mnemonicParsing="false"
                                 prefHeight="32.0" prefWidth="102" styleClass="smallButton" text="Confirm">
                             <font>
                                 <Font size="14.0"/>

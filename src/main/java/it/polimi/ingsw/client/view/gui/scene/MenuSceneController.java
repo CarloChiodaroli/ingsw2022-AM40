@@ -17,13 +17,10 @@ public class MenuSceneController extends ViewObservable implements GenericSceneC
     private AnchorPane rootPane;
     @FXML
     private Button playBtn;
-    @FXML
-    private Button quitBtn;
 
     @FXML
     public void initialize() {
         playBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onPlayBtnClick);
-        //quitBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.exit(0));
     }
 
     /**

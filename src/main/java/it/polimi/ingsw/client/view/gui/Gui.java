@@ -21,7 +21,7 @@ public class Gui extends ViewObservable implements View {
     private static final String MENU_SCENE_FXML = "menu_scene.fxml";
     private boolean okNumber = false;
     private boolean okVariant = false;
-    private boolean status = false;
+    private boolean status;
     private int players = 0;
     private PlayState state;
 

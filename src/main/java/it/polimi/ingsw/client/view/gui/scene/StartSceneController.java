@@ -29,12 +29,11 @@ public class StartSceneController extends ViewObservable implements GenericScene
             variantLbl.setText("Expert game!");
         else
             variantLbl.setText("Normal game!");
-        numberLbl.setText(players + "players mode.");
+        numberLbl.setText(players + " players mode.");
         confirmBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmBtnClick);
     }
 
     private void onConfirmBtnClick(Event event) {
-        confirmBtn.setDisable(true);
         new Thread(() -> notifyObserver(obs -> obs.onUpdateStart())).start();
     }
 

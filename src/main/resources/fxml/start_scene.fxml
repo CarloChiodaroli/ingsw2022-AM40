@@ -12,24 +12,21 @@
     <children>
         <Group scaleX="1.5" scaleY="1.5" scaleZ="1.5">
             <children>
-                <AnchorPane layoutX="57.0" layoutY="62.0" prefHeight="400.0" prefWidth="400.0" styleClass="menuBanner">
-                <Label fx:id="variantLbl" layoutX="400.0" layoutY="413.0" styleClass="customText" text="0/0"
+                <AnchorPane layoutX="57.0" layoutY="62.0" prefHeight="250.0" prefWidth="250.0" styleClass="menuBanner">
+                <Label fx:id="variantLbl" layoutX="130" layoutY="150" styleClass="customText" text="0/0"
                        textFill="#e15858">
                     <font>
-                        <Font size="16.0"/>
+                        <Font size="20.0"/>
                     </font>
                 </Label>
-                <Label fx:id="numberLbl" layoutX="400.0" layoutY="413.0" styleClass="customText" text="0/0"
+                <Label fx:id="numberLbl" layoutX="130" layoutY="200" styleClass="customText" text="0/0"
                        textFill="#e15858">
                     <font>
-                        <Font size="16.0"/>
+                        <Font size="20.0"/>
                     </font>
                 </Label>
-                <Button fx:id="confirmBtn" layoutX="225" layoutY="370" mnemonicParsing="false"
-                        prefHeight="32.0" prefWidth="102" styleClass="smallButton" text="Confirm">
-                    <font>
-                        <Font size="14.0"/>
-                    </font>
+                <Button fx:id="confirmBtn" layoutX="110" layoutY="300" mnemonicParsing="false"
+                        prefHeight="65" prefWidth="180" styleClass="bigButton">
                 </Button>
                 </AnchorPane>
             </children>

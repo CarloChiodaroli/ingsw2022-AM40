@@ -42,14 +42,9 @@
                             <String fx:value="menuField"/>
                         </styleClass>
                     </TextField>
-                    <HBox>
-                        <Button fx:id="backToMenuBtn" layoutX="110.0" layoutY="320.0" mnemonicParsing="false"
-                                prefHeight="32.0" prefWidth="102" styleClass="smallButton" text="Menu">
-                        </Button>
-                        <Button fx:id="joinBtn" layoutX="110.0" layoutY="240.0" mnemonicParsing="false"
+                        <Button fx:id="joinBtn" layoutX="280" layoutY="240.0" mnemonicParsing="false"
                                 prefHeight="32.0" prefWidth="102" styleClass="smallButton" text="Join">
                         </Button>
-                    </HBox>
                 </VBox>
             </children>
         </Group>

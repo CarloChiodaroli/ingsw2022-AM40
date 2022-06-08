@@ -18,29 +18,20 @@
     <children>
         <Group scaleX="1.5" scaleY="1.5" scaleZ="1.5" StackPane.alignment="CENTER">
             <children>
-                <AnchorPane layoutX="160.0" layoutY="105.0" prefHeight="346.0" prefWidth="398.0">
+                <AnchorPane layoutX="160.0" layoutY="105.0" prefHeight="400" prefWidth="400" styleClass="menuBanner">
                     <children>
-                        <ImageView fitHeight="51.0" fitWidth="306.0" layoutX="57.0" layoutY="3.0" pickOnBounds="true"
+                        <ImageView fitHeight="51.0" fitWidth="306.0" layoutX="190" layoutY="150" pickOnBounds="true"
                                    preserveRatio="true">
                             <image>
                                 <Image url="@../images/btn.png"/>
                             </image>
                         </ImageView>
-                        <Label layoutX="144.0" layoutY="5.0" styleClass="customText" text="Wizard">
+                        <Label layoutX="230.0" layoutY="155" styleClass="customText" text="Wizard">
                             <font>
                                 <Font size="18.0"/>
                             </font>
                         </Label>
-                        <Separator layoutX="44.0" layoutY="57.0" prefHeight="5.0" prefWidth="321.0"/>
-                        <Button fx:id="backToMenuBtn" layoutX="103.0" layoutY="257.0" mnemonicParsing="false"
-                                prefHeight="44.0" prefWidth="194.0" styleClass="smallButton" text="Menu"/>
-                        <ImageView fitHeight="117.0" fitWidth="465.0" layoutX="17.0" layoutY="81.0" pickOnBounds="true"
-                                   preserveRatio="true">
-                            <image>
-                                <Image url="@../images/bannerMenu.png"/>
-                            </image>
-                        </ImageView>
-                        <HBox layoutX="70.0" layoutY="99.0" prefHeight="107.0" prefWidth="277.0">
+                        <HBox layoutX="113" layoutY="240" prefHeight="200" prefWidth="200">
                             <children>
                                 <ImageView fx:id="magicianWizard" fitHeight="90.0" fitWidth="90.0" preserveRatio="true"
                                            styleClass="magicianGlow">

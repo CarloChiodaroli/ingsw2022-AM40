@@ -14,9 +14,6 @@ public class PlayersNumberSceneController  extends ViewObservable implements Gen
     @FXML
     private Button confirmBtn;
     @FXML
-    private Button backToMenuBtn;
-
-    @FXML
     private RadioButton radioBtn1;
     @FXML
     private RadioButton radioBtn2;
@@ -51,7 +48,6 @@ public class PlayersNumberSceneController  extends ViewObservable implements Gen
         radioBtn3.setText("Expert");
         radioBtn4.setText("Normal");
         confirmBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmBtnClick);
-        backToMenuBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onBackToMenuBtnClick);
         numOfPlayersOk = false;
         expertOk = false;
     }
@@ -71,17 +67,6 @@ public class PlayersNumberSceneController  extends ViewObservable implements Gen
             expert = true;
         if(!numOfPlayersOk) new Thread(() -> notifyObserver(obs -> obs.onUpdatePlayersNumber(playersNumber))).start();
         if(!expertOk) new Thread(() -> notifyObserver(obs -> obs.onUpdateExpert(expert))).start();
-    }
-
-    /**
-     * Handles click on Back button
-     *
-     * @param event the mouse click event.
-     */
-    private void onBackToMenuBtnClick(Event event) {
-        backToMenuBtn.setDisable(true);
-        new Thread(() -> notifyObserver(ViewObserver::onDisconnection)).start();
-        SceneController.changeRootPane(observers, event, "menu_scene.fxml");
     }
 
     /**
