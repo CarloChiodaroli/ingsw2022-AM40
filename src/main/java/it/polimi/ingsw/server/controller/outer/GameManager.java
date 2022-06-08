@@ -21,7 +21,7 @@ public class GameManager implements LobbyMessageReader {
     private PlayMessagesReader playMessagesReader = null;
     private static final String STR_INVALID_STATE = "Invalid game state!";
     public static final String SAVED_GAME_FILE = "match.log";
-    private static final int DEFAULT_MAX_PLAYERS = 0;
+    private static final int DEFAULT_MAX_PLAYERS = 99;
     private final Map<String, Wizard> assignedWizards;
     private String server = "server";
 
@@ -63,23 +63,6 @@ public class GameManager implements LobbyMessageReader {
             LobbyMessage message = (LobbyMessage) receivedMessage;
             LobbyMessageReader.class.getMethod(message.getCommand(), LobbyMessage.class).invoke(this, message);
         }
-        /*
-
-        if (receivedMessage.getMessageType() == MessageType.LOBBY) {
-            LobbyMessage message = (LobbyMessage) receivedMessage;
-            if (message.studentNumber() == 2 || message.studentNumber() == 3) {
-                this.maxPlayers = message.studentNumber();
-                new LobbyMessage("Server", this.playerNames, maxPlayers);
-                this.playMessagesReader.setNumOfPlayers(maxPlayers);
-                broadcastGenericMessage("Waiting for other Players . . .");
-            } else {
-                Server.LOGGER.warning("Client has chosen a wrong number of players");
-                virtualViewMap.get(message.getSenderName()).showError("Wrong number of players chosen, can be 2 or 3");
-            }
-        } else {
-            Server.LOGGER.warning("Wrong message received from client.");
-            virtualViewMap.get(receivedMessage.getSenderName()).showError("Wrong Message to be sent now");
-        }*/
     }
 
     @Override
@@ -123,9 +106,9 @@ public class GameManager implements LobbyMessageReader {
             } else {
                 assignedWizards.replace(message.getSenderName(), message.getWizard());
             }
-            sendMessage(message.getSenderName(), new LobbyMessage(server, "wizard", true));
+            sendMessage(message.getSenderName(), new LobbyMessage(server, "wizard", true, availableWizards()));
         } else {
-            sendMessage(message.getSenderName(), new LobbyMessage(server, "wizard", false));
+            sendMessage(message.getSenderName(), new LobbyMessage(server, "wizard", false, availableWizards()));
         }
     }
 
@@ -189,10 +172,7 @@ public class GameManager implements LobbyMessageReader {
             addVirtualView(nickname, virtualView);
             this.playerNames.add(nickname);
             this.playMessagesReader.addPlayer(nickname);
-            virtualView.sendMainPlayer(mainPlayer,
-                    Arrays.stream(Wizard.values())
-                            .filter(x -> !assignedWizards.values().stream().toList().contains(x))
-                            .collect(Collectors.toList()));
+            virtualView.sendMainPlayer(mainPlayer, availableWizards());
             virtualView.showLoginResult(true, true);
         } else {
             virtualView.showLoginResult(true, false);
@@ -201,6 +181,12 @@ public class GameManager implements LobbyMessageReader {
 
     public void addVirtualView(String nickname, VirtualView virtualView) {
         virtualViewMap.put(nickname, virtualView);
+    }
+
+    private List<Wizard> availableWizards(){
+        return Arrays.stream(Wizard.values())
+                .filter(x -> !assignedWizards.values().stream().toList().contains(x))
+                .collect(Collectors.toList());
     }
 
     // Resilience

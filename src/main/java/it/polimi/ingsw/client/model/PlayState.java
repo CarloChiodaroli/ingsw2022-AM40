@@ -28,6 +28,7 @@ public class PlayState {
     private Map<String, Integer> activeAssistantCards;
     private List<Integer> assistantCards;
     private Map<String, TowerColor> playersTowerColors;
+    private List<Wizard> availableWizards;
     private Wizard wizard;
     private String winner;
 
@@ -233,5 +234,13 @@ public class PlayState {
 
     public String getWinner() {
         return winner;
+    }
+
+    public void setAvailableWizards(List<Wizard> availableWizards) {
+        this.availableWizards = availableWizards;
+    }
+
+    public List<Wizard> getAvailableWizards() {
+        return availableWizards;
     }
 }

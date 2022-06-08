@@ -42,4 +42,9 @@ public class StartSceneController extends ViewObservable implements GenericScene
         this.status = status;
         this.players = players;
     }
+
+    @Override
+    public void onConfirm(String what) {
+
+    }
 }

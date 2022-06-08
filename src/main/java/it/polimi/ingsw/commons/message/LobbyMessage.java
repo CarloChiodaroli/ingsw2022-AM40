@@ -72,6 +72,15 @@ public class LobbyMessage extends Message {
         super.message();
     }
 
+    public LobbyMessage(String sender, String command, boolean boolArg, List<Wizard> available){
+        super(sender, MessageType.LOBBY);
+        this.command = command;
+        isStartGame = true;
+        this.boolArg = boolArg;
+        this.available = available;
+        super.message();
+    }
+
     public String getCommand(){
         controlWritten();
         return command;

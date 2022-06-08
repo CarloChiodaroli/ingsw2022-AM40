@@ -70,4 +70,9 @@ public class LobbySceneController extends ViewObservable implements GenericScene
         playersLbl.setText(String.join(", ", this.nicknames));
         numbersLbl.setText(this.nicknames.size() + "/" + this.maxPlayers);
     }
+
+    @Override
+    public void onConfirm(String what) {
+
+    }
 }

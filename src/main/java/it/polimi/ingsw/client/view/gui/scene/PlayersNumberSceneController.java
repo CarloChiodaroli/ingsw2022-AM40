@@ -32,6 +32,8 @@ public class PlayersNumberSceneController  extends ViewObservable implements Gen
     private int minPlayers;
     private int maxPlayers;
     private boolean expert;
+    private boolean numOfPlayersOk;
+    private boolean expertOk;
 
     /**
      * Default constructor.
@@ -50,6 +52,8 @@ public class PlayersNumberSceneController  extends ViewObservable implements Gen
         radioBtn4.setText("Normal");
         confirmBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmBtnClick);
         backToMenuBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onBackToMenuBtnClick);
+        numOfPlayersOk = false;
+        expertOk = false;
     }
 
     /**
@@ -65,8 +69,8 @@ public class PlayersNumberSceneController  extends ViewObservable implements Gen
         char variant = selectedRadioButton1.getText().charAt(0);
         if(variant == 'E')
             expert = true;
-        new Thread(() -> notifyObserver(obs -> obs.onUpdatePlayersNumber(playersNumber))).start();
-        new Thread(() -> notifyObserver(obs -> obs.onUpdateExpert(expert))).start();
+        if(!numOfPlayersOk) new Thread(() -> notifyObserver(obs -> obs.onUpdatePlayersNumber(playersNumber))).start();
+        if(!expertOk) new Thread(() -> notifyObserver(obs -> obs.onUpdateExpert(expert))).start();
     }
 
     /**
@@ -89,5 +93,25 @@ public class PlayersNumberSceneController  extends ViewObservable implements Gen
     public void setPlayersRange(int minPlayers, int maxPlayers) {
         this.minPlayers = minPlayers;
         this.maxPlayers = maxPlayers;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onConfirm(String what) {
+        if(what.equals("Number")){
+            radioBtn1.setDisable(true);
+            radioBtn2.setDisable(true);
+            numOfPlayersOk = true;
+            if(!expertOk) confirmBtn.setDisable(false);
+            return;
+        }
+        if(what.equals("Expert")){
+            radioBtn3.setDisable(true);
+            radioBtn4.setDisable(true);
+            expertOk = true;
+            if(numOfPlayersOk) confirmBtn.setDisable(false);
+        }
     }
 }

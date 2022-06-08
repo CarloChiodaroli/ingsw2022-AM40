@@ -34,4 +34,9 @@ public class MenuSceneController extends ViewObservable implements GenericSceneC
     private void onPlayBtnClick(Event event) {
         SceneController.changeRootPane(observers, event, "connect_scene.fxml");
     }
+
+    @Override
+    public void onConfirm(String what) {
+
+    }
 }

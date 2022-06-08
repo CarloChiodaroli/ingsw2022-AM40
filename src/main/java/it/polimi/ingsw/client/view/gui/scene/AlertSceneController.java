@@ -113,4 +113,9 @@ public class AlertSceneController implements GenericSceneController {
     public void setScene(Scene scene) {
         stage.setScene(scene);
     }
+
+    @Override
+    public void onConfirm(String what) {
+
+    }
 }

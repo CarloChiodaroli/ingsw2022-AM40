@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
            prefHeight="760.0" prefWidth="1300.0" styleClass="menuBackground" xmlns="http://javafx.com/javafx/11.0.1"
-           xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.gui.scene.StartSceneController">
+           xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Group scaleX="1.5" scaleY="1.5" scaleZ="1.5">
             <children>

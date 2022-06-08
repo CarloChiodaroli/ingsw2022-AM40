@@ -63,6 +63,7 @@ public class SceneController extends ViewObservable {
             activeScene.setRoot(root);
         } catch (IOException e) {
             Client.LOGGER.severe(e.getMessage());
+            e.printStackTrace();
         }
         return controller;
     }
@@ -114,6 +115,7 @@ public class SceneController extends ViewObservable {
             activeScene.setRoot(root);
         } catch (IOException e) {
             Client.LOGGER.severe(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -157,6 +159,10 @@ public class SceneController extends ViewObservable {
         alertSceneController.setAlertTitle(title);
         alertSceneController.setAlertMessage(message);
         alertSceneController.displayAlert();
+    }
+
+    public static void sendConfirm(String what){
+        activeController.onConfirm(what);
     }
 
 }

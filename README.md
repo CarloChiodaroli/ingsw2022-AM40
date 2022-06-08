@@ -14,25 +14,25 @@ Implementation of Eriantys board game
 
 ## Project progress:
 
-|                __Phase__                 | __Status__ |
-|:----------------------------------------:|:----------:|
-|  Game model's initial UML class diagram  |    Done    |
-|           Model Implementation           | Retouching |
-|  *Model FA implementation and testing*   |    Done    |
-|        Controller implementation         |  Testing   |
-|   *MCV FA implementation and testing*    |     -      |
-|      Communication protocol design       |    Done    |
-|  Communication protocol Implementation   |   Making   |
-|          Client Implementation           |   Making   |
-|                 CLI view                 |   Making   |
-|                 GUI view                 |   Making   |
+|                __Phase__                 |      __Status__       |
+|:----------------------------------------:|:---------------------:|
+|  Game model's initial UML class diagram  |         Done          |
+|           Model Implementation           |      Retouching       |
+|  *Model FA implementation and testing*   |         Done          |
+|        Controller implementation         |        Testing        |
+|   *MCV FA implementation and testing*    |       Designing       |
+|      Communication protocol design       |         Done          |
+|  Communication protocol Implementation   | Making expert variant |
+|          Client Implementation           | Making expert variant |
+|                 CLI view                 | Making expert variant |
+|                 GUI view                 |        Making         |
 |||
-|                 Javadoc                  |     -      |
-|        Final Application Testing         |     -      |
-| Delivery of "'deliveries' folder things" |     -      |
-|    __Final delivery__ on 25th of june    |     -      |
+|                 Javadoc                  |        Making         |
+|        Final Application Testing         |           -           |
+| Delivery of "'deliveries' folder things" |        Making         |
+|    __Final delivery__ on 27th of june    |           -           |
 
-*Technical Issues buffer time: 6 days*
+*Technical Issues buffer time: 4 days*
 
 *Notes:*
 * *Implementation phases include singular class testing*

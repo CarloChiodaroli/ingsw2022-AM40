@@ -76,4 +76,9 @@ public class ConnectSceneController extends ViewObservable implements GenericSce
 
         SceneController.changeRootPane(observers, event, "menu_scene.fxml");
     }
+
+    @Override
+    public void onConfirm(String what) {
+
+    }
 }

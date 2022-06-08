@@ -83,4 +83,9 @@ public class WizardSceneController extends ViewObservable implements GenericScen
     public void setAvailableWizard(List<Wizard> availableWizard) {
         this.availableWizard = availableWizard;
     }
+
+    @Override
+    public void onConfirm(String what) {
+
+    }
 }

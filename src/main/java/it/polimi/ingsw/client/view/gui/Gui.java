@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.client.model.PlayMessageController;
+import it.polimi.ingsw.client.model.PlayState;
 import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.gui.scene.LobbySceneController;
@@ -22,6 +23,7 @@ public class Gui extends ViewObservable implements View {
     private boolean okVariant = false;
     private boolean status = false;
     private int players = 0;
+    private PlayState state;
 
     /**
      * {@inheritDoc}
@@ -119,7 +121,7 @@ public class Gui extends ViewObservable implements View {
      */
     @Override
     public void setStatePrinter(PlayMessageController playMessageController) {
-
+        state = playMessageController.getState();
     }
 
     /**
@@ -158,10 +160,10 @@ public class Gui extends ViewObservable implements View {
      * {@inheritDoc}
      */
     @Override
-    public void askPlayCustomization(List<Wizard> wizards) {
+    public void askPlayCustomization() {
         WizardSceneController wsc = new WizardSceneController();
         wsc.addAllObservers(observers);
-        wsc.setAvailableWizard(wizards);
+        wsc.setAvailableWizard(state.getAvailableWizards());
         Platform.runLater(() -> SceneController.changeRootPane(wsc, "wizard_scene.fxml"));
     }
 
@@ -183,6 +185,7 @@ public class Gui extends ViewObservable implements View {
     public void showExpert(boolean expertStatus) {
         okVariant = true;
         status = expertStatus;
+        sendConfirmation("Expert");
         if(okNumber)
             askPlayCustomization();
     }
@@ -202,7 +205,12 @@ public class Gui extends ViewObservable implements View {
     public void showChosenNumOfPlayers(int maxPlayers) {
         okNumber = true;
         players = maxPlayers;
+        sendConfirmation("Number");
         if(okVariant)
             askPlayCustomization();
+    }
+
+    private static void sendConfirmation(String what){
+        Platform.runLater(() -> SceneController.sendConfirm(what));
     }
 }

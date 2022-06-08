@@ -10,7 +10,7 @@ public class Eriantys {
             ║  █▀▀▀▀▀▀  █▀▀▀▀▀█  █     █▀█     ██▄      █  ▀▀▀█▀▀▀  █     █  █▀▀▀▀▀▀█  ║
             ║  █        █     █  █    █▀ ▀█    █ ▀█     █     █     █     █  █         ║
             ║  █        █     █  █   █▀   ▀█   █  ▀█    █     █     ▀█   █▀  █         ║
-            ║  ███████  ██████   █  █▀     ▀█  █   ▀█   █     █      ▀█ █▀   ▀██████▄  ║
+            ║  ███████  ██████▀  █  █▀     ▀█  █   ▀█   █     █      ▀█ █▀   ▀██████▄  ║
             ║  █        █  █     █  █▀▀███▀▀█  █    ▀█  █     █       ▀█▀           █  ║
             ║  █        █   █    █  █       █  █     ▀█ █     █        █            █  ║
             ║  █▄▄▄▄▄▄  █    █   █  █       █  █      ▀██     █        █     █▄▄▄▄▄▄█  ║
@@ -18,15 +18,14 @@ public class Eriantys {
             ╚══════════════════════════════════════════════════════════════════════════╝
             """;
 
-    // "┐└ ┴ ┬ ├ ─ ┼ │ ┤ ┘ ┌";
     public static void main(String[] args) {
         System.out.println(BIG_ERIANTYS);
         if (args.length < 1) {
             System.out.println("Got wrong argument, please retry.\nCorrect arguments:\n" +
-                    "\teriantys --s - to launch a server \n" +
+                    "\teriantys --s - to launch a server\n" +
                     "\teriantys --s --port <number> - to launch a server on a custom port number\n" +
-                    "\teriantys --c - to launch a cli client \n" +
-                    "\teriantys --g - to launch a gui client (for now launches cli client) \n");
+                    "\teriantys --c - to launch a cli client\n" +
+                    "\teriantys --g - to launch a gui client\n");
         } else if (args[0].equals("--s")) {
             ServerApp.server(args);
         } else if (args[0].equals("--c")) {

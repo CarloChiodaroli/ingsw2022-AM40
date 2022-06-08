@@ -53,4 +53,9 @@ public class LoginSceneController extends ViewObservable implements GenericScene
         new Thread(() -> notifyObserver(ViewObserver::onDisconnection)).start();
         SceneController.changeRootPane(observers, event, "menu_scene.fxml");
     }
+
+    @Override
+    public void onConfirm(String what) {
+
+    }
 }

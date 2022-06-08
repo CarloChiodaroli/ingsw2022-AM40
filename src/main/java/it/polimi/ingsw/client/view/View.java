@@ -36,7 +36,7 @@ public interface View {
     /**
      * Client shows this to all users to set customizations.
      */
-    void askPlayCustomization(List<Wizard> availableWizards);
+    void askPlayCustomization();
 
     /**
      * Used to show the main player to the user.

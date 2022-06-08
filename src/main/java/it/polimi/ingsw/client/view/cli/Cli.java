@@ -495,6 +495,7 @@ public class Cli extends ViewObservable implements View {
         out.println("\nYou are the first player to connect to the server, please define the play details with these commands:");
         out.println("players <num of players>\t// To set the number of players. acceptable numbers are 2 or 3");
         out.println("expert\t\t\t// To set the game to expert variant or vice-versa");
+        askPlayCustomization();
         out.println("\nThan when you are finished use the command 'start' to start the game");
     }
 
@@ -502,7 +503,7 @@ public class Cli extends ViewObservable implements View {
      * {@inheritDoc}
      */
     @Override
-    public void askPlayCustomization(List<Wizard> availableWizards) {
+    public void askPlayCustomization() {
         out.println("\nYou are connected and the server has been correctly configured, now you can define your customizations with these commands:");
         out.println("wizard <MAGICIAN, KING, FAIRY, BAMBOO_GUY> // To set the number of players. acceptable numbers are 2 or 3");
     }
