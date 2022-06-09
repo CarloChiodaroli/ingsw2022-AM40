@@ -12,6 +12,8 @@ import it.polimi.ingsw.commons.message.*;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,6 +42,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         return taskQueue;
     }
 
+    // Communication Client - Server
     @Override
     public void onUpdateServerInfo(Map<String, String> serverInfo) {
         try {
@@ -112,56 +115,56 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         return false;
     }
 
+    // Communication Server - Client
+
+    // First level
     @Override
-    public void update(Message message) {
-        try {
-            switch (message.getMessageType()) {
-                case GENERIC:
-                    taskQueue.execute(() -> view.showGenericMessage(((GenericMessage) message).getMessage()));
-                    break;
-                case ERROR:
-                    ErrorMessage em = (ErrorMessage) message;
-                    taskQueue.execute(() -> view.showError(em.getError()));
-                    break;
-                case LOGIN:
-                    LoginMessage loginMessage = (LoginMessage) message;
-                    taskQueue.execute(() -> view.showLoginResult(loginMessage.isNicknameAccepted(), loginMessage.isConnectionSuccessful(), this.nickname));
-                    break;
-                case LOBBY:
-                    LobbyMessage lm = (LobbyMessage) message;
-                    try {
-                        this.manageLobby(lm);
-                    } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                        notCriticalError("Error while managing message from server: " + e.getMessage());
-                    }
-                    break;
-                case PLAY:
-                    PlayMessage pm = (PlayMessage) message;
-                    taskQueue.execute(() -> {
-                        try {
-                            pm.executeMessage(playMessageReader);
-                        } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                            notCriticalError("Error while managing message from server: " + e.getCause().getMessage());
-                        }
-                    });
-                    break;
-                default: // Should never reach this condition
-                    notCriticalError("Received wrong message from server");
-                    break;
-            }
-        } catch (ClassCastException e) {
-            // Should never reach this condition
-            notCriticalError("Completely wrong message received from server");
+    public void update(Message message){
+        switch(message.getMessageType()){ // switch will be deleted soon
+            case LOGIN -> login(message);
+            case LOBBY -> lobby(message);
+            case PLAY -> play(message);
+            case ERROR -> error(message);
+            case GENERIC -> generic(message);
+            default -> notCriticalError("Received illegal message type");
         }
     }
 
-    public String getNickname() {
-        return nickname;
+    public void login(Message message){
+        LoginMessage loginMessage = (LoginMessage) message;
+        taskQueue.execute(() -> view.showLoginResult(loginMessage.isNicknameAccepted(), loginMessage.isConnectionSuccessful(), this.nickname));
     }
 
-    private void manageLobby(LobbyMessage message) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        LobbyMessageReader.class.getMethod(message.getCommand(), LobbyMessage.class).invoke(this, message);
+    public void lobby(Message message){
+        LobbyMessage lm = (LobbyMessage) message;
+        try {
+            LobbyMessageReader.class.getMethod(lm.getCommand(), LobbyMessage.class).invoke(this, lm);
+        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            notCriticalError("Error while managing message from server: " + e.getMessage());
+        }
     }
+
+    public void play(Message message){
+        PlayMessage pm = (PlayMessage) message;
+        taskQueue.execute(() -> {
+            try {
+                pm.executeMessage(playMessageReader);
+            } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                notCriticalError("Error while managing message from server: " + e.getCause().getMessage());
+            }
+        });
+    }
+
+    public void generic(Message message){
+        taskQueue.execute(() -> view.showGenericMessage(((GenericMessage) message).getMessage()));
+    }
+
+    public void error(Message message){
+        ErrorMessage em = (ErrorMessage) message;
+        taskQueue.execute(() -> view.showError(em.getError()));
+    }
+
+    // Second layer - Lobby Messages
 
     @Override
     public void expert(LobbyMessage message) {
@@ -221,6 +224,12 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         } else {
             taskQueue.execute(() -> view.showOtherDisconnectionMessage(outgoingName, "Has disconnected"));
         }
+    }
+
+    // Utility
+
+    public String getNickname() {
+        return nickname;
     }
 
     public void sendMessage(Message message) {

@@ -129,7 +129,7 @@ public class PlayMessageController implements PlayMessageReader {
         controller.sendMessage(message);
     }
 
-    // Game state changes to store in client
+    // Game state changes to store in client - Second layer
     @Override
     public synchronized void statusStudent(String sender, String id, Map<TeacherColor, Integer> quantity) {
         // is sent by the server?
