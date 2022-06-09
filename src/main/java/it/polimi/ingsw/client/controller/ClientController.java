@@ -23,6 +23,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     private Client client;
     private String nickname;
+    private boolean playing;
     private final ExecutorService taskQueue;
     private final PlayMessageController playMessageReader;
     private final PlayState state;
@@ -32,6 +33,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         taskQueue = Executors.newSingleThreadExecutor();
         this.playMessageReader = new PlayMessageController(this, this.view);
         this.state = playMessageReader.getState();
+        playing = false;
     }
 
     public ExecutorService getTaskQueue() {
@@ -59,19 +61,26 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     @Override
     public void onUpdatePlayersNumber(int playersNumber) {
+        if(!haveNickname()) return;
         client.sendMessage(new LobbyMessage(this.nickname, "numOfPlayers", playersNumber));
     }
 
     public void onUpdateWizard(Wizard wizard) {
+        if(!haveNickname()) return;
+        if(state.getWizard().isPresent() && state.getWizard().get().equals(wizard)){
+            taskQueue.execute(view::showWizard);
+            return;
+        }
+        if(!state.getAvailableWizards().contains(wizard)){
+            showNotCriticalError("Your chosen wizard is not available");
+            return;
+        }
         state.setWizard(wizard);
         sendMessage(new LobbyMessage(nickname, wizard));
     }
 
-    public void onUpdateStartGame() {
-        sendMessage(new LobbyMessage(nickname, "startGame"));
-    }
-
     public void onUpdateExpert(boolean how) {
+        if(!haveNickname()) return;
         sendMessage(new LobbyMessage(nickname, "expert", how));
     }
 
@@ -82,7 +91,25 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     @Override
     public void onUpdateStart() {
+        if(!haveNickname()) return;
+        if(startedPlaying()) return;
         sendMessage(new LobbyMessage(nickname, "startGame"));
+    }
+
+    private boolean haveNickname(){
+        if(nickname == null){
+            showNotCriticalError("It's too early to use this command");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean startedPlaying(){
+        if(playing){
+            showNotCriticalError("Game has already started");
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -154,23 +181,30 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     @Override
     public void mainPlayer(LobbyMessage message) {
         if (playMessageReader.getMainPlayer() != null) return;
+        state.setMainPlayer(message.getMainPlayerName());
+        state.setMyName(nickname);
         playMessageReader.setMainPlayer(message.getMainPlayerName());
         if (playMessageReader.getMainPlayer().equals(this.nickname)) { // First player to connect to the game
-            state.setAvailableWizards(message.getAvailableWizards());
             taskQueue.execute(view::askPlaySettings);
         } else {
-            state.setAvailableWizards(message.getAvailableWizards());
             taskQueue.execute(view::askPlayCustomization);
         }
     }
 
     @Override
     public void wizard(LobbyMessage message) {
-        state.setAvailableWizards(message.getAvailableWizards());
         if (!message.getAccepted()) {
             state.setWizard(null);
         }
         taskQueue.execute(view::showWizard);
+    }
+
+    @Override
+    public void wizardList(LobbyMessage message) {
+        state.setAvailableWizards(message.getAvailableWizards());
+        if(state.getWizard().isEmpty()){
+            taskQueue.execute(view::showAvailableWizards);
+        }
     }
 
     @Override
@@ -194,8 +228,12 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     private void notCriticalError(String error) {
-        taskQueue.execute(() -> view.showError(error));
+        showNotCriticalError(error);
         Client.LOGGER.severe(error);
+    }
+
+    private void showNotCriticalError(String error){
+        taskQueue.execute(() -> view.showError(error));
     }
 
     public void criticalError(String error) {

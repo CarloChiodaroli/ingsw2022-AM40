@@ -10,6 +10,8 @@ public interface LobbyMessageReader {
 
     void wizard(LobbyMessage message);
 
+    void wizardList(LobbyMessage message);
+
     void numOfPlayers(LobbyMessage message);
 
     void disconnection(LobbyMessage message);

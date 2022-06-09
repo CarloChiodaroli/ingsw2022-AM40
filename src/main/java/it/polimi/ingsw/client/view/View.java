@@ -98,6 +98,11 @@ public interface View {
     void showWizard();
 
     /**
+     * Shows which wizards are available to be chosen.
+     */
+    void showAvailableWizards();
+
+    /**
      * Shows to the user how many players will this game gave, as for what the main player has chosen.
      * @param maxPlayers the max number of players.
      */

@@ -55,15 +55,6 @@ public class LobbyMessage extends Message {
         super.message();
     }
 
-    public LobbyMessage(String sender, String command, String playerName, List<Wizard> available){
-        super(sender, MessageType.LOBBY);
-        this.command = command;
-        this.stringArg = playerName;
-        this.available = available;
-        super.message();
-    }
-
-
     public LobbyMessage(String sender, String command, boolean boolArg){
         super(sender, MessageType.LOBBY);
         this.command = command;
@@ -72,11 +63,10 @@ public class LobbyMessage extends Message {
         super.message();
     }
 
-    public LobbyMessage(String sender, String command, boolean boolArg, List<Wizard> available){
+    public LobbyMessage(String sender, String command, List<Wizard> available){
         super(sender, MessageType.LOBBY);
         this.command = command;
         isStartGame = true;
-        this.boolArg = boolArg;
         this.available = available;
         super.message();
     }

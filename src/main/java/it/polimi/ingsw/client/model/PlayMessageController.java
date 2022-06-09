@@ -120,7 +120,7 @@ public class PlayMessageController implements PlayMessageReader {
     }
 
     @Override
-    public synchronized void playCharacterCard(String player, Characters character, TeacherColor color) {
+    public void playCharacterCard(String player, Characters character, TeacherColor color) {
         // is sent by this player?
         controlLegal(player);
         // build message

@@ -175,7 +175,16 @@ public class Gui extends ViewObservable implements View {
         StartSceneController ssc = new StartSceneController();
         ssc.addAllObservers(observers);
         ssc.getGameParams(status, players);
+        ssc.setMainPlayer(state.isMainPlayer());
         Platform.runLater(() -> SceneController.changeRootPane(ssc, "start_scene.fxml"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void showAvailableWizards() {
+
     }
 
     /**

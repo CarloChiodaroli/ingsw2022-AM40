@@ -30,6 +30,7 @@ public class Cli extends ViewObservable implements View {
     private StatePrinter statePrinter;
     private Map<String, String> serverInfo = new HashMap<>();
     private boolean expert;
+    private boolean shownPlayCustom;
 
     /**
      * Constructor
@@ -39,6 +40,7 @@ public class Cli extends ViewObservable implements View {
         this.inputStream = new ClientInputStream(this);
         this.userInputLock = new Object();
         connected = false;
+        shownPlayCustom = false;
     }
 
     /**
@@ -266,7 +268,8 @@ public class Cli extends ViewObservable implements View {
      * @param args {@link #receivedCommand(String)}
      */
     public void expert(List<String> args) {
-        notifyObserver(obs -> obs.onUpdateExpert(!expert));
+        if (args.isEmpty()) throw new IllegalStateException();
+        notifyObserver(obs -> obs.onUpdateExpert(Boolean.parseBoolean(args.get(0).toLowerCase())));
     }
 
     // Play commands
@@ -495,8 +498,9 @@ public class Cli extends ViewObservable implements View {
         out.println("\nYou are the first player to connect to the server, please define the play details with these commands:");
         out.println("players <num of players>\t// To set the number of players. acceptable numbers are 2 or 3");
         out.println("expert\t\t\t// To set the game to expert variant or vice-versa");
-        askPlayCustomization();
-        out.println("\nThan when you are finished use the command 'start' to start the game");
+        out.println("wizard <" + statePrinter.availableWizards() + "> // To set the number of players. acceptable numbers are 2 or 3");
+        out.println("\nThen when you are finished use the command 'start' to start the game");
+        shownPlayCustom = true;
     }
 
     /**
@@ -505,7 +509,8 @@ public class Cli extends ViewObservable implements View {
     @Override
     public void askPlayCustomization() {
         out.println("\nYou are connected and the server has been correctly configured, now you can define your customizations with these commands:");
-        out.println("wizard <MAGICIAN, KING, FAIRY, BAMBOO_GUY> // To set the number of players. acceptable numbers are 2 or 3");
+        out.println("wizard <" + statePrinter.availableWizards() + "> // To set the number of players. acceptable numbers are 2 or 3");
+        shownPlayCustom = true;
     }
 
     /**
@@ -553,12 +558,20 @@ public class Cli extends ViewObservable implements View {
      * {@inheritDoc}
      */
     @Override
+    public void showAvailableWizards() {
+        if(shownPlayCustom) out.println("available wizards are: " + statePrinter.availableWizards());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void showExpert(boolean expertStatus) {
         expert = expertStatus;
         if (expertStatus) {
-            out.println("The game was put in expert variant");
+            out.println("The game was put in " + EscapeCli.RED + "Expert" + EscapeCli.DEFAULT + " variant");
         } else {
-            out.println("The game was put back in normal variant");
+            out.println("The game was put in " + EscapeCli.GREEN + "Normal" + EscapeCli.DEFAULT + " variant");
         }
     }
 

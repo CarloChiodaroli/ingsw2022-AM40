@@ -1,11 +1,14 @@
 package it.polimi.ingsw.client.view.gui.scene;
 
 import it.polimi.ingsw.client.observer.ViewObservable;
+import it.polimi.ingsw.commons.enums.Wizard;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+
+import java.util.List;
 
 public class StartSceneController extends ViewObservable implements GenericSceneController{
     @FXML
@@ -17,6 +20,7 @@ public class StartSceneController extends ViewObservable implements GenericScene
 
     private boolean status;
     private int players;
+    private boolean main;
 
     public StartSceneController(){
         status = false;
@@ -31,6 +35,7 @@ public class StartSceneController extends ViewObservable implements GenericScene
             variantLbl.setText("Normal game!");
         numberLbl.setText(players + " players mode.");
         confirmBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmBtnClick);
+        confirmBtn.setDisable(!main);
     }
 
     private void onConfirmBtnClick(Event event) {
@@ -40,6 +45,10 @@ public class StartSceneController extends ViewObservable implements GenericScene
     public void getGameParams(boolean status, int players) {
         this.status = status;
         this.players = players;
+    }
+
+    public void setMainPlayer(boolean main) {
+        this.main = main;
     }
 
     @Override

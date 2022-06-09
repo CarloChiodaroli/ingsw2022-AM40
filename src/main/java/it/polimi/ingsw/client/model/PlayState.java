@@ -224,8 +224,8 @@ public class PlayState {
         wizard = wizardChoose;
     }
 
-    public Wizard getWizard() {
-        return wizard;
+    public Optional<Wizard> getWizard() {
+        return Optional.ofNullable(wizard);
     }
 
     public void setWinner(String winner) {
@@ -242,5 +242,13 @@ public class PlayState {
 
     public List<Wizard> getAvailableWizards() {
         return availableWizards;
+    }
+
+    public boolean isMainPlayer(){
+        return mainPlayer.equals(myName);
+    }
+
+    public void setMainPlayer(String mainPlayer) {
+        this.mainPlayer = mainPlayer;
     }
 }

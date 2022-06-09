@@ -71,6 +71,14 @@ public class GameManager implements LobbyMessageReader {
             sendError(message.getSenderName(), "You can't start the game");
             return;
         }
+        if (playerNames.size() != maxPlayers){
+            sendError(message.getSenderName(), "There are not enough players");
+            return;
+        }
+        if (assignedWizards.entrySet().size() != maxPlayers) {
+            sendError(message.getSenderName(), "Not all players have chosen their wizards");
+            return;
+        }
         if (virtualViewMap.size() == maxPlayers && !playMessagesReader.isGameStarted())
             initGame();
             /*if (game.getNumCurrentPlayers() == game.getChosenPlayersNumber()) { // If all players logged
@@ -106,10 +114,16 @@ public class GameManager implements LobbyMessageReader {
             } else {
                 assignedWizards.replace(message.getSenderName(), message.getWizard());
             }
-            sendMessage(message.getSenderName(), new LobbyMessage(server, "wizard", true, availableWizards()));
+            sendMessage(message.getSenderName(), new LobbyMessage(server, "wizard", true));
         } else {
-            sendMessage(message.getSenderName(), new LobbyMessage(server, "wizard", false, availableWizards()));
+            sendMessage(message.getSenderName(), new LobbyMessage(server, "wizard", false));
         }
+        broadcastMessage(new LobbyMessage(server, "wizardList", availableWizards()), message.getSenderName());
+    }
+
+    @Override
+    public void wizardList(LobbyMessage message) {
+        // should not receive this
     }
 
     @Override
@@ -137,7 +151,9 @@ public class GameManager implements LobbyMessageReader {
             sendError(message.getSenderName(), "Player can't set nor unset expert variant");
             return;
         }
-        playMessagesReader.switchExpertVariant();
+        if(message.isExpert() != playMessagesReader.isExpertVariant()){
+            playMessagesReader.switchExpertVariant();
+        }
         broadcastMessage(new LobbyMessage(server, "expert", playMessagesReader.isExpertVariant()));
     }
 
@@ -167,13 +183,17 @@ public class GameManager implements LobbyMessageReader {
             this.mainPlayer = nickname;
             this.playMessagesReader = new PlayMessagesReader(mainPlayer, this);
             virtualView.showLoginResult(true, true);
-            virtualView.sendMainPlayer(mainPlayer, Arrays.stream(Wizard.values()).toList());
+            sendMessage(nickname, new LobbyMessage(server, "wizardList", availableWizards()));
+            virtualView.sendMainPlayer(mainPlayer);
         } else if (virtualViewMap.size() < maxPlayers) {
             addVirtualView(nickname, virtualView);
             this.playerNames.add(nickname);
             this.playMessagesReader.addPlayer(nickname);
-            virtualView.sendMainPlayer(mainPlayer, availableWizards());
             virtualView.showLoginResult(true, true);
+            sendMessage(nickname, new LobbyMessage(server, "wizardList", availableWizards()));
+            virtualView.sendMainPlayer(mainPlayer);
+            if(maxPlayers != DEFAULT_MAX_PLAYERS) sendMessage(nickname, new LobbyMessage(server, "numOfPlayers", maxPlayers));
+            sendMessage(nickname, new LobbyMessage(server, "expert", playMessagesReader.isExpertVariant()));
         } else {
             virtualView.showLoginResult(true, false);
         }
@@ -185,7 +205,9 @@ public class GameManager implements LobbyMessageReader {
 
     private List<Wizard> availableWizards(){
         return Arrays.stream(Wizard.values())
-                .filter(x -> !assignedWizards.values().stream().toList().contains(x))
+                .filter(x -> !assignedWizards.values().stream()
+                        .toList()
+                        .contains(x))
                 .collect(Collectors.toList());
     }
 
@@ -231,6 +253,13 @@ public class GameManager implements LobbyMessageReader {
 
     public void broadcastMessage(Message message) {
         virtualViewMap.entrySet().stream()
+                .map(Map.Entry::getValue)
+                .forEach(x -> x.sendMessage(message));
+    }
+
+    public void broadcastMessage(Message message, String exceptPlayer) {
+        virtualViewMap.entrySet().stream()
+                .filter(entry -> !entry.getKey().equals(exceptPlayer))
                 .map(Map.Entry::getValue)
                 .forEach(x -> x.sendMessage(message));
     }

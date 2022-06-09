@@ -299,11 +299,18 @@ public class StatePrinter {
      * @return the wizard if present, null if not.
      */
     public String wizard() {
-        if (playState.getWizard() != null) {
-            return playState.getWizard().toString();
+        if (playState.getWizard().isPresent()) {
+            return playState.getWizard().get().toString();
         } else {
             return null;
         }
+    }
+
+    public String availableWizards(){
+        String result = playState.getAvailableWizards().toString();
+        result = result.replace("[", "");
+        result = result.replace("]", "");
+        return result;
     }
 
     public String getWinner(){
