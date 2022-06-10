@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.controller.outer;
 
 import it.polimi.ingsw.commons.enums.Wizard;
 import it.polimi.ingsw.commons.message.*;
+import it.polimi.ingsw.commons.message.play.NormalPlayMessage;
 import it.polimi.ingsw.server.controller.inner.InputController;
 import it.polimi.ingsw.server.network.Server;
 import it.polimi.ingsw.server.utils.StorageData;
@@ -166,7 +167,7 @@ public class GameManager implements LobbyMessageReader {
     // PLAY message part
 
     private void inGameState(Message receivedMessage) {
-        PlayMessage message = (PlayMessage) receivedMessage;
+        NormalPlayMessage message = (NormalPlayMessage) receivedMessage;
         try {
             message.executeMessage(playMessagesReader);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {

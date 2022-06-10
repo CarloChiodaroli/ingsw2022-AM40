@@ -370,6 +370,21 @@ public class PlayMessagesReader implements PlayMessageReader {
         errorIllegalMessage();
     }
 
+    @Override
+    public void statusCharacterCard(String sender, List<Characters> characters) {
+        errorIllegalMessage();
+    }
+
+    @Override
+    public void statusPlayerMoney(String sender, Map<String, Integer> money) {
+        errorIllegalMessage();
+    }
+
+    @Override
+    public void statusStudent(String sender, Characters character, Map<TeacherColor, Integer> quantity) {
+        errorIllegalMessage();
+    }
+
     private void sendEndGame(String winner){
         gameManager.broadcastMessage(PlayMessagesFabric.statusEndGame(server, winner));
     }

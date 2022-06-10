@@ -9,23 +9,17 @@ import java.util.Map;
 
 public interface PlayMessageReader {
 
+    // Normal
+
     void playAssistantCard(String player, Integer weight);
 
     void moveStudent(String player, TeacherColor color, String fromId, String toId);
-
-    void moveStudent(String player, TeacherColor fromColor, TeacherColor toColor, String placeId);
 
     void moveMotherNature(String player, Integer hops);
 
     void calcInfluence(String player);
 
     void chooseCloud(String player, String id);
-
-    void playCharacterCard(String player, Characters character);
-
-    void playCharacterCard(String player, Characters character, String id);
-
-    void playCharacterCard(String player, Characters character, TeacherColor color);
 
     void statusStudent(String sender, String id, Map<TeacherColor, Integer> quantity);
 
@@ -45,9 +39,25 @@ public interface PlayMessageReader {
 
     void statusPlanning(String sender, String actualPlayer);
 
-    void statusCharacterCard(String sender, Characters character);
-
     void statusAssistantCard(String sender, String player, Integer weight);
 
     void statusEndGame(String sender, String winner);
+
+    // Expert
+
+    void moveStudent(String player, TeacherColor fromColor, TeacherColor toColor, String placeId);
+
+    void playCharacterCard(String player, Characters character);
+
+    void playCharacterCard(String player, Characters character, String id);
+
+    void playCharacterCard(String player, Characters character, TeacherColor color);
+
+    void statusCharacterCard(String sender, Characters character);
+
+    void statusCharacterCard(String sender, List<Characters> characters);
+
+    void statusPlayerMoney(String sender, Map<String, Integer> money);
+
+    void statusStudent(String sender, Characters character, Map<TeacherColor, Integer> quantity);
 }

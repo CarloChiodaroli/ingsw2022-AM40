@@ -9,11 +9,10 @@ import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.observer.ViewObserver;
 import it.polimi.ingsw.commons.enums.Wizard;
 import it.polimi.ingsw.commons.message.*;
+import it.polimi.ingsw.commons.message.play.NormalPlayMessage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -123,7 +122,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         switch(message.getMessageType()){ // switch will be deleted soon
             case LOGIN -> login(message);
             case LOBBY -> lobby(message);
-            case PLAY -> play(message);
+            case PLAY, EXPERT -> play(message);
             case ERROR -> error(message);
             case GENERIC -> generic(message);
             default -> notCriticalError("Received illegal message type");
@@ -145,7 +144,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     public void play(Message message){
-        PlayMessage pm = (PlayMessage) message;
+        NormalPlayMessage pm = (NormalPlayMessage) message;
         taskQueue.execute(() -> {
             try {
                 pm.executeMessage(playMessageReader);

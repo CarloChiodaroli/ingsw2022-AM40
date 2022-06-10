@@ -6,7 +6,8 @@ import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.commons.message.IllegalMessageException;
 import it.polimi.ingsw.commons.message.PlayMessageReader;
-import it.polimi.ingsw.commons.message.PlayMessage;
+import it.polimi.ingsw.commons.message.play.ExpertPlayMessage;
+import it.polimi.ingsw.commons.message.play.NormalPlayMessage;
 import it.polimi.ingsw.commons.message.PlayMessagesFabric;
 import it.polimi.ingsw.commons.enums.Characters;
 
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class is run by the executeMessage method of the received PlayMessage to change the PlayState class,
+ * This class is run by the executeMessage method of the received NormalPlayMessage to change the PlayState class,
  * and by the view when she needs to send PlayMessages to the server.
  */
 public class PlayMessageController implements PlayMessageReader {
@@ -64,66 +65,35 @@ public class PlayMessageController implements PlayMessageReader {
     @Override
     public void playAssistantCard(String player, Integer weight) {
         controlLegal(player);
-        PlayMessage message = PlayMessagesFabric.playAssistantCard(player, weight);
+        NormalPlayMessage message = PlayMessagesFabric.playAssistantCard(player, weight);
         controller.sendMessage(message);
     }
 
     @Override
     public void moveStudent(String player, TeacherColor color, String fromId, String toId) {
         controlLegal(player);
-        PlayMessage message = PlayMessagesFabric.moveStudent(player, color, fromId, toId);
-        controller.sendMessage(message);
-    }
-
-    @Override
-    public void moveStudent(String player, TeacherColor fromColor, TeacherColor toColor, String placeId) {
-        controlLegal(player);
-        PlayMessage message = PlayMessagesFabric.moveStudent(player, fromColor, toColor, placeId);
+        NormalPlayMessage message = PlayMessagesFabric.moveStudent(player, color, fromId, toId);
         controller.sendMessage(message);
     }
 
     @Override
     public void moveMotherNature(String player, Integer hops) {
         controlLegal(player);
-        PlayMessage message = PlayMessagesFabric.moveMotherNature(player, hops);
+        NormalPlayMessage message = PlayMessagesFabric.moveMotherNature(player, hops);
         controller.sendMessage(message);
     }
 
     @Override
     public void calcInfluence(String player) {
         controlLegal(player);
-        PlayMessage message = PlayMessagesFabric.calcInfluence(player);
+        NormalPlayMessage message = PlayMessagesFabric.calcInfluence(player);
         controller.sendMessage(message);
     }
 
     @Override
     public void chooseCloud(String player, String id) {
         controlLegal(player);
-        PlayMessage message = PlayMessagesFabric.chooseCloud(player, id);
-        controller.sendMessage(message);
-    }
-
-    @Override
-    public void playCharacterCard(String player, Characters character) {
-        controlLegal(player);
-        PlayMessage message = PlayMessagesFabric.playCharacterCard(player, character);
-        controller.sendMessage(message);
-    }
-
-    @Override
-    public void playCharacterCard(String player, Characters character, String id) {
-        controlLegal(player);
-        PlayMessage message = PlayMessagesFabric.playCharacterCard(player, character, id);
-        controller.sendMessage(message);
-    }
-
-    @Override
-    public void playCharacterCard(String player, Characters character, TeacherColor color) {
-        // is sent by this player?
-        controlLegal(player);
-        // build message
-        PlayMessage message = PlayMessagesFabric.playCharacterCard(player, character, color);
-        // send message
+        NormalPlayMessage message = PlayMessagesFabric.chooseCloud(player, id);
         controller.sendMessage(message);
     }
 
@@ -203,12 +173,6 @@ public class PlayMessageController implements PlayMessageReader {
     }
 
     @Override
-    public synchronized void statusCharacterCard(String sender, Characters character) {
-        controlServer(sender);
-        state.setActualCharacterCard(character);
-    }
-
-    @Override
     public synchronized void statusAssistantCard(String sender, String player, Integer weight) {
         controlServer(sender);
         state.setActiveAssistantCard(player, weight);
@@ -219,6 +183,60 @@ public class PlayMessageController implements PlayMessageReader {
         controlServer(sender);
         state.setWinner(winner);
         controller.getTaskQueue().execute(view::showEndGame);
+    }
+
+    // Expert
+
+    @Override
+    public void moveStudent(String player, TeacherColor fromColor, TeacherColor toColor, String placeId) {
+        controlLegal(player);
+        ExpertPlayMessage message = PlayMessagesFabric.moveStudent(player, fromColor, toColor, placeId);
+        controller.sendMessage(message);
+    }
+
+    @Override
+    public void playCharacterCard(String player, Characters character) {
+        controlLegal(player);
+        ExpertPlayMessage message = PlayMessagesFabric.playCharacterCard(player, character);
+        controller.sendMessage(message);
+    }
+
+    @Override
+    public void playCharacterCard(String player, Characters character, String id) {
+        controlLegal(player);
+        ExpertPlayMessage message = PlayMessagesFabric.playCharacterCard(player, character, id);
+        controller.sendMessage(message);
+    }
+
+    @Override
+    public void playCharacterCard(String player, Characters character, TeacherColor color) {
+        // is sent by this player?
+        controlLegal(player);
+        // build message
+        ExpertPlayMessage message = PlayMessagesFabric.playCharacterCard(player, character, color);
+        // send message
+        controller.sendMessage(message);
+    }
+
+    @Override
+    public void statusCharacterCard(String sender, List<Characters> characters) {
+
+    }
+
+    @Override
+    public void statusPlayerMoney(String sender, Map<String, Integer> money) {
+
+    }
+
+    @Override
+    public void statusStudent(String sender, Characters character, Map<TeacherColor, Integer> quantity) {
+
+    }
+
+    @Override
+    public synchronized void statusCharacterCard(String sender, Characters character) {
+        controlServer(sender);
+        state.setActualCharacterCard(character);
     }
 
     private void controlLegal(String player) {

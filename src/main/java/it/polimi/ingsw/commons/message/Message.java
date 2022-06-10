@@ -11,7 +11,7 @@ public class Message {
      * @param sender the name of who sends the message
      * @param messageType The type of the message
      */
-    Message(String sender, MessageType messageType) {
+    protected Message(String sender, MessageType messageType) {
         this.senderName = sender;
         this.messageType = messageType;
         written = false;
