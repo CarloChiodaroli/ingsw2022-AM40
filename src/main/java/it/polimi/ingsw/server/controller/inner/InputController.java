@@ -42,6 +42,22 @@ public class InputController {
             throw new IllegalStateException("Actual state is " + reader.getState() + " when " + required + " is required");
     }
 
+    public void controlSourceId(String id){
+        if (reader.isExpertVariant()){
+            return;
+        } else {
+            if(!id.equals("Entrance")) throw new IllegalStateException(id + " is not valid from id");
+        }
+    }
+
+    public void controlDestinationId(String id){
+        if (reader.isExpertVariant()){
+            return;
+        } else {
+            if(id.equals("Entrance") || id.matches("^c_[0-9_]*")) throw new IllegalStateException(id + " is not valid to id");
+        }
+    }
+
     public void excludeGameState(GameState exclude) throws IllegalStateException {
         if (reader.getState().equals(exclude))
             throw new IllegalStateException("Actual state is " + reader.getState() + " and it's illegal for this action");

@@ -46,6 +46,7 @@ public class StatePrinter {
         state += assistantCards();
         state += printDashboard();
         state += statusTowers();
+        state += myAssistantCards();
         state += roundState();
         return state;
     }
@@ -315,5 +316,13 @@ public class StatePrinter {
 
     public String getWinner(){
         return playState.getWinner();
+    }
+
+    private String myAssistantCards(){
+        String list = playState.getAssistantCards().toString();
+        list = list.replace("[", "");
+        list = list.replace("]", "");
+        list = "My remaining assistant Cards: " + list + "\n";
+        return list;
     }
 }

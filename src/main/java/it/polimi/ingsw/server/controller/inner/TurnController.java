@@ -15,10 +15,11 @@ public class TurnController {
     private String activePlayer;
     private Characters actualCharacter;
     private GameState state;
+    private int startingPlayer;
+    private int messages;
 
     public TurnController(PlayMessagesReader reader) {
         this.nicknameQueue = new ArrayList<>(reader.getPlayerNames());
-        //this.activePlayer = nicknameQueue.get(0); // set first active player
         this.reader = reader;
         setInitialState();
     }
@@ -34,7 +35,13 @@ public class TurnController {
     public void startPlay(List<String> players){
         state = GameState.PLANNING;
         this.players = players;
-        setActivePlayer();
+        startingPlayer = 0;
+        if(activePlayer == null) activePlayer = players.get(startingPlayer);
+        else {
+            int index = players.indexOf(activePlayer);
+            if(index == players.size()) index = 0;
+            activePlayer = players.get(index);
+        }
     }
 
     public boolean isGameStarted(){
@@ -43,8 +50,10 @@ public class TurnController {
 
     public boolean nextTurn() {
         if (state.equals(GameState.PLANNING)) {
+            messages++;
             int i = players.indexOf(activePlayer) + 1;
-            if (i >= players.size()) {
+            if(i >= players.size()) i = 0;
+            if (messages >= players.size()) {
                 state = GameState.next(state);
                 nicknameQueue = reader.getPlayersInOrder();
                 activePlayer = nicknameQueue.get(0);
@@ -57,8 +66,11 @@ public class TurnController {
             actualCharacter = null;
             int i = nicknameQueue.indexOf(activePlayer) + 1;
             if (i >= nicknameQueue.size()) {
+                messages = 0;
+                startingPlayer++;
+                if(startingPlayer >= players.size()) startingPlayer = 0;
                 state = GameState.next(state);
-                activePlayer = players.get(0);
+                activePlayer = players.get(startingPlayer);
                 return true;
             } else {
                 activePlayer = nicknameQueue.get(i);
@@ -72,46 +84,9 @@ public class TurnController {
         return activePlayer;
     }
 
-    public void setActivePlayer(){
-        if(activePlayer == null) activePlayer = players.get(0);
-        else {
-            int index = players.indexOf(activePlayer);
-            if(index == players.size()) index = 0;
-            activePlayer = players.get(index);
-        }
-    }
-
     public boolean isCharacterActive(){
         return actualCharacter != null;
     }
-
-    /* To see better later
-    public void next() {
-        int currentActive = nicknameQueue.indexOf(activePlayer);
-        if (currentActive + 1 < game.getNumCurrentPlayers()) {
-            currentActive = currentActive + 1;
-        } else {
-            currentActive = 0;
-        }
-        activePlayer = nicknameQueue.get(currentActive);
-    }*/
-
-    /*
-    public void newTurn() {
-        turnControllerNotify("Turn of " + activePlayer, activePlayer);
-        VirtualView vv = virtualViewMap.get(getActivePlayer());
-        vv.showGenericMessage("It's your turn!");
-        StorageData storageData = new StorageData();
-        storageData.store(gameController);
-    }
-
-    public void turnControllerNotify(String messageToNotify, String excludeNickname) {
-        virtualViewMap.entrySet().stream()
-                .filter(entry -> !excludeNickname.equals(entry.getKey()))
-                .map(Map.Entry::getValue)
-                .forEach(vv -> vv.showGenericMessage(messageToNotify));
-    }
-    */
 
     public List<String> getNicknameQueue() {
         return nicknameQueue;

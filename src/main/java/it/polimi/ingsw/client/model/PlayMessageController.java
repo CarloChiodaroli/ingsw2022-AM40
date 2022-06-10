@@ -28,7 +28,6 @@ public class PlayMessageController implements PlayMessageReader {
         this.controller = controller;
         this.view = view;
         this.state = new PlayState();
-        this.state.setMyName(getMyName());
         view.setStatePrinter(this);
     }
 
@@ -65,7 +64,6 @@ public class PlayMessageController implements PlayMessageReader {
     @Override
     public void playAssistantCard(String player, Integer weight) {
         controlLegal(player);
-        //state.useAssistantCard(weight);
         PlayMessage message = PlayMessagesFabric.playAssistantCard(player, weight);
         controller.sendMessage(message);
     }
@@ -153,7 +151,7 @@ public class PlayMessageController implements PlayMessageReader {
     }
 
     @Override
-    public void statusTower(String sender, String player, TowerColor color) {
+    public synchronized void statusTower(String sender, String player, TowerColor color) {
         controlServer(sender);
         state.setStatusTower(player, color);
     }
@@ -187,7 +185,7 @@ public class PlayMessageController implements PlayMessageReader {
     public synchronized void statusAction(String sender, String actualPlayer) {
         controlServer(sender);
         state.setActionPhase(actualPlayer);
-        controller.getTaskQueue().execute(() -> view.update());
+        controller.getTaskQueue().execute(view::update);
     }
 
     /**
@@ -201,7 +199,7 @@ public class PlayMessageController implements PlayMessageReader {
     public synchronized void statusPlanning(String sender, String actualPlayer) {
         controlServer(sender);
         state.setPlanningPhase(actualPlayer);
-        controller.getTaskQueue().execute(() -> view.update());
+        controller.getTaskQueue().execute(view::update);
     }
 
     @Override
@@ -220,7 +218,7 @@ public class PlayMessageController implements PlayMessageReader {
     public synchronized void statusEndGame(String sender, String winner) {
         controlServer(sender);
         state.setWinner(winner);
-        controller.getTaskQueue().execute(() -> view.showEndGame());
+        controller.getTaskQueue().execute(view::showEndGame);
     }
 
     private void controlLegal(String player) {

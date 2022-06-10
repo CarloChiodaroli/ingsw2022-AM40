@@ -38,7 +38,7 @@ public class PlanningPhase {
         }
     }
 
-    // Start of Pianification phase
+    // Start of Planning phase
 
     /**
      * Starts the phase, reinitializing it in a clean state
@@ -64,7 +64,7 @@ public class PlanningPhase {
         return activated;
     }
 
-    // Pianification phase part 1
+    // Planning phase part 1
 
     /**
      * Method called from the player where is played the assistant card
@@ -76,7 +76,7 @@ public class PlanningPhase {
     public AssistantCard play(AssistantCard card, Player applicantPlayer)
             throws IllegalStateException, InvalidParameterException {
         if (!activated)
-            throw new IllegalStateException("Pianification phase is not activated");
+            throw new IllegalStateException("Planning phase is not activated");
         if (determinedOrder)
             throw new IllegalStateException("Player's order already determined");
         if (isPlayerPresent(applicantPlayer))
@@ -135,11 +135,12 @@ public class PlanningPhase {
             if (game.getTable().getBag().orElseThrow().howManyTotStudents() < game.getNumOfRegisteredPlayers() * game.getNumOfRegisteredPlayers() + 1) {
                 game.endGame();
             } else {
-                //game.buildClouds();
                 actualPlayer = 0;
                 game.getActionPhase().startPhase(playersInOrder.get(actualPlayer));
                 countRound++;
             }
+        } else {
+
         }
     }
 

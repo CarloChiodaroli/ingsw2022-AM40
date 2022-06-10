@@ -33,6 +33,8 @@ public class InboundController {
     public void moveStudent(String playerName, TeacherColor color, String sourceId, String destinationId) {
         inputController.controlGameState(GameState.ACTION);
         inputController.controlActualPlayer(playerName);
+        inputController.controlSourceId(sourceId);
+        inputController.controlDestinationId(destinationId);
         model.moveStudent(playerName, color, sourceId, destinationId);
     }
 

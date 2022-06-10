@@ -6,6 +6,7 @@ import it.polimi.ingsw.commons.enums.Wizard;
 import it.polimi.ingsw.commons.enums.Characters;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Class which saves the state of the game in client.
@@ -37,9 +38,11 @@ public class PlayState {
         this.studentsInPlace = new HashMap<>();
         this.conquests = new HashMap<>();
         this.teachers = new ArrayList<>();
-        this.assistantCards = List.of(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+        assistantCards = new ArrayList<>();
+        this.assistantCards.addAll(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
         this.activeAssistantCards = new HashMap<>();
         this.playersTowerColors = new HashMap<>();
+        actionPhase = false;
     }
 
     public void setStudentsInAPlace(String placeId, Map<TeacherColor, Integer> studentsMap) {
@@ -135,8 +138,8 @@ public class PlayState {
         return new ArrayList<>(assistantCards);
     }
 
-    public boolean useAssistantCard(Integer weight) {
-        return assistantCards.remove(weight);
+    public void useAssistantCard(Integer weight) {
+        assistantCards.remove(weight);
     }
 
     public void setActionPhase(String actualPlayer) {
