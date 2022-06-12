@@ -15,10 +15,14 @@ import java.util.stream.Stream;
  */
 public class PlayState {
 
-    //private List<String> playerNames;
+    // Lobby State
+    private Wizard wizard;
+    private List<Wizard> availableWizards;
     private String mainPlayer;
-    private String actualPlayer;
     private String myName;
+
+    // Game State
+    private String actualPlayer;
     private boolean actionPhase;
     private Characters actualCharacterCard;
     private Map<String, Map<TeacherColor, Integer>> studentsInPlace;
@@ -29,9 +33,15 @@ public class PlayState {
     private Map<String, Integer> activeAssistantCards;
     private List<Integer> assistantCards;
     private Map<String, TowerColor> playersTowerColors;
-    private List<Wizard> availableWizards;
-    private Wizard wizard;
     private String winner;
+
+    // Expert State
+    private Map<Characters, Integer> characterCosts;
+    private Map<String, Integer> playerMoney;
+    private Characters actualCard;
+    private Integer myMoney;
+
+
 
     public PlayState() {
         this.mainPlayer = null;
@@ -253,5 +263,22 @@ public class PlayState {
 
     public void setMainPlayer(String mainPlayer) {
         this.mainPlayer = mainPlayer;
+    }
+
+    public void setCharacterCosts(Map<Characters, Integer> characterCosts) {
+        this.characterCosts = characterCosts;
+    }
+
+    public void setActualCard(Characters actualCard) {
+        this.actualCard = actualCard;
+    }
+
+    private void setMyMoney(Integer myMoney) {
+        this.myMoney = myMoney;
+    }
+
+    public void setPlayerMoney(Map<String, Integer> money){
+        this.playerMoney = money;
+        setMyMoney(money.get(myName));
     }
 }

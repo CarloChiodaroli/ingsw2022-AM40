@@ -54,14 +54,16 @@ public class ExpertPlayMessage extends PlayMessage {
         super.message();
     }
 
-    public ExpertPlayMessage(String sender, String move, List<Characters> availableCharacters){
+    //@Deprecated
+    /*
+    public ExpertPlayMessage(String sender, String move, Map<Characters, Integer> availableCharacters){
         super(sender,move, messageType);
-        super.setCharactersList(availableCharacters);
-        super.setParams(new Object[]{super.getSenderName(), "getCharacterList"});
+        super.setCharactersIntegerMap(availableCharacters);
+        super.setParams(new Object[]{super.getSenderName(), "getCharactersIntegerMap"});
         Class<?>[] tmp = new Class<?>[]{String.class, List.class};
         super.setParamsTypeNames(Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList()));
         super.message();
-    }
+    }*/
 
     public ExpertPlayMessage(String sender, String move, Map<String, Integer> money){
         super(sender, move, messageType);

@@ -61,7 +61,7 @@ public class InboundController {
     public void chooseCloud(String playerName, String cloudId) {
         inputController.controlGameState(GameState.ACTION);
         inputController.controlActualPlayer(playerName);
-        if (!cloudId.contains("c_")) throw new InvalidParameterException("Gotten Id is not a cloud Id");
+        inputController.controlCloudId(cloudId);
         model.chooseCloud(playerName, cloudId);
     }
 
@@ -77,6 +77,7 @@ public class InboundController {
 
     public void playCharacterCard(String playerName, Characters character, String islandId) {
         inputController.playCharacterCardPermit(playerName);
+        inputController.controlIslandId(islandId);
         model.playCharacterCard(playerName, character, islandId);
     }
 

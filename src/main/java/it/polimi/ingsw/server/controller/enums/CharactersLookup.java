@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.model.enums;
+package it.polimi.ingsw.server.controller.enums;
 
 import it.polimi.ingsw.commons.enums.Characters;
 

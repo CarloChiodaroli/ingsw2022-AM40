@@ -17,6 +17,7 @@ public class TurnController {
     private GameState state;
     private int startingPlayer;
     private int messages;
+    private String savedIsland;
 
     public TurnController(PlayMessagesReader reader) {
         this.nicknameQueue = new ArrayList<>(reader.getPlayerNames());
@@ -88,7 +89,19 @@ public class TurnController {
         return actualCharacter != null;
     }
 
+    public Characters getActualCharacter() {
+        return actualCharacter;
+    }
+
     public List<String> getNicknameQueue() {
         return nicknameQueue;
+    }
+
+    public void saveIsland(String islandId){
+        savedIsland = islandId;
+    }
+
+    public String getSavedIsland() {
+        return savedIsland;
     }
 }

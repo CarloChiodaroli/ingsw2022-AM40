@@ -305,6 +305,10 @@ public class GameModel {
         return studentContent;
     }
 
+    public Map<Characters, Integer> getActiveCharactersCosts() {
+        return game.getActiveCharactersCosts();
+    }
+
     public boolean isGameEnded() {
         return game.isGameEnded();
     }

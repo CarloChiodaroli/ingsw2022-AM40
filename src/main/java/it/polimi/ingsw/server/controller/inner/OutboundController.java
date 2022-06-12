@@ -53,6 +53,11 @@ public class OutboundController {
         return model.getMotherNaturePosition();
     }
 
+    public Map<Characters, Integer> getCharacterCardPrices(){
+        inputController.controlExpertVariant();
+        return model.getActiveCharactersCosts();
+    }
+
     public Characters getActualCharacterCard(){
         return Characters.FRIAR;
     }

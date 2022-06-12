@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.phases.action;
 
-import it.polimi.ingsw.server.model.enums.ActionPhaseStateType;
+import it.polimi.ingsw.server.controller.enums.ActionPhaseStateType;
 import it.polimi.ingsw.commons.enums.Characters;
-import it.polimi.ingsw.server.model.enums.CharactersLookup;
+import it.polimi.ingsw.server.controller.enums.CharactersLookup;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

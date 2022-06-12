@@ -419,7 +419,7 @@ class FakeGameManager implements PlayMessageReader {
     }
 
     @Override
-    public void statusCharacterCard(String sender, List<Characters> characters) {
+    public void statusCharacterCard(String sender, Map<String, Integer> money) {
 
     }
 

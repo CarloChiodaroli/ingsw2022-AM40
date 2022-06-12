@@ -89,6 +89,10 @@ public class PlayMessagesFabric {
         return new ExpertPlayMessage(sender, "statusPlayerMoney", money);
     }
 
+    public static ExpertPlayMessage statusCharacterCard(String sender, Map<String, Integer> money){
+        return new ExpertPlayMessage(sender, "statusCharacterCard", money);
+    }
+
     public static ExpertPlayMessage playCharacterCard(String player, Characters character) {
         return new ExpertPlayMessage(player, "playCharacterCard", character);
     }
@@ -99,10 +103,6 @@ public class PlayMessagesFabric {
 
     public static ExpertPlayMessage playCharacterCard(String player, Characters character, TeacherColor color) {
         return new ExpertPlayMessage(player, "playCharacterCard", character, color);
-    }
-
-    public static ExpertPlayMessage statusCharacterCard(String sender, List<Characters> characters){
-        return new ExpertPlayMessage(sender, "statusCharacterCard", characters);
     }
 
     public static ExpertPlayMessage statusCharacterCard(String sender, Characters character){

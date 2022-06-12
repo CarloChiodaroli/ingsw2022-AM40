@@ -119,13 +119,10 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     // First level
     @Override
     public void update(Message message){
-        switch(message.getMessageType()){ // switch will be deleted soon
-            case LOGIN -> login(message);
-            case LOBBY -> lobby(message);
-            case PLAY, EXPERT -> play(message);
-            case ERROR -> error(message);
-            case GENERIC -> generic(message);
-            default -> notCriticalError("Received illegal message type");
+        try{
+            this.getClass().getMethod(message.getMessageType().toString().toLowerCase(), Message.class).invoke(this, message);
+        } catch (InvocationTargetException| IllegalAccessException | NoSuchMethodException e) {
+            notCriticalError("Received illegal message type");
         }
     }
 
@@ -141,6 +138,10 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             notCriticalError("Error while managing message from server: " + e.getMessage());
         }
+    }
+
+    public void expert(Message message){
+        play(message);
     }
 
     public void play(Message message){

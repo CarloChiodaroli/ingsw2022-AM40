@@ -6,17 +6,17 @@ import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.commons.message.IllegalMessageException;
 import it.polimi.ingsw.commons.message.PlayMessageReader;
-import it.polimi.ingsw.commons.message.play.ExpertPlayMessage;
-import it.polimi.ingsw.commons.message.play.NormalPlayMessage;
+import it.polimi.ingsw.commons.message.play.*;
 import it.polimi.ingsw.commons.message.PlayMessagesFabric;
 import it.polimi.ingsw.commons.enums.Characters;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * This class is run by the executeMessage method of the received NormalPlayMessage to change the PlayState class,
- * and by the view when she needs to send PlayMessages to the server.
+ * This class is run by the {@link PlayMessage#executeMessage(PlayMessageReader) executeMessage} method of the received PlayMessage to change the {@link PlayState PlayState} class,
+ * and by the view when she needs to send ({@link NormalPlayMessage Normal} or {@link ExpertPlayMessage Expert}) {@link PlayMessage PlayMessages} to the server.
  */
 public class PlayMessageController implements PlayMessageReader {
 
@@ -32,36 +32,60 @@ public class PlayMessageController implements PlayMessageReader {
         view.setStatePrinter(this);
     }
 
+    /**
+     * Getter of the playState
+     * @return the playState
+     */
     public PlayState getState() {
         return state;
     }
 
+    /**
+     * Setter of the main player
+     * @param mainPlayer the name of the main player
+     */
     public void setMainPlayer(String mainPlayer) {
         this.mainPlayer = mainPlayer;
         controller.getTaskQueue().execute(() -> view.showMainPlayerName(mainPlayer));
     }
 
+    /**
+     * Getter of the Place Ids
+     * @return a list of the Place Ids
+     */
     public List<String> getPlaceIds(){
         return state.getPlaceIds();
     }
 
+    /**
+     * Getter of the actual player nickname
+     * @return the nickname
+     */
     public String getNickname() {
         return controller.getNickname();
     }
 
+    /**
+     * Getter of the main player
+     * @return the name of the main player
+     */
     public String getMainPlayer() {
         return mainPlayer;
     }
 
+    /**
+     * Getter of the name pf the players
+     * @return a list of player names
+     */
     public List<String> getPlayerNames() {
         return state.getPlayerNames();
     }
 
-    public String getMyName(){
-        return controller.getNickname();
-    }
-
     // playerCommands to send to the server
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void playAssistantCard(String player, Integer weight) {
         controlLegal(player);
@@ -69,6 +93,9 @@ public class PlayMessageController implements PlayMessageReader {
         controller.sendMessage(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveStudent(String player, TeacherColor color, String fromId, String toId) {
         controlLegal(player);
@@ -76,6 +103,9 @@ public class PlayMessageController implements PlayMessageReader {
         controller.sendMessage(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveMotherNature(String player, Integer hops) {
         controlLegal(player);
@@ -83,6 +113,9 @@ public class PlayMessageController implements PlayMessageReader {
         controller.sendMessage(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void calcInfluence(String player) {
         controlLegal(player);
@@ -90,6 +123,9 @@ public class PlayMessageController implements PlayMessageReader {
         controller.sendMessage(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void chooseCloud(String player, String id) {
         controlLegal(player);
@@ -97,6 +133,9 @@ public class PlayMessageController implements PlayMessageReader {
         controller.sendMessage(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     // Game state changes to store in client - Second layer
     @Override
     public synchronized void statusStudent(String sender, String id, Map<TeacherColor, Integer> quantity) {
@@ -105,39 +144,56 @@ public class PlayMessageController implements PlayMessageReader {
         // update Play state
         state.setStudentsInAPlace(id, quantity);
         // update view.
-        //controller.getTaskQueue().execute(() -> view.update());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void statusTeacher(String sender, String id, List<TeacherColor> which) {
         controlServer(sender);
         state.setTeachers(which);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void statusTower(String sender, Map<String, TowerColor> conquests) {
         controlServer(sender);
         state.setConquests(conquests); // to change the message
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void statusTower(String sender, String player, TowerColor color) {
         controlServer(sender);
         state.setStatusTower(player, color);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void statusIslandIds(String sender, List<String> ids) {
         controlServer(sender);
         state.setIslandIds(ids);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void statusCloudIds(String sender, List<String> ids) {
         controlServer(sender);
         state.setCloudIds(ids);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void statusMotherNature(String sender, String islandId) {
         controlServer(sender);
@@ -148,8 +204,7 @@ public class PlayMessageController implements PlayMessageReader {
      * Receives the status of the round setting it as "Action phase of actual player"
      * Is one of the two status messages which updates the view (with the other being statusPlanning)
      *
-     * @param sender       the entity which sends the message, must be server
-     * @param actualPlayer the enabled player of this phase
+     * {@inheritDoc}
      */
     @Override
     public synchronized void statusAction(String sender, String actualPlayer) {
@@ -162,8 +217,7 @@ public class PlayMessageController implements PlayMessageReader {
      * Receives the status of the round setting it as "Planning phase of actual player"
      * Is one of the two status messages which updates the view (with the other being statusAction)
      *
-     * @param sender       the entity which sends the message, must be server
-     * @param actualPlayer the enabled player of this phase
+     * {@inheritDoc}
      */
     @Override
     public synchronized void statusPlanning(String sender, String actualPlayer) {
@@ -172,12 +226,18 @@ public class PlayMessageController implements PlayMessageReader {
         controller.getTaskQueue().execute(view::update);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void statusAssistantCard(String sender, String player, Integer weight) {
         controlServer(sender);
         state.setActiveAssistantCard(player, weight);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void statusEndGame(String sender, String winner) {
         controlServer(sender);
@@ -187,6 +247,9 @@ public class PlayMessageController implements PlayMessageReader {
 
     // Expert
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveStudent(String player, TeacherColor fromColor, TeacherColor toColor, String placeId) {
         controlLegal(player);
@@ -194,6 +257,9 @@ public class PlayMessageController implements PlayMessageReader {
         controller.sendMessage(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void playCharacterCard(String player, Characters character) {
         controlLegal(player);
@@ -201,6 +267,9 @@ public class PlayMessageController implements PlayMessageReader {
         controller.sendMessage(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void playCharacterCard(String player, Characters character, String id) {
         controlLegal(player);
@@ -208,6 +277,9 @@ public class PlayMessageController implements PlayMessageReader {
         controller.sendMessage(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void playCharacterCard(String player, Characters character, TeacherColor color) {
         // is sent by this player?
@@ -218,31 +290,56 @@ public class PlayMessageController implements PlayMessageReader {
         controller.sendMessage(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void statusCharacterCard(String sender, List<Characters> characters) {
-
+    public synchronized void statusCharacterCard(String sender, Map<String, Integer> money) {
+        controlServer(sender);
+        Map<Characters, Integer> result = new HashMap<>();
+        money.forEach((k, v) -> result.put(Characters.valueOf(k), v));
+        state.setCharacterCosts(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void statusPlayerMoney(String sender, Map<String, Integer> money) {
-
+    public synchronized void statusPlayerMoney(String sender, Map<String, Integer> money) {
+        controlServer(sender);
+        state.setPlayerMoney(money);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void statusStudent(String sender, Characters character, Map<TeacherColor, Integer> quantity) {
-
+    public synchronized void statusStudent(String sender, Characters character, Map<TeacherColor, Integer> quantity) {
+        controlServer(sender);
+        state.setStudentsInAPlace(character.toString(), quantity);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void statusCharacterCard(String sender, Characters character) {
         controlServer(sender);
         state.setActualCharacterCard(character);
     }
 
+    /**
+     * Controls if the sender name is legal
+     * @param player the sender name that's not server
+     */
     private void controlLegal(String player) {
         if (player.equals("server")) throw new IllegalMessageException("Illegal sender");
     }
 
+    /**
+     * Controls if the sender name is server's name
+     * @param sender the sender name
+     */
     private void controlServer(String sender) {
         if (!sender.equals("server")) throw new IllegalMessageException("Got state update not from server");
     }
