@@ -43,10 +43,10 @@ public class WizardSceneController extends ViewObservable implements GenericScen
         fairyWizard.setDisable(!availableWizard.contains(Wizard.FAIRY));
         bambooGuyWizard.setDisable(!availableWizard.contains(Wizard.BAMBOO_GUY));
 
-        magicianWizard.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> onWorkerClick(Wizard.MAGICIAN));
-        kingWizard.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> onWorkerClick(Wizard.KING));
-        fairyWizard.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> onWorkerClick(Wizard.FAIRY));
-        bambooGuyWizard.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> onWorkerClick(Wizard.BAMBOO_GUY));
+        magicianWizard.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> onWizardClick(Wizard.MAGICIAN));
+        kingWizard.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> onWizardClick(Wizard.KING));
+        fairyWizard.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> onWizardClick(Wizard.FAIRY));
+        bambooGuyWizard.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> onWizardClick(Wizard.BAMBOO_GUY));
 
     }
 
@@ -55,7 +55,7 @@ public class WizardSceneController extends ViewObservable implements GenericScen
      *
      * @param wizard wizard picked by user.
      */
-    private void onWorkerClick(Wizard wizard) {
+    private void onWizardClick(Wizard wizard) {
         magicianWizard.setDisable(true);
         kingWizard.setDisable(true);
         fairyWizard.setDisable(true);

@@ -4,10 +4,7 @@ import it.polimi.ingsw.client.model.PlayMessageController;
 import it.polimi.ingsw.client.model.PlayState;
 import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.client.view.View;
-import it.polimi.ingsw.client.view.gui.scene.LobbySceneController;
-import it.polimi.ingsw.client.view.gui.scene.PlayersNumberSceneController;
-import it.polimi.ingsw.client.view.gui.scene.StartSceneController;
-import it.polimi.ingsw.client.view.gui.scene.WizardSceneController;
+import it.polimi.ingsw.client.view.gui.scene.*;
 import it.polimi.ingsw.commons.enums.Wizard;
 import javafx.application.Platform;
 
@@ -24,6 +21,7 @@ public class Gui extends ViewObservable implements View {
     private boolean status;
     private int players = 0;
     private PlayState state;
+
 
     /**
      * {@inheritDoc}
@@ -154,6 +152,20 @@ public class Gui extends ViewObservable implements View {
     @Override
     public void update() {
 
+    }
+
+    private PlaySceneController getPlaySceneController() {
+        PlaySceneController psc;
+        try {
+            psc = (PlaySceneController) SceneController.getActiveController();
+        } catch (ClassCastException e) {
+            psc = new PlaySceneController();
+            psc.addAllObservers(observers);
+            psc.addGameState(state);
+            PlaySceneController finalPsc = psc;
+            Platform.runLater(() -> SceneController.changeRootPane(finalPsc, "play_scene.fxml"));
+        }
+        return psc;
     }
 
     /**
