@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.controller.enums;
+package it.polimi.ingsw.server.enums;
 
 public enum ActionPhaseStateType {
     STUDENT(0),

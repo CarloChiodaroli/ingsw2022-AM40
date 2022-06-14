@@ -32,6 +32,11 @@ public class PlayMessageController implements PlayMessageReader {
         view.setStatePrinter(this);
     }
 
+
+    public void setExpert(boolean expert) {
+        state.setExpert(expert);
+    }
+
     /**
      * Getter of the playState
      * @return the playState
@@ -201,7 +206,7 @@ public class PlayMessageController implements PlayMessageReader {
     }
 
     /**
-     * Receives the status of the round setting it as "Action phase of actual player"
+     * Receives the status of the round setting it as "Action phase of actual player".
      * Is one of the two status messages which updates the view (with the other being statusPlanning)
      *
      * {@inheritDoc}
@@ -214,7 +219,7 @@ public class PlayMessageController implements PlayMessageReader {
     }
 
     /**
-     * Receives the status of the round setting it as "Planning phase of actual player"
+     * Receives the status of the round setting it as "Planning phase of actual player".
      * Is one of the two status messages which updates the view (with the other being statusAction)
      *
      * {@inheritDoc}

@@ -32,6 +32,7 @@ public class OutboundController {
         else if (getAllCloudIds().contains(placeId)) return model.getStudentsInCloud(placeId);
         else if (placeId.equals("Entrance")) return model.getStudentsInEntrance(playerName);
         else if (placeId.equals("Room")) return model.getStudentsInRoom(playerName);
+        else if (Arrays.stream(Characters.values()).toList().contains(Characters.valueOf(placeId))) return model.getStudentsInCard(Characters.valueOf(placeId));
         else return new HashMap<>();
     }
 
@@ -72,5 +73,10 @@ public class OutboundController {
 
     public String winner(){
         return model.getWinner();
+    }
+
+    public Map<String, Integer> getPlayerMoney(){
+        inputController.excludeGameState(GameState.INITIAL);
+        return model.getPlayerMoney();
     }
 }

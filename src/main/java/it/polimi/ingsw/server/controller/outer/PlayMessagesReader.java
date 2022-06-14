@@ -8,6 +8,8 @@ import it.polimi.ingsw.commons.message.Message;
 import it.polimi.ingsw.commons.message.PlayMessageReader;
 import it.polimi.ingsw.commons.message.PlayMessagesFabric;
 import it.polimi.ingsw.server.controller.inner.*;
+import it.polimi.ingsw.server.enums.CardCharacterizations;
+import it.polimi.ingsw.server.enums.CharactersLookup;
 import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.server.view.VirtualView;
 
@@ -88,6 +90,16 @@ public class PlayMessagesReader implements PlayMessageReader {
         if (expertVariant) {
             Map<Characters, Integer> prices = outbound.getCharacterCardPrices();
             inputController.setCharacters(prices);
+            Map<String, Integer> pricesString = new HashMap<>();
+            prices.forEach((k, v) -> pricesString.put(k.toString(), v));
+            commonAnswers.add(PlayMessagesFabric.statusCharacterCard(server, pricesString));
+            commonAnswers.add(PlayMessagesFabric.statusPlayerMoney(server, outbound.getPlayerMoney()));
+            prices.entrySet().stream()
+                    .filter(e -> CardCharacterizations.particular(e.getKey()).getOrDefault("Memory", -1) > 0)
+                    .forEach(e -> {
+                        Map<TeacherColor, Integer> toAdd = outbound.getStudentInPlace(mainPlayer, e.getKey().toString());
+                        if(!toAdd.isEmpty()) commonAnswers.add(PlayMessagesFabric.statusStudent(server, e.getKey(), toAdd));
+                    });
         }
         for (String name : playerNames) {
             List<Message> answers = new ArrayList<>(commonAnswers);
@@ -169,7 +181,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         else
             broadcastAnswers.add(PlayMessagesFabric.statusStudent(server, toId, outbound.getStudentInPlace(player, toId)));
         answers.forEach(answer -> gameManager.sendMessage(player, answer)); // send specific
-        playerNames.forEach(name -> gameManager.sendMessage(server, PlayMessagesFabric.statusTeacher(server, name, outbound.getTeacherInPlace(name))));
+        playerNames.forEach(name -> gameManager.sendMessage(name, PlayMessagesFabric.statusTeacher(server, name, outbound.getTeacherInPlace(name))));
         broadcastAnswers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         broadcastAnswers.forEach(gameManager::broadcastMessage); // send broadcast
         if (outbound.endGame()) {
@@ -260,9 +272,9 @@ public class PlayMessagesReader implements PlayMessageReader {
         answers.add(PlayMessagesFabric.statusStudent(server, "Entrance", outbound.getStudentInPlace(player, "Entrance")));
         List<String> cloudIds = outbound.getAllCloudIds();
         broadcastAnswers.add(PlayMessagesFabric.statusCloudIds(server, cloudIds));
-        for (String cId : cloudIds) {
+        /*for (String cId : cloudIds) {
             broadcastAnswers.add(PlayMessagesFabric.statusStudent(server, cId, outbound.getStudentInPlace(mainPlayer, cId)));
-        }
+        }*/
         if (turnController.nextTurn()) {
             broadcastAnswers.add(PlayMessagesFabric.statusPlanning(server, getActualPlayer()));
         } else {
@@ -281,6 +293,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         List<Message> answers = new ArrayList<>();
         try {
             inbound.playCharacterCard(player, character);
+            turnController.setActualCharacter(character);
         } catch (Exception e) {
             errorInExecution(e.getMessage());
             return;
@@ -293,6 +306,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         List<Message> answers = new ArrayList<>();
         try {
             inbound.playCharacterCard(player, character, id);
+            turnController.setActualCharacter(character);
         } catch (Exception e) {
             errorInExecution(e.getMessage());
             return;
@@ -306,6 +320,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         List<Message> answers = new ArrayList<>();
         try {
             inbound.playCharacterCard(player, character, color);
+            turnController.setActualCharacter(character);
         } catch (Exception e) {
             errorInExecution(e.getMessage());
             return;
@@ -314,7 +329,7 @@ public class PlayMessagesReader implements PlayMessageReader {
     }
 
     private void corePlayCharacterCard(List<Message> answers) {
-        Characters actual = turnController.getActualCharacter();
+        Characters actual = turnController.getActualCharacter().get();
         answers.add(PlayMessagesFabric.statusCharacterCard(server, outbound.getActualCharacterCard()));
         answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         if (inputController.characterEffectsIsland(actual))

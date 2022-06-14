@@ -5,6 +5,7 @@ import it.polimi.ingsw.commons.enums.Characters;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TurnController {
 
@@ -89,8 +90,12 @@ public class TurnController {
         return actualCharacter != null;
     }
 
-    public Characters getActualCharacter() {
-        return actualCharacter;
+    public Optional<Characters> getActualCharacter() {
+        return Optional.ofNullable(actualCharacter);
+    }
+
+    public void setActualCharacter(Characters character){
+        actualCharacter = character;
     }
 
     public List<String> getNicknameQueue() {

@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.controller.inner;
 
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.message.Message;
-import it.polimi.ingsw.server.controller.enums.CardCharacterizations;
+import it.polimi.ingsw.server.enums.CardCharacterizations;
 import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
 import it.polimi.ingsw.server.view.VirtualView;
 
@@ -53,7 +53,7 @@ public class InputController {
         if (reader.isExpertVariant()) {
             String charc = reader.getTurnController().getActualCharacter().toString();
             if (!id.equals("Entrance") && !id.equals(charc)
-                    && (characterEffectsIsland(reader.getTurnController().getActualCharacter()) && !isIslandId(id))
+                    && (reader.getTurnController().getActualCharacter().isPresent() && characterEffectsIsland(reader.getTurnController().getActualCharacter().get()) && !isIslandId(id))
                     && !id.equals("Room")) throw new IllegalStateException(id + " is not valid from id");
         } else {
             if (!id.equals("Entrance")) throw new IllegalStateException(id + " is not valid from id");

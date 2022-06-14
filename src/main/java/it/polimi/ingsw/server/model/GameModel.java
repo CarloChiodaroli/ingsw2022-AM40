@@ -198,6 +198,15 @@ public class GameModel {
         return studentContent;
     }
 
+    public Map<TeacherColor, Integer> getStudentsInCard(Characters characters){
+        Optional<StudentsManager> result = game.getActionPhase().getCardMemory(characters);
+        if(result.isPresent()){
+            return result.get().getMap();
+        } else {
+            return new HashMap<>();
+        }
+    }
+
 
 
     public List<String> getCloudIds() {
@@ -323,5 +332,11 @@ public class GameModel {
 
     public TowerColor getPlayerTowerColor(String playerName){
         return getPlayer(playerName).getTowerColor();
+    }
+
+    public Map<String, Integer> getPlayerMoney(){
+        Map<String, Integer> playerMoney = new HashMap<>();
+        game.getPlayers().forEach(x -> playerMoney.put(x.getName(), x.getMoney()));
+        return playerMoney;
     }
 }

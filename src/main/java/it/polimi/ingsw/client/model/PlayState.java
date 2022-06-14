@@ -36,6 +36,7 @@ public class PlayState {
     private String winner;
 
     // Expert State
+    private boolean expert;
     private Map<Characters, Integer> characterCosts;
     private Map<String, Integer> playerMoney;
     private Characters actualCard;
@@ -47,12 +48,21 @@ public class PlayState {
         this.mainPlayer = null;
         this.studentsInPlace = new HashMap<>();
         this.conquests = new HashMap<>();
+        this.characterCosts = new HashMap<>();
         this.teachers = new ArrayList<>();
         assistantCards = new ArrayList<>();
         this.assistantCards.addAll(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
         this.activeAssistantCards = new HashMap<>();
         this.playersTowerColors = new HashMap<>();
         actionPhase = false;
+    }
+
+    public void setExpert(boolean expert) {
+        this.expert = expert;
+    }
+
+    public boolean isExpert(){
+        return expert;
     }
 
     public void setStudentsInAPlace(String placeId, Map<TeacherColor, Integer> studentsMap) {
@@ -266,7 +276,8 @@ public class PlayState {
     }
 
     public void setCharacterCosts(Map<Characters, Integer> characterCosts) {
-        this.characterCosts = characterCosts;
+        characterCosts.entrySet().stream()
+                .forEach(entry -> this.characterCosts.put(entry.getKey(), entry.getValue()));
     }
 
     public void setActualCard(Characters actualCard) {
@@ -278,7 +289,23 @@ public class PlayState {
     }
 
     public void setPlayerMoney(Map<String, Integer> money){
-        this.playerMoney = money;
+        this.playerMoney = new HashMap<>();
+        money.entrySet().stream()
+                .forEach(entry -> playerMoney.put(entry.getKey(), entry.getValue()));
         setMyMoney(money.get(myName));
+    }
+
+    // Expert
+
+    public Integer getMyMoney() {
+        return myMoney;
+    }
+
+    public Map<Characters, Integer> getCharacterCosts() {
+        return new HashMap<>(characterCosts);
+    }
+
+    public List<Characters> getAvailableCharacters(){
+        return characterCosts.keySet().stream().toList();
     }
 }

@@ -85,19 +85,20 @@ public class PlayMessage extends Message {
         method.invoke(manager, params);
     }
 
-    // public only for testing
     private Map<TeacherColor, Integer> getTeacherColorIntegerMap() {
         return this.teacherColorIntegerMap;
     }
 
-    // public only for testing
     private Map<String, TowerColor> getStringTowerColorMap() {
         return this.stringTowerColorMap;
     }
 
-    // public only for testing
     private List<TeacherColor> getTeacherColorList() {
         return this.teacherColorList;
+    }
+
+    private Map<String, Integer> getStringIntegerMap(){
+        return this.stringIntegerMap;
     }
 
     private List<String> getStringList() {

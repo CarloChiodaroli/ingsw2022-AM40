@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.model.phase.action.states.cards;
 
-import it.polimi.ingsw.server.controller.enums.ActionPhaseStateType;
+import it.polimi.ingsw.server.enums.ActionPhaseStateType;
 import it.polimi.ingsw.commons.enums.Characters;
-import it.polimi.ingsw.server.controller.enums.CardCharacterizations;
-import it.polimi.ingsw.server.controller.enums.CharactersLookup;
+import it.polimi.ingsw.server.enums.CardCharacterizations;
+import it.polimi.ingsw.server.enums.CharactersLookup;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 

@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.commons.enums.Characters;
-import it.polimi.ingsw.server.controller.enums.CharactersLookup;
+import it.polimi.ingsw.server.enums.CharactersLookup;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.server.model.phase.action.states.cards.InfluenceCard;

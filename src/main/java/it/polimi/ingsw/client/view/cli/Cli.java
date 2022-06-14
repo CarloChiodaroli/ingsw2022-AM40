@@ -405,6 +405,14 @@ public class Cli extends ViewObservable implements View {
     }
 
     /**
+     * {@link #abbreviation(List) abbreviation} of
+     * {@link #character(List) character}
+     */
+    public void ca(List<String> args) throws IllegalStateException{
+        character(args);
+    }
+
+    /**
      * Command to choose a character card to use.
      *
      * @param args {@link #receivedCommand(String)}

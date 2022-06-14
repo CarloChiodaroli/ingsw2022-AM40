@@ -69,7 +69,7 @@ public class ExpertPlayMessage extends PlayMessage {
         super(sender, move, messageType);
         super.setStringIntegerMap(money);
         super.setParams(new Object[]{super.getSenderName(), "getStringIntegerMap"});
-        Class<?>[] tmp = new Class<?>[]{String.class, List.class};
+        Class<?>[] tmp = new Class<?>[]{String.class, Map.class};
         super.setParamsTypeNames(Arrays.stream(tmp).map(Class::getName).collect(Collectors.toList()));
         super.message();
     }

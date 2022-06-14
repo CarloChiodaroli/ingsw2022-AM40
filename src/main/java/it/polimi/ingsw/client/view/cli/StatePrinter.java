@@ -3,10 +3,7 @@ package it.polimi.ingsw.client.view.cli;
 import it.polimi.ingsw.client.model.PlayState;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * This class has the job to read {@link PlayState}'s class content and generate a string to print to the user
@@ -44,9 +41,12 @@ public class StatePrinter {
         state += islandTable();
         state += cloudTable();
         state += assistantCards();
+        if (playState.isExpert()) state += characterCards();
+        if (playState.isExpert()) state += characterStudentState();
         state += printDashboard();
         state += statusTowers();
         state += myAssistantCards();
+        if (playState.isExpert()) state += myMoney();
         state += roundState();
         return state;
     }
@@ -307,22 +307,71 @@ public class StatePrinter {
         }
     }
 
-    public String availableWizards(){
+    public String availableWizards() {
         String result = playState.getAvailableWizards().toString();
         result = result.replace("[", "");
         result = result.replace("]", "");
         return result;
     }
 
-    public String getWinner(){
+    public String getWinner() {
         return playState.getWinner();
     }
 
-    private String myAssistantCards(){
+    private String myAssistantCards() {
         String list = playState.getAssistantCards().toString();
         list = list.replace("[", "");
         list = list.replace("]", "");
         list = "My remaining assistant Cards: " + list + "\n";
         return list;
+    }
+
+    private String characterCards() {
+        List<String> lines = new ArrayList<>();
+        playState.getCharacterCosts().forEach((key, value) -> lines.add(key.toString() + ": " + value + verticalLineElement));
+        String result = "";
+        for (String line : lines) {
+            result += line;
+        }
+        result = "Available Character Cards: " + result + "\n";
+        result = rowDivider(result.length()) + "\n" + result + rowDivider(result.length()) + "\n";
+        return result;
+    }
+
+    private String myMoney() {
+        return "You have " + playState.getMyMoney() + " coins\n";
+    }
+
+    private String characterStudentState(){
+        List<String> actualCharacters = playState.getAvailableCharacters().stream().map(Enum::toString).toList();
+
+        List<String> lines = new ArrayList<>();
+        int idMaxWidth = actualCharacters.stream().map(String::length).max(Integer::compareTo).orElse(10);
+        String result = "";
+
+        for(String character: actualCharacters){
+            if(playState.getStudentsInPlaces().containsKey(character)){
+                Map<TeacherColor, Integer> students = playState.getStudentsInPlaces().get(character);
+                String line = verticalLineElement + character;
+                line = spacer(line, idMaxWidth - character.length());
+                line = studentPrinter(line, character);
+                line += verticalLineElement + "\n";
+                lines.add(line);
+            }
+        }
+        if(lines.isEmpty()){
+            lines.add("No actual Character card has students\n");
+        } else {
+            String heading = verticalLineElement;
+            heading = spacer(heading, idMaxWidth);
+            lines.add(0, heading +
+                    colorHeading() + EscapeCli.DEFAULT +
+                    verticalLineElement + "\n");
+        }
+        for (String line : lines) {
+            result += line;
+        }
+
+        return result;
     }
 }

@@ -4,6 +4,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public abstract class StudentsManager {
@@ -114,5 +115,9 @@ public abstract class StudentsManager {
 
     public int getMaxStudents() {
         return maxStudents;
+    }
+
+    public Map<TeacherColor, Integer> getMap(){
+        return manager;
     }
 }

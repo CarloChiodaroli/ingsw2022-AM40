@@ -62,7 +62,7 @@ public class SocketClient extends Client {
 
     public SocketClient(String address, int port) throws IOException {
         this.socket = new Socket();
-        this.socket.connect(new InetSocketAddress(address, port), SOCKET_TIMEOUT);
+        this.socket.connect(new InetSocketAddress(address, port)/*, /*SOCKET_TIMEOUT*/);
         this.input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
         this.output = new PrintWriter(this.socket.getOutputStream(), true);
         this.readExecutionQueue = Executors.newSingleThreadExecutor();

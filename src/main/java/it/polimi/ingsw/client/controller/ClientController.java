@@ -9,7 +9,9 @@ import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.observer.ViewObserver;
 import it.polimi.ingsw.commons.enums.Wizard;
 import it.polimi.ingsw.commons.message.*;
+import it.polimi.ingsw.commons.message.play.ExpertPlayMessage;
 import it.polimi.ingsw.commons.message.play.NormalPlayMessage;
+import it.polimi.ingsw.commons.message.play.PlayMessage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -136,12 +138,19 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         try {
             LobbyMessageReader.class.getMethod(lm.getCommand(), LobbyMessage.class).invoke(this, lm);
         } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            notCriticalError("Error while managing message from server: " + e.getMessage());
+            notCriticalError("Error while managing message from server: " + e.getCause().getMessage());
         }
     }
 
     public void expert(Message message){
-        play(message);
+        ExpertPlayMessage pm = (ExpertPlayMessage) message;
+        taskQueue.execute(() -> {
+            try {
+                pm.executeMessage(playMessageReader);
+            } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                notCriticalError("Error while managing message from server: " + e.getMessage() + message);
+            }
+        });
     }
 
     public void play(Message message){
@@ -150,7 +159,9 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
             try {
                 pm.executeMessage(playMessageReader);
             } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                notCriticalError("Error while managing message from server: " + e.getCause().getMessage());
+                e.printStackTrace();
+                e.getCause().printStackTrace();
+                notCriticalError("Error while managing message from server: " + e.getMessage() + message);
             }
         });
     }
@@ -168,6 +179,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     @Override
     public void expert(LobbyMessage message) {
+        playMessageReader.setExpert(message.isExpert());
         taskQueue.execute(() -> view.showExpert(message.isExpert()));
     }
 
