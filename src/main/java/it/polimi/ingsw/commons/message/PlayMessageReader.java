@@ -55,7 +55,7 @@ public interface PlayMessageReader {
 
     void statusCharacterCard(String sender, Characters character);
 
-    void statusCharacterCard(String sender, List<Characters> characters);
+    void statusCharacterCard(String sender, Map<String, Integer> money);
 
     void statusPlayerMoney(String sender, Map<String, Integer> money);
 

@@ -1,8 +1,9 @@
 package it.polimi.ingsw.server.model.phase.action.states.cards;
 
-import it.polimi.ingsw.server.model.enums.ActionPhaseStateType;
+import it.polimi.ingsw.server.enums.ActionPhaseStateType;
 import it.polimi.ingsw.commons.enums.Characters;
-import it.polimi.ingsw.server.model.enums.CharactersLookup;
+import it.polimi.ingsw.server.enums.CardCharacterizations;
+import it.polimi.ingsw.server.enums.CharactersLookup;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 
@@ -60,66 +61,7 @@ public class CharacterCardFabric {
     }
 
     private static Map<Characters, Map<String, Integer>> allParticularities(){
-        Map<Characters, Map<String, Integer>> allCharacterizations = new HashMap<>();
-
-        for (Characters value : Characters.values()) {
-            allCharacterizations.put(value, new HashMap<>());
-        }
-
-        allCharacterizations.get(Characters.FRIAR).put("Price", 1);
-        allCharacterizations.get(Characters.FRIAR).put("Memory", 4);
-        allCharacterizations.get(Characters.FRIAR).put("Usages", 1);
-        allCharacterizations.get(Characters.FRIAR).put("Island", 1);
-
-        allCharacterizations.get(Characters.HOST).put("Price", 2);
-        allCharacterizations.get(Characters.HOST).put("Usages", 3);
-        allCharacterizations.get(Characters.HOST).put("TeacherBehaviour", 1);
-
-        allCharacterizations.get(Characters.CRIER).put("Price", 3);
-        allCharacterizations.get(Characters.CRIER).put("Island", 1);
-
-        allCharacterizations.get(Characters.MESSENGER).put("Price", 1);
-
-        allCharacterizations.get(Characters.SORCERESS).put("Price", 2);
-        allCharacterizations.get(Characters.SORCERESS).put("Memory", 4);
-        allCharacterizations.get(Characters.SORCERESS).put("Island", 1);
-        allCharacterizations.get(Characters.SORCERESS).put("NoEntrySetter", 1);
-
-        allCharacterizations.get(Characters.CENTAUR).put("Price", 3);
-        allCharacterizations.get(Characters.CENTAUR).put("Tower", 1);
-
-        allCharacterizations.get(Characters.JESTER).put("Price", 1);
-        allCharacterizations.get(Characters.JESTER).put("Memory", 6);
-        allCharacterizations.get(Characters.JESTER).put("Usages", 3);
-        allCharacterizations.get(Characters.JESTER).put("Bidirectional", 1);
-        allCharacterizations.get(Characters.JESTER).put("Entrance", 1);
-        allCharacterizations.get(Characters.JESTER).put("Student", 2);
-        allCharacterizations.get(Characters.JESTER).put("Player", 1);
-
-        allCharacterizations.get(Characters.KNIGHT).put("Price", 2);
-        allCharacterizations.get(Characters.KNIGHT).put("Player", 2);
-
-        allCharacterizations.get(Characters.SORCERER).put("Price", 3);
-        allCharacterizations.get(Characters.SORCERER).put("Student", 1);
-
-        allCharacterizations.get(Characters.MINSTREL).put("Price", 1);
-        allCharacterizations.get(Characters.MINSTREL).put("Usages", 2);
-        allCharacterizations.get(Characters.MINSTREL).put("Bidirectional", 1);
-        allCharacterizations.get(Characters.MINSTREL).put("Player", 1);
-        allCharacterizations.get(Characters.MINSTREL).put("Room", 1);
-        allCharacterizations.get(Characters.MINSTREL).put("Entrance", 1);
-        allCharacterizations.get(Characters.MINSTREL).put("Student", 2);
-
-        allCharacterizations.get(Characters.QUEEN).put("Price", 2);
-        allCharacterizations.get(Characters.QUEEN).put("Memory", 4);
-        allCharacterizations.get(Characters.QUEEN).put("Usages", 1);
-        allCharacterizations.get(Characters.QUEEN).put("Room", 1);
-        allCharacterizations.get(Characters.QUEEN).put("Player", 1);
-
-        allCharacterizations.get(Characters.THIEF).put("Price", 3);
-        allCharacterizations.get(Characters.THIEF).put("EffectAllPlayers", 1);
-
-        return allCharacterizations;
+        return CardCharacterizations.getMap();
     }
 
     public static Map<String, Integer> getCharacterization(Characters characters) {

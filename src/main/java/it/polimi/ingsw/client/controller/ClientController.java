@@ -9,7 +9,9 @@ import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.observer.ViewObserver;
 import it.polimi.ingsw.commons.enums.Wizard;
 import it.polimi.ingsw.commons.message.*;
+import it.polimi.ingsw.commons.message.play.ExpertPlayMessage;
 import it.polimi.ingsw.commons.message.play.NormalPlayMessage;
+import it.polimi.ingsw.commons.message.play.PlayMessage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -119,13 +121,10 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     // First level
     @Override
     public void update(Message message){
-        switch(message.getMessageType()){ // switch will be deleted soon
-            case LOGIN -> login(message);
-            case LOBBY -> lobby(message);
-            case PLAY, EXPERT -> play(message);
-            case ERROR -> error(message);
-            case GENERIC -> generic(message);
-            default -> notCriticalError("Received illegal message type");
+        try{
+            this.getClass().getMethod(message.getMessageType().toString().toLowerCase(), Message.class).invoke(this, message);
+        } catch (InvocationTargetException| IllegalAccessException | NoSuchMethodException e) {
+            notCriticalError("Received illegal message type");
         }
     }
 
@@ -139,8 +138,19 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         try {
             LobbyMessageReader.class.getMethod(lm.getCommand(), LobbyMessage.class).invoke(this, lm);
         } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            notCriticalError("Error while managing message from server: " + e.getMessage());
+            notCriticalError("Error while managing message from server: " + e.getCause().getMessage());
         }
+    }
+
+    public void expert(Message message){
+        ExpertPlayMessage pm = (ExpertPlayMessage) message;
+        taskQueue.execute(() -> {
+            try {
+                pm.executeMessage(playMessageReader);
+            } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                notCriticalError("Error while managing message from server: " + e.getMessage() + message);
+            }
+        });
     }
 
     public void play(Message message){
@@ -149,7 +159,9 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
             try {
                 pm.executeMessage(playMessageReader);
             } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                notCriticalError("Error while managing message from server: " + e.getCause().getMessage());
+                e.printStackTrace();
+                e.getCause().printStackTrace();
+                notCriticalError("Error while managing message from server: " + e.getMessage() + message);
             }
         });
     }
@@ -167,6 +179,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     @Override
     public void expert(LobbyMessage message) {
+        playMessageReader.setExpert(message.isExpert());
         taskQueue.execute(() -> view.showExpert(message.isExpert()));
     }
 

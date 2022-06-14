@@ -2,10 +2,10 @@ package it.polimi.ingsw.server.model.phase.action;
 
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.StudentsManager;
-import it.polimi.ingsw.server.model.enums.ActionPhaseStateType;
+import it.polimi.ingsw.server.enums.ActionPhaseStateType;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
-import it.polimi.ingsw.server.model.enums.CharactersLookup;
+import it.polimi.ingsw.server.enums.CharactersLookup;
 import it.polimi.ingsw.server.model.phase.action.states.*;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.server.model.phase.action.states.cards.InfluenceCard;
@@ -345,6 +345,12 @@ public class ActionPhase {
                 .orElseThrow(() -> new IllegalStateException("No in game card holds no entry tiles"))
                 .getValue();
         noEntryCard.giveNoEntryBack();
+    }
+
+    public Map<Characters, Integer> getActiveCharactersCosts() {
+        Map<Characters, Integer> result = new HashMap<>();
+        characterCards.forEach((key, value) -> result.put(key, value.getPrice()));
+        return result;
     }
 
     public boolean isActivated() {

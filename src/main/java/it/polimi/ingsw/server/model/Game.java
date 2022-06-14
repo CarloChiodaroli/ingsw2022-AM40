@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.server.model.phase.PlanningPhase;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
@@ -170,6 +171,10 @@ public class Game {
     public void switchExpertVariant() {
         if (isGameStarted()) return;
         isExpertVariant = !isExpertVariant;
+    }
+
+    public Map<Characters, Integer> getActiveCharactersCosts() {
+        return actionPhase.getActiveCharactersCosts();
     }
 
     /**

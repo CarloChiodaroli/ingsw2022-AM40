@@ -24,7 +24,6 @@ public class PlayMessage extends Message {
     private Map<String, Integer> stringIntegerMap;
     private List<TeacherColor> teacherColorList;
     private List<String> stringList;
-    private List<Characters> characters;
 
     PlayMessage(String sender, String move, MessageType type) {
         super(sender, type);
@@ -53,10 +52,6 @@ public class PlayMessage extends Message {
 
     void setTeacherColorList(List<TeacherColor> teacherColorList) {
         this.teacherColorList = teacherColorList;
-    }
-
-    void setCharactersList(List<Characters> characters) {
-        this.characters = characters;
     }
 
     void setStringIntegerMap(Map<String, Integer> stringIntegerMap) {
@@ -90,23 +85,20 @@ public class PlayMessage extends Message {
         method.invoke(manager, params);
     }
 
-    // public only for testing
     private Map<TeacherColor, Integer> getTeacherColorIntegerMap() {
         return this.teacherColorIntegerMap;
     }
 
-    // public only for testing
     private Map<String, TowerColor> getStringTowerColorMap() {
         return this.stringTowerColorMap;
     }
 
-    // public only for testing
     private List<TeacherColor> getTeacherColorList() {
         return this.teacherColorList;
     }
 
-    private List<Characters> getCharactersList() {
-        return this.characters;
+    private Map<String, Integer> getStringIntegerMap(){
+        return this.stringIntegerMap;
     }
 
     private List<String> getStringList() {

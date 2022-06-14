@@ -5,6 +5,7 @@ import it.polimi.ingsw.commons.enums.Characters;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TurnController {
 
@@ -17,6 +18,7 @@ public class TurnController {
     private GameState state;
     private int startingPlayer;
     private int messages;
+    private String savedIsland;
 
     public TurnController(PlayMessagesReader reader) {
         this.nicknameQueue = new ArrayList<>(reader.getPlayerNames());
@@ -88,7 +90,23 @@ public class TurnController {
         return actualCharacter != null;
     }
 
+    public Optional<Characters> getActualCharacter() {
+        return Optional.ofNullable(actualCharacter);
+    }
+
+    public void setActualCharacter(Characters character){
+        actualCharacter = character;
+    }
+
     public List<String> getNicknameQueue() {
         return nicknameQueue;
+    }
+
+    public void saveIsland(String islandId){
+        savedIsland = islandId;
+    }
+
+    public String getSavedIsland() {
+        return savedIsland;
     }
 }

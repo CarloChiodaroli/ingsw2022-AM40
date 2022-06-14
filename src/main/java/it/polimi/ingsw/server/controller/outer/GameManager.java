@@ -46,6 +46,8 @@ public class GameManager implements LobbyMessageReader {
             try {
                 preInitState(receivedMessage);
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                e.printStackTrace();
+                e.getCause().printStackTrace();
                 sendError(receivedMessage.getSenderName(), "Server Could not understand received lobby message");
             }
             return;

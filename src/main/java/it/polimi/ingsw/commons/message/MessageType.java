@@ -10,7 +10,7 @@ public enum MessageType {
     PING(PingMessage.class),        // "Ping" if outgoing // "Pong" if ingoing // Practically no difference
     LOGIN(LoginMessage.class),      // Log in management, Requests, Acceptations and Rejections
     LOBBY(LobbyMessage.class),      // Messages for the lobby management
-    PLAY(NormalPlayMessage.class),        // Messages to be read by PlayMessageReader implementers - Normal variant game
+    PLAY(NormalPlayMessage.class),  // Messages to be read by PlayMessageReader implementers - Normal variant game
     EXPERT(ExpertPlayMessage.class),// Messages to be read by PlayMessageReader implementers - Expert variant game
     ERROR(ErrorMessage.class),      // Various Errors and Disconnection command sent by server
     GENERIC(GenericMessage.class);  // other type of messages which are not used in the game model
