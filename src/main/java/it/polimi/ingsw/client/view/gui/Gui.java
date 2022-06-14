@@ -21,6 +21,7 @@ public class Gui extends ViewObservable implements View {
     private boolean status;
     private int players = 0;
     private PlayState state;
+    private boolean inPlay = false;
 
 
     /**
@@ -151,10 +152,14 @@ public class Gui extends ViewObservable implements View {
      */
     @Override
     public void update() {
-
+        if(!inPlay){
+            getPlaySceneController();
+            inPlay = true;
+        }
+        else sendConfirmation("update");
     }
 
-    private PlaySceneController getPlaySceneController() {
+    private void getPlaySceneController() {
         PlaySceneController psc;
         try {
             psc = (PlaySceneController) SceneController.getActiveController();
@@ -165,7 +170,6 @@ public class Gui extends ViewObservable implements View {
             PlaySceneController finalPsc = psc;
             Platform.runLater(() -> SceneController.changeRootPane(finalPsc, "play_scene.fxml"));
         }
-        return psc;
     }
 
     /**

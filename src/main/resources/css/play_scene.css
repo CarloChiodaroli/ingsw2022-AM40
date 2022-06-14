@@ -1,0 +1,36 @@
+.PINK{
+    -fx-background-image: url("../images/assets/wood/student/SP.png");
+}
+.RED{
+    -fx-background-image: url("../images/assets/wood/student/SR.png");
+}
+.YELLOW{
+    -fx-background-image: url("../images/assets/wood/student/SY.png");
+}
+.GREEN{
+    -fx-background-image: url("../images/assets/wood/student/SG.png");
+}
+.BLUE{
+    -fx-background-image: url("../images/assets/wood/student/SB.png");
+}
+.WHITE{
+    -fx-background-image: url("../images/assets/wood/tower/TWHITE.png");
+}
+.BLACK{
+    -fx-background-image: url("../images/assets/wood/tower/TBLACK.png");
+}
+.GREY{
+    -fx-background-image: url("../images/assets/wood/tower/TGREY.png");
+}
+.MOTHER{
+    -fx-background-image: url("../images/assets/wood/MM.png");
+}
+.island1{
+    -fx-background-image: url("../images/assets/island/1.png");
+}
+.island2{
+    -fx-background-image: url("../images/assets/island/2.png");
+}
+.island3{
+    -fx-background-image: url("../images/assets/island/3.png");
+}

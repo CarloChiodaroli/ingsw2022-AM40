@@ -105,12 +105,10 @@ public class SceneController extends ViewObservable {
     public static void changeRootPane(GenericSceneController controller, Scene scene, String fxml) {
         try {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/" + fxml));
-
             // Setting the controller BEFORE the load() method.
             loader.setController(controller);
             activeController = controller;
             Parent root = loader.load();
-
             activeScene = scene;
             activeScene.setRoot(root);
         } catch (IOException e) {
