@@ -69,6 +69,13 @@ public class PlayState {
             return 6;
     }
 
+    public int numStudEntrance(){
+        if(numPlayers == 2)
+            return 7;
+        else
+            return 9;
+    }
+
     public int numTowers(){
         if(numPlayers == 2){
             return 8 - getMyConquests();
