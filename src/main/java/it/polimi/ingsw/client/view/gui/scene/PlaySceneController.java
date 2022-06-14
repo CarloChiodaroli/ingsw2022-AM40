@@ -20,9 +20,17 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
 
     @FXML
     private GridPane islandGrid;
+    @FXML
+    private GridPane clouds;
 
     @FXML
     private GridPane dashboard;
+    @FXML
+    private GridPane entrance;
+    @FXML
+    private GridPane teachers;
+    @FXML
+    private GridPane towers;
 
 
     public PlaySceneController() {
@@ -30,19 +38,44 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
 
     @FXML
     public void initialize() {
-        System.out.println("ciaooooooo");
         update();
 
     }
 
     private void update() {
         int actualChildNumber = 0;
-
+        int actualChildNumber1 = 0;
         islandGrid.setVisible(true);
+        clouds.setVisible(true);
+        dashboard.setVisible(true);
+        entrance.setVisible(true);
+        teachers.setVisible(true);
+        towers.setVisible(true);
 
         for (int j = 0; j < 2; j++) {
             Node islandRep = islandGrid.getChildren().get(actualChildNumber);
             islandRep.setVisible(false);
+        }
+        for(int j = 0; j < 3; j++){
+            Node cloudRep = clouds.getChildren().get(actualChildNumber1);
+            cloudRep.setVisible(false);
+        }
+
+        for(int i = 1; i <= 3; i++){
+            Optional<String> actualId = state.getStudentsInPlaces().keySet().stream()
+                    .filter(x -> x.matches("^c[0-9]"))
+                    .findFirst();
+            if(actualId.isPresent()){
+                String idc = actualId.get();
+                GridPane cloudRep = (GridPane) clouds.getChildren().get(actualChildNumber1);
+                for (TeacherColor color : TeacherColor.values()) {
+                    int num = state.getStudentsInPlaces().get(idc).get(color);
+                    Label colorRep = (Label) getNodeByStyleClass(cloudRep.getChildren(), color.toString());
+                    colorRep.setText("" + num);
+                }
+                cloudRep.setVisible(true);
+                actualChildNumber1++;
+            }
         }
 
         for (int i = 1; i <= 2; i++) {
@@ -59,7 +92,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                 for (TeacherColor color : TeacherColor.values()) {
                     int num = state.getStudentsInPlaces().get(id).get(color);
                     Label colorRep = (Label) getNodeByStyleClass(islandRep.getChildren(), color.toString());
-                    colorRep.setAccessibleText("" + num);
+                    colorRep.setText("" + num);
                 }
                 for (TowerColor color : TowerColor.values()) {
                     Label towerRep = (Label) getNodeByStyleClass(islandRep.getChildren(), color.toString());
@@ -81,6 +114,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                 actualChildNumber++;
             }
         }
+
     }
 
     public void addGameState(PlayState state) {
