@@ -9,8 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-import javax.swing.text.Position;
-import javax.swing.text.html.ImageView;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +37,44 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
 
     @FXML
     public void initialize() {
+        buildIslands();
         update();
 
+    }
+
+    private void buildIslands() {
+        islandGrid.setVisible(false);
+        List<GridPane> islands = new ArrayList<>();
+        List<String> islandStyles = List.of(new String[]{"island1", "island2", "island3"});
+        List<String> islandContents = List.of(new String[]{
+                TeacherColor.YELLOW.toString(),
+                TeacherColor.BLUE.toString(),
+                TeacherColor.GREEN.toString(),
+                TeacherColor.RED.toString(),
+                TeacherColor.PINK.toString(),
+                TowerColor.BLACK.toString(),
+                TowerColor.GREY.toString(),
+                TowerColor.WHITE.toString(),
+                "MOTHER"});
+
+        for (int i = 0; i < 12; i++) {
+            GridPane island = new GridPane();
+            for (int j = 0; j < 9; j++) {
+                Label actual = new Label();
+                actual.getStyleClass().add(islandContents.get(j));
+                GridPane.setRowIndex(actual, j % 3);
+                GridPane.setColumnIndex(actual, j / 3);
+                island.getChildren().add(actual);
+            }
+
+            GridPane.setColumnIndex(island, i % 6);
+            GridPane.setRowIndex(island, (i / 6));
+            island.getStyleClass().add("island");
+            island.getStyleClass().add(islandStyles.get(12 % 3));
+            islands.add(island);
+        }
+
+        islandGrid.getChildren().addAll(islands);
     }
 
     private void update() {
@@ -54,44 +89,43 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         teachers.setVisible(true);
         towers.setVisible(true);
 
-        for (int j = 0; j < 2; j++) {
+        for (int j = 0; j < 12; j++) {
             Node islandRep = islandGrid.getChildren().get(actualChildNumber);
             islandRep.setVisible(false);
         }
-        for(int j = 0; j < 3; j++){
+        for (int j = 0; j < 3; j++) {
             Node cloudRep = clouds.getChildren().get(actualChildNumber1);
             cloudRep.setVisible(false);
         }
-        for(int j = 0; j < state.numInitialTowers(); j++){
+        for (int j = 0; j < state.numInitialTowers(); j++) {
             Node towersRep = towers.getChildren().get(actualChildNumber2);
             towersRep.setVisible(false);
         }
 
-        for(int i = 1; i <= 5; i++){
+        for (int i = 1; i <= 5; i++) {
             GridPane teachersRep = (GridPane) teachers.getChildren().get(actualChildNumber3);
-            for(TeacherColor color : TeacherColor.values()){
-                if(state.getTeachers().contains(color)){
+            for (TeacherColor color : TeacherColor.values()) {
+                if (state.getTeachers().contains(color)) {
                     Node teacher = getNodeByStyleClass(teachersRep.getChildren(), color.toString());
                     teachersRep.setVisible(true);
-                }
-                else
+                } else
                     teachersRep.setVisible(false);
                 actualChildNumber3++;
             }
         }
 
-        for(int i = 1; i <= state.numTowers(); i++){
+        for (int i = 1; i <= state.numTowers(); i++) {
             GridPane towersRep = (GridPane) towers.getChildren().get(actualChildNumber2);
             Node tower = getNodeByStyleClass(towersRep.getChildren(), state.getMyTowerColor().toString());
             towersRep.setVisible(true);
             actualChildNumber2++;
         }
 
-        for(int i = 1; i <= 3; i++){
+        for (int i = 1; i <= 3; i++) {
             Optional<String> actualId = state.getStudentsInPlaces().keySet().stream()
                     .filter(x -> x.matches("^c[0-9]"))
                     .findFirst();
-            if(actualId.isPresent()){
+            if (actualId.isPresent()) {
                 String idc = actualId.get();
                 GridPane cloudRep = (GridPane) clouds.getChildren().get(actualChildNumber1);
                 for (TeacherColor color : TeacherColor.values()) {
@@ -104,7 +138,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
             }
         }
 
-        for (int i = 1; i <= 2; i++) {
+        for (int i = 1; i <= 12; i++) {
 
             int forLambda = i;
 
@@ -125,15 +159,14 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                     towerRep.setVisible(false);
                     Optional<String> towerColor = state.getConquest(id);
                     if (towerColor.isPresent() && towerColor.get().equals(color.toString())) {
-                        towerRep.setAccessibleText(state.getSize(id));
+                        towerRep.setText(state.getSize(id));
                         towerRep.setVisible(true);
                     }
                 }
                 Label motherRep = (Label) getNodeByStyleClass(islandRep.getChildren(), "MOTHER");
                 if (id.equals(state.getMotherNature())) {
                     motherRep.setVisible(true);
-                }
-                else{
+                } else {
                     motherRep.setVisible(false);
                 }
                 islandRep.setVisible(true);
@@ -149,7 +182,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
 
     @Override
     public void onConfirm(String what) {
-        if(what.equals("update")){
+        if (what.equals("update")) {
             update();
         }
     }

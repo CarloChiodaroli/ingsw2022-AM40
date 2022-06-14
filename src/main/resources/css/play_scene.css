@@ -1,36 +1,70 @@
-.PINK{
+Label {
+    -fx-background-repeat: no-repeat;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-background-position: center;
+    -fx-background-size: 30px;
+    -fx-color-label-visible: black;
+}
+
+
+.PINK {
     -fx-background-image: url("../images/assets/wood/student/SP.png");
 }
-.RED{
+
+.RED {
     -fx-background-image: url("../images/assets/wood/student/SR.png");
 }
-.YELLOW{
+
+.YELLOW {
     -fx-background-image: url("../images/assets/wood/student/SY.png");
 }
-.GREEN{
+
+.GREEN {
     -fx-background-image: url("../images/assets/wood/student/SG.png");
 }
-.BLUE{
+
+.BLUE {
     -fx-background-image: url("../images/assets/wood/student/SB.png");
 }
-.WHITE{
+
+.WHITE {
     -fx-background-image: url("../images/assets/wood/tower/TWHITE.png");
 }
-.BLACK{
+
+.BLACK {
     -fx-background-image: url("../images/assets/wood/tower/TBLACK.png");
 }
-.GREY{
+
+.GREY {
     -fx-background-image: url("../images/assets/wood/tower/TGREY.png");
 }
-.MOTHER{
+
+.MOTHER {
     -fx-background-image: url("../images/assets/wood/MM.png");
 }
-.island1{
+
+.island1 {
     -fx-background-image: url("../images/assets/island/1.png");
 }
-.island2{
+
+.island2 {
     -fx-background-image: url("../images/assets/island/2.png");
 }
-.island3{
+
+.island3 {
     -fx-background-image: url("../images/assets/island/3.png");
+}
+
+.island {
+    -fx-min-width: 150px;
+    -fx-min-height: 150px;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
+
+GridPane {
+
+    -fx-hgap: 10px;
+    -fx-vgap: 10px;
 }
