@@ -34,6 +34,7 @@ public class PlayState {
     private List<Integer> assistantCards;
     private Map<String, TowerColor> playersTowerColors;
     private String winner;
+    private int numPlayers;
 
     // Expert State
     private boolean expert;
@@ -55,6 +56,26 @@ public class PlayState {
         this.activeAssistantCards = new HashMap<>();
         this.playersTowerColors = new HashMap<>();
         actionPhase = false;
+    }
+
+    public void setNumPlayers(int numPlayers){
+        this.numPlayers = numPlayers;
+    }
+
+    public int numInitialTowers(){
+        if(numPlayers == 2)
+            return 8;
+        else
+            return 6;
+    }
+
+    public int numTowers(){
+        if(numPlayers == 2){
+            return 8 - getMyConquests();
+        }
+        else{
+            return 6 - getMyConquests();
+        }
     }
 
     public void setExpert(boolean expert) {
@@ -142,10 +163,6 @@ public class PlayState {
                 .orElse(0);
     }
 
-    public TowerColor getActualTowerColor() {
-        return TowerColor.BLACK;
-    }
-
     public List<TeacherColor> getTeachers() {
         return new ArrayList<>(teachers);
     }
@@ -220,6 +237,10 @@ public class PlayState {
 
     public Map<String, TowerColor> getPlayersTowerColors() {
         return new HashMap<>(playersTowerColors);
+    }
+
+    public TowerColor getMyTowerColor(){
+        return getPlayersTowerColors().get(myName);
     }
 
     @Override

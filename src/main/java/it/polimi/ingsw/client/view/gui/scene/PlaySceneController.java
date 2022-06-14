@@ -45,6 +45,8 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
     private void update() {
         int actualChildNumber = 0;
         int actualChildNumber1 = 0;
+        int actualChildNumber2 = 0;
+        int actualChildNumber3 = 0;
         islandGrid.setVisible(true);
         clouds.setVisible(true);
         dashboard.setVisible(true);
@@ -59,6 +61,30 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         for(int j = 0; j < 3; j++){
             Node cloudRep = clouds.getChildren().get(actualChildNumber1);
             cloudRep.setVisible(false);
+        }
+        for(int j = 0; j < state.numInitialTowers(); j++){
+            Node towersRep = towers.getChildren().get(actualChildNumber2);
+            towersRep.setVisible(false);
+        }
+
+        for(int i = 1; i <= 5; i++){
+            GridPane teachersRep = (GridPane) teachers.getChildren().get(actualChildNumber3);
+            for(TeacherColor color : TeacherColor.values()){
+                if(state.getTeachers().contains(color)){
+                    Node teacher = getNodeByStyleClass(teachersRep.getChildren(), color.toString());
+                    teachersRep.setVisible(true);
+                }
+                else
+                    teachersRep.setVisible(false);
+                actualChildNumber3++;
+            }
+        }
+
+        for(int i = 1; i <= state.numTowers(); i++){
+            GridPane towersRep = (GridPane) towers.getChildren().get(actualChildNumber2);
+            Node tower = getNodeByStyleClass(towersRep.getChildren(), state.getMyTowerColor().toString());
+            towersRep.setVisible(true);
+            actualChildNumber2++;
         }
 
         for(int i = 1; i <= 3; i++){

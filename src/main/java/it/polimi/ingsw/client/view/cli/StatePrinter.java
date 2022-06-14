@@ -61,7 +61,7 @@ public class StatePrinter {
         String line = verticalLineElement;
         for (String string : strings) {
             line += string;
-            line += space + (8 - playState.getConquest(playState.getPlayersTowerColors().get(string)));
+            line += space + playState.numTowers();
             line += space + playState.getPlayersTowerColors().get(string);
             line += verticalLineElement;
         }

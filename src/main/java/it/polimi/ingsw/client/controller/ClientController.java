@@ -224,6 +224,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     @Override
     public void numOfPlayers(LobbyMessage message) {
+        state.setNumPlayers(message.getMaxPlayers());
         taskQueue.execute(() -> view.showChosenNumOfPlayers(message.getMaxPlayers()));
     }
 
