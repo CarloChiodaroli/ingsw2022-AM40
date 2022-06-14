@@ -618,7 +618,7 @@ public class Cli extends ViewObservable implements View {
      * {@inheritDoc}
      */
     @Override
-    public void showEndGame() {
+    public void showEndGame(String winner) {
         out.println(statePrinter.getWinner() + " won the game.");
     }
 

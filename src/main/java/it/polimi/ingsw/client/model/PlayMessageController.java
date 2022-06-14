@@ -247,7 +247,7 @@ public class PlayMessageController implements PlayMessageReader {
     public synchronized void statusEndGame(String sender, String winner) {
         controlServer(sender);
         state.setWinner(winner);
-        controller.getTaskQueue().execute(view::showEndGame);
+        controller.getTaskQueue().execute(() -> view.showEndGame(state.getWinner()));
     }
 
     // Expert

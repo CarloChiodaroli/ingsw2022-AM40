@@ -219,7 +219,7 @@ public class Gui extends ViewObservable implements View {
      * {@inheritDoc}
      */
     @Override
-    public void showEndGame() {
+    public void showEndGame(String winner) {
 
     }
 

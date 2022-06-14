@@ -117,7 +117,7 @@ public interface View {
     /**
      * Shows the content of the end game play message received from the server.
      */
-    void showEndGame();
+    void showEndGame(String winnerName);
 
     /**
      * After having changed the game status in the Play message class, this method is called to print the actual state of the game.
