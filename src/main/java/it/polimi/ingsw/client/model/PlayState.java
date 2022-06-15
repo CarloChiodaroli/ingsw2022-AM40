@@ -1,12 +1,12 @@
 package it.polimi.ingsw.client.model;
 
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.commons.enums.Wizard;
-import it.polimi.ingsw.commons.enums.Characters;
 
 import java.util.*;
-import java.util.stream.Stream;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Class which saves the state of the game in client.
@@ -44,10 +44,9 @@ public class PlayState {
     private Integer myMoney;
 
 
-
     public PlayState() {
         this.mainPlayer = null;
-        this.studentsInPlace = new HashMap<>();
+        this.studentsInPlace = new ConcurrentHashMap<>();
         this.conquests = new HashMap<>();
         this.characterCosts = new HashMap<>();
         this.teachers = new ArrayList<>();
@@ -58,22 +57,21 @@ public class PlayState {
         actionPhase = false;
     }
 
-    public void setNumPlayers(int numPlayers){
+    public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
     }
 
-    public int numInitialTowers(){
-        if(numPlayers == 2)
+    public int numInitialTowers() {
+        if (numPlayers == 2)
             return 8;
         else
             return 6;
     }
 
-    public int numTowers(){
-        if(numPlayers == 2){
+    public int numTowers() {
+        if (numPlayers == 2) {
             return 8 - getMyConquests();
-        }
-        else{
+        } else {
             return 6 - getMyConquests();
         }
     }
@@ -82,11 +80,12 @@ public class PlayState {
         this.expert = expert;
     }
 
-    public boolean isExpert(){
+    public boolean isExpert() {
         return expert;
     }
 
     public void setStudentsInAPlace(String placeId, Map<TeacherColor, Integer> studentsMap) {
+
         if (studentsInPlace.containsKey(placeId)) {
             studentsInPlace.replace(placeId, studentsMap);
         } else {
@@ -95,7 +94,7 @@ public class PlayState {
     }
 
     public Map<String, Map<TeacherColor, Integer>> getStudentsInPlaces() {
-        return new HashMap<>(studentsInPlace);
+        return new ConcurrentHashMap<>(studentsInPlace);
     }
 
     public void setConquests(Map<String, TowerColor> conquests) {
@@ -109,7 +108,7 @@ public class PlayState {
                 .peek(id -> islandSize.put(id, (int) id.chars().filter(x -> x == '_').count()))
                 .filter(id -> !studentsInPlace.containsKey(id))  // add new ids
                 .forEach(id -> studentsInPlace.put(id, new HashMap<>()));
-        studentsInPlace.keySet().stream()         // remove useless ids
+        studentsInPlace.keySet().stream()      // remove useless ids
                 .filter(this::isIslandId)
                 .filter(id -> !islandIds.contains(id))
                 .forEach(studentsInPlace::remove);
@@ -117,7 +116,7 @@ public class PlayState {
 
     public void setCloudIds(List<String> cloudIds) {
         cloudIds.stream()
-                .filter(this::isCloudId)         // control if all are cloud ids
+                .filter(this::isCloudId)            // control if all are cloud ids
                 .filter(id -> !studentsInPlace.containsKey(id))  // add new ids
                 .forEach(id -> studentsInPlace.put(id, new HashMap<>()));
         studentsInPlace.keySet().stream()        // remove useless ids
@@ -135,7 +134,9 @@ public class PlayState {
     }
 
     public List<String> getPlaceIds() {
-        return studentsInPlace.keySet().stream().toList();
+        synchronized (studentsInPlace) {
+            return studentsInPlace.keySet().stream().toList();
+        }
     }
 
     public void setMotherNature(String islandId) {
@@ -239,29 +240,8 @@ public class PlayState {
         return new HashMap<>(playersTowerColors);
     }
 
-    public TowerColor getMyTowerColor(){
+    public TowerColor getMyTowerColor() {
         return getPlayersTowerColors().get(myName);
-    }
-
-    @Override
-    @Deprecated
-    public String toString() {
-        String studentsInPlaceString = studentsInPlace.entrySet().stream()
-                .map(x -> "\t" + x.getKey() + ": " + x.getValue().toString() + "\n")
-                .reduce((x, y) -> x + y).orElse(studentsInPlace.toString() + "LOL did not work");
-
-        return "PlayState{" +
-                ", mainPlayer='" + mainPlayer + '\'' + "\n" +
-                ", actualPlayer='" + actualPlayer + '\'' + "\n" +
-                ", actionPhase=" + actionPhase + "\n" +
-                ", actualCharacterCard=" + actualCharacterCard + "\n" +
-                ", studentsInPlace=\n" + studentsInPlaceString + "\n" +
-                ", conquests=" + conquests + "\n" +
-                ", islandSize=" + islandSize + "\n" +
-                ", teachers=" + teachers + "\n" +
-                ", motherNaturePosition='" + motherNaturePosition + '\'' + "\n" +
-                ", activeAssistantCards=" + activeAssistantCards + "\n" +
-                '}';
     }
 
     public void setWizard(Wizard wizardChoose) {
@@ -288,7 +268,7 @@ public class PlayState {
         return availableWizards;
     }
 
-    public boolean isMainPlayer(){
+    public boolean isMainPlayer() {
         return mainPlayer.equals(myName);
     }
 
@@ -309,7 +289,7 @@ public class PlayState {
         this.myMoney = myMoney;
     }
 
-    public void setPlayerMoney(Map<String, Integer> money){
+    public void setPlayerMoney(Map<String, Integer> money) {
         this.playerMoney = new HashMap<>();
         money.entrySet().stream()
                 .forEach(entry -> playerMoney.put(entry.getKey(), entry.getValue()));
@@ -326,7 +306,7 @@ public class PlayState {
         return new HashMap<>(characterCosts);
     }
 
-    public List<Characters> getAvailableCharacters(){
+    public List<Characters> getAvailableCharacters() {
         return characterCosts.keySet().stream().toList();
     }
 }
