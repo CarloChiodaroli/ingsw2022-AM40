@@ -12,7 +12,11 @@
     <children>
         <Group scaleX="1.5" scaleY="1.5" scaleZ="1.5" StackPane.alignment="CENTER">
             <children>
-                <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="islandGrid" >
+                <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="islandGrid" layoutX="15" layoutY="20">
+                </GridPane>
+                <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="clouds" layoutX="400" layoutY="30">
+                </GridPane>
+                <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="assistant" layoutX="400" layoutY="300">
                 </GridPane>
             </children>
         </Group>

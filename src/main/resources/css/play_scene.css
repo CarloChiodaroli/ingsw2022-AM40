@@ -7,7 +7,6 @@ Label {
     -fx-color-label-visible: black;
 }
 
-
 .PINK {
     -fx-background-image: url("../images/assets/wood/student/SP.png");
 }
@@ -56,6 +55,60 @@ Label {
     -fx-background-image: url("../images/assets/island/3.png");
 }
 
+.cloud1{
+    -fx-background-image: url("../images/assets/cloud2/1.png");
+}
+
+.cloud2{
+    -fx-background-image: url("../images/assets/cloud2/2.png");
+}
+
+.cloud3{
+    -fx-background-image: url("../images/assets/cloud2/3.png");
+}
+
+.a1{
+    -fx-background-image: url("../images/assets/assistant/1.png");
+}
+
+.a2{
+    -fx-background-image: url("../images/assets/assistant/2.png");
+}
+
+.a3{
+    -fx-background-image: url("../images/assets/assistant/3.png");
+}
+
+.a4{
+    -fx-background-image: url("../images/assets/assistant/4.png");
+}
+
+.a5{
+    -fx-background-image: url("../images/assets/assistant/5.png");
+}
+
+.a6{
+    -fx-background-image: url("../images/assets/assistant/6.png");
+}
+
+.a7{
+    -fx-background-image: url("../images/assets/assistant/7.png");
+}
+
+.a8{
+    -fx-background-image: url("../images/assets/assistant/8.png");
+}
+
+.a9{
+    -fx-background-image: url("../images/assets/assistant/9.png");
+}
+
+.a10{
+    -fx-background-image: url("../images/assets/assistant/10.png");
+}
+
+
+
 .island {
     -fx-min-width: 150px;
     -fx-min-height: 150px;
@@ -63,8 +116,21 @@ Label {
     -fx-background-repeat: no-repeat;
 }
 
-GridPane {
+.cloud {
+    -fx-min-width: 90px;
+    -fx-min-height: 90px;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
 
+.assistant {
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
+
+GridPane {
     -fx-hgap: 10px;
     -fx-vgap: 10px;
 }
