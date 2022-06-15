@@ -111,7 +111,7 @@ public class StudentMovementCardTest {
         assertEqualsWithDelta(beforeMaxColor1 - 1, game.getPlayers().get(0).getEntrance().howManyStudents(maxColor1), "1");
         assertEqualsWithDelta(beforeMaxColor2, game.getPlayers().get(0).getEntrance().howManyStudents(maxColor2), "2");
 
-        card.handle(game.getPlayers().get(0), maxColor2, maxColor1);
+        card.handle(game.getPlayers().get(0), maxColor2, maxColor1, "Room");
 
         assertEqualsWithDelta(beforeMaxColor1 - 1, game.getPlayers().get(0).getEntrance().howManyStudents(maxColor1), "1");
         assertEqualsWithDelta(beforeMaxColor2, game.getPlayers().get(0).getEntrance().howManyStudents(maxColor2), "2");
@@ -120,7 +120,7 @@ public class StudentMovementCardTest {
 
         assertEqualsWithDelta(0, game.getPlayers().get(0).getMoney(), "5");
 
-        card.handle(game.getPlayers().get(0), maxColor2, maxColor1);
+        card.handle(game.getPlayers().get(0), maxColor2, maxColor1, "Room");
 
         assertEqualsWithDelta(beforeMaxColor1, game.getPlayers().get(0).getEntrance().howManyStudents(maxColor1), "3");
         assertEqualsWithDelta(beforeMaxColor2 - 1, game.getPlayers().get(0).getEntrance().howManyStudents(maxColor2), "4");
@@ -176,7 +176,7 @@ public class StudentMovementCardTest {
 
         assertEqualsWithDelta(0, game.getPlayers().get(0).getMoney(), "5");
 
-        card.handle(game.getPlayers().get(0), maxColor1, maxColor2);
+        card.handle(game.getPlayers().get(0), maxColor1, maxColor2, "Card");
 
         assertEqualsWithDelta(playerBeforeMaxColor1 - 1, game.getPlayers().get(0).getEntrance().howManyStudents(maxColor1), "3");
         assertEqualsWithDelta(playerBeforeMaxColor2 + 1, game.getPlayers().get(0).getEntrance().howManyStudents(maxColor2), "4");

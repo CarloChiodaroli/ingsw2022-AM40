@@ -100,15 +100,15 @@ public class InputController {
     }
 
     public boolean characterEffectsPlayer(Characters characters) {
-        return reader.isCharacterActive() && characterizingMap.get(characters).contains("Player");
+        return reader.isCharacterActive() && characterizingMap.getOrDefault(characters, new ArrayList<>()).contains("Player");
     }
 
     public boolean characterEffectsIsland(Characters characters) {
-        return reader.isCharacterActive() && characterizingMap.get(characters).contains("Island");
+        return reader.isCharacterActive() && characterizingMap.getOrDefault(characters, new ArrayList<>()).contains("Island");
     }
 
     public boolean characterEffectsAllPlayers(Characters characters) {
-        return reader.isCharacterActive() && characterizingMap.get(characters).contains("EffectAllPlayers");
+        return reader.isCharacterActive() && characterizingMap.getOrDefault(characters, new ArrayList<>()).contains("EffectAllPlayers");
     }
 
     public boolean isIslandId(String islandId){

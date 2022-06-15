@@ -42,7 +42,7 @@ public class InboundController {
         inputController.controlExpertVariant();
         inputController.controlGameState(GameState.ACTION);
         inputController.controlActualPlayer(playerName);
-        model.moveStudent(playerName, entranceStudent, otherStudent);
+        model.moveStudent(playerName, entranceStudent, otherStudent, placeId);
     }
 
     public String moveMotherNature(String playerName, int steps) {

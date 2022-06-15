@@ -79,10 +79,10 @@ public class GameModel {
         }
     }
 
-    public void moveStudent(String playerName, TeacherColor entranceStudent, TeacherColor otherStudent) {
+    public void moveStudent(String playerName, TeacherColor entranceStudent, TeacherColor otherStudent, String destinationId) {
         Player player = getPlayer(playerName);
         try {
-            player.moveStudent(entranceStudent, otherStudent);
+            player.moveStudent(entranceStudent, otherStudent, destinationId);
         } catch (IllegalStateException e) {
             throw new GameModelException(e.getMessage());
         } catch (InvalidParameterException e) {

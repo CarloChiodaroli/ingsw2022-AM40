@@ -412,7 +412,7 @@ public class ActionPhaseTest {
         actionPhase.startPhase(game.getPlayers().get(0));
 
         assertThrowsIllegalStateException(() -> actionPhase.request(game.getPlayers().get(0), TeacherColor.PINK,
-                TeacherColor.RED));
+                TeacherColor.RED, "plinio"));
     }
 
     @Test
@@ -442,12 +442,12 @@ public class ActionPhaseTest {
 
         assertTrue(game.isExpertVariant());
         assertThrowsIllegalStateException(() -> actionPhase.request(game.getPlayers().get(0), TeacherColor.PINK,
-                TeacherColor.RED));
+                TeacherColor.RED, "the"));
         assertTrue(actionPhase.canBeActivated(Characters.JESTER));
         actionPhase.activateCard(Characters.JESTER, game.getPlayers().get(0));
         TeacherColor color = game.getPlayers().get(0).getEntrance().getStudent().get();
         game.getPlayers().get(0).getEntrance().addStudent(color);
-        actionPhase.request(game.getPlayers().get(0), color, TeacherColor.PINK);
+        actionPhase.request(game.getPlayers().get(0), color, TeacherColor.PINK, "old");
     }
 
 }

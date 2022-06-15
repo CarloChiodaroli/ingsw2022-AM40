@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Server sends status messages to the client which, via PlayMessageController, change this class.
  * Then the state can be read from this class to update the view.
  */
-public class PlayState {
+public class    PlayState {
 
     // Lobby State
     private Wizard wizard;
@@ -114,7 +114,7 @@ public class PlayState {
                 .peek(id -> islandSize.put(id, (int) id.chars().filter(x -> x == '_').count()))
                 .filter(id -> !studentsInPlace.containsKey(id))  // add new ids
                 .forEach(id -> studentsInPlace.put(id, new HashMap<>()));
-        studentsInPlace.keySet().stream()      // remove useless ids
+        studentsInPlace.keySet().stream()         // remove useless ids
                 .filter(this::isIslandId)
                 .filter(id -> !islandIds.contains(id))
                 .forEach(studentsInPlace::remove);
@@ -125,7 +125,7 @@ public class PlayState {
                 .filter(this::isCloudId)            // control if all are cloud ids
                 .filter(id -> !studentsInPlace.containsKey(id))  // add new ids
                 .forEach(id -> studentsInPlace.put(id, new HashMap<>()));
-        studentsInPlace.keySet().stream()        // remove useless ids
+        studentsInPlace.keySet().stream()           // remove useless ids
                 .filter(this::isCloudId)
                 .filter(id -> !cloudIds.contains(id))
                 .forEach(studentsInPlace::remove);

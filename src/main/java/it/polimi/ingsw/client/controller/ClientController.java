@@ -148,7 +148,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
             try {
                 pm.executeMessage(playMessageReader);
             } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                notCriticalError("Error while managing message from server: " + e.getMessage() + message);
+                notCriticalError("Error while managing message from server: " + e.getMessage());
             }
         });
     }
@@ -159,9 +159,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
             try {
                 pm.executeMessage(playMessageReader);
             } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                e.printStackTrace();
-                e.getCause().printStackTrace();
-                notCriticalError("Error while managing message from server: " + e.getMessage() + message);
+                notCriticalError("Error while managing message from server: " + e.getMessage());
             }
         });
     }

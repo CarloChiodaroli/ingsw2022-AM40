@@ -131,14 +131,14 @@ public class ActionPhase {
      * @param studentB the color of the student from the player's room or from the card
      * @throws IllegalStateException is thrown when it's not the right moment nor the right game mode to use this kind of student movement
      */
-    public void request(Player player, TeacherColor studentA, TeacherColor studentB) throws IllegalStateException {
+    public void request(Player player, TeacherColor studentA, TeacherColor studentB, String place) throws IllegalStateException {
         isStateActivated();
         controlExpertVariant();
         controlActualCard();
         if (possibleStudentMovements <= 0 || calculatedInfluence)
             throw new IllegalStateException("Cannot move any students");
         if (actualCard.isInUse()) {
-            actualCard.handle(player, studentA, studentB);
+            actualCard.handle(player, studentA, studentB, place);
         } else {
             throw new IllegalStateException("Card has been already used");
         }
@@ -302,7 +302,7 @@ public class ActionPhase {
         controlExpertVariant();
         if (getActualCard().isPresent())
             throw new IllegalStateException("Character Card already chosen");
-        if (CharactersLookup.getType(character).getOrderPlace() > actualState) {
+        if (CharactersLookup.getType(character).getOrderPlace() < actualState) {
             throw new IllegalStateException("The round has progressed too much to play this card");
         }
         if (!characterCards.containsKey(character)) {

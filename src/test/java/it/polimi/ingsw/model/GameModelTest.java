@@ -47,7 +47,7 @@ public class GameModelTest {
         model.startGame();
 
         assertThrowsNoSNoSuchElementException(() -> model.playAssistantCard("Giacomo", 2));
-        assertThrowsNoSNoSuchElementException(() -> model.moveStudent("Giacomo", TeacherColor.PINK, TeacherColor.BLUE));
+        assertThrowsNoSNoSuchElementException(() -> model.moveStudent("Giacomo", TeacherColor.PINK, TeacherColor.BLUE, "pluto"));
         assertThrowsNoSNoSuchElementException(() -> model.moveStudent("Giacomo", TeacherColor.PINK, "Pole", "Pole"));
         assertThrowsNoSNoSuchElementException(() -> model.moveMotherNature("Giacomo", 7));
         assertThrowsNoSNoSuchElementException(() -> model.calcInfluence("Giacomo"));

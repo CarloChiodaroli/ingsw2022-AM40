@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.controller.outer;
 
 import it.polimi.ingsw.commons.enums.Wizard;
 import it.polimi.ingsw.commons.message.*;
-import it.polimi.ingsw.commons.message.play.NormalPlayMessage;
+import it.polimi.ingsw.commons.message.play.PlayMessage;
 import it.polimi.ingsw.server.controller.inner.InputController;
 import it.polimi.ingsw.server.network.Server;
 import it.polimi.ingsw.server.utils.StorageData;
@@ -52,7 +52,7 @@ public class GameManager implements LobbyMessageReader {
             }
             return;
         }
-        if (playMessagesReader != null && playMessagesReader.isGameStarted() && receivedMessage.getMessageType().equals(MessageType.PLAY)) {
+        if (playMessagesReader != null && playMessagesReader.isGameStarted() && (receivedMessage.getMessageType().equals(MessageType.PLAY) || receivedMessage.getMessageType().equals(MessageType.EXPERT))) {
             inGameState(receivedMessage);
             return;
         }
@@ -169,10 +169,11 @@ public class GameManager implements LobbyMessageReader {
     // PLAY message part
 
     private void inGameState(Message receivedMessage) {
-        NormalPlayMessage message = (NormalPlayMessage) receivedMessage;
+        PlayMessage message = (PlayMessage) receivedMessage;
         try {
             message.executeMessage(playMessagesReader);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
+            e.printStackTrace();
             sendError(message.getSenderName(), "Error while running message, please retry");
         }
     }

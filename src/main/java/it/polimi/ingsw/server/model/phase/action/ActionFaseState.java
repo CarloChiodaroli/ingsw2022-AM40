@@ -18,7 +18,7 @@ public abstract class ActionFaseState {
     protected void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) {
     }
 
-    protected void handle(Player player, TeacherColor fromColor, TeacherColor toColor) {
+    protected void handle(Player player, TeacherColor fromColor, TeacherColor toColor, String place) {
     }
 
     protected void handle(Player player, int steps, int maxSteps) {

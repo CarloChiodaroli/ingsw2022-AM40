@@ -272,9 +272,9 @@ public class PlayMessagesReader implements PlayMessageReader {
         answers.add(PlayMessagesFabric.statusStudent(server, "Entrance", outbound.getStudentInPlace(player, "Entrance")));
         List<String> cloudIds = outbound.getAllCloudIds();
         broadcastAnswers.add(PlayMessagesFabric.statusCloudIds(server, cloudIds));
-        /*for (String cId : cloudIds) {
+        for (String cId : cloudIds) {
             broadcastAnswers.add(PlayMessagesFabric.statusStudent(server, cId, outbound.getStudentInPlace(mainPlayer, cId)));
-        }*/
+        }
         if (turnController.nextTurn()) {
             broadcastAnswers.add(PlayMessagesFabric.statusPlanning(server, getActualPlayer()));
         } else {
@@ -331,14 +331,20 @@ public class PlayMessagesReader implements PlayMessageReader {
     private void corePlayCharacterCard(List<Message> answers) {
         Characters actual = turnController.getActualCharacter().get();
         answers.add(PlayMessagesFabric.statusCharacterCard(server, outbound.getActualCharacterCard()));
-        answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
-        if (inputController.characterEffectsIsland(actual))
+        Map<Characters, Integer> prices = outbound.getCharacterCardPrices();
+        inputController.setCharacters(prices);
+        Map<String, Integer> pricesString = new HashMap<>();
+        prices.forEach((k, v) -> pricesString.put(k.toString(), v));
+        answers.add(PlayMessagesFabric.statusCharacterCard(server, pricesString));
+        answers.add(PlayMessagesFabric.statusPlayerMoney(server, outbound.getPlayerMoney()));
+        if (turnController.getSavedIsland() != null)
             answers.add(PlayMessagesFabric.statusStudent(server, turnController.getSavedIsland(), outbound.getStudentInPlace(getActualPlayer(), turnController.getSavedIsland())));
         playerNames.forEach(player -> {
             List<Message> particular = new ArrayList<>(answers);
             if (inputController.characterEffectsAllPlayers(actual)) answers.addAll(playerDashboard(player));
             else if (player.equals(getActualPlayer()) && inputController.characterEffectsPlayer(actual))
                 particular.addAll(playerDashboard(player));
+            particular.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
             particular.forEach(answer -> gameManager.sendMessage(player, answer));
         });
         if (outbound.endGame()) {

@@ -331,17 +331,29 @@ public class Cli extends ViewObservable implements View {
     }
 
     /**
-     * Method used by the studentmove command to check if the id arguments on the command are valid ids or not.
+     * Method used by the studentmove command to check if the id arguments on the command are valid ids or not,
+     * and to correct the cases. The comparison is made ignoring cases, and if successful, the sent ID is the
+     * case corrected id.
      *
      * @param id the id to verify.
      * @return the case corrected verified id.
      * @throws IllegalAccessException thrown when the gotten id does not exist in the Play State class.
      */
     private String verifyId(String id) throws IllegalAccessException {
-        return playMessageController.getPlaceIds().stream()
+        // In the server the "Card" id indicates the actual card memory id.
+        // The client needs to know if the player has called a real character and not casual things.
+        // So after having found what place the player wants to send,
+        // if the place has a Character Card id, that id is translated to "Card".
+        // i.e. "FRIAR" translated in "Card", "entrance" -> "Entrance;
+        String result = playMessageController.getPlaceIds().stream()
                 .filter(x -> x.equalsIgnoreCase(id))
                 .findFirst()
                 .orElseThrow(() -> new IllegalAccessException("place " + id + " not found"));
+        return Arrays.stream(Characters.values())
+                .filter(x -> x.toString().equals(result))
+                .findAny()
+                .map(x -> "Card")
+                .orElse(result);
     }
 
     /**

@@ -121,9 +121,9 @@ public class Player {
         }
     }
 
-    public void moveStudent(TeacherColor studentA, TeacherColor studentB) {
+    public void moveStudent(TeacherColor studentA, TeacherColor studentB, String placeId) {
         controlEnable();
-        game.getActionPhase().request(this, studentA, studentB);
+        game.getActionPhase().request(this, studentA, studentB, placeId);
         if(dashboard.getRoom().getMoneyPlace()){
             if(game.getTable().getCoin()){
                 money++;

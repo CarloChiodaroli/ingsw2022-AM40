@@ -110,6 +110,7 @@ public class SocketClientHandler implements ClientHandler, Runnable {
                 }
             }
         } catch (ClassCastException e) {
+            e.printStackTrace();
             Server.LOGGER.severe("Invalid stream from client");
         }
         client.close();
