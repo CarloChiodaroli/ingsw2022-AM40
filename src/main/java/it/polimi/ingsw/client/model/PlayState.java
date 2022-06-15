@@ -68,6 +68,13 @@ public class PlayState {
             return 6;
     }
 
+    public int numStudEntrance(){
+        if(numPlayers == 2)
+            return 7;
+        else
+            return 9;
+    }
+
     public int numTowers() {
         if (numPlayers == 2) {
             return 8 - getMyConquests();
@@ -85,7 +92,6 @@ public class PlayState {
     }
 
     public void setStudentsInAPlace(String placeId, Map<TeacherColor, Integer> studentsMap) {
-
         if (studentsInPlace.containsKey(placeId)) {
             studentsInPlace.replace(placeId, studentsMap);
         } else {
@@ -134,9 +140,7 @@ public class PlayState {
     }
 
     public List<String> getPlaceIds() {
-        synchronized (studentsInPlace) {
-            return studentsInPlace.keySet().stream().toList();
-        }
+        return studentsInPlace.keySet().stream().toList();
     }
 
     public void setMotherNature(String islandId) {

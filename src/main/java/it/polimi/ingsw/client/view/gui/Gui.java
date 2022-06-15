@@ -220,7 +220,10 @@ public class Gui extends ViewObservable implements View {
      */
     @Override
     public void showEndGame(String winner) {
-
+            Platform.runLater(() -> {
+                SceneController.showWin(winner);
+                SceneController.changeRootPane(observers, MENU_SCENE_FXML);
+            });
     }
 
     /**

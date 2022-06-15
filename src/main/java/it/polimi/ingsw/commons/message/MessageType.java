@@ -15,6 +15,7 @@ public enum MessageType {
     ERROR(ErrorMessage.class),      // Various Errors and Disconnection command sent by server
     GENERIC(GenericMessage.class);  // other type of messages which are not used in the game model
 
+
     private final Class<?> implementingClass;
 
     MessageType(Class<?> implementingClass) {

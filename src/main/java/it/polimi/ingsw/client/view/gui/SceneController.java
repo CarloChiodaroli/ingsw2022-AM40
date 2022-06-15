@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.observer.ViewObserver;
 import it.polimi.ingsw.client.view.gui.scene.AlertSceneController;
 import it.polimi.ingsw.client.view.gui.scene.GenericSceneController;
 import it.polimi.ingsw.client.observer.ViewObservable;
+import it.polimi.ingsw.client.view.gui.scene.WinSceneController;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -163,4 +164,20 @@ public class SceneController extends ViewObservable {
         activeController.onConfirm(what);
     }
 
+    public static void showWin(String nickname) {
+        FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/win_scene.fxml"));
+
+        Parent parent;
+        try {
+            parent = loader.load();
+        } catch (IOException e) {
+            Client.LOGGER.severe(e.getMessage());
+            return;
+        }
+        WinSceneController winSceneController = loader.getController();
+        Scene winScene = new Scene(parent);
+        winSceneController.setScene(winScene);
+        winSceneController.setWinnerNickname(nickname);
+        winSceneController.displayWinScene();
+    }
 }
