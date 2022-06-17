@@ -16,7 +16,15 @@
                 </GridPane>
                 <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="clouds" layoutX="400" layoutY="30">
                 </GridPane>
-                <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="assistant" layoutX="400" layoutY="300">
+                <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="assistant" layoutX="750" layoutY="350">
+                </GridPane>
+                <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="entrance" layoutX="15" layoutY="350">
+                </GridPane>
+                <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="room" layoutX="75" layoutY="350">
+                </GridPane>
+                <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="teachers" layoutX="575" layoutY="350">
+                </GridPane>
+                <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="towers" layoutX="605" layoutY="350">
                 </GridPane>
             </children>
         </Group>

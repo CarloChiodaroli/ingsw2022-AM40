@@ -185,6 +185,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
 
     private void buildDashboard(){
         dashboard.setVisible(false);
+        List<Node> dashboardd = new ArrayList<>();
         GridPane entranceD = buildEntrance();
         GridPane teachersD = buildTeachers();
         GridPane towersD = buildTowers();
@@ -199,6 +200,12 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         GridPane.setColumnIndex(roomD, 1);
         GridPane.setColumnIndex(teachersD, 2);
         GridPane.setColumnIndex(towersD, 3);
+
+        dashboardd.add(entranceD);
+        dashboardd.add(teachersD);
+        dashboardd.add(towersD);
+        dashboardd.add(roomD);
+        dashboard.getChildren().addAll(dashboardd);
     }
 
     private void buildIslands() {

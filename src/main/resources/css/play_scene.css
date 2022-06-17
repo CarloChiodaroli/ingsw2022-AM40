@@ -107,8 +107,6 @@ Label {
     -fx-background-image: url("../images/assets/assistant/10.png");
 }
 
-
-
 .island {
     -fx-min-width: 150px;
     -fx-min-height: 150px;
@@ -126,6 +124,34 @@ Label {
 .assistant {
     -fx-min-width: 40px;
     -fx-min-height: 40px;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
+
+.entrance{
+    -fx-min-width: 60px;
+    -fx-min-height: 200px;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
+
+.room{
+    -fx-min-width: 500px;
+    -fx-min-height: 200px;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
+
+.teachers{
+    -fx-min-width: 30px;
+    -fx-min-height: 200px;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
+
+.towers{
+    -fx-min-width: 120px;
+    -fx-min-height: 200px;
     -fx-background-size: contain;
     -fx-background-repeat: no-repeat;
 }
