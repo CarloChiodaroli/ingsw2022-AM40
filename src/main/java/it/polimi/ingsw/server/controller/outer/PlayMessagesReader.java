@@ -147,7 +147,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         try {
             inbound.playAssistantCard(player, weight);
         } catch (Exception e) {
-            errorInExecution(e.getMessage());
+            errorInExecution(player, e.getMessage());
             return;
         }
         answers.add(PlayMessagesFabric.statusAssistantCard(server, player, weight));
@@ -169,7 +169,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         try {
             inbound.moveStudent(player, color, fromId, toId);
         } catch (Exception e) {
-            errorInExecution(e.getMessage());
+            errorInExecution(player, e.getMessage());
             return;
         }
         if (fromId.equals("Entrance") || fromId.equals("Room"))
@@ -207,7 +207,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         try {
             inbound.moveStudent(player, fromColor, toColor, placeId);
         } catch (Exception e) {
-            errorInExecution(e.getMessage());
+            errorInExecution(player, e.getMessage());
             return;
         }
         answers.add(PlayMessagesFabric.statusStudent(server, "Entrance", outbound.getStudentInPlace(player, "Entrance")));
@@ -234,7 +234,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         try {
             inbound.moveMotherNature(player, hops);
         } catch (Exception e) {
-            errorInExecution(e.getMessage());
+            errorInExecution(player, e.getMessage());
             return;
         }
         answers.add(PlayMessagesFabric.statusMotherNature(server, outbound.actualMotherNaturePosition()));
@@ -249,7 +249,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         try {
             inbound.calcInfluence(player);
         } catch (Exception e) {
-            errorInExecution(e.getMessage());
+            errorInExecution(player, e.getMessage());
             return;
         }
         // command to read model
@@ -284,7 +284,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         try {
             inbound.chooseCloud(player, id);
         } catch (Exception e) {
-            errorInExecution(e.getMessage());
+            errorInExecution(player, e.getMessage());
             return;
         }
         answers.add(PlayMessagesFabric.statusStudent(server, "Entrance", outbound.getStudentInPlace(player, "Entrance")));
@@ -313,7 +313,7 @@ public class PlayMessagesReader implements PlayMessageReader {
             inbound.playCharacterCard(player, character);
             turnController.setActualCharacter(character);
         } catch (Exception e) {
-            errorInExecution(e.getMessage());
+            errorInExecution(player, e.getMessage());
             return;
         }
         corePlayCharacterCard(answers);
@@ -326,7 +326,7 @@ public class PlayMessagesReader implements PlayMessageReader {
             inbound.playCharacterCard(player, character, id);
             turnController.setActualCharacter(character);
         } catch (Exception e) {
-            errorInExecution(e.getMessage());
+            errorInExecution(player, e.getMessage());
             return;
         }
         turnController.saveIsland(id);
@@ -340,7 +340,7 @@ public class PlayMessagesReader implements PlayMessageReader {
             inbound.playCharacterCard(player, character, color);
             turnController.setActualCharacter(character);
         } catch (Exception e) {
-            errorInExecution(e.getMessage());
+            errorInExecution(player, e.getMessage());
             return;
         }
         corePlayCharacterCard(answers);
@@ -458,6 +458,11 @@ public class PlayMessagesReader implements PlayMessageReader {
     private void errorInExecution(String error) {
         Message horror = new ErrorMessage(server, error);
         gameManager.broadcastMessage(horror);
+    }
+
+    private void errorInExecution(String playerName, String error) {
+        Message horror = new ErrorMessage(server, error);
+        gameManager.sendMessage(playerName, horror);
     }
 
     public TurnController getTurnController() {

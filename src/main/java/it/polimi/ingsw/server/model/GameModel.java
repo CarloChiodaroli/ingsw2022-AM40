@@ -339,4 +339,8 @@ public class GameModel {
         game.getPlayers().forEach(x -> playerMoney.put(x.getName(), x.getMoney()));
         return playerMoney;
     }
+
+    public Characters getActualCharacter(){
+        return game.getActionPhase().getActualCharacter().orElseThrow(() -> new IllegalStateException("There is no actual character"));
+    }
 }

@@ -69,7 +69,7 @@ public class InfluenceCard extends CharacterCard {
             throw new InvalidParameterException("An island Id is needed to activate this card");
         }
         if(super.getCharacterization("Student") > 0){
-            throw new InvalidParameterException("An island Id is needed to activate this card");
+            throw new InvalidParameterException("A teacher color is needed to activate this card");
         }
         playerPays(player);
         super.activator(player);
@@ -95,7 +95,7 @@ public class InfluenceCard extends CharacterCard {
     @Override
     public void activator(ActionFaseState decorated, Player player, Island island) throws InvalidParameterException {
         if(super.getCharacterization("Student") > 0){
-            throw new InvalidParameterException("An island Id is needed to activate this card");
+            throw new InvalidParameterException("A teacher color is needed to activate this card");
         }
         playerPays(player);
         super.activator(player, island);

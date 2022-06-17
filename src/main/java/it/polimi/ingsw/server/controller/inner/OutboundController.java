@@ -61,7 +61,7 @@ public class OutboundController {
     }
 
     public Characters getActualCharacterCard(){
-        return Characters.FRIAR;
+        return model.getActualCharacter();
     }
 
     public TowerColor getPlayerTowerColor(String playerName){
