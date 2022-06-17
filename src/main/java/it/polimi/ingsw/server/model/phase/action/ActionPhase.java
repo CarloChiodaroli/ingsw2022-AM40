@@ -129,7 +129,7 @@ public class ActionPhase {
         if (isExpertVariant() &&
                 getActualCard().isPresent() &&
                 CharactersLookup.getType(actualCard.getCharacter()).equals(ActionPhaseStateType.STUDENT) &&
-                actualCard.isInUse()) {
+                from.isEmpty()) {
             actualCard.handle(teacherColor, from, to);
         } else {
             states.get(ActionPhaseStateType.STUDENT).handle(teacherColor, from, to);

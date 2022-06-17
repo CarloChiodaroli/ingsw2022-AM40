@@ -2,8 +2,8 @@ package it.polimi.ingsw.server.controller.inner;
 
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.message.Message;
-import it.polimi.ingsw.server.enums.CardCharacterizations;
 import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
+import it.polimi.ingsw.server.enums.CardCharacterizations;
 import it.polimi.ingsw.server.view.VirtualView;
 
 import java.security.InvalidParameterException;
@@ -51,10 +51,14 @@ public class InputController {
 
     public void controlSourceId(String id) {
         if (reader.isExpertVariant()) {
-            String charc = reader.getTurnController().getActualCharacter().toString();
-            if (!id.equals("Entrance") && !id.equals(charc)
-                    && (reader.getTurnController().getActualCharacter().isPresent() && characterEffectsIsland(reader.getTurnController().getActualCharacter().get()) && id.equals("Place") && !isIslandId(id))
-                    && !id.equals("Room")) throw new IllegalStateException(id + " is not valid from id");
+            String charc = reader.getTurnController().getActualCharacter().map(Enum::toString).orElse(null);
+            if (charc == null) {
+                if (!id.equals("Entrance")) throw new IllegalStateException(id + " is not valid from id");
+            } else {
+                if (!id.equals("Entrance") && !id.equals(charc)
+                        && (reader.getTurnController().getActualCharacter().isPresent() && characterEffectsIsland(reader.getTurnController().getActualCharacter().get()) && id.equals("Place") && !isIslandId(id))
+                        && !id.equals("Room")) throw new IllegalStateException(id + " is not valid from id");
+            }
         } else {
             if (!id.equals("Entrance")) throw new IllegalStateException(id + " is not valid from id");
         }
@@ -111,20 +115,20 @@ public class InputController {
         return reader.isCharacterActive() && characterizingMap.getOrDefault(characters, new ArrayList<>()).contains("EffectAllPlayers");
     }
 
-    public boolean isIslandId(String islandId){
+    public boolean isIslandId(String islandId) {
         return islandId.matches("i_[0-9_]*");
     }
 
-    public boolean isCloudId(String islandId){
+    public boolean isCloudId(String islandId) {
         return islandId.matches("c_[0-9_]*");
     }
 
-    public void controlCloudId(String id){
-        if(!isCloudId(id)) throw new InvalidParameterException("Gotten id is not cloud id");
+    public void controlCloudId(String id) {
+        if (!isCloudId(id)) throw new InvalidParameterException("Gotten id is not cloud id");
     }
 
-    public void controlIslandId(String id){
-        if(!isIslandId(id)) throw new InvalidParameterException("Gotten id is not island id");
+    public void controlIslandId(String id) {
+        if (!isIslandId(id)) throw new InvalidParameterException("Gotten id is not island id");
     }
 
     /* @Deprecated

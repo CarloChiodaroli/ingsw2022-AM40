@@ -306,7 +306,7 @@ public class CharactersTest {
 
             assertEquals(3, characterization.get("Price"));
             assertEquals(0, characterization.get("Memory"));
-            assertEquals(1, characterization.get("Usages"));
+            assertEquals(0, characterization.get("Usages"));
             assertEquals(0, characterization.get("Bidirectional"));
             assertEquals(0, characterization.get("TeacherBehaviour"));
             assertEquals(1, characterization.get("EffectAllPlayers"));

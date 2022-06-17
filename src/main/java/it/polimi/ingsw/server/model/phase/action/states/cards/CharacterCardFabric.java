@@ -15,6 +15,7 @@ public class CharacterCardFabric {
 
     public static Map<Characters, CharacterCard> getCards(ActionPhase actionPhase){
         Map<Characters, CharacterCard> enabledCharacterCards = new HashMap<>();
+        //enabledCharacterCards.put(Characters.THIEF, createCard(Characters.THIEF, actionPhase));
         while(enabledCharacterCards.size() < 3){
             Characters characters = getRandomCharacter();
             if(!enabledCharacterCards.containsKey(characters)){

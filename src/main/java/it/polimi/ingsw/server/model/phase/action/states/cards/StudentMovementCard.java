@@ -41,7 +41,7 @@ public class StudentMovementCard extends CharacterCard {
      */
     @Override
     public void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) {
-        if (!isInUse()) return;
+        if (!isInUse()) throw new IllegalStateException("Card has been already used");
         if (from.isEmpty() && super.getCharacterization("Bidirectional") == 0) {
             decorated.handle(color, Optional.of(students), to);
             students.addStudent(getStudentFromBag());
@@ -51,6 +51,8 @@ public class StudentMovementCard extends CharacterCard {
         if (super.getCharacterization("TeacherBehaviour") > 0) {
             controlTeachers(super.getActualPlayer());
         }
+        super.updateUse();
+
     }
 
     /**
@@ -87,6 +89,9 @@ public class StudentMovementCard extends CharacterCard {
      */
     @Override
     public void activator(ActionFaseState decorated, Player player) throws InvalidParameterException {
+        if(super.getCharacterization("EffectAllPlayers") > 0){
+            throw new IllegalStateException("This card needs a student color to be activated");
+        }
         playerPays(player);
         this.decorated = (StudentMovement) decorated;
         super.activator(player);
