@@ -36,6 +36,9 @@ public class StudentMovementCard extends CharacterCard {
         return getActionFase().getGame().getTable().getStudentFromBag().orElseThrow();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) {
         if (!isInUse()) return;
@@ -50,6 +53,9 @@ public class StudentMovementCard extends CharacterCard {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void handle(Player player, TeacherColor fromEntrance, TeacherColor toColor, String place) {
         if (!isInUse()) return;
@@ -76,12 +82,17 @@ public class StudentMovementCard extends CharacterCard {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void activator(ActionFaseState decorated, Player player) throws InvalidParameterException {
         playerPays(player);
         this.decorated = (StudentMovement) decorated;
         super.activator(player);
     }
 
+    @Override
     public void activator(ActionFaseState decorated, Player player, TeacherColor color) throws InvalidParameterException {
         playerPays(player);
         this.decorated = (StudentMovement) decorated;
@@ -116,6 +127,10 @@ public class StudentMovementCard extends CharacterCard {
         return students;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Optional<StudentsManager> getStudentContainer(){
         return Optional.ofNullable(students);
     }

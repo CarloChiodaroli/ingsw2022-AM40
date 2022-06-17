@@ -9,7 +9,6 @@ import it.polimi.ingsw.commons.message.PlayMessageReader;
 import it.polimi.ingsw.commons.message.PlayMessagesFabric;
 import it.polimi.ingsw.server.controller.inner.*;
 import it.polimi.ingsw.server.enums.CardCharacterizations;
-import it.polimi.ingsw.server.enums.CharactersLookup;
 import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.server.view.VirtualView;
 
@@ -98,7 +97,8 @@ public class PlayMessagesReader implements PlayMessageReader {
                     .filter(e -> CardCharacterizations.particular(e.getKey()).getOrDefault("Memory", -1) > 0)
                     .forEach(e -> {
                         Map<TeacherColor, Integer> toAdd = outbound.getStudentInPlace(mainPlayer, e.getKey().toString());
-                        if(!toAdd.isEmpty()) commonAnswers.add(PlayMessagesFabric.statusStudent(server, e.getKey(), toAdd));
+                        if (!toAdd.isEmpty())
+                            commonAnswers.add(PlayMessagesFabric.statusStudent(server, e.getKey(), toAdd));
                     });
         }
         for (String name : playerNames) {
@@ -174,15 +174,23 @@ public class PlayMessagesReader implements PlayMessageReader {
         }
         if (fromId.equals("Entrance") || fromId.equals("Room"))
             answers.add(PlayMessagesFabric.statusStudent(server, fromId, outbound.getStudentInPlace(player, fromId)));
-        else
-            broadcastAnswers.add(PlayMessagesFabric.statusStudent(server, toId, outbound.getStudentInPlace(player, fromId)));
+        else if (fromId.equals("Card")) {
+            broadcastAnswers.add(PlayMessagesFabric.statusStudent(server,
+                    outbound.getActualCharacterCard().toString(),
+                    outbound.getStudentInPlace(player, fromId)));
+        } else
+            broadcastAnswers.add(PlayMessagesFabric.statusStudent(server, fromId, outbound.getStudentInPlace(player, fromId)));
         if (toId.equals("Entrance") || toId.equals("Room"))
             answers.add(PlayMessagesFabric.statusStudent(server, toId, outbound.getStudentInPlace(player, toId)));
-        else
+        else if (toId.equals("Card")) {
+            broadcastAnswers.add(PlayMessagesFabric.statusStudent(server,
+                    outbound.getActualCharacterCard().toString(),
+                    outbound.getStudentInPlace(player, toId)));
+        } else
             broadcastAnswers.add(PlayMessagesFabric.statusStudent(server, toId, outbound.getStudentInPlace(player, toId)));
         answers.forEach(answer -> gameManager.sendMessage(player, answer)); // send specific
         playerNames.forEach(name -> gameManager.sendMessage(name, PlayMessagesFabric.statusTeacher(server, name, outbound.getTeacherInPlace(name))));
-        if(expertVariant){
+        if (expertVariant) {
             broadcastAnswers.add(PlayMessagesFabric.statusPlayerMoney(server, outbound.getPlayerMoney()));
         }
         broadcastAnswers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
@@ -203,9 +211,13 @@ public class PlayMessagesReader implements PlayMessageReader {
             return;
         }
         answers.add(PlayMessagesFabric.statusStudent(server, "Entrance", outbound.getStudentInPlace(player, "Entrance")));
-        if (placeId.equals("Entrance") || placeId.equals("Room"))
+        if (placeId.equals("Room"))
             answers.add(PlayMessagesFabric.statusStudent(server, placeId, outbound.getStudentInPlace(player, placeId)));
-        else
+        else if (placeId.equals("Card")) {
+            broadcastAnswers.add(PlayMessagesFabric.statusStudent(server,
+                    outbound.getActualCharacterCard().toString(),
+                    outbound.getStudentInPlace(player, placeId)));
+        } else
             broadcastAnswers.add(PlayMessagesFabric.statusStudent(server, placeId, outbound.getStudentInPlace(player, placeId)));
         broadcastAnswers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         answers.forEach(answer -> gameManager.sendMessage(player, answer)); // send specific
@@ -252,6 +264,9 @@ public class PlayMessagesReader implements PlayMessageReader {
                 server,
                 outbound.actualMotherNaturePosition(),
                 outbound.getStudentInPlace(player, outbound.actualMotherNaturePosition())));
+        String savedIslandId = turnController.getSavedIsland();
+        if (expertVariant && savedIslandId != null)
+            answers.add(PlayMessagesFabric.statusStudent(server, savedIslandId, outbound.getStudentInPlace(player, savedIslandId)));
         answers.add(PlayMessagesFabric.statusMotherNature(server, outbound.actualMotherNaturePosition()));
         answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         // sending answers
@@ -340,8 +355,9 @@ public class PlayMessagesReader implements PlayMessageReader {
         prices.forEach((k, v) -> pricesString.put(k.toString(), v));
         answers.add(PlayMessagesFabric.statusCharacterCard(server, pricesString));
         answers.add(PlayMessagesFabric.statusPlayerMoney(server, outbound.getPlayerMoney()));
-        if (turnController.getSavedIsland() != null)
-            answers.add(PlayMessagesFabric.statusStudent(server, turnController.getSavedIsland(), outbound.getStudentInPlace(getActualPlayer(), turnController.getSavedIsland())));
+        String actualIsland = turnController.getSavedIsland();
+        if (actualIsland != null)
+            answers.add(PlayMessagesFabric.statusStudent(server, actualIsland, outbound.getStudentInPlace(getActualPlayer(), actualIsland)));
         playerNames.forEach(player -> {
             List<Message> particular = new ArrayList<>(answers);
             if (inputController.characterEffectsAllPlayers(actual)) answers.addAll(playerDashboard(player));

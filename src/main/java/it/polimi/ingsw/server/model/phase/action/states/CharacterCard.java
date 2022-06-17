@@ -34,9 +34,10 @@ public abstract class CharacterCard extends ActionFaseState {
         this.usedOneTime = false;
         this.using = false;
         this.interestingColor = null;
+        this.interestingIsland = null;
     }
 
-    public boolean activator(Player player) {
+    protected boolean activator(Player player) {
         if (!usedOneTime) usedOneTime = true;
         usesLeft = characterization.get("Usages");
         if (usesLeft > 0) using = true;
@@ -44,7 +45,7 @@ public abstract class CharacterCard extends ActionFaseState {
         return true;
     }
 
-    public boolean activator(Player player, TeacherColor color) {
+    protected boolean activator(Player player, TeacherColor color) {
         if (getCharacterization("Student") > 0) {
             activator(player);
             interestingColor = color;
@@ -53,7 +54,7 @@ public abstract class CharacterCard extends ActionFaseState {
         return false;
     }
 
-    public boolean activator(Player player, Island island) {
+    protected boolean activator(Player player, Island island) {
         if (getCharacterization("Island") > 0) {
             activator(player);
             interestingIsland = island;
@@ -114,11 +115,14 @@ public abstract class CharacterCard extends ActionFaseState {
     }
 
     public void activator(ActionFaseState decorated, Player player, TeacherColor color) {
+        throw new IllegalStateException("Card cannot be activated with this activator");
     }
 
     public void activator(ActionFaseState decorated, Player player) {
+        throw new IllegalStateException("Card cannot be activated with this activator");
     }
 
     public void activator(ActionFaseState decorated, Player player, Island island) {
+        throw new IllegalStateException("Card cannot be activated with this activator");
     }
 }

@@ -107,6 +107,8 @@ public class TurnController {
     }
 
     public String getSavedIsland() {
-        return savedIsland;
+        String result = savedIsland;
+        savedIsland = null;
+        return result;
     }
 }

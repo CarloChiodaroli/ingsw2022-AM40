@@ -18,11 +18,18 @@ public class MotherNatureCard extends CharacterCard {
         super(args, characters, actionPhase);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void handle(Player player, int steps, int maxSteps) {
         decorated.handle(player, steps, maxSteps + 2);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void activator(ActionFaseState decorated, Player player) throws InvalidParameterException {
         playerPays(player);
         this.decorated = (MotherNatureState) decorated;

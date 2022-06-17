@@ -1,14 +1,15 @@
 package it.polimi.ingsw.server.model.phase.action;
 
-import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.StudentsManager;
-import it.polimi.ingsw.server.enums.ActionPhaseStateType;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.enums.ActionPhaseStateType;
 import it.polimi.ingsw.server.enums.CharactersLookup;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.server.model.phase.action.states.*;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.server.model.phase.action.states.cards.InfluenceCard;
+import it.polimi.ingsw.server.model.phase.action.states.cards.StudentMovementCard;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.table.Island;
 import it.polimi.ingsw.server.model.table.MotherNature;
@@ -31,6 +32,7 @@ public class ActionPhase {
 
     // Non expert Status variables
     private int possibleStudentMovements;
+    private int studentMovements;
     private boolean movedMotherNature;
     private boolean calculatedInfluence;
     private boolean mergedIslands;
@@ -41,6 +43,10 @@ public class ActionPhase {
     private final boolean expertVariant;
     private CharacterCard actualCard;
     private final Map<Characters, CharacterCard> characterCards;
+
+    // constants
+    private final static int normal2PlayerSM = 3;
+    private final static int normal3PlayerSM = 4;
 
     /**
      * Constructor
@@ -69,6 +75,14 @@ public class ActionPhase {
         return characterCards;
     }
 
+    private int getMaxStudentMovements() {
+        if (game.isThreePlayerGame()) {
+            return normal3PlayerSM;
+        } else {
+            return normal2PlayerSM;
+        }
+    }
+
     /**
      * Starts a new Action phase.
      * Since, during a play, the action phase needs to keep memory of what happens,
@@ -82,7 +96,8 @@ public class ActionPhase {
         player.enable();
         // reset of action phase state
         activated = true;
-        possibleStudentMovements = 3;
+        possibleStudentMovements = getMaxStudentMovements();
+        studentMovements = 0;
         movedMotherNature = false;
         calculatedInfluence = false;
         mergedIslands = false;
@@ -106,9 +121,10 @@ public class ActionPhase {
     public void request(TeacherColor teacherColor, Optional<StudentsManager> from, Optional<StudentsManager> to)
             throws IllegalStateException {
         isStateActivated();
-        if (possibleStudentMovements <= 0 || calculatedInfluence)
+        if (studentMovements >= possibleStudentMovements || calculatedInfluence)
             throw new IllegalStateException("Cannot move any students");
-        if (from.isEmpty() || to.isEmpty())
+        if ((from.isEmpty() && getActualCard().isEmpty() && !actualCard.isInUse()) ||
+                (to.isEmpty() && getActualCard().isEmpty() && !actualCard.isInUse()))
             throw new InvalidParameterException("from or to place not found");
         if (isExpertVariant() &&
                 getActualCard().isPresent() &&
@@ -118,8 +134,8 @@ public class ActionPhase {
         } else {
             states.get(ActionPhaseStateType.STUDENT).handle(teacherColor, from, to);
         }
-        possibleStudentMovements--;
-        if(possibleStudentMovements <= 0) actualState++;
+        studentMovements++;
+        if (studentMovements >= possibleStudentMovements) actualState++;
     }
 
     /**
@@ -136,15 +152,15 @@ public class ActionPhase {
         isStateActivated();
         controlExpertVariant();
         controlActualCard();
-        if (possibleStudentMovements <= 0 || calculatedInfluence)
+        if (studentMovements >= possibleStudentMovements || calculatedInfluence)
             throw new IllegalStateException("Cannot move any students");
         if (actualCard.isInUse()) {
             actualCard.handle(player, studentA, studentB, place);
         } else {
             throw new IllegalStateException("Card has been already used");
         }
-        possibleStudentMovements--;
-        if(possibleStudentMovements <= 0) actualState++;
+        studentMovements++;
+        if (studentMovements >= possibleStudentMovements) actualState++;
     }
 
     /**
@@ -158,6 +174,11 @@ public class ActionPhase {
         isStateActivated();
         if (movedMotherNature)
             throw new IllegalStateException("Mother nature has been already moved once");
+        if (actualState != ActionPhaseStateType.MOTHER.getOrderPlace() &&
+                (studentMovements >= possibleStudentMovements ||
+                        (studentMovements > getMaxStudentMovements() && studentMovements < possibleStudentMovements))) {
+            actualState = ActionPhaseStateType.MOTHER.getOrderPlace();
+        }
         int maxHops = game.getPianificationFase().getMotherNatureHops(player);
         if (!isExpertVariant()) {
             states.get(ActionPhaseStateType.MOTHER).handle(player, motherNatureHops, maxHops);
@@ -291,7 +312,11 @@ public class ActionPhase {
             throws NoSuchElementException, IllegalStateException {
         isStateActivated();
         isCardPlayable(characters);
-        return characterCards.get(characters);
+        CharacterCard result = characterCards.get(characters);
+        if (CharactersLookup.getType(characters).equals(ActionPhaseStateType.STUDENT)) {
+            possibleStudentMovements += ((StudentMovementCard) result).getMaxUsages();
+        }
+        return result;
     }
 
     /**

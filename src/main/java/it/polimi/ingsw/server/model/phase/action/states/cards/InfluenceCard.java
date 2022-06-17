@@ -26,6 +26,9 @@ public class InfluenceCard extends CharacterCard {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void handle(Player player, Island island) {
         if (super.getCharacterization("Island") > 0 && super.getCharacterization("NoEntrySetter") == 0) {
@@ -57,19 +60,43 @@ public class InfluenceCard extends CharacterCard {
         decorated.influenceSetter(players, island, decorated.winnerFinder(players, influences));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void activator(ActionFaseState decorated, Player player) throws InvalidParameterException {
+        if(super.getCharacterization("Island") > 0){
+            throw new InvalidParameterException("An island Id is needed to activate this card");
+        }
+        if(super.getCharacterization("Student") > 0){
+            throw new InvalidParameterException("An island Id is needed to activate this card");
+        }
         playerPays(player);
         super.activator(player);
         this.decorated = (Influence) decorated;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void activator(ActionFaseState decorated, Player player, TeacherColor color) throws InvalidParameterException {
+        if(super.getCharacterization("Island") > 0){
+            throw new InvalidParameterException("An island Id is needed to activate this card");
+        }
         playerPays(player);
         super.activator(player, color);
         this.decorated = (Influence) decorated;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void activator(ActionFaseState decorated, Player player, Island island) throws InvalidParameterException {
+        if(super.getCharacterization("Student") > 0){
+            throw new InvalidParameterException("An island Id is needed to activate this card");
+        }
         playerPays(player);
         super.activator(player, island);
         this.decorated = (Influence) decorated;

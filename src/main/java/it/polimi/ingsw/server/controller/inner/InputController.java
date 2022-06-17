@@ -53,7 +53,7 @@ public class InputController {
         if (reader.isExpertVariant()) {
             String charc = reader.getTurnController().getActualCharacter().toString();
             if (!id.equals("Entrance") && !id.equals(charc)
-                    && (reader.getTurnController().getActualCharacter().isPresent() && characterEffectsIsland(reader.getTurnController().getActualCharacter().get()) && !isIslandId(id))
+                    && (reader.getTurnController().getActualCharacter().isPresent() && characterEffectsIsland(reader.getTurnController().getActualCharacter().get()) && id.equals("Place") && !isIslandId(id))
                     && !id.equals("Room")) throw new IllegalStateException(id + " is not valid from id");
         } else {
             if (!id.equals("Entrance")) throw new IllegalStateException(id + " is not valid from id");
