@@ -119,6 +119,7 @@ public class ActionPhase {
             states.get(ActionPhaseStateType.STUDENT).handle(teacherColor, from, to);
         }
         possibleStudentMovements--;
+        if(possibleStudentMovements <= 0) actualState++;
     }
 
     /**
@@ -143,6 +144,7 @@ public class ActionPhase {
             throw new IllegalStateException("Card has been already used");
         }
         possibleStudentMovements--;
+        if(possibleStudentMovements <= 0) actualState++;
     }
 
     /**
@@ -156,7 +158,6 @@ public class ActionPhase {
         isStateActivated();
         if (movedMotherNature)
             throw new IllegalStateException("Mother nature has been already moved once");
-        actualState = ActionPhaseStateType.MOTHER.getOrderPlace();
         int maxHops = game.getPianificationFase().getMotherNatureHops(player);
         if (!isExpertVariant()) {
             states.get(ActionPhaseStateType.MOTHER).handle(player, motherNatureHops, maxHops);

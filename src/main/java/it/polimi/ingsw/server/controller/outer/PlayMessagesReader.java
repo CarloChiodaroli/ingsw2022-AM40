@@ -182,6 +182,9 @@ public class PlayMessagesReader implements PlayMessageReader {
             broadcastAnswers.add(PlayMessagesFabric.statusStudent(server, toId, outbound.getStudentInPlace(player, toId)));
         answers.forEach(answer -> gameManager.sendMessage(player, answer)); // send specific
         playerNames.forEach(name -> gameManager.sendMessage(name, PlayMessagesFabric.statusTeacher(server, name, outbound.getTeacherInPlace(name))));
+        if(expertVariant){
+            broadcastAnswers.add(PlayMessagesFabric.statusPlayerMoney(server, outbound.getPlayerMoney()));
+        }
         broadcastAnswers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         broadcastAnswers.forEach(gameManager::broadcastMessage); // send broadcast
         if (outbound.endGame()) {
