@@ -10,9 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class PlaySceneController extends ViewObservable implements GenericSceneController {
 
@@ -51,7 +49,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
     private GridPane room;
     @FXML
     private GridPane towers;
-    /*@FXML
+    @FXML
     private GridPane assistant;
     /*@FXML
     private GridPane character;*/
@@ -65,9 +63,16 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         buildContainer();
         buildIslands();
         buildClouds();
-        //buildAssistant();
+        buildAssistant();
         buildDashboard();
         update();
+    }
+
+    private void update() {
+        updateDashboard();
+        updateClouds();
+        updateIslands();
+        updateAssistant();
     }
 
     private void buildContainer() {
@@ -86,16 +91,15 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
 
         for (int i = 0; i < 3; i++) {
             GridPane cloud = new GridPane();
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < state.getNumOfStudentsInCloud(); j++) {
                 Label actual = new Label();
                 actual.getStyleClass().add("wood");
-                actual.getStyleClass().add(dashboardRoomOrder.get(j));
                 GridPane.setRowIndex(actual, j / 2);
                 GridPane.setColumnIndex(actual, j % 2);
                 cloud.getChildren().add(actual);
             }
-            GridPane.setRowIndex(cloud, i / 2);
-            GridPane.setColumnIndex(cloud, i % 2);
+            GridPane.setRowIndex(cloud, 0);
+            GridPane.setColumnIndex(cloud, i);
             cloud.getStyleClass().add("cloud");
             cloud.getStyleClass().add(cloudStyle.get(i % 3));
             cloudss.add(cloud);
@@ -104,22 +108,22 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
     }
 
     private void buildAssistant() {
-        //assistant.setVisible(false);
+        assistant.setVisible(false);
         List<Node> assistantt = new ArrayList<>();
         List<String> assistantStyle = List.of(new String[]{"a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "a9", "a10"});
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 0; i < 10; i++) {
             Label actual = new Label();
-            GridPane.setRowIndex(actual, 0);
-            GridPane.setColumnIndex(actual, i);
+            GridPane.setRowIndex(actual, i / 5);
+            GridPane.setColumnIndex(actual, i % 5);
             actual.getStyleClass().add("assistant");
-            actual.getStyleClass().add(assistantStyle.get(i - 1));
+            actual.getStyleClass().add(assistantStyle.get(i));
             assistantt.add(actual);
         }
-        //assistant.getChildren().addAll(assistantt);
+        assistant.getChildren().addAll(assistantt);
     }
 
     private GridPane buildEntrance() {
-        //entrance.setVisible(false);
+        entrance.setVisible(false);
         List<Node> entrancee = new ArrayList<>();
         for (int i = 1; i <= state.numStudEntrance(); i++) {
             Label actual = new Label();
@@ -191,7 +195,6 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
 
     private void buildDashboard() {
         dashboard.setVisible(false);
-        List<Node> dashboardd = new ArrayList<>();
         GridPane entranceD = buildEntrance();
         GridPane teachersD = buildTeachers();
         GridPane towersD = buildTowers();
@@ -206,12 +209,6 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         GridPane.setColumnIndex(roomD, 1);
         GridPane.setColumnIndex(teachersD, 2);
         GridPane.setColumnIndex(towersD, 3);
-
-        /*dashboardd.add(entranceD);
-        dashboardd.add(teachersD);
-        dashboardd.add(towersD);
-        dashboardd.add(roomD);
-        dashboard.getChildren().addAll(dashboardd);*/
     }
 
     private void buildIslands() {
@@ -249,131 +246,10 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         islandGrid.getChildren().addAll(islands);
     }
 
-    private void update() {
-        int actualChildNumber = 0;
-        int actualChildNumber1 = 0;
-        int actualChildNumber2 = 0;
-        int actualChildNumber3 = 0;
-        int actualChildNumber4 = 0;
-        int actualChildNumber5 = 0;
-        int actualChildNumber6 = 0;
-        int actualChildNumber7 = 0;
+    private void updateIslands() {
         islandGrid.setVisible(true);
-        clouds.setVisible(true);
-        dashboard.setVisible(true);
-        entrance.setVisible(true);
-        teachers.setVisible(true);
-        towers.setVisible(true);
-        //assistant.setVisible(true);
-        //character.setVisible(true);
-        room.setVisible(true);
-
-        for (int j = 0; j < 12; j++) {
-            Node islandRep = islandGrid.getChildren().get(actualChildNumber);
-            islandRep.setVisible(false);
-        }
-        /*for (int j = 0; j < 3; j++) {
-            Node cloudRep = clouds.getChildren().get(actualChildNumber1);
-            cloudRep.setVisible(false);
-        }
-        for (int j = 0; j < state.numInitialTowers(); j++) {
-            Node towersRep = towers.getChildren().get(actualChildNumber2);
-            towersRep.getStyleClass().add(state.getMyTowerColor().toString());
-            towersRep.setVisible(false);
-        }
-        for (int j = 0; j < state.numStudEntrance(); j++) {
-            Node entranceRep = entrance.getChildren().get(actualChildNumber4);
-            entranceRep.setVisible(false);
-        }
-        for (int j = 0; j < 10; j++) {
-            Node assistantRep = assistant.getChildren().get(actualChildNumber5);
-            assistantRep.setVisible(false);
-        }
-        /*for(int j = 0; j < 3; j++){
-            Node characterRep = character.getChildren().get(actualChildNumber6);
-            characterRep.setVisible(false);
-        }*/
-        /*for (int j = 0; j < 5; j++) {
-            Node roomRep = room.getChildren().get(actualChildNumber7);
-            roomRep.setVisible(false);
-        }
-
-        for (TeacherColor color : TeacherColor.values()) {
-            Node teachersRep = teachers.getChildren().get(actualChildNumber3);
-            if (state.getTeachers().contains(color)) {
-                teachersRep.setVisible(true);
-            } else
-                teachersRep.setVisible(false);
-            actualChildNumber3++;
-        }
-
-        for (int i = 1; i <= 10; i++) {
-            Node assistantRep = assistant.getChildren().get(actualChildNumber5);
-            if (state.getAssistantCards().contains(i)) {
-                assistantRep.setVisible(true);
-            }
-            actualChildNumber5++;
-        }
-
-        for (int i = 1; i <= state.numMyTowers(); i++) {
-            Node towersRep = towers.getChildren().get(actualChildNumber2);
-            towersRep.setVisible(true);
-            actualChildNumber2++;
-        }
-
-        for (int i = 1; i <= 3; i++) {
-            Optional<String> actualId = state.getStudentsInPlaces().keySet().stream()
-                    .filter(x -> x.matches("^c[0-9]"))
-                    .findFirst();
-            if (actualId.isPresent()) {
-                String idc = actualId.get();
-                GridPane cloudRep = (GridPane) clouds.getChildren().get(actualChildNumber1);
-                for (TeacherColor color : TeacherColor.values()) {
-                    int num = state.getStudentsInPlaces().get(idc).get(color);
-                    Label colorRep = (Label) getNodeByStyleClass(cloudRep.getChildren(), color.toString());
-                    colorRep.setText("" + num);
-                }
-                cloudRep.setVisible(true);
-                actualChildNumber1++;
-            }
-        }
-
-        Map<TeacherColor, Integer> roomRep = new HashMap<>(state.getStudentsInPlaces().get("Room"));
-        for (TeacherColor color : TeacherColor.values()) {
-            GridPane colorsRoomRep = (GridPane) room.getChildren().get(actualChildNumber7);
-            for (int i = 1; i <= roomRep.get(color); i++) {
-                Node studentRoom = getNodeByStyleClass(colorsRoomRep.getChildren(), color.toString());
-                studentRoom.setVisible(true);
-            }
-            colorsRoomRep.setVisible(true);
-            actualChildNumber7++;
-        }
-
-        /*for(int i = 1; i <= 3; i++){
-            Optional<String> actualId = state.getAvailableCharacters().stream().findFirst().map(Enum::toString);
-            if(actualId.isPresent()){
-                GridPane characterRep = (GridPane) character.getChildren().get(actualChildNumber6);
-                int num = state.getCharacterCosts().get(state.getAvailableCharacters().stream().findFirst().get());
-                Label characterCost = (Label) getNodeByStyleClass(characterRep.getChildren(), "COIN");
-                characterCost.setText("" + num);
-                characterRep.setVisible(true);
-                actualChildNumber6++;
-            }
-        }*/
-
-        /*for (Node student : entrance.getChildren()) {
-            student.getStyleClass().removeAll(islandContents);
-        }
-
-        Map<TeacherColor, Integer> entranceMap = new HashMap<>(state.getStudentsInPlaces().get("Entrance"));
-        for (TeacherColor color : TeacherColor.values()) {
-            while (entranceMap.get(color) > 0) {
-                Node studEntranceRep = entrance.getChildren().get(actualChildNumber4);
-                studEntranceRep.getStyleClass().add(color.toString());
-                entranceMap.replace(color, entranceMap.get(color), entranceMap.get(color) - 1);
-                actualChildNumber4++;
-            }
-        }*/
+        int actualChildNumber = 0;
+        for (Node child : islandGrid.getChildren()) child.setVisible(false);
 
         for (int i = 1; i <= 12; i++) {
 
@@ -410,8 +286,147 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                 actualChildNumber++;
             }
         }
-
     }
+
+    private void updateDashboard() {
+        dashboard.setVisible(true);
+        updateTeachers();
+        updateTowers();
+        updateRoom();
+        updateEntrance();
+    }
+
+    private void updateEntrance() {
+        entrance.setVisible(true);
+        int actualChildNumber = 0;
+        for (Node child : entrance.getChildren()) child.setVisible(false);
+
+        for (Node student : entrance.getChildren()) {
+            student.getStyleClass().removeAll(dashboardRoomOrder);
+        }
+
+        Map<TeacherColor, Integer> entranceMap = new HashMap<>(state.getStudentsInPlaces().get("Entrance"));
+        System.out.println(entranceMap);
+        for (TeacherColor color : TeacherColor.values()) {
+            while (entranceMap.get(color) > 0) {
+                Node studEntranceRep = entrance.getChildren().get(actualChildNumber);
+                studEntranceRep.getStyleClass().add(color.toString());
+                entranceMap.replace(color, entranceMap.get(color), entranceMap.get(color) - 1);
+                actualChildNumber++;
+                studEntranceRep.setVisible(true);
+            }
+        }
+        entrance.setVisible(true);
+    }
+
+    private void updateRoom() {
+        room.setVisible(true);
+        int actualChildNumber = 0;
+        for (Node child : room.getChildren()) {
+            child.setVisible(false);
+            for (Node nephew : ((GridPane) child).getChildren()) nephew.setVisible(false);
+        }
+
+        Map<TeacherColor, Integer> roomRep = new HashMap<>(state.getStudentsInPlaces().get("Room"));
+        for (TeacherColor color : TeacherColor.values()) {
+            GridPane colorsRoomRep = (GridPane) room.getChildren().get(actualChildNumber);
+            for (int i = 0; i < roomRep.get(color); i++) {
+                Node studentInRoom = colorsRoomRep.getChildren().get(i);
+                studentInRoom.setVisible(true);
+            }
+            colorsRoomRep.setVisible(true);
+            actualChildNumber++;
+        }
+    }
+
+    private void updateTowers() {
+        towers.setVisible(true);
+        int actualChildNumber = 0;
+        for (Node child : towers.getChildren()) child.setVisible(false);
+
+        for (int i = 1; i <= state.numMyTowers(); i++) {
+            Node towersRep = towers.getChildren().get(actualChildNumber);
+            towersRep.setVisible(true);
+            actualChildNumber++;
+        }
+    }
+
+    private void updateTeachers() {
+        teachers.setVisible(true);
+        for (Node child : teachers.getChildren()) child.setVisible(false);
+        Arrays.stream(TeacherColor.values())
+                .forEach(color -> teachers.getChildren().stream()                               // for each teacher color
+                        .filter(x -> x.getStyleClass().contains(color.toString() + "_teacher")) // get correspondent teacher representation
+                        .peek(x -> x.setVisible(state.getTeachers().contains(color))));         // set it to visible if needed
+    }
+
+    private void updateClouds() {
+        clouds.setVisible(true);
+        int actualChildNumber = 0;
+        for (Node child : clouds.getChildren()) child.setVisible(false);
+
+        for (int i = 1; i <= 3; i++) {
+            int forLambda = i;
+            Optional<String> actualId = state.getStudentsInPlaces().keySet().stream()
+                    .filter(x -> x.matches("^c_" + forLambda + "*"))
+                    .findFirst();
+            if (actualId.isPresent()) {
+                int cloudChildNumber = 0;
+                String idc = actualId.get();
+                Map<TeacherColor, Integer> cloudStudentRep = new HashMap<>(state.getStudentsInPlaces().get(idc));
+                GridPane cloudRep = (GridPane) clouds.getChildren().get(actualChildNumber);
+                for (TeacherColor color : TeacherColor.values()) {
+                    while (cloudStudentRep.get(color) > 0) {
+                        Node studRep = cloudRep.getChildren().get(cloudChildNumber);
+                        studRep.getStyleClass().add(color.toString());
+                        cloudStudentRep.replace(color, cloudStudentRep.get(color), cloudStudentRep.get(color) - 1);
+                        cloudChildNumber++;
+                        studRep.setVisible(true);
+                    }
+                }
+                cloudRep.setVisible(true);
+                actualChildNumber++;
+            }
+        }
+    }
+
+    private void updateAssistant() {
+        int actualChildNumber = 0;
+        assistant.setVisible(true);
+        for (int j = 0; j < 10; j++) {
+            Node assistantRep = assistant.getChildren().get(actualChildNumber);
+            assistantRep.setVisible(false);
+        }
+        for (int i = 0; i < 10; i++) {
+            Node assistantRep = assistant.getChildren().get(actualChildNumber);
+            if (state.getAssistantCards().contains(i)) {
+                assistantRep.setVisible(true);
+            } else {
+                assistantRep.getStyleClass().remove("a" + i+1);
+                assistantRep.getStyleClass().add(state.getWizard().get().toString());
+            }
+            actualChildNumber++;
+        }
+    }
+
+    private void updateCharacters() {
+        //character.setVisible(true);
+        /*for(int j = 0; j < 3; j++){
+            Node characterRep = character.getChildren().get(actualChildNumber6);
+            characterRep.setVisible(false);
+        for(int i = 1; i <= 3; i++){
+            Optional<String> actualId = state.getAvailableCharacters().stream().findFirst().map(Enum::toString);
+            if(actualId.isPresent()){
+                GridPane characterRep = (GridPane) character.getChildren().get(actualChildNumber6);
+                int num = state.getCharacterCosts().get(state.getAvailableCharacters().stream().findFirst().get());
+                Label characterCost = (Label) getNodeByStyleClass(characterRep.getChildren(), "COIN");
+                characterCost.setText("" + num);
+                characterRep.setVisible(true);
+                actualChildNumber6++;
+            }
+        }*/
+    }
+
 
     public void addGameState(PlayState state) {
         this.state = state;
@@ -430,5 +445,4 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                 .findFirst()
                 .get();
     }
-
 }

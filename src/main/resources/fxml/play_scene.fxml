@@ -11,8 +11,8 @@
                 </GridPane>
                 <GridPane fx:id="clouds" GridPane.columnIndex="2" GridPane.rowIndex="0" xmlns:fx="http://javafx.com/fxml">
                 </GridPane>
-                <!--<GridPane fx:id="assistant" GridPane.columnIndex="1" GridPane.rowIndex="1" xmlns:fx="http://javafx.com/fxml">
-                </GridPane>-->
+                <GridPane fx:id="assistant" GridPane.columnIndex="2" GridPane.rowIndex="1" xmlns:fx="http://javafx.com/fxml">
+                </GridPane>
                 <GridPane fx:id="dashboard" GridPane.columnIndex="0" GridPane.rowIndex="2" xmlns:fx="http://javafx.com/fxml">
                     <GridPane fx:id="entrance" xmlns:fx="http://javafx.com/fxml">
                     </GridPane>

@@ -326,4 +326,8 @@ public class PlayState {
     public int numMyTowers(){
         return numTowers(myName);
     }
+
+    public int getNumOfStudentsInCloud(){
+        return numPlayers + 1;
+    }
 }

@@ -140,9 +140,9 @@ Label {
 }
 
 .assistant {
-    -fx-min-width: 40px;
-    -fx-min-height: 40px;
-    -fx-background-size: contain;
+    -fx-min-width: 50px;
+    -fx-min-height: 80px;
+    -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
 }
 
@@ -190,8 +190,10 @@ GridPane {
 .wood {
     -fx-min-width: 30px;
     -fx-min-height: 30px;
-    -fx-background-size: 30px;
+    -fx-background-size: cover;
     -fx-color-label-visible: black;
+    -fx-text-alignment: center;
+    -fx-font-size: 20px;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
@@ -212,6 +214,7 @@ GridPane {
 #assistant {
     -fx-background-color: yellow;
     -fx-pref-width: 300;
+    -fx-grid-lines-visible: true;
 }
 
 #clouds {
