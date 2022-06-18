@@ -51,6 +51,8 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
     private GridPane towers;
     @FXML
     private GridPane assistant;
+    @FXML
+    private GridPane commands;
     /*@FXML
     private GridPane character;*/
 
@@ -65,6 +67,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         buildClouds();
         buildAssistant();
         buildDashboard();
+        buildCommands();
         update();
     }
 
@@ -81,6 +84,54 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(25);
         container.getColumnConstraints().removeAll();
+
+    }
+
+    private void buildCommands(){
+        Label actual = new Label("SM");
+        actual.getStyleClass().add("command");
+        GridPane.setRowIndex(actual, 0);
+        GridPane.setColumnIndex(actual, 0);
+        commands.getChildren().add(actual);
+        actual = new Label("MNM");
+        actual.getStyleClass().add("command");
+        GridPane.setRowIndex(actual, 0);
+        GridPane.setColumnIndex(actual, 1);
+        commands.getChildren().add(actual);
+        actual = new Label("IN");
+        actual.getStyleClass().add("command");
+        GridPane.setRowIndex(actual, 0);
+        GridPane.setColumnIndex(actual, 2);
+        commands.getChildren().add(actual);
+        actual = new Label("CH");
+        actual.getStyleClass().add("command");
+        GridPane.setRowIndex(actual, 0);
+        GridPane.setColumnIndex(actual, 3);
+        commands.getChildren().add(actual);
+        actual = new Label("CA");
+        actual.getStyleClass().add("command");
+        GridPane.setRowIndex(actual, 0);
+        GridPane.setColumnIndex(actual, 4);
+        commands.getChildren().add(actual);
+
+        int i = 0;
+        for(String color: dashboardRoomOrder){
+            actual = new Label("CA");
+            actual.getStyleClass().add("command");
+            actual.getStyleClass().add(color);
+            GridPane.setRowIndex(actual, 1);
+            GridPane.setColumnIndex(actual, i);
+            commands.getChildren().add(actual);
+            i++;
+        }
+
+        actual = new Label("SUB");
+        actual.getStyleClass().add("command");
+        actual.getStyleClass().add("submit");
+        GridPane.setRowIndex(actual, 0);
+        GridPane.setColumnIndex(actual, 5);
+        GridPane.setRowSpan(actual, 2);
+        commands.getChildren().add(actual);
 
     }
 

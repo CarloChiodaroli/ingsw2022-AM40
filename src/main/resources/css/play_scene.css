@@ -213,19 +213,18 @@ GridPane {
 
 #assistant {
     -fx-background-color: yellow;
-    -fx-pref-width: 300;
     -fx-grid-lines-visible: true;
 }
 
 #clouds {
     -fx-background-color: orange;
-    -fx-pref-width: 200;
 }
 
 #container {
     -fx-background-color: green;
     -fx-hgap: 10px;
     -fx-vgap: 10px;
+    -fx-grid-lines-visible: true;
 }
 
 #room {
@@ -279,4 +278,13 @@ GridPane {
 
 #spacer {
     -fx-max-width: auto;
+}
+
+#commands {
+    -fx-background-color: gray;
+}
+
+.command {
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
 }
