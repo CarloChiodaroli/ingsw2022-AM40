@@ -322,4 +322,8 @@ public class PlayState {
     public void setNoEntryIslands(List<String> noEntryIslands) {
         this.noEntryIslands = noEntryIslands;
     }
+
+    public int numMyTowers(){
+        return numTowers(myName);
+    }
 }

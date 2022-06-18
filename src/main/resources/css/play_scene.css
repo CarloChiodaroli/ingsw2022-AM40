@@ -1,7 +1,5 @@
 Label {
     -fx-background-repeat: no-repeat;
-    -fx-min-width: 30px;
-    -fx-min-height: 30px;
     -fx-background-position: center;
     -fx-background-size: 30px;
     -fx-color-label-visible: black;
@@ -25,6 +23,26 @@ Label {
 
 .BLUE {
     -fx-background-image: url("../images/assets/wood/student/SB.png");
+}
+
+.PINK_teacher {
+    -fx-background-image: url("../images/assets/wood/teacher/TP.png");
+}
+
+.RED_teacher {
+    -fx-background-image: url("../images/assets/wood/teacher/TR.png");
+}
+
+.YELLOW_teacher {
+    -fx-background-image: url("../images/assets/wood/teacher/TY.png");
+}
+
+.GREEN_teacher {
+    -fx-background-image: url("../images/assets/wood/teacher/TG.png");
+}
+
+.BLUE_teacher {
+    -fx-background-image: url("../images/assets/wood/teacher/TB.png");
 }
 
 .WHITE {
@@ -159,4 +177,103 @@ Label {
 GridPane {
     -fx-hgap: 10px;
     -fx-vgap: 10px;
+}
+
+.student {
+
+}
+
+.table {
+    -fx-background-image: none;
+}
+
+.wood {
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-background-size: 30px;
+    -fx-color-label-visible: black;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+#islandGrid {
+    -fx-background-color: red;
+}
+
+#dashboard {
+    -fx-padding: 20px;
+    -fx-background-image: url("../images/assets/Plancia.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-pref-height: 200;
+    -fx-hgap: 30px;
+}
+
+#assistant {
+    -fx-background-color: yellow;
+    -fx-pref-width: 300;
+}
+
+#clouds {
+    -fx-background-color: orange;
+    -fx-pref-width: 200;
+}
+
+#container {
+    -fx-background-color: green;
+    -fx-hgap: 10px;
+    -fx-vgap: 10px;
+}
+
+#room {
+    -fx-padding: 26px 7px;
+    -fx-vgap: 25px;
+}
+
+.table {
+    -fx-hgap: 8px;
+}
+
+#entrance {
+    -fx-padding: 20px 0px;
+    -fx-vgap: 15px;
+}
+
+#entrance > .wood {
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-size: 40px;
+}
+
+#teachers {
+    -fx-padding: 20px 2px;
+    -fx-vgap: 16px;
+}
+
+#teachers > .wood {
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-size: 40px;
+    -fx-rotate: 30;
+}
+
+#towers {
+    -fx-padding: 35px 31px;
+    -fx-hgap: 20px;
+
+}
+
+#towers > .wood {
+    -fx-min-width: 25px;
+    -fx-min-height: 50px;
+    -fx-background-size: contain;
+}
+
+#moreThings {
+    -fx-background-color: blue;
+    -fx-min-width: 20px;
+}
+
+#spacer {
+    -fx-max-width: auto;
 }
