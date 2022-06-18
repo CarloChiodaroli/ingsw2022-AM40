@@ -100,6 +100,7 @@ public class PlayMessagesReader implements PlayMessageReader {
                         if (!toAdd.isEmpty())
                             commonAnswers.add(PlayMessagesFabric.statusStudent(server, e.getKey(), toAdd));
                     });
+            commonAnswers.add(PlayMessagesFabric.statusNoEntry(server, outbound.getIslandsWithNoEntry()));
         }
         for (String name : playerNames) {
             List<Message> answers = new ArrayList<>(commonAnswers);
@@ -254,12 +255,12 @@ public class PlayMessagesReader implements PlayMessageReader {
         }
         // command to read model
         List<String> islandIds = outbound.getAllIslandIds();
-        Map<String, TowerColor> domina = new HashMap<>();
+        Map<String, TowerColor> dominia = new HashMap<>();
         islandIds.forEach(id ->
-                outbound.getTowerInPlace(id).ifPresent(tower -> domina.put(id, tower)));
+                outbound.getTowerInPlace(id).ifPresent(tower -> dominia.put(id, tower)));
         // building answer list
         answers.add(PlayMessagesFabric.statusIslandIds(server, islandIds));
-        answers.add(PlayMessagesFabric.statusTower(server, domina));
+        answers.add(PlayMessagesFabric.statusTower(server, dominia));
         answers.add(PlayMessagesFabric.statusStudent(
                 server,
                 outbound.actualMotherNaturePosition(),
@@ -268,6 +269,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         if (expertVariant && savedIslandId != null)
             answers.add(PlayMessagesFabric.statusStudent(server, savedIslandId, outbound.getStudentInPlace(player, savedIslandId)));
         answers.add(PlayMessagesFabric.statusMotherNature(server, outbound.actualMotherNaturePosition()));
+        answers.add(PlayMessagesFabric.statusNoEntry(server, outbound.getIslandsWithNoEntry()));
         answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         // sending answers
         answers.forEach(gameManager::broadcastMessage);
@@ -355,6 +357,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         prices.forEach((k, v) -> pricesString.put(k.toString(), v));
         answers.add(PlayMessagesFabric.statusCharacterCard(server, pricesString));
         answers.add(PlayMessagesFabric.statusPlayerMoney(server, outbound.getPlayerMoney()));
+        answers.add(PlayMessagesFabric.statusNoEntry(server, outbound.getIslandsWithNoEntry()));
         String actualIsland = turnController.getSavedIsland();
         if (actualIsland != null)
             answers.add(PlayMessagesFabric.statusStudent(server, actualIsland, outbound.getStudentInPlace(getActualPlayer(), actualIsland)));
@@ -443,6 +446,11 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     @Override
     public void statusStudent(String sender, Characters character, Map<TeacherColor, Integer> quantity) {
+        errorIllegalMessage();
+    }
+
+    @Override
+    public void statusNoEntry(String sender, List<String> islandIds) {
         errorIllegalMessage();
     }
 

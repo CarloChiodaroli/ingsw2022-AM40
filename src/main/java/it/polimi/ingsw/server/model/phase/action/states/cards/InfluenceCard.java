@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.model.phase.action.states.cards;
 
-import it.polimi.ingsw.commons.enums.TeacherColor;
-import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.commons.enums.Characters;
+import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
+import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.server.model.phase.action.states.Influence;
 import it.polimi.ingsw.server.model.player.Player;
@@ -34,7 +34,7 @@ public class InfluenceCard extends CharacterCard {
         if (super.getCharacterization("Island") > 0 && super.getCharacterization("NoEntrySetter") == 0) {
             decoratedCaller(player, super.getInterestingIsland());
         }
-        if (super.getCharacterization("NoEntrySetter") == 0) decoratedCaller(player, island);
+        decoratedCaller(player, island);
     }
 
     private void decoratedCaller(Player player, Island island) {
@@ -65,10 +65,10 @@ public class InfluenceCard extends CharacterCard {
      */
     @Override
     public void activator(ActionFaseState decorated, Player player) throws InvalidParameterException {
-        if(super.getCharacterization("Island") > 0){
+        if (super.getCharacterization("Island") > 0) {
             throw new InvalidParameterException("An island Id is needed to activate this card");
         }
-        if(super.getCharacterization("Student") > 0){
+        if (super.getCharacterization("Student") > 0) {
             throw new InvalidParameterException("A teacher color is needed to activate this card");
         }
         playerPays(player);
@@ -81,7 +81,7 @@ public class InfluenceCard extends CharacterCard {
      */
     @Override
     public void activator(ActionFaseState decorated, Player player, TeacherColor color) throws InvalidParameterException {
-        if(super.getCharacterization("Island") > 0){
+        if (super.getCharacterization("Island") > 0) {
             throw new InvalidParameterException("An island Id is needed to activate this card");
         }
         playerPays(player);
@@ -94,7 +94,7 @@ public class InfluenceCard extends CharacterCard {
      */
     @Override
     public void activator(ActionFaseState decorated, Player player, Island island) throws InvalidParameterException {
-        if(super.getCharacterization("Student") > 0){
+        if (super.getCharacterization("Student") > 0) {
             throw new InvalidParameterException("A teacher color is needed to activate this card");
         }
         playerPays(player);
@@ -108,11 +108,11 @@ public class InfluenceCard extends CharacterCard {
         }
     }
 
-    public void giveNoEntryBack(){
-        if(super.getCharacterization("NoEntrySetter") > 0){
+    public void giveNoEntryBack() {
+        if (super.getCharacterization("NoEntrySetter") == 0) {
             throw new IllegalStateException("Card does not manage no entry cards");
         }
-        if(noEntryCounter == super.getCharacterization("Memory")){
+        if (noEntryCounter == super.getCharacterization("Memory")) {
             throw new IllegalStateException("Card has already got back all no entry tiles");
         }
         noEntryCounter++;

@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Server sends status messages to the client which, via PlayMessageController, change this class.
  * Then the state can be read from this class to update the view.
  */
-public class    PlayState {
+public class PlayState {
 
     // Lobby State
     private Wizard wizard;
@@ -42,6 +42,7 @@ public class    PlayState {
     private Map<String, Integer> playerMoney;
     private Characters actualCard;
     private Integer myMoney;
+    private List<String> noEntryIslands;
 
 
     public PlayState() {
@@ -68,8 +69,8 @@ public class    PlayState {
             return 6;
     }
 
-    public int numStudEntrance(){
-        if(numPlayers == 2)
+    public int numStudEntrance() {
+        if (numPlayers == 2)
             return 7;
         else
             return 9;
@@ -312,5 +313,13 @@ public class    PlayState {
 
     public List<Characters> getAvailableCharacters() {
         return characterCosts.keySet().stream().toList();
+    }
+
+    public List<String> getNoEntryIslands() {
+        return noEntryIslands;
+    }
+
+    public void setNoEntryIslands(List<String> noEntryIslands) {
+        this.noEntryIslands = noEntryIslands;
     }
 }

@@ -2,13 +2,15 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.client.view.View;
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.commons.message.IllegalMessageException;
 import it.polimi.ingsw.commons.message.PlayMessageReader;
-import it.polimi.ingsw.commons.message.play.*;
 import it.polimi.ingsw.commons.message.PlayMessagesFabric;
-import it.polimi.ingsw.commons.enums.Characters;
+import it.polimi.ingsw.commons.message.play.ExpertPlayMessage;
+import it.polimi.ingsw.commons.message.play.NormalPlayMessage;
+import it.polimi.ingsw.commons.message.play.PlayMessage;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +41,7 @@ public class PlayMessageController implements PlayMessageReader {
 
     /**
      * Getter of the playState
+     *
      * @return the playState
      */
     public PlayState getState() {
@@ -47,6 +50,7 @@ public class PlayMessageController implements PlayMessageReader {
 
     /**
      * Setter of the main player
+     *
      * @param mainPlayer the name of the main player
      */
     public void setMainPlayer(String mainPlayer) {
@@ -56,14 +60,16 @@ public class PlayMessageController implements PlayMessageReader {
 
     /**
      * Getter of the Place Ids
+     *
      * @return a list of the Place Ids
      */
-    public List<String> getPlaceIds(){
+    public List<String> getPlaceIds() {
         return state.getPlaceIds();
     }
 
     /**
      * Getter of the actual player nickname
+     *
      * @return the nickname
      */
     public String getNickname() {
@@ -72,6 +78,7 @@ public class PlayMessageController implements PlayMessageReader {
 
     /**
      * Getter of the main player
+     *
      * @return the name of the main player
      */
     public String getMainPlayer() {
@@ -80,6 +87,7 @@ public class PlayMessageController implements PlayMessageReader {
 
     /**
      * Getter of the name pf the players
+     *
      * @return a list of player names
      */
     public List<String> getPlayerNames() {
@@ -208,7 +216,7 @@ public class PlayMessageController implements PlayMessageReader {
     /**
      * Receives the status of the round setting it as "Action phase of actual player".
      * Is one of the two status messages which updates the view (with the other being statusPlanning)
-     *
+     * <p>
      * {@inheritDoc}
      */
     @Override
@@ -221,7 +229,7 @@ public class PlayMessageController implements PlayMessageReader {
     /**
      * Receives the status of the round setting it as "Planning phase of actual player".
      * Is one of the two status messages which updates the view (with the other being statusAction)
-     *
+     * <p>
      * {@inheritDoc}
      */
     @Override
@@ -334,7 +342,17 @@ public class PlayMessageController implements PlayMessageReader {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized void statusNoEntry(String sender, List<String> islandIds) {
+        controlServer(sender);
+        state.setNoEntryIslands(islandIds);
+    }
+
+    /**
      * Controls if the sender name is legal
+     *
      * @param player the sender name that's not server
      */
     private void controlLegal(String player) {
@@ -343,6 +361,7 @@ public class PlayMessageController implements PlayMessageReader {
 
     /**
      * Controls if the sender name is server's name
+     *
      * @param sender the sender name
      */
     private void controlServer(String sender) {

@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.controller.inner;
 
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.server.model.GameModel;
-import it.polimi.ingsw.commons.enums.Characters;
 
 import java.util.*;
 
@@ -12,7 +12,7 @@ public class OutboundController {
     private final GameModel model;
     private final InputController inputController;
 
-    public OutboundController(GameModel model, InputController controller){
+    public OutboundController(GameModel model, InputController controller) {
         this.model = model;
         this.inputController = controller;
     }
@@ -33,11 +33,12 @@ public class OutboundController {
         else if (placeId.equals("Entrance")) return model.getStudentsInEntrance(playerName);
         else if (placeId.equals("Room")) return model.getStudentsInRoom(playerName);
         else if (placeId.equals("Card")) return model.getActualCardMemory();
-        else if (Arrays.stream(Characters.values()).map(Enum::toString).toList().contains(placeId)) return model.getStudentsInCard(Characters.valueOf(placeId));
+        else if (Arrays.stream(Characters.values()).map(Enum::toString).toList().contains(placeId))
+            return model.getStudentsInCard(Characters.valueOf(placeId));
         else return new HashMap<>();
     }
 
-    public List<String> getPlayersInOrder(){
+    public List<String> getPlayersInOrder() {
         return model.getPlayersInOrder();
     }
 
@@ -55,29 +56,34 @@ public class OutboundController {
         return model.getMotherNaturePosition();
     }
 
-    public Map<Characters, Integer> getCharacterCardPrices(){
+    public Map<Characters, Integer> getCharacterCardPrices() {
         inputController.controlExpertVariant();
         return model.getActiveCharactersCosts();
     }
 
-    public Characters getActualCharacterCard(){
+    public Characters getActualCharacterCard() {
         return model.getActualCharacter();
     }
 
-    public TowerColor getPlayerTowerColor(String playerName){
+    public TowerColor getPlayerTowerColor(String playerName) {
         return model.getPlayerTowerColor(playerName);
     }
 
-    public boolean endGame(){
+    public boolean endGame() {
         return model.isGameEnded();
     }
 
-    public String winner(){
+    public String winner() {
         return model.getWinner();
     }
 
-    public Map<String, Integer> getPlayerMoney(){
+    public Map<String, Integer> getPlayerMoney() {
         inputController.excludeGameState(GameState.INITIAL);
         return model.getPlayerMoney();
+    }
+
+    public List<String> getIslandsWithNoEntry() {
+        inputController.excludeGameState(GameState.INITIAL);
+        return model.getIslandsWithNoEntry();
     }
 }

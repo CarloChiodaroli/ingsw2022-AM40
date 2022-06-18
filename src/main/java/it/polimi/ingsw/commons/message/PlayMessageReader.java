@@ -1,8 +1,8 @@
 package it.polimi.ingsw.commons.message;
 
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
-import it.polimi.ingsw.commons.enums.Characters;
 
 import java.util.List;
 import java.util.Map;
@@ -60,4 +60,6 @@ public interface PlayMessageReader {
     void statusPlayerMoney(String sender, Map<String, Integer> money);
 
     void statusStudent(String sender, Characters character, Map<TeacherColor, Integer> quantity);
+
+    void statusNoEntry(String sender, List<String> islandIds);
 }

@@ -5,9 +5,9 @@ import it.polimi.ingsw.commons.enums.Characters;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CardCharacterizations {
+public abstract class CardCharacterizations {
 
-    public static Map<Characters, Map<String, Integer>> getMap(){
+    public static Map<Characters, Map<String, Integer>> getMap() {
         Map<Characters, Map<String, Integer>> allCharacterizations = new HashMap<>();
 
         for (Characters value : Characters.values()) {
@@ -79,7 +79,7 @@ public class CardCharacterizations {
         return allCharacterizations;
     }
 
-    public static Map<String, Integer> particular(Characters characters){
+    public static Map<String, Integer> particular(Characters characters) {
         return getMap().get(characters);
     }
 }

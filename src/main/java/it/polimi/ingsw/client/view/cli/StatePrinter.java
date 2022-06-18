@@ -186,6 +186,10 @@ public class StatePrinter {
                 row = spacer(row, "TOWER".length() - playState.getConquest(id).orElse(space).length());
                 row += verticalLineElement + (playState.getMotherNature().equals(id) ? yes : space);
                 row = spacer(row, "MOTHER NATURE".length() - (playState.getMotherNature().equals(id) ? yes : space).length());
+                if (playState.isExpert()) {
+                    row += verticalLineElement + (playState.getNoEntryIslands().contains(id) ? yes : space);
+                    row = spacer(row, "NO_ENTRY".length() - (playState.getNoEntryIslands().contains(id) ? yes : space).length());
+                }
                 row += verticalLineElement;
                 rows.add(row);
             });
@@ -195,8 +199,8 @@ public class StatePrinter {
                 colorHeading() + EscapeCli.DEFAULT +
                 verticalLineElement + "TOWER" +
                 verticalLineElement + "MOTHER NATURE" +
-                verticalLineElement);
-        rows.add(0, rowDivider(68));
+                verticalLineElement + (playState.isExpert() ? "NO_ENTRY" + verticalLineElement : ""));
+        rows.add(0, rowDivider(68 + (playState.isExpert() ? ("NO_ENTRY" + verticalLineElement).length() : "".length())));
         rows.add(rows.size(), rows.get(0));
         String result = empty;
         for (String row : rows) {
@@ -342,15 +346,15 @@ public class StatePrinter {
         return "You have " + playState.getMyMoney() + " coins\n";
     }
 
-    private String characterStudentState(){
+    private String characterStudentState() {
         List<String> actualCharacters = playState.getAvailableCharacters().stream().map(Enum::toString).toList();
 
         List<String> lines = new ArrayList<>();
         int idMaxWidth = actualCharacters.stream().map(String::length).max(Integer::compareTo).orElse(10);
         String result = "";
 
-        for(String character: actualCharacters){
-            if(playState.getStudentsInPlaces().containsKey(character)){
+        for (String character : actualCharacters) {
+            if (playState.getStudentsInPlaces().containsKey(character)) {
                 Map<TeacherColor, Integer> students = playState.getStudentsInPlaces().get(character);
                 String line = verticalLineElement + character;
                 line = spacer(line, idMaxWidth - character.length());
@@ -359,7 +363,7 @@ public class StatePrinter {
                 lines.add(line);
             }
         }
-        if(lines.isEmpty()){
+        if (lines.isEmpty()) {
             lines.add("No actual Character card has students\n");
         } else {
             String heading = verticalLineElement;

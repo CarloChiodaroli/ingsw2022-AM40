@@ -432,4 +432,9 @@ class FakeGameManager implements PlayMessageReader {
     public void statusStudent(String sender, Characters character, Map<TeacherColor, Integer> quantity) {
 
     }
+
+    @Override
+    public void statusNoEntry(String sender, List<String> islandIds) {
+
+    }
 }

@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.model;
 
 
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
-import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.server.model.player.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.table.Cloud;
@@ -198,15 +198,14 @@ public class GameModel {
         return studentContent;
     }
 
-    public Map<TeacherColor, Integer> getStudentsInCard(Characters characters){
+    public Map<TeacherColor, Integer> getStudentsInCard(Characters characters) {
         Optional<StudentsManager> result = game.getActionPhase().getCardMemory(characters);
-        if(result.isPresent()){
+        if (result.isPresent()) {
             return result.get().getMap();
         } else {
             return new HashMap<>();
         }
     }
-
 
 
     public List<String> getCloudIds() {
@@ -238,6 +237,13 @@ public class GameModel {
         return MotherNature.getMotherNature().getPosition()
                 .map(Island::getId)
                 .orElse("NoIsland");
+    }
+
+    public List<String> getIslandsWithNoEntry() {
+        return game.getTable().getIslandList().stream()
+                .filter(Island::hasNoEntryTile)
+                .map(Island::getId)
+                .toList();
     }
 
     // Getter of the player state
@@ -283,7 +289,7 @@ public class GameModel {
                 .collect(Collectors.toList());
     }
 
-    public Map<String, Integer> getIslandSizes(){
+    public Map<String, Integer> getIslandSizes() {
         Map<String, Integer> result = new HashMap<>();
         game.getTable().getIslandList()
                 .forEach(island -> result.put(island.getId(), island.getEquivalent()));
@@ -322,7 +328,7 @@ public class GameModel {
         return game.isGameEnded();
     }
 
-    public String getWinner(){
+    public String getWinner() {
         return game.getEndPlayer();
     }
 
@@ -330,17 +336,17 @@ public class GameModel {
         return game;
     }
 
-    public TowerColor getPlayerTowerColor(String playerName){
+    public TowerColor getPlayerTowerColor(String playerName) {
         return getPlayer(playerName).getTowerColor();
     }
 
-    public Map<String, Integer> getPlayerMoney(){
+    public Map<String, Integer> getPlayerMoney() {
         Map<String, Integer> playerMoney = new HashMap<>();
         game.getPlayers().forEach(x -> playerMoney.put(x.getName(), x.getMoney()));
         return playerMoney;
     }
 
-    public Characters getActualCharacter(){
+    public Characters getActualCharacter() {
         return game.getActionPhase().getActualCharacter().orElseThrow(() -> new IllegalStateException("There is no actual character"));
     }
 }

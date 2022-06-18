@@ -1,15 +1,15 @@
 package it.polimi.ingsw.commons.message;
 
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
-import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.message.play.ExpertPlayMessage;
 import it.polimi.ingsw.commons.message.play.NormalPlayMessage;
 
 import java.util.List;
 import java.util.Map;
 
-public class PlayMessagesFabric {
+public abstract class PlayMessagesFabric {
 
     public static NormalPlayMessage playAssistantCard(String player, int weight) {
         return new NormalPlayMessage(player, "playAssistantCard", weight);
@@ -40,10 +40,10 @@ public class PlayMessagesFabric {
     }
 
     public static NormalPlayMessage statusTower(String sender, Map<String, TowerColor> conquests) {
-        return new NormalPlayMessage(sender,"statusTower", conquests);
+        return new NormalPlayMessage(sender, "statusTower", conquests);
     }
 
-    public static NormalPlayMessage statusTower(String sender, String playerName, TowerColor color){
+    public static NormalPlayMessage statusTower(String sender, String playerName, TowerColor color) {
         return new NormalPlayMessage(sender, "statusTower", playerName, color);
     }
 
@@ -67,11 +67,11 @@ public class PlayMessagesFabric {
         return new NormalPlayMessage(sender, "statusPlanning", actualPlayer);
     }
 
-    public static NormalPlayMessage statusAssistantCard(String sender, String playerName, int weight){
+    public static NormalPlayMessage statusAssistantCard(String sender, String playerName, int weight) {
         return new NormalPlayMessage(sender, "statusAssistantCard", playerName, weight);
     }
 
-    public static NormalPlayMessage statusEndGame(String sender, String winnerName){
+    public static NormalPlayMessage statusEndGame(String sender, String winnerName) {
         return new NormalPlayMessage(sender, "statusEndGame", winnerName);
     }
 
@@ -81,15 +81,15 @@ public class PlayMessagesFabric {
         return new ExpertPlayMessage(player, "moveStudent", fromColor, toColor, placeId);
     }
 
-    public static ExpertPlayMessage statusStudent(String sender, Characters character, Map<TeacherColor, Integer> quantity){
+    public static ExpertPlayMessage statusStudent(String sender, Characters character, Map<TeacherColor, Integer> quantity) {
         return new ExpertPlayMessage(sender, "statusStudent", character, quantity);
     }
 
-    public static ExpertPlayMessage statusPlayerMoney(String sender, Map<String, Integer> money){
+    public static ExpertPlayMessage statusPlayerMoney(String sender, Map<String, Integer> money) {
         return new ExpertPlayMessage(sender, "statusPlayerMoney", money);
     }
 
-    public static ExpertPlayMessage statusCharacterCard(String sender, Map<String, Integer> money){
+    public static ExpertPlayMessage statusCharacterCard(String sender, Map<String, Integer> money) {
         return new ExpertPlayMessage(sender, "statusCharacterCard", money);
     }
 
@@ -105,7 +105,11 @@ public class PlayMessagesFabric {
         return new ExpertPlayMessage(player, "playCharacterCard", character, color);
     }
 
-    public static ExpertPlayMessage statusCharacterCard(String sender, Characters character){
+    public static ExpertPlayMessage statusCharacterCard(String sender, Characters character) {
         return new ExpertPlayMessage(sender, "statusCharacterCard", character);
+    }
+
+    public static ExpertPlayMessage statusNoEntry(String sender, List<String> islandIds) {
+        return new ExpertPlayMessage(sender, "statusNoEntry", islandIds);
     }
 }

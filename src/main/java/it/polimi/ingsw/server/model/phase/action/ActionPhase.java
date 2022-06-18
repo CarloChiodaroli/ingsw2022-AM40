@@ -434,4 +434,8 @@ public class ActionPhase {
         this.actualState = state;
     }
 
+    // for testing purposes
+    public ActionFaseState getState(ActionPhaseStateType which) {
+        return states.get(which);
+    }
 }

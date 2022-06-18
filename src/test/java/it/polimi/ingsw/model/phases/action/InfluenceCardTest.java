@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.phases.action;
 
+import it.polimi.ingsw.server.enums.ActionPhaseStateType;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
@@ -23,12 +24,13 @@ public class InfluenceCardTest {
         Game game = new Game();
         game.addPlayer("Camilla");
         game.addPlayer("Anja");
+        game.switchExpertVariant();
         game.gameStarter();
         StudentMovement studentMovement = new StudentMovement(game.getActionPhase());
         Characters sorceress = Characters.SORCERESS;
-        InfluenceCard sorceressCard = new InfluenceCard(sorceress, game.getActionPhase(),
-                CharacterCardFabric.getCharacterization(sorceress));
-        Influence influence = new Influence(game.getActionPhase());
+        InfluenceCard sorceressCard = (InfluenceCard) CharacterCardFabric.createCard(sorceress, game.getActionPhase());
+        game.getActionPhase().getCharacterCards().putIfAbsent(sorceress, sorceressCard);
+        Influence influence = (Influence) game.getActionPhase().getState(ActionPhaseStateType.INFLUENCE);
 
         Player camilla = game.getPlayers().get(0);
         Player anja = game.getPlayers().get(1);

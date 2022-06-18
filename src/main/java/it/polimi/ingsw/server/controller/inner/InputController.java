@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.controller.inner;
 
 import it.polimi.ingsw.commons.enums.Characters;
-import it.polimi.ingsw.commons.message.Message;
 import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
 import it.polimi.ingsw.server.enums.CardCharacterizations;
 import it.polimi.ingsw.server.view.VirtualView;
@@ -171,9 +170,5 @@ public class InputController {
             return false;
         }
     }*/
-
-    public boolean checkUser(Message receivedMessage) {
-        return receivedMessage.getSenderName().equals(reader.getTurnController().getActivePlayer());
-    }
 
 }

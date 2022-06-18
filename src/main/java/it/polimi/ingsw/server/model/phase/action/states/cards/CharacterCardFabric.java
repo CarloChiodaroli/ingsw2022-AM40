@@ -1,24 +1,26 @@
 package it.polimi.ingsw.server.model.phase.action.states.cards;
 
-import it.polimi.ingsw.server.enums.ActionPhaseStateType;
 import it.polimi.ingsw.commons.enums.Characters;
+import it.polimi.ingsw.server.enums.ActionPhaseStateType;
 import it.polimi.ingsw.server.enums.CardCharacterizations;
 import it.polimi.ingsw.server.enums.CharactersLookup;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
-public class CharacterCardFabric {
+public abstract class CharacterCardFabric {
 
     private final static Map<Characters, Map<String, Integer>> particularities = allParticularities();
 
-    public static Map<Characters, CharacterCard> getCards(ActionPhase actionPhase){
+    public static Map<Characters, CharacterCard> getCards(ActionPhase actionPhase) {
         Map<Characters, CharacterCard> enabledCharacterCards = new HashMap<>();
-        //enabledCharacterCards.put(Characters.THIEF, createCard(Characters.THIEF, actionPhase));
-        while(enabledCharacterCards.size() < 3){
+        //enabledCharacterCards.put(Characters.SORCERESS, createCard(Characters.SORCERESS, actionPhase));
+        while (enabledCharacterCards.size() < 3) {
             Characters characters = getRandomCharacter();
-            if(!enabledCharacterCards.containsKey(characters)){
+            if (!enabledCharacterCards.containsKey(characters)) {
                 enabledCharacterCards.put(characters, createCard(characters, actionPhase));
             }
         }
@@ -61,7 +63,7 @@ public class CharacterCardFabric {
         return result;
     }
 
-    private static Map<Characters, Map<String, Integer>> allParticularities(){
+    private static Map<Characters, Map<String, Integer>> allParticularities() {
         return CardCharacterizations.getMap();
     }
 
