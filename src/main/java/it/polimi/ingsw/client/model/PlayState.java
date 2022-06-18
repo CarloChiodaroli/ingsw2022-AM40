@@ -76,11 +76,11 @@ public class PlayState {
             return 9;
     }
 
-    public int numTowers() {
+    public int numTowers(String player) {
         if (numPlayers == 2) {
-            return 8 - getMyConquests();
+            return 8 - getConquests(player);
         } else {
-            return 6 - getMyConquests();
+            return 6 - getConquests(player);
         }
     }
 
@@ -136,8 +136,8 @@ public class PlayState {
         this.myName = myName;
     }
 
-    public int getMyConquests() {
-        return getConquest(playersTowerColors.get(myName));
+    public int getConquests(String player) {
+        return getConquest(playersTowerColors.get(player));
     }
 
     public List<String> getPlaceIds() {

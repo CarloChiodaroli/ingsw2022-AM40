@@ -61,7 +61,7 @@ public class StatePrinter {
         String line = verticalLineElement;
         for (String string : strings) {
             line += string;
-            line += space + playState.numTowers();
+            line += space + playState.numTowers(string);
             line += space + playState.getPlayersTowerColors().get(string);
             line += verticalLineElement;
         }
@@ -218,7 +218,7 @@ public class StatePrinter {
         List<String> rows = new ArrayList<>();
         String row = verticalLineElement + "Entrance ";
         row = studentPrinter(row, "Entrance");
-        row += verticalLineElement + (8 - playState.getMyConquests());
+        row += verticalLineElement;
         rows.add(row);
         row = verticalLineElement + "Room     ";
         row = studentPrinter(row, "Room");
@@ -236,8 +236,8 @@ public class StatePrinter {
         rows.add(row);
         rows.add(0, verticalLineElement + "DASHBOARD" +
                 colorHeading() + EscapeCli.DEFAULT +
-                verticalLineElement + "TOWERS");
-        rows.add(0, rowDivider(51));
+                verticalLineElement);
+        rows.add(0, rowDivider(44));
         rows.add(rows.size(), rows.get(0));
         String result = empty;
         for (String rowa : rows) {

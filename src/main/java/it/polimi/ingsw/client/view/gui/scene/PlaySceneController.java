@@ -143,7 +143,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
     private GridPane buildTowers(){
         towers.setVisible(false);
         List<Node> towerss = new ArrayList<>();
-        for(int i = 0; i < state.numTowers(); i++){
+        for(int i = 0; i < state.numTowers(""); i++){
             Label actual = new Label();
             GridPane.setColumnIndex(actual, i % 2);
             GridPane.setRowIndex(actual, i / 2);
@@ -310,7 +310,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
             actualChildNumber5++;
         }
 
-        for (int i = 1; i <= state.numTowers(); i++) {
+        for (int i = 1; i <= state.numTowers(""); i++) {
             Node towersRep = towers.getChildren().get(actualChildNumber2);
             towersRep.setVisible(true);
             actualChildNumber2++;
