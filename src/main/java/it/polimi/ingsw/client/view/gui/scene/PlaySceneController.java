@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.model.PlayMessageController;
 import it.polimi.ingsw.client.model.PlayState;
 import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.client.view.gui.SceneController;
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import javafx.application.Platform;
@@ -15,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import org.apache.commons.collections4.list.UnmodifiableList;
 
 import java.lang.reflect.InvocationTargetException;
@@ -23,6 +25,7 @@ import java.util.*;
 public class PlaySceneController extends ViewObservable implements GenericSceneController {
 
     private PlayState state;
+
     private final static List<String> islandContents = List.of(new String[]{
             TeacherColor.YELLOW.toString(),
             TeacherColor.BLUE.toString(),
@@ -33,18 +36,19 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
             TowerColor.GREY.toString(),
             TowerColor.WHITE.toString(),
             "MOTHER"});
+
     private final static List<String> dashboardRoomOrder = List.of(new String[]{
             TeacherColor.GREEN.toString(),
             TeacherColor.RED.toString(),
             TeacherColor.YELLOW.toString(),
             TeacherColor.PINK.toString(),
             TeacherColor.BLUE.toString()});
+
     private Commands commandSender;
     private String actualCommand;
 
     @FXML
     private GridPane container;
-
     @FXML
     private GridPane islandGrid;
     @FXML
@@ -69,6 +73,8 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
     private Label semaphoreNo;
     @FXML
     private Label actualCommandPrinter;
+    @FXML
+    private GridPane expertThings;
     /*@FXML
     private GridPane character;*/
 
@@ -85,6 +91,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         buildAssistant();
         buildDashboard();
         buildCommands();
+        if(state.isExpert()) buildExpertThings();
         update();
     }
 
@@ -94,6 +101,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         updateClouds();
         updateIslands();
         updateAssistant();
+        if(state.isExpert()) updateExpertThings();
     }
 
     private void setSemaphores() {
@@ -183,7 +191,6 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
 
         for (int i = 0; i < 3; i++) {
             GridPane cloud = new GridPane();
-            cloud.setId("c_" + (i + 1));
             for (int j = 0; j < state.getNumOfStudentsInCloud(); j++) {
                 Label actual = new Label();
                 actual.getStyleClass().add("wood");
@@ -195,7 +202,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
             GridPane.setColumnIndex(cloud, i);
             cloud.getStyleClass().add("cloud");
             cloud.getStyleClass().add(cloudStyle.get(i % 3));
-            cloud.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> commandAppender(event, cloud.getId()));
+            cloud.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> idGetter(event, cloud));
             cloud.getStyleClass().add("clickable");
             cloudss.add(cloud);
         }
@@ -350,6 +357,52 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         islandGrid.getChildren().addAll(islands);
     }
 
+    private void buildExpertThings(){
+        GridPane characterCardRep = new GridPane();
+        characterCardRep.setId("characterCardView");
+        int i = 0;
+        for(Characters characters: state.getAvailableCharacters()){
+            GridPane card = new GridPane();
+            GridPane.setColumnIndex(card, i);
+            card.setId(characters.toString());
+            card.getStyleClass().add(characters.toString());
+            card.getStyleClass().add("character");
+            card.getStyleClass().add("clickable");
+            ColumnConstraints third = new ColumnConstraints();
+            third.setPercentWidth(100/3.0);
+            card.getColumnConstraints().setAll(third, third, third);
+            RowConstraints sixth = new RowConstraints();
+            sixth.setPercentHeight(100/7.0);
+            card.getRowConstraints().setAll(sixth, sixth, sixth, sixth, sixth, sixth, sixth);
+            Label coins = new Label();
+            coins.setText(state.getCharacterCosts().get(characters).toString());
+            coins.getStyleClass().add("coin");
+            card.getChildren().add(coins);
+            Map<TeacherColor, Integer> map = state.getStudentsInPlaces().getOrDefault(characters.toString(), new HashMap<>());
+            if(!map.isEmpty()){
+                int howManyStudents = map.values().stream().reduce(Integer::sum).orElse(0);
+                for(int j = 0; j < howManyStudents; j++){
+                    Label student = new Label();
+                    student.getStyleClass().add("wood");
+                    GridPane.setColumnIndex(student, j % 3);
+                    GridPane.setRowIndex(student, 4 + (j / 3));
+                    card.getChildren().add(student);
+                }
+            }
+            card.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> idGetter(event, card));
+            characterCardRep.getChildren().add(card);
+            i++;
+        }
+        expertThings.getChildren().add(characterCardRep);
+
+        Label myCoins = new Label();
+        myCoins.setText("" + state.getMyMoney());
+        myCoins.getStyleClass().add("coin");
+        myCoins.setId("myCoins");
+        GridPane.setRowIndex(myCoins, 1);
+        expertThings.getChildren().add(myCoins);
+    }
+
     private void updateIslands() {
         islandGrid.setVisible(true);
         int actualChildNumber = 0;
@@ -471,12 +524,15 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
     private void updateClouds() {
         clouds.setVisible(true);
         int actualChildNumber = 0;
-        for (Node child : clouds.getChildren()) child.setVisible(false);
+        for (Node child : clouds.getChildren()) {
+            child.setVisible(false);
+            child.setId("");
+        }
 
         for (int i = 1; i <= 3; i++) {
             int forLambda = i;
             Optional<String> actualId = state.getStudentsInPlaces().keySet().stream()
-                    .filter(x -> x.matches("^c_" + forLambda + "*"))
+                    .filter(x -> x.matches("^c_" + forLambda + "$"))
                     .findFirst();
             if (actualId.isPresent()) {
                 int cloudChildNumber = 0;
@@ -492,6 +548,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                         studRep.setVisible(true);
                     }
                 }
+                cloudRep.setId(idc);
                 cloudRep.setVisible(true);
                 actualChildNumber++;
             }
@@ -517,24 +574,40 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         }
     }
 
-    private void updateCharacters() {
-        //character.setVisible(true);
-        /*for(int j = 0; j < 3; j++){
-            Node characterRep = character.getChildren().get(actualChildNumber6);
-            characterRep.setVisible(false);
-        for(int i = 1; i <= 3; i++){
-            Optional<String> actualId = state.getAvailableCharacters().stream().findFirst().map(Enum::toString);
-            if(actualId.isPresent()){
-                GridPane characterRep = (GridPane) character.getChildren().get(actualChildNumber6);
-                int num = state.getCharacterCosts().get(state.getAvailableCharacters().stream().findFirst().get());
-                Label characterCost = (Label) getNodeByStyleClass(characterRep.getChildren(), "COIN");
-                characterCost.setText("" + num);
-                characterRep.setVisible(true);
-                actualChildNumber6++;
-            }
-        }*/
+    private void updateExpertThings(){
+        updateCharacterCards();
+        updateMyCoins();
     }
 
+    private void updateMyCoins(){
+        Label myCoins = (Label) expertThings.getChildren().stream().filter(x -> x.getId().equals("myCoins")).findFirst().get();
+        myCoins.setText(state.getMyMoney() + "");
+    }
+
+    private void updateCharacterCards(){
+        GridPane characterCards = (GridPane) expertThings.getChildren().stream().filter(x -> x.getId().equals("characterCardView")).findFirst().get();
+
+        for(Node cardA: characterCards.getChildren()){
+            GridPane card = (GridPane) cardA;
+            int actualChildNumber = 0;
+            Label money = (Label) card.getChildren().get(actualChildNumber);
+            actualChildNumber++;
+            money.setText("" + state.getCharacterCosts().get(Characters.valueOf(card.getId())));
+            Map<TeacherColor, Integer> cardStudents = new HashMap<>(state.getStudentsInPlaces().getOrDefault(card.getId(), new HashMap<>()));
+            if(!cardStudents.isEmpty()){
+                for(TeacherColor color: TeacherColor.values()){
+                    while(cardStudents.get(color)>0){
+                        Node studRep = card.getChildren().get(actualChildNumber);
+                        studRep.getStyleClass().removeAll(Arrays.stream(TeacherColor.values()).map(Enum::toString).toList());
+                        studRep.getStyleClass().add(color.toString());
+                        cardStudents.replace(color, cardStudents.get(color), cardStudents.get(color) - 1);
+                        actualChildNumber++;
+                        studRep.setVisible(true);
+                    }
+                }
+            }
+        }
+    }
 
     public void addGameState(PlayState state) {
         this.state = state;
@@ -615,5 +688,9 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
             hops = arriveIndex - motherNatureIndex;
         }
         commandAppender(event, hops + "");
+    }
+
+    private void idGetter(Event event, Node node){
+        commandAppender(event, node.getId());
     }
 }

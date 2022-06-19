@@ -125,6 +125,71 @@ Label {
     -fx-background-image: url("../images/assets/assistant/10.png");
 }
 
+.KING{
+    -fx-background-image: url("../images/wizard/king.png");
+}
+
+.FAIRY{
+    -fx-background-image: url("../images/wizard/fairy.png");
+}
+
+.BAMBOO_GUY{
+    -fx-background-image: url("../images/wizard/bambooGuy.png");
+}
+
+.MAGICIAN{
+    -fx-background-image: url("../images/wizard/magician.png");
+}
+
+.FRIAR{
+    -fx-background-image: url("../images/assets/character/Friar.jpg");
+}
+
+.HOST{
+    -fx-background-image: url("../images/assets/character/Host.jpg");
+}
+
+.CRIER{
+    -fx-background-image: url("../images/assets/character/Crier.jpg");
+}
+
+.MESSENGER{
+    -fx-background-image: url("../images/assets/character/Messenger.jpg");
+}
+
+.SORCERESS{
+    -fx-background-image: url("../images/assets/character/Sorcress.jpg");
+}
+
+.CENTAUR{
+    -fx-background-image: url("../images/assets/character/Centaur.jpg");
+}
+
+.JESTER{
+    -fx-background-image: url("../images/assets/character/Jullar.jpg");
+}
+
+.KNIGHT{
+    -fx-background-image: url("../images/assets/character/Knight.jpg");
+}
+
+.SORCERER{
+    -fx-background-image: url("../images/assets/character/Sorcerer.jpg");
+}
+
+.MINSTREL{
+    -fx-background-image: url("../images/assets/character/Minstrel.jpg");
+}
+
+.QUEEN{
+    -fx-background-image: url("../images/assets/character/Queen.jpg");
+}
+
+.THIEF{
+    -fx-background-image: url("../images/assets/character/Thief.jpg");
+}
+
+
 .island {
     -fx-min-width: 150px;
     -fx-min-height: 150px;
@@ -192,7 +257,9 @@ GridPane {
     -fx-min-height: 30px;
     -fx-background-size: cover;
     -fx-color-label-visible: black;
+    -fx-content-display: center;
     -fx-text-alignment: center;
+    -fx-alignment: center;
     -fx-font-size: 20px;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
@@ -266,8 +333,7 @@ GridPane {
     -fx-background-size: contain;
 }
 
-#moreThings {
-    -fx-background-color: blue;
+#expertThings {
     -fx-min-width: 20px;
 }
 
@@ -275,7 +341,6 @@ GridPane {
 }
 
 #commands {
-    -fx-background-color: gray;
 }
 
 .command {
@@ -309,4 +374,31 @@ GridPane {
     -fx-color-label-visible: black;
     -fx-max-width: 200;
     -fx-max-height: 200;
+}
+
+.character {
+    -fx-min-width: 140;
+    -fx-min-height: 200;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+}
+
+.coin {
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-background-image: url("../images/assets/Coin.png");
+    -fx-background-size: cover;
+    -fx-color-label-visible: black;
+    -fx-text-alignment: center;
+    -fx-content-display: center;
+    -fx-alignment: center;
+    -fx-font-size: 20px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+#myCoins {
+    -fx-min-width: 50px;
+    -fx-min-height: 50px;
+    -fx-font-size: 40px;
 }

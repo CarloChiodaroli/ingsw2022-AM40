@@ -39,7 +39,7 @@
                     <GridPane fx:id="spacer" GridPane.columnIndex="4" GridPane.rowIndex="0" xmlns:fx="http://javafx.com/fxml">
                     </GridPane>
                 </GridPane>
-                <GridPane fx:id="moreThings" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.columnSpan="2" xmlns:fx="http://javafx.com/fxml">
+                <GridPane fx:id="expertThings" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.columnSpan="2" xmlns:fx="http://javafx.com/fxml">
 
                 </GridPane>
             </children>
