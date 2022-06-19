@@ -24,8 +24,8 @@ Implementation of Eriantys board game
 |      Communication protocol design       |    Done    |
 |  Communication protocol Implementation   |    Done    |
 |          Client Implementation           | Retouching |
-|                 CLI view                 |    Done    |
-|                 GUI view                 |   Making Expert   |
+|                 CLI view                 |    Retouching    |
+|                 GUI view                 |   Retouching   |
 |||
 |                 Javadoc                  |   Making   |
 |        Final Application Testing         |   Doing    |
