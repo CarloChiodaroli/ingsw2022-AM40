@@ -2,9 +2,11 @@ package it.polimi.ingsw.client.view;
 
 
 import it.polimi.ingsw.client.model.PlayMessageController;
+import it.polimi.ingsw.client.observer.ViewObserver;
 import it.polimi.ingsw.commons.enums.Wizard;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Defines a generic view to be implemented by each view type
@@ -123,5 +125,4 @@ public interface View {
      * After having changed the game status in the Play message class, this method is called to print the actual state of the game.
      */
     void update();
-
 }

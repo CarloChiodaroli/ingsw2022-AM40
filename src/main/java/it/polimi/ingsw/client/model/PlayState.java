@@ -301,6 +301,14 @@ public class PlayState {
         setMyMoney(money.get(myName));
     }
 
+    public boolean myTurn(){
+        return myName.equals(actualPlayer);
+    }
+
+    public int getNumOfIslands(){
+        return islandSize.size();
+    }
+
     // Expert
 
     public Integer getMyMoney() {

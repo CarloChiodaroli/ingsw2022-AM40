@@ -111,10 +111,9 @@
 }
 
 .playBackground {
-    -fx-background-image: url("../images/eriantysLogo.png");
+    -fx-background-image: url("../images/playBackground.png");
     -fx-background-size: stretch;
     -fx-position: relative;
-    -fx-opacity: 0.7;
 }
 
 .inputField {

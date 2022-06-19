@@ -22,6 +22,7 @@ public class Gui extends ViewObservable implements View {
     private int players = 0;
     private PlayState state;
     private boolean inPlay = false;
+    private PlayMessageController playMessageController;
 
 
     /**
@@ -120,6 +121,7 @@ public class Gui extends ViewObservable implements View {
      */
     @Override
     public void setStatePrinter(PlayMessageController playMessageController) {
+        this.playMessageController = playMessageController;
         state = playMessageController.getState();
     }
 
@@ -144,7 +146,9 @@ public class Gui extends ViewObservable implements View {
      */
     @Override
     public void showError(String errorMessage) {
-
+        Platform.runLater(() -> {
+            SceneController.showAlert(STR_ERROR, errorMessage);
+        });
     }
 
     /**
@@ -167,6 +171,7 @@ public class Gui extends ViewObservable implements View {
             psc = new PlaySceneController();
             psc.addAllObservers(observers);
             psc.addGameState(state);
+            psc.addPlayMessageController(playMessageController);
             PlaySceneController finalPsc = psc;
             Platform.runLater(() -> SceneController.changeRootPane(finalPsc, "play_scene.fxml"));
         }

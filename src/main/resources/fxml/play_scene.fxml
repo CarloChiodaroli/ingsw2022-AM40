@@ -4,9 +4,9 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.control.Label?>
-<StackPane scaleX="1.5" scaleY="1.5" scaleZ="1.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1300.0" styleClass="playBackground" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1300.0" styleClass="playBackground" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <GridPane fx:id="container" alignment="CENTER" >
+        <GridPane fx:id="container" alignment="CENTER">
             <children>
                 <GridPane fx:id="islandGrid" alignment="CENTER_LEFT" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.columnSpan="2" xmlns:fx="http://javafx.com/fxml">
                 </GridPane>
@@ -15,8 +15,18 @@
                 <GridPane fx:id="assistant" GridPane.columnIndex="2" GridPane.rowIndex="1" xmlns:fx="http://javafx.com/fxml">
                 </GridPane>
                 <GridPane fx:id="commands" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.rowSpan="2" xmlns:fx="http://javafx.com/fxml">
-
                 </GridPane>
+                <GridPane GridPane.columnIndex="1" GridPane.rowIndex="3" alignment="CENTER">
+                    <Label fx:id="semaphoreYes" GridPane.rowIndex="0" alignment="CENTER">
+                        Yor Turn!
+                    </Label>
+                    <Label fx:id="semaphoreNo" GridPane.rowIndex="0" alignment="CENTER">
+                        Wait!
+                    </Label>
+                    <Label fx:id="actualCommandPrinter" GridPane.rowIndex="1">
+                    </Label>
+                </GridPane>
+
                 <GridPane fx:id="dashboard" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.rowSpan="2" xmlns:fx="http://javafx.com/fxml">
                     <GridPane fx:id="entrance" xmlns:fx="http://javafx.com/fxml">
                     </GridPane>

@@ -199,7 +199,6 @@ GridPane {
 }
 
 #islandGrid {
-    -fx-background-color: red;
 }
 
 #dashboard {
@@ -212,19 +211,15 @@ GridPane {
 }
 
 #assistant {
-    -fx-background-color: yellow;
-    -fx-grid-lines-visible: true;
+
 }
 
 #clouds {
-    -fx-background-color: orange;
 }
 
 #container {
-    -fx-background-color: green;
     -fx-hgap: 10px;
     -fx-vgap: 10px;
-    -fx-grid-lines-visible: true;
 }
 
 #room {
@@ -277,7 +272,6 @@ GridPane {
 }
 
 #spacer {
-    -fx-max-width: auto;
 }
 
 #commands {
@@ -287,4 +281,32 @@ GridPane {
 .command {
     -fx-min-width: 40px;
     -fx-min-height: 40px;
+}
+
+.clickable:hover {
+    -fx-border-color: pink;
+    -fx-border-width: 3px;
+    -fx-border-radius: 7px;
+}
+
+.clicked {
+    -fx-border-color: fuchsia;
+    -fx-border-width: 3px;
+    -fx-border-radius: 7px;
+}
+
+#semaphoreNo {
+    -fx-background-color: red;
+    -fx-font-weight: bold;
+    -fx-color-label-visible: black;
+    -fx-max-width: 200;
+    -fx-max-height: 200;
+}
+
+#semaphoreYes {
+    -fx-background-color: green;
+    -fx-font-weight: bold;
+    -fx-color-label-visible: black;
+    -fx-max-width: 200;
+    -fx-max-height: 200;
 }
