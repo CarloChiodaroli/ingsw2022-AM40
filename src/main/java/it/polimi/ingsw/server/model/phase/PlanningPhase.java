@@ -22,6 +22,7 @@ public class PlanningPhase {
     private int actualPlayer;
     private final Game game;
     private int countRound = 0;
+    private List<Player> playersToSkip;
 
     /**
      * Class Constructor
@@ -36,6 +37,7 @@ public class PlanningPhase {
         } else {
             this.players = 2;
         }
+        this.playersToSkip = new ArrayList<>();
     }
 
     // Start of Planning phase
@@ -136,11 +138,11 @@ public class PlanningPhase {
                 game.endGame();
             } else {
                 actualPlayer = 0;
-                game.getActionPhase().startPhase(playersInOrder.get(actualPlayer));
+                Player actualRealPlayer = getActualPlayer();
+                if(playersToSkip.contains(actualRealPlayer)) throw new IllegalStateException("No Players are Playing");
+                game.getActionPhase().startPhase(actualRealPlayer);
                 countRound++;
             }
-        } else {
-
         }
     }
 
@@ -162,7 +164,14 @@ public class PlanningPhase {
      */
     public Player getActualPlayer() {
         if (!determinedOrder) return null;
-        return playersInOrder.get(actualPlayer);
+        Player actualRealPlayer = playersInOrder.get(actualPlayer);
+        for(int i = 0; i < 4; i++){
+            if(!playersToSkip.contains(actualRealPlayer)) return actualRealPlayer;
+            nextPlayer();
+            if(!activated) return actualRealPlayer;
+            actualRealPlayer = playersInOrder.get(actualPlayer);
+        }
+        return actualRealPlayer;
     }
 
     public void nextPlayer() {
@@ -178,6 +187,14 @@ public class PlanningPhase {
 
     public List<Player> getPlayersInOrder() {
         return new ArrayList<>(playersInOrder);
+    }
+
+    public void skipPlayer(Player player){
+        playersToSkip.add(player);
+    }
+
+    public void unSkipPlayer(Player player){
+        playersToSkip.remove(player);
     }
 
     // End of Round

@@ -29,6 +29,7 @@ public class Game {
     private boolean endgame = false;
     private String endPlayer = null;
     private static final String draw = "No one";
+    private List<Player> skippablePlayers;
 
 
     /**
@@ -37,6 +38,7 @@ public class Game {
     public Game() {
         this.players = new ArrayList<>();
         this.order = new ArrayList<>();
+        this.skippablePlayers = new ArrayList<>();
         initializeOrder();
         this.preGamePlayersList = new EnumMap<>(TowerColor.class);
     }
@@ -308,11 +310,26 @@ public class Game {
         actionPhase.reset();
         planningPhase.getActualPlayer().disable();
         planningPhase.nextPlayer();
+        if(skippablePlayers.size() == players.size()){
+            return;
+        }
+        Player actualPlayer = planningPhase.getActualPlayer();
+        if(skippablePlayers.contains(actualPlayer)) return;
         if (planningPhase.isInOrder()) {
-            actionPhase.startPhase(planningPhase.getActualPlayer());
+            actionPhase.startPhase(actualPlayer);
         } else {
             planningPhase.activate();
         }
+    }
+
+    public void skipPlayer(Player player){
+        skippablePlayers.add(player);
+        planningPhase.skipPlayer(player);
+    }
+
+    public void unSkipPlayer(Player player){
+        skippablePlayers.remove(player);
+        planningPhase.unSkipPlayer(player);
     }
 
     /**

@@ -114,7 +114,6 @@ public class Table {
     /**
      * @return Bag status
      */
-    @Deprecated
     public Optional<StudentsManager> getBag() {
         return Optional.of(bag);
     }

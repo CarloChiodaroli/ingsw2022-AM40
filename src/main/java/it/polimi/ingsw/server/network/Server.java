@@ -30,16 +30,10 @@ public class Server {
     public void addClient(String nickname, ClientHandler clientHandler) {
         VirtualView vv = new VirtualView(clientHandler);
 
-        if (!gameManager.isGameStarted()) {
-            if (gameManager.checkLoginNickname(nickname, vv)) {
-                clientHandlerMap.put(nickname, clientHandler);
-                gameManager.loginHandler(nickname, vv);
-            }
-        } else {
-            vv.showLoginResult(true, false, null);
-            clientHandler.disconnect();
+        if(gameManager.checkLoginNickname(nickname, vv)){
+            clientHandlerMap.put(nickname, clientHandler);
+            gameManager.loginHandler(nickname, vv);
         }
-
     }
 
     public void removeClient(String nickname, boolean notifyEnabled) {
@@ -67,11 +61,11 @@ public class Server {
 
                 // Resets server status only if the game was already started.
                 // Otherwise the server will wait for a new player to connect.
-                if (gameStarted) {
-                    gameManager.broadcastDisconnectionMessage(nickname, " disconnected from the server. GAME ENDED.");
+                //if (gameStarted) {
+                    //gameManager.broadcastDisconnectionMessage(nickname, " disconnected from the server. GAME ENDED.");
                     //gameManager.endGame();
                     //clientHandlerMap.clear();
-                }
+                //}
             }
         }
     }

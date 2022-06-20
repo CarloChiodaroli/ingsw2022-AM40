@@ -74,7 +74,7 @@ public class GameManager implements LobbyMessageReader {
             sendError(message.getSenderName(), "You can't start the game");
             return;
         }
-        if (playerNames.size() != maxPlayers){
+        if (playerNames.size() != maxPlayers) {
             sendError(message.getSenderName(), "There are not enough players");
             return;
         }
@@ -154,7 +154,7 @@ public class GameManager implements LobbyMessageReader {
             sendError(message.getSenderName(), "Player can't set nor unset expert variant");
             return;
         }
-        if(message.isExpert() != playMessagesReader.isExpertVariant()){
+        if (message.isExpert() != playMessagesReader.isExpertVariant()) {
             playMessagesReader.switchExpertVariant();
         }
         broadcastMessage(new LobbyMessage(server, "expert", playMessagesReader.isExpertVariant()));
@@ -169,6 +169,8 @@ public class GameManager implements LobbyMessageReader {
     // PLAY message part
 
     private void inGameState(Message receivedMessage) {
+        if(playMessagesReader.isStopped())
+            sendMessage(receivedMessage.getSenderName(), new ErrorMessage(server, "Game is stopped, server won't run this command"));
         PlayMessage message = (PlayMessage) receivedMessage;
         try {
             message.executeMessage(playMessagesReader);
@@ -181,25 +183,45 @@ public class GameManager implements LobbyMessageReader {
     // LOGIN message part
 
     public void loginHandler(String nickname, VirtualView virtualView) {
-        if (virtualViewMap.isEmpty()) { // First player logged. Ask number of players.
-            addVirtualView(nickname, virtualView);
-            this.playerNames.add(nickname);
-            this.mainPlayer = nickname;
-            this.playMessagesReader = new PlayMessagesReader(mainPlayer, this);
-            virtualView.showLoginResult(true, true);
-            sendMessage(nickname, new LobbyMessage(server, "wizardList", availableWizards()));
-            virtualView.sendMainPlayer(mainPlayer);
-        } else if (virtualViewMap.size() < maxPlayers) {
-            addVirtualView(nickname, virtualView);
-            this.playerNames.add(nickname);
-            this.playMessagesReader.addPlayer(nickname);
-            virtualView.showLoginResult(true, true);
-            sendMessage(nickname, new LobbyMessage(server, "wizardList", availableWizards()));
-            virtualView.sendMainPlayer(mainPlayer);
-            if(maxPlayers != DEFAULT_MAX_PLAYERS) sendMessage(nickname, new LobbyMessage(server, "numOfPlayers", maxPlayers));
-            sendMessage(nickname, new LobbyMessage(server, "expert", playMessagesReader.isExpertVariant()));
+        if (playMessagesReader == null || !playMessagesReader.isGameStarted()) { // game not started
+            if (virtualViewMap.isEmpty()) { // First player logged. Ask number of players.
+                addVirtualView(nickname, virtualView);
+                this.playerNames.add(nickname);
+                this.mainPlayer = nickname;
+                this.playMessagesReader = new PlayMessagesReader(mainPlayer, this);
+                virtualView.showLoginResult(true, true);
+                sendMessage(nickname, new LobbyMessage(server, "wizardList", availableWizards()));
+                virtualView.sendMainPlayer(mainPlayer);
+            } else if (virtualViewMap.size() < maxPlayers) {
+                addVirtualView(nickname, virtualView);
+                this.playerNames.add(nickname);
+                this.playMessagesReader.addPlayer(nickname);
+                virtualView.showLoginResult(true, true);
+                sendMessage(nickname, new LobbyMessage(server, "wizardList", availableWizards()));
+                virtualView.sendMainPlayer(mainPlayer);
+                if (maxPlayers != DEFAULT_MAX_PLAYERS)
+                    sendMessage(nickname, new LobbyMessage(server, "numOfPlayers", maxPlayers));
+                sendMessage(nickname, new LobbyMessage(server, "expert", playMessagesReader.isExpertVariant()));
+            } else {
+                virtualView.showLoginResult(true, false);
+            }
         } else {
-            virtualView.showLoginResult(true, false);
+            if(playMessagesReader.getPlayerNames().contains(nickname)){
+                if(virtualViewMap.containsKey(nickname)){
+                    virtualView.showLoginResult(true, false);
+                } else {
+                    addVirtualView(nickname, virtualView);
+                    this.playerNames.add(nickname);
+                    virtualView.showLoginResult(true, true);
+                    sendMessage(nickname, new LobbyMessage(server, assignedWizards.get(nickname)));
+                    playMessagesReader.sendCompleteGameStatus(nickname);
+                    if(virtualViewMap.keySet().size() == playMessagesReader.getPlayerNames().size()){
+                        playMessagesReader.unStop();
+                    }
+                }
+            } else {
+                virtualView.showLoginResult(true, false);
+            }
         }
     }
 
@@ -207,7 +229,7 @@ public class GameManager implements LobbyMessageReader {
         virtualViewMap.put(nickname, virtualView);
     }
 
-    private List<Wizard> availableWizards(){
+    private List<Wizard> availableWizards() {
         return Arrays.stream(Wizard.values())
                 .filter(x -> !assignedWizards.values().stream()
                         .toList()
@@ -236,7 +258,10 @@ public class GameManager implements LobbyMessageReader {
             playMessagesReader.stopPlayer(nickname);
         } else {
             playMessagesReader.deletePlayer(nickname);
+            assignedWizards.remove(nickname);
         }
+        virtualViewMap.values().forEach(x -> x.showDisconnectionMessage(nickname, "Disconnected from the server - waiting to reconnect"));
+        if(virtualViewMap.size() == 1) playMessagesReader.stop();
     }
 
     public void sendMessage(String playerName, Message message) {

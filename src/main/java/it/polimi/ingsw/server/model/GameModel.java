@@ -349,4 +349,12 @@ public class GameModel {
     public Characters getActualCharacter() {
         return game.getActionPhase().getActualCharacter().orElseThrow(() -> new IllegalStateException("There is no actual character"));
     }
+
+    public void skipPlayer(String name){
+        game.skipPlayer(getPlayer(name));
+    }
+
+    public void unSkipPlayer(String name){
+        game.unSkipPlayer(getPlayer(name));
+    }
 }

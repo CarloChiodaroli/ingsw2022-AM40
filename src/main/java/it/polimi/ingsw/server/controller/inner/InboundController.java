@@ -87,6 +87,14 @@ public class InboundController {
         return model.isExpertVariant();
     }
 
+    public void skipPlayer(String playerName){
+        model.skipPlayer(playerName);
+    }
+
+    public void unSkipPlayer(String playerName){
+        model.unSkipPlayer(playerName);
+    }
+
     public GameModel getModel() {
         return model;
     }

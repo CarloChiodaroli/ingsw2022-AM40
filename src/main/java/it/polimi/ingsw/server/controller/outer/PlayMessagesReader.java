@@ -34,6 +34,7 @@ public class PlayMessagesReader implements PlayMessageReader {
     private boolean expertVariant;
     private final String server;
     private transient Map<String, VirtualView> virtualViewMap;
+    private boolean stop;
 
     public PlayMessagesReader(String mainPlayer, GameManager gameManager) {
         this.mainPlayer = mainPlayer;
@@ -102,12 +103,18 @@ public class PlayMessagesReader implements PlayMessageReader {
                     });
             commonAnswers.add(PlayMessagesFabric.statusNoEntry(server, outbound.getIslandsWithNoEntry()));
         }
-        for (String name : playerNames) {
-            List<Message> answers = new ArrayList<>(commonAnswers);
-            answers.addAll(playerDashboard(name));
-            answers.add(PlayMessagesFabric.statusPlanning(server, turnController.getActivePlayer()));
-            answers.forEach(answer -> gameManager.sendMessage(name, answer));
-        }
+        commonAnswers.forEach(gameManager::broadcastMessage);
+    }
+
+    private void sendAllPrivate(String receiverName){
+        List<Message> answers = new ArrayList<>(playerDashboard(receiverName));
+        answers.add(PlayMessagesFabric.statusPlanning(server, turnController.getActivePlayer()));
+        answers.forEach(answer -> gameManager.sendMessage(receiverName, answer));
+    }
+
+    public void sendCompleteGameStatus(String player){
+        sendCompleteStatus();
+        sendAllPrivate(player);
     }
 
     private List<Message> playerDashboard(String player) {
@@ -127,6 +134,7 @@ public class PlayMessagesReader implements PlayMessageReader {
             return;
         }
         sendCompleteStatus();
+        playerNames.forEach(this::sendAllPrivate);
     }
 
     public boolean isGameStarted() {
@@ -138,8 +146,13 @@ public class PlayMessagesReader implements PlayMessageReader {
     }
 
     public void stopPlayer(String playerName) {
-        //turnController.removePlayer(playerName);
-        //inbound.stopPlayer(playerName);
+        turnController.skipPlayer(playerName);
+        inbound.skipPlayer(playerName);
+    }
+
+    public void unStopPlayer(String playerName) {
+        turnController.unSkipPlayer(playerName);
+        inbound.unSkipPlayer(playerName);
     }
 
     @Override
@@ -515,5 +528,17 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     public int getNumOfPlayers() {
         return numOfPlayers;
+    }
+
+    public void stop(){
+        stop = true;
+    }
+
+    public void unStop(){
+        stop = false;
+    }
+
+    public boolean isStopped(){
+        return stop;
     }
 }
