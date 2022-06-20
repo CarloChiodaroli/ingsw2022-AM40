@@ -20,12 +20,12 @@ Implementation of Eriantys board game
 |           Model Implementation           | Retouching |
 |  *Model FA implementation and testing*   |    Done    |
 |        Controller implementation         | Retouching |
-|   *MCV FA implementation and testing*    |     -      |
+|   *MCV FA implementation and testing*    | Retouching |
 |      Communication protocol design       |    Done    |
 |  Communication protocol Implementation   |    Done    |
 |          Client Implementation           | Retouching |
-|                 CLI view                 |    Retouching    |
-|                 GUI view                 |   Retouching   |
+|                 CLI view                 | Retouching |
+|                 GUI view                 | Retouching |
 |||
 |                 Javadoc                  |   Making   |
 |        Final Application Testing         |   Doing    |
