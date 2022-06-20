@@ -188,7 +188,7 @@ public class GameModel {
         try {
             cloud = game.getTable().getCloudById(cloudId).orElseThrow();
         } catch (NoSuchElementException e) {
-            System.err.println("No island with " + cloudId + " found");
+            System.err.println("No cloud with " + cloudId + " found");
             return new HashMap<>();
         }
         Map<TeacherColor, Integer> studentContent = new HashMap<>();

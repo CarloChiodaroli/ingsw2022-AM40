@@ -20,6 +20,7 @@ public class TurnController {
     private int messages;
     private String savedIsland;
     private List<String> playersToSkip;
+    private String comeBackPlayer;
 
     public TurnController(PlayMessagesReader reader) {
         this.nicknameQueue = new ArrayList<>(reader.getPlayerNames());
@@ -53,6 +54,10 @@ public class TurnController {
     }
 
     public boolean nextTurn() {
+        if(comeBackPlayer != null) {
+            comeBackPlayer = null;
+            return false;
+        }
         if (state.equals(GameState.PLANNING)) {
             messages++;
             int i = players.indexOf(activePlayer) + 1;
@@ -60,6 +65,7 @@ public class TurnController {
             if (messages >= players.size()) {
                 state = GameState.next(state);
                 nicknameQueue = reader.getPlayersInOrder();
+                if(nicknameQueue.isEmpty()) return false;
                 activePlayer = nicknameQueue.get(0);
                 controlAndSkip();
                 return true;
@@ -87,7 +93,11 @@ public class TurnController {
     }
 
     public String getActivePlayer() {
-        return activePlayer;
+        if(comeBackPlayer != null){
+            return comeBackPlayer;
+        } else {
+            return activePlayer;
+        }
     }
 
     public boolean isCharacterActive(){
@@ -117,11 +127,15 @@ public class TurnController {
     }
 
     public void skipPlayer(String playerName) {
+        if(getActivePlayer().equals(playerName)) nextTurn();
         playersToSkip.add(playerName);
     }
 
     public void unSkipPlayer(String playerName) {
         playersToSkip.remove(playerName);
+        if(state.equals(GameState.PLANNING)){
+            comeBackPlayer = playerName;
+        }
     }
 
     private void controlAndSkip(){

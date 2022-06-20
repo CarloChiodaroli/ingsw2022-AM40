@@ -132,7 +132,7 @@ public class PlanningPhase {
      * Asks the game to create new clouds with students
      */
     private void endPhase() {
-        if (playersInOrder.size() == players) {
+        if (playersInOrder.size() == players - playersToSkip.size()) {
             determinedOrder = true;
             if (game.getTable().getBag().orElseThrow().howManyTotStudents() < game.getNumOfRegisteredPlayers() * game.getNumOfRegisteredPlayers() + 1) {
                 game.endGame();

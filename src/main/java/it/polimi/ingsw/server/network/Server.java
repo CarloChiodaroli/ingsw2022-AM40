@@ -38,7 +38,10 @@ public class Server {
 
     public void removeClient(String nickname, boolean notifyEnabled) {
         clientHandlerMap.remove(nickname);
-        gameManager.removeVirtualView(nickname, notifyEnabled);
+        if(
+        gameManager.removeVirtualView(nickname, notifyEnabled)){
+            exit();
+        }
         LOGGER.info(() -> "Removed " + nickname + " from the client list.");
     }
     //SERVER'S MESSAGE RECEIVED
@@ -77,5 +80,9 @@ public class Server {
                 .map(Map.Entry::getKey)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public void exit(){
+        System.exit(0);
     }
 }

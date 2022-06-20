@@ -58,7 +58,7 @@ public class VirtualView {
     }
 
     public void showDisconnectionMessage(String nicknameDisconnected, String text) {
-        sendMessage(new LobbyMessage("Server", nicknameDisconnected, true));
+        sendMessage(new LobbyMessage("Server", "disconnection" ,nicknameDisconnected));
     }
 
     public void showOtherDisconnectionMessage(String nicknameDisconnected, String text) {

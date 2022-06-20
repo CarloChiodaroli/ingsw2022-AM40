@@ -78,10 +78,10 @@ public class GameManager implements LobbyMessageReader {
             sendError(message.getSenderName(), "There are not enough players");
             return;
         }
-        if (assignedWizards.entrySet().size() != maxPlayers) {
+        /*if (assignedWizards.entrySet().size() != maxPlayers) {
             sendError(message.getSenderName(), "Not all players have chosen their wizards");
             return;
-        }
+        }*/
         if (virtualViewMap.size() == maxPlayers && !playMessagesReader.isGameStarted())
             initGame();
             /*if (game.getNumCurrentPlayers() == game.getChosenPlayersNumber()) { // If all players logged
@@ -169,8 +169,10 @@ public class GameManager implements LobbyMessageReader {
     // PLAY message part
 
     private void inGameState(Message receivedMessage) {
-        if(playMessagesReader.isStopped())
+        if(playMessagesReader.isStopped()){
             sendMessage(receivedMessage.getSenderName(), new ErrorMessage(server, "Game is stopped, server won't run this command"));
+            return;
+        }
         PlayMessage message = (PlayMessage) receivedMessage;
         try {
             message.executeMessage(playMessagesReader);
@@ -214,7 +216,8 @@ public class GameManager implements LobbyMessageReader {
                     this.playerNames.add(nickname);
                     virtualView.showLoginResult(true, true);
                     sendMessage(nickname, new LobbyMessage(server, assignedWizards.get(nickname)));
-                    playMessagesReader.sendCompleteGameStatus(nickname);
+                    playMessagesReader.unStopPlayer(nickname);
+                    playMessagesReader.sendCompleteGameStatus();
                     if(virtualViewMap.keySet().size() == playMessagesReader.getPlayerNames().size()){
                         playMessagesReader.unStop();
                     }
@@ -252,7 +255,7 @@ public class GameManager implements LobbyMessageReader {
         return virtualViewMap;
     }
 
-    public void removeVirtualView(String nickname, boolean notifyEnabled) {
+    public boolean removeVirtualView(String nickname, boolean notifyEnabled) {
         virtualViewMap.remove(nickname);
         if (playMessagesReader.isGameStarted()) {
             playMessagesReader.stopPlayer(nickname);
@@ -262,6 +265,7 @@ public class GameManager implements LobbyMessageReader {
         }
         virtualViewMap.values().forEach(x -> x.showDisconnectionMessage(nickname, "Disconnected from the server - waiting to reconnect"));
         if(virtualViewMap.size() == 1) playMessagesReader.stop();
+        return virtualViewMap.isEmpty();
     }
 
     public void sendMessage(String playerName, Message message) {

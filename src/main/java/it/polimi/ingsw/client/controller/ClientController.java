@@ -233,7 +233,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
             taskQueue.execute(() -> view.showDisconnectionMessage(nickname, "Server has disconnected you"));
             killMe(0);
         } else {
-            taskQueue.execute(() -> view.showOtherDisconnectionMessage(outgoingName, "Has disconnected"));
+            taskQueue.execute(() -> view.showOtherDisconnectionMessage(outgoingName, " has disconnected"));
         }
     }
 

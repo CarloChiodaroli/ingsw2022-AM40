@@ -3,10 +3,7 @@ package it.polimi.ingsw.server.controller.outer;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
-import it.polimi.ingsw.commons.message.ErrorMessage;
-import it.polimi.ingsw.commons.message.Message;
-import it.polimi.ingsw.commons.message.PlayMessageReader;
-import it.polimi.ingsw.commons.message.PlayMessagesFabric;
+import it.polimi.ingsw.commons.message.*;
 import it.polimi.ingsw.server.controller.inner.*;
 import it.polimi.ingsw.server.enums.CardCharacterizations;
 import it.polimi.ingsw.server.model.GameModel;
@@ -112,9 +109,9 @@ public class PlayMessagesReader implements PlayMessageReader {
         answers.forEach(answer -> gameManager.sendMessage(receiverName, answer));
     }
 
-    public void sendCompleteGameStatus(String player){
+    public void sendCompleteGameStatus(){
         sendCompleteStatus();
-        sendAllPrivate(player);
+        playerNames.forEach(this::sendAllPrivate);
     }
 
     private List<Message> playerDashboard(String player) {
@@ -532,9 +529,11 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     public void stop(){
         stop = true;
+        gameManager.broadcastMessage(new GenericMessage("Game is stopped"));
     }
 
     public void unStop(){
+        gameManager.broadcastMessage(new GenericMessage("Game has resumed"));
         stop = false;
     }
 
