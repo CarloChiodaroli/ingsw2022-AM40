@@ -1,12 +1,7 @@
 package it.polimi.ingsw.client.model;
 
-import it.polimi.ingsw.client.model.PlayMessageController;
-import it.polimi.ingsw.client.network.SocketClient;
-import it.polimi.ingsw.client.observer.ViewObserver;
-import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
-import it.polimi.ingsw.commons.enums.Wizard;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -24,14 +19,13 @@ public class Commands {
     }
 
     /**
-     * Called from the Client Input Stream class which manages the input stream of commands.
-     * This method divides the received command argument in parts and calls the correct method to run the user desired command.
+     * Called by the views to send Play type commands to the server
      *
      * The Accepted commands are:
      * <pre>
      *
      *  Play commands:
-     *     {@link it.polimi.ingsw.client.view.cli.Cli#abbreviation(List) abbreviation}     {@link it.polimi.ingsw.client.view.cli.Cli#command(List) command}      arg             arg     arg      : description
+     *     {@link it.polimi.ingsw.client.view.cli.Cli#abbreviation(List) abbreviation}    {@link it.polimi.ingsw.client.view.cli.Cli#command(List) command}      arg             arg     arg      : description
      *     {@link #as(List) as}              {@link #assistant(List) assistant}    weight                           : command used to play an assistant card
      *     {@link #sm(List) sm}              {@link #studentmove(List) studentmove}  student color   from id to id    : command to move a student
      *     {@link #mnm(List) mnm}             {@link #mnmove(List) mnmove}       hops                             : command to move mother nature of x hops
@@ -39,7 +33,11 @@ public class Commands {
      *     {@link #ch(List) ch}              {@link #choose(List) choose}       cloud id                         : command to choose a cloud
      *
      *  Expert Play commands:
-     *     abbreviation    command                      : description
+     *     {@link it.polimi.ingsw.client.view.cli.Cli#abbreviation(List) abbreviation}    {@link it.polimi.ingsw.client.view.cli.Cli#command(List) command}      arg           arg        arg        : description
+     *     {@link #ca(List) ca}              {@link #character(List) character}    character                           : command used to play an assistant card
+     *     {@link #ca(List) ca}              {@link #character(List) character}    character     color                 : command used to play an assistant card and give color preference
+     *     {@link #ca(List) ca}              {@link #character(List) character}    character     island id             : command used to play an assistant card and give island preference
+     *     {@link #sm(List) sm}              {@link #studentmove(List) studentmove}  from color    to color   place id   : command to shift a student between entrance and place
      * </pre>
      *
      * @param command the raw command received from the user.

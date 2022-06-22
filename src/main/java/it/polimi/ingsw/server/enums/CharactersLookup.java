@@ -5,6 +5,9 @@ import it.polimi.ingsw.commons.enums.Characters;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Maps every character with his type.
+ */
 public class CharactersLookup {
 
     private static final Map<Characters, ActionPhaseStateType> map = new HashMap<>() {{

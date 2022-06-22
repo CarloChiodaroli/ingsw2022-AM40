@@ -1,12 +1,17 @@
 package it.polimi.ingsw.server.controller.inner;
 
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
 import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.commons.enums.Characters;
 
 import java.security.InvalidParameterException;
 import java.util.List;
 
+/**
+ * Of the controller this class manages model's inbound communications, checking if those commands are runnable or not.
+ * if not runnable an exception will be raised to be caught by the {@link PlayMessagesReader} class.
+ */
 public class InboundController {
 
     private final GameModel model;

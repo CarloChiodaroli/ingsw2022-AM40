@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This class keeps track of the turns of the players.
+ */
 public class TurnController {
 
     private final PlayMessagesReader reader;
@@ -98,6 +101,10 @@ public class TurnController {
         } else {
             return activePlayer;
         }
+    }
+
+    public String getActualState(){
+        return state.toString();
     }
 
     public boolean isCharacterActive(){

@@ -3,16 +3,18 @@ package it.polimi.ingsw.server.controller.inner;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
 import it.polimi.ingsw.server.enums.CardCharacterizations;
-import it.polimi.ingsw.server.view.VirtualView;
+import it.polimi.ingsw.server.network.VirtualView;
 
 import java.security.InvalidParameterException;
 import java.util.*;
 
+/**
+ * This Class, with the help of the {@link TurnController} class gives methods to check if communications between controller
+ * and model are legal or not.
+ */
 public class InputController {
 
     private final PlayMessagesReader reader;
-
-    // Expert
 
     private Map<Characters, Integer> actualCards;
     private Map<Characters, List<String>> characterizingMap;
@@ -130,45 +132,17 @@ public class InputController {
         if (!isIslandId(id)) throw new InvalidParameterException("Gotten id is not island id");
     }
 
-    /* @Deprecated
-    public boolean verifyReceivedData(Message message) {
-        switch (message.getMessageType()) {
-            case GENERIC: // server doesn't receive a GENERIC_MESSAGE.
-                return false;
-            /*case LOGIN_REPLY: // server doesn't receive a LOGIN_REPLY.
-                return false;
-            /*case PLAYER_NUMBER_REPLY:
-                return playerNumberReplyCheck(message);
-            /*case PLAYER_NUMBER_REQUEST: // server doesn't receive a GenericErrorMessage.
-                return false;
-            default: // Never should reach this statement.
-                return false;
-        }
-    }*/
-
     public static boolean checkLoginNickname(String nickname, VirtualView view, Set<String> names) {
         if (nickname.isEmpty() || nickname.equalsIgnoreCase("server")) {
             view.showGenericMessage("Forbidden name.");
-            view.showLoginResult(false, true, null);
+            view.showLoginResult(false, true);
             return false;
         } else if (names.contains(nickname)) {
             view.showGenericMessage("Nickname already taken.");
-            view.showLoginResult(false, true, null);
+            view.showLoginResult(false, true);
             return false;
         }
         return true;
     }
-
-    /* @Deprecated
-    private boolean playerNumberReplyCheck(Message message) {
-        PlayerNumberReply playerNumberReply = (PlayerNumberReply) message;
-        if (playerNumberReply.getPlayerNumber() < 4 && playerNumberReply.getPlayerNumber() > 1) {
-            return true;
-        } else {
-            VirtualView virtualView = virtualViewMap.get(message.getSenderName());
-            virtualView.askPlayersNumber();
-            return false;
-        }
-    }*/
 
 }

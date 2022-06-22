@@ -7,6 +7,9 @@ import it.polimi.ingsw.server.model.GameModel;
 
 import java.util.*;
 
+/**
+ * Class used by the Play Message reader to read status informations from the model.
+ */
 public class OutboundController {
 
     private final GameModel model;

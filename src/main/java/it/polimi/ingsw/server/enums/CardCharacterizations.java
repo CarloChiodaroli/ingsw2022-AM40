@@ -4,7 +4,9 @@ import it.polimi.ingsw.commons.enums.Characters;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * Lists the singular characterizations of the characters.
+ */
 public abstract class CardCharacterizations {
 
     public static Map<Characters, Map<String, Integer>> getMap() {
