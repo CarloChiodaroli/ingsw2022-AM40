@@ -7,7 +7,7 @@ import it.polimi.ingsw.commons.message.*;
 import it.polimi.ingsw.server.controller.inner.*;
 import it.polimi.ingsw.server.enums.CardCharacterizations;
 import it.polimi.ingsw.server.model.GameModel;
-import it.polimi.ingsw.server.view.VirtualView;
+import it.polimi.ingsw.server.network.VirtualView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Executes PlayMessages and answers with other PlayMessages
+ * Of the controller this is the middle part. This class is run by the {@link it.polimi.ingsw.commons.message.play.PlayMessage#executeMessage(PlayMessageReader) executeMessage}
+ * method of messages of the play type.
+ * This class manages all strictly game related communications between server and client.
+ * Received a command, runs it, and if there are errors sends them, else sends singular status messages
+ * which represent state changes of the model subsequent the received command.
  */
 public class PlayMessagesReader implements PlayMessageReader {
 
@@ -68,7 +72,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         return playerNames.size();
     }
 
-    private void sendCompleteStatus() {
+    private void sendCompleteStatus(String player) {
         List<Message> commonAnswers = new ArrayList<>();
         List<String> islandIds = outbound.getAllIslandIds();
         List<String> cloudIds = outbound.getAllCloudIds();
@@ -100,18 +104,26 @@ public class PlayMessagesReader implements PlayMessageReader {
                     });
             commonAnswers.add(PlayMessagesFabric.statusNoEntry(server, outbound.getIslandsWithNoEntry()));
         }
-        commonAnswers.forEach(gameManager::broadcastMessage);
+        commonAnswers.forEach(x -> gameManager.sendMessage(player, x));
     }
 
-    private void sendAllPrivate(String receiverName){
+    private void sendAllPrivate(String receiverName) {
         List<Message> answers = new ArrayList<>(playerDashboard(receiverName));
         answers.add(PlayMessagesFabric.statusPlanning(server, turnController.getActivePlayer()));
         answers.forEach(answer -> gameManager.sendMessage(receiverName, answer));
     }
 
-    public void sendCompleteGameStatus(){
-        sendCompleteStatus();
-        playerNames.forEach(this::sendAllPrivate);
+    public void sendCompleteGameStatus(String playerName) {
+        sendCompleteStatus(playerName);
+        sendAllPrivate(playerName);
+        //playerNames.forEach(this::sendAllPrivate);
+    }
+
+    public void sendStatus() {
+        if (turnController.getActualState().equalsIgnoreCase("action"))
+            playerNames.forEach(x -> gameManager.sendMessage(x, PlayMessagesFabric.statusAction(server, turnController.getActivePlayer())));
+        else if (turnController.getActualState().equalsIgnoreCase("planning"))
+            playerNames.forEach(x -> gameManager.sendMessage(x, PlayMessagesFabric.statusPlanning(server, turnController.getActivePlayer())));
     }
 
     private List<Message> playerDashboard(String player) {
@@ -130,7 +142,7 @@ public class PlayMessagesReader implements PlayMessageReader {
             errorInExecution(e.getMessage());
             return;
         }
-        sendCompleteStatus();
+        playerNames.forEach(this::sendCompleteStatus);
         playerNames.forEach(this::sendAllPrivate);
     }
 
@@ -527,17 +539,17 @@ public class PlayMessagesReader implements PlayMessageReader {
         return numOfPlayers;
     }
 
-    public void stop(){
+    public void stop() {
         stop = true;
         gameManager.broadcastMessage(new GenericMessage("Game is stopped"));
     }
 
-    public void unStop(){
+    public void unStop() {
         gameManager.broadcastMessage(new GenericMessage("Game has resumed"));
         stop = false;
     }
 
-    public boolean isStopped(){
+    public boolean isStopped() {
         return stop;
     }
 }

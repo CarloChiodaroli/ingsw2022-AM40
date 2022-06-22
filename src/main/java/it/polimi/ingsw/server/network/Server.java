@@ -3,7 +3,6 @@ package it.polimi.ingsw.server.network;
 
 import it.polimi.ingsw.server.controller.outer.GameManager;
 import it.polimi.ingsw.commons.message.Message;
-import it.polimi.ingsw.server.view.VirtualView;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,7 +27,7 @@ public class Server {
     }
 
     public void addClient(String nickname, ClientHandler clientHandler) {
-        VirtualView vv = new VirtualView(clientHandler);
+        VirtualView vv = new VirtualView(clientHandler, "server");
 
         if(gameManager.checkLoginNickname(nickname, vv)){
             clientHandlerMap.put(nickname, clientHandler);
