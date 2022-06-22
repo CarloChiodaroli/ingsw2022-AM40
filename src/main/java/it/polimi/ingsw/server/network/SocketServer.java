@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.network;
 
-
 import it.polimi.ingsw.commons.message.Message;
 
 import java.io.IOException;

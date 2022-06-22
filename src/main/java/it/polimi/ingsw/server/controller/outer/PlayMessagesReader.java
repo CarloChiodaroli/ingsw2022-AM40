@@ -7,7 +7,6 @@ import it.polimi.ingsw.commons.message.*;
 import it.polimi.ingsw.server.controller.inner.*;
 import it.polimi.ingsw.server.enums.CardCharacterizations;
 import it.polimi.ingsw.server.model.GameModel;
-import it.polimi.ingsw.server.network.VirtualView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +33,6 @@ public class PlayMessagesReader implements PlayMessageReader {
     private final List<String> playerNames;
     private boolean expertVariant;
     private final String server;
-    private transient Map<String, VirtualView> virtualViewMap;
     private boolean stop;
 
     public PlayMessagesReader(String mainPlayer, GameManager gameManager) {

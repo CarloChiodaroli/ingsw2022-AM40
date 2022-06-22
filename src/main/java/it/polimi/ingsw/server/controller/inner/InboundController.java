@@ -1,11 +1,10 @@
 package it.polimi.ingsw.server.controller.inner;
 
+import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
 import it.polimi.ingsw.server.model.GameModel;
-import it.polimi.ingsw.commons.enums.Characters;
 
-import java.security.InvalidParameterException;
 import java.util.List;
 
 /**
@@ -92,11 +91,11 @@ public class InboundController {
         return model.isExpertVariant();
     }
 
-    public void skipPlayer(String playerName){
+    public void skipPlayer(String playerName) {
         model.skipPlayer(playerName);
     }
 
-    public void unSkipPlayer(String playerName){
+    public void unSkipPlayer(String playerName) {
         model.unSkipPlayer(playerName);
     }
 

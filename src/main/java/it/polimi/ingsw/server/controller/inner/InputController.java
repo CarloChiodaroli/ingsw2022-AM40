@@ -3,10 +3,12 @@ package it.polimi.ingsw.server.controller.inner;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
 import it.polimi.ingsw.server.enums.CardCharacterizations;
-import it.polimi.ingsw.server.network.VirtualView;
 
 import java.security.InvalidParameterException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This Class, with the help of the {@link TurnController} class gives methods to check if communications between controller

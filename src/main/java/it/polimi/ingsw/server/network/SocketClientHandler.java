@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.network;
 
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -85,7 +84,7 @@ public class SocketClientHandler implements ClientHandler, Runnable {
                             rawGson = input.readLine();
                         } while (rawGson == null);
                         message = gson.fromJson(rawGson, Message.class);
-                        if(message != null) {
+                        if (message != null) {
                             message = (Message) gson.fromJson(rawGson, message.getMessageType().getImplementingClass());
                             String forLambda = rawGson;
                             if (!message.getMessageType().equals(MessageType.PING))

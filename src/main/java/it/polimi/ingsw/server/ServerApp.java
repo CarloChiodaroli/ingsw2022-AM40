@@ -15,7 +15,7 @@ public class ServerApp {
     private final static String port = "--port";
 
 
-    public static void server(){
+    public static void server() {
         int serverPort = 16847; // default value
         GameManager gameManager = new GameManager();
         Server server = new Server(gameManager);
@@ -24,15 +24,15 @@ public class ServerApp {
         thread.start();
     }
 
-    public static void server(String[] args){
+    public static void server(String[] args) {
         int serverPort = 16847; // default value
-        if(args.length > 1){
+        if (args.length > 1) {
             List<String> argos = Arrays.stream(args).toList();
-            if(argos.contains(port)){
+            if (argos.contains(port)) {
                 String userPort = argos.get(argos.indexOf(port) + 1);
-                try{
+                try {
                     serverPort = Integer.parseInt(userPort);
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     System.out.println("Error while reading port number");
                     System.exit(1);
                 }

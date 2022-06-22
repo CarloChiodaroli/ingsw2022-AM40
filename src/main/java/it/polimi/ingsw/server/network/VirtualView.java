@@ -2,7 +2,6 @@ package it.polimi.ingsw.server.network;
 
 import it.polimi.ingsw.commons.enums.Wizard;
 import it.polimi.ingsw.commons.message.*;
-import it.polimi.ingsw.server.network.ClientHandler;
 
 import java.util.List;
 
@@ -12,7 +11,6 @@ import java.util.List;
  * This is a sort of fabric method class that allows the Game manager to send Login, Lobby, Error and Generic messages to the client.
  * For other types of messages managed in {@link it.polimi.ingsw.server.controller.outer.PlayMessagesReader Play Message Reader} class
  * the {@link #sendMessage(Message) sendMessage} method is exposed in order to send them.
- *
  */
 public class VirtualView {
 
@@ -36,7 +34,7 @@ public class VirtualView {
         clientHandler.sendMessage(message);
     }
 
-    public void sendAvailableWizards(List<Wizard> availableWizards){
+    public void sendAvailableWizards(List<Wizard> availableWizards) {
         sendMessage(new LobbyMessage(server, "wizardList", availableWizards));
     }
 
@@ -53,22 +51,22 @@ public class VirtualView {
     }
 
     public void showDisconnectionMessage(String nicknameDisconnected, String text) {
-        sendMessage(new LobbyMessage(server, "disconnection" ,nicknameDisconnected));
+        sendMessage(new LobbyMessage(server, "disconnection", nicknameDisconnected));
     }
 
-    public void showNumOfPlayers(int numOfPlayers){
+    public void showNumOfPlayers(int numOfPlayers) {
         sendMessage(new LobbyMessage(server, "numOfPlayers", numOfPlayers));
     }
 
-    public void showExpertVariant(boolean isExpert){
+    public void showExpertVariant(boolean isExpert) {
         sendMessage(new LobbyMessage(server, "expert", isExpert));
     }
 
-    public void showAssignedWizard(Wizard wizard){
+    public void showAssignedWizard(Wizard wizard) {
         sendMessage(new LobbyMessage(server, wizard));
     }
 
-    public void showWizardConfirmation(boolean confirmation){
+    public void showWizardConfirmation(boolean confirmation) {
         sendMessage(new LobbyMessage(server, "wizard", confirmation));
     }
 

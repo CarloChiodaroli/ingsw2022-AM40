@@ -1,11 +1,12 @@
 package it.polimi.ingsw.server.controller.outer;
 
 import it.polimi.ingsw.commons.enums.Wizard;
-import it.polimi.ingsw.commons.message.*;
+import it.polimi.ingsw.commons.message.LobbyMessage;
+import it.polimi.ingsw.commons.message.LobbyMessageReader;
+import it.polimi.ingsw.commons.message.Message;
+import it.polimi.ingsw.commons.message.MessageType;
 import it.polimi.ingsw.commons.message.play.PlayMessage;
-import it.polimi.ingsw.server.controller.inner.InputController;
 import it.polimi.ingsw.server.network.Server;
-import it.polimi.ingsw.server.utils.StorageData;
 import it.polimi.ingsw.server.network.VirtualView;
 
 import java.lang.reflect.InvocationTargetException;
@@ -29,7 +30,6 @@ public class GameManager implements LobbyMessageReader {
     private List<String> playerNames;
     private PlayMessagesReader playMessagesReader = null;
     private static final String STR_INVALID_STATE = "Invalid game state!";
-    public static final String SAVED_GAME_FILE = "match.log";
     private static final int DEFAULT_MAX_PLAYERS = 1;
     private final Map<String, Wizard> assignedWizards;
 
@@ -166,7 +166,7 @@ public class GameManager implements LobbyMessageReader {
     // PLAY message part
 
     private void inGameState(Message receivedMessage) {
-        if(playMessagesReader.isStopped()){
+        if (playMessagesReader.isStopped()) {
             virtualViewMap.get(receivedMessage.getSenderName()).showError("Game is stopped, server won't run this command");
             return;
         }
@@ -193,7 +193,7 @@ public class GameManager implements LobbyMessageReader {
                 virtualView.sendMainPlayer(mainPlayer);
                 virtualView.showExpertVariant(playMessagesReader.isExpertVariant());
             } else {
-                if(this.maxPlayers == DEFAULT_MAX_PLAYERS){
+                if (this.maxPlayers == DEFAULT_MAX_PLAYERS) {
                     virtualView.showError("Main Player needs to choose how many players can Login");
                     virtualView.showLoginResult(false, true);
                     return;
@@ -213,8 +213,8 @@ public class GameManager implements LobbyMessageReader {
                 }
             }
         } else {
-            if(playMessagesReader.getPlayerNames().contains(nickname)){
-                if(virtualViewMap.containsKey(nickname)){
+            if (playMessagesReader.getPlayerNames().contains(nickname)) {
+                if (virtualViewMap.containsKey(nickname)) {
                     virtualView.showLoginResult(true, false);
                 } else {
                     addVirtualView(nickname, virtualView);
@@ -224,7 +224,7 @@ public class GameManager implements LobbyMessageReader {
                     playMessagesReader.unStopPlayer(nickname);
                     playMessagesReader.sendCompleteGameStatus(nickname);
                     playMessagesReader.sendStatus();
-                    if(virtualViewMap.keySet().size() == playMessagesReader.getPlayerNames().size()){
+                    if (virtualViewMap.keySet().size() == playMessagesReader.getPlayerNames().size()) {
                         playMessagesReader.unStop();
                     }
                 }
@@ -246,26 +246,17 @@ public class GameManager implements LobbyMessageReader {
                 .collect(Collectors.toList());
     }
 
-    // Resilience
-
-    public void endGame() {
-        StorageData storageData = new StorageData();
-        storageData.delete();
-        initGameController();
-        Server.LOGGER.info("Server ready for a new Game");
-    }
-
     // outbound communication utilities
 
     public boolean removeVirtualView(String nickname, boolean notifyEnabled) {
         playerNames.remove(nickname);
-        if(!virtualViewMap.containsKey(nickname)) {
+        if (!virtualViewMap.containsKey(nickname)) {
             return virtualViewMap.isEmpty();
         }
         if (playMessagesReader.isGameStarted()) {
             playMessagesReader.stopPlayer(nickname);
             virtualViewMap.remove(nickname);
-            if(virtualViewMap.size() == 1) playMessagesReader.stop();
+            if (virtualViewMap.size() == 1) playMessagesReader.stop();
             else playMessagesReader.sendStatus();
         } else {
             playMessagesReader.deletePlayer(nickname);

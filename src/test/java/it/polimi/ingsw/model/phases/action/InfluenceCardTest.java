@@ -92,7 +92,6 @@ public class InfluenceCardTest {
                     Optional.of(testIsland));
         }
 
-        sorceressCard.handle(anja, testIsland);
         assertEquals(camilla.getTowerColor(), testIsland.getTowerColor().get());
     }
 

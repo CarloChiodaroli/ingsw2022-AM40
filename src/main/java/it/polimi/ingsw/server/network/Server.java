@@ -1,13 +1,12 @@
 package it.polimi.ingsw.server.network;
 
 
-import it.polimi.ingsw.server.controller.outer.GameManager;
 import it.polimi.ingsw.commons.message.Message;
+import it.polimi.ingsw.server.controller.outer.GameManager;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -29,7 +28,7 @@ public class Server {
 
     public void addClient(String nickname, ClientHandler clientHandler) {
         VirtualView vv = new VirtualView(clientHandler, "server");
-        if(gameManager.checkLoginNickname(nickname, vv)){
+        if (gameManager.checkLoginNickname(nickname, vv)) {
             clientHandlerMap.put(nickname, clientHandler);
             gameManager.loginHandler(nickname, vv);
         }
@@ -37,12 +36,13 @@ public class Server {
 
     public void removeClient(String nickname, boolean notifyEnabled) {
         clientHandlerMap.remove(nickname);
-        if(
-        gameManager.removeVirtualView(nickname, notifyEnabled)){
+        if (
+                gameManager.removeVirtualView(nickname, notifyEnabled)) {
             exit();
         }
         LOGGER.info(() -> "Removed " + nickname + " from the client list.");
     }
+
     //SERVER'S MESSAGE RECEIVED
     public void onMessageReceived(Message message) {
         gameManager.onMessageReceived(message);
@@ -50,6 +50,7 @@ public class Server {
 
     /**
      * Disconnect Client
+     *
      * @param clientHandler the one to disconnect
      */
     public void onDisconnect(ClientHandler clientHandler) {
@@ -64,9 +65,9 @@ public class Server {
                 // Resets server status only if the game was already started.
                 // Otherwise the server will wait for a new player to connect.
                 //if (gameStarted) {
-                    //gameManager.broadcastDisconnectionMessage(nickname, " disconnected from the server. GAME ENDED.");
-                    //gameManager.endGame();
-                    //clientHandlerMap.clear();
+                //gameManager.broadcastDisconnectionMessage(nickname, " disconnected from the server. GAME ENDED.");
+                //gameManager.endGame();
+                //clientHandlerMap.clear();
                 //}
             }
         }
@@ -81,7 +82,7 @@ public class Server {
                 .orElse(null);
     }
 
-    public void exit(){
+    public void exit() {
         System.exit(0);
     }
 }
