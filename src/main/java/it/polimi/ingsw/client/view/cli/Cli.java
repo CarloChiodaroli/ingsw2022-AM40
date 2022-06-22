@@ -26,11 +26,9 @@ public class Cli extends ViewObservable implements View {
     private final PrintStream out;
     private final ClientInputStream inputStream;
     private Object userInputLock;
-    private PlayMessageController playMessageController;
     private boolean connected;
     private StatePrinter statePrinter;
     private Map<String, String> serverInfo = new HashMap<>();
-    private boolean expert;
     private boolean shownPlayCustom;
     private Commands commands;
 
@@ -50,7 +48,6 @@ public class Cli extends ViewObservable implements View {
      */
     @Override
     public void setStatePrinter(PlayMessageController playMessageController) {
-        this.playMessageController = playMessageController;
         this.commands = new Commands(playMessageController);
         this.statePrinter = new StatePrinter(playMessageController.getState());
     }
@@ -410,7 +407,6 @@ public class Cli extends ViewObservable implements View {
      */
     @Override
     public void showExpert(boolean expertStatus) {
-        expert = expertStatus;
         if (expertStatus) {
             out.println("The game was put in " + EscapeCli.RED + "Expert" + EscapeCli.DEFAULT + " variant");
         } else {

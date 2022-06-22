@@ -613,8 +613,8 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         this.state = state;
     }
 
-    public void addPlayMessageController(PlayMessageController controller) {
-        this.commandSender = new Commands(controller);
+    public void addCommandSender(Commands commands) {
+        this.commandSender = commands;
     }
 
     private void commandAppender(Event event, String argument) {

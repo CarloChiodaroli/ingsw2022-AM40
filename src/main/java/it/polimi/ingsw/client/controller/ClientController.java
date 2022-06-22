@@ -209,6 +209,9 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         if (!message.getAccepted()) {
             state.setWizard(null);
         }
+        if (message.getWizard() != null) {
+            state.setWizard(message.getWizard());
+        }
         taskQueue.execute(view::showWizard);
     }
 

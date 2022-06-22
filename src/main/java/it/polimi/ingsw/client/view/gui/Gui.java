@@ -1,11 +1,11 @@
 package it.polimi.ingsw.client.view.gui;
 
+import it.polimi.ingsw.client.model.Commands;
 import it.polimi.ingsw.client.model.PlayMessageController;
 import it.polimi.ingsw.client.model.PlayState;
 import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.gui.scene.*;
-import it.polimi.ingsw.commons.enums.Wizard;
 import javafx.application.Platform;
 
 import java.util.List;
@@ -20,9 +20,9 @@ public class Gui extends ViewObservable implements View {
     private boolean okVariant = false;
     private boolean status;
     private int players = 0;
-    private PlayState state;
     private boolean inPlay = false;
-    private PlayMessageController playMessageController;
+    private PlayState state;
+    private Commands commands;
 
 
     /**
@@ -121,7 +121,7 @@ public class Gui extends ViewObservable implements View {
      */
     @Override
     public void setStatePrinter(PlayMessageController playMessageController) {
-        this.playMessageController = playMessageController;
+        commands = new Commands(playMessageController);
         state = playMessageController.getState();
     }
 
@@ -171,7 +171,7 @@ public class Gui extends ViewObservable implements View {
             psc = new PlaySceneController();
             psc.addAllObservers(observers);
             psc.addGameState(state);
-            psc.addPlayMessageController(playMessageController);
+            psc.addCommandSender(commands);
             PlaySceneController finalPsc = psc;
             Platform.runLater(() -> SceneController.changeRootPane(finalPsc, "play_scene.fxml"));
         }
