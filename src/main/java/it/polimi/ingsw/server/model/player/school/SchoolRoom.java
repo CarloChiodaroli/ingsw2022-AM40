@@ -3,10 +3,12 @@ package it.polimi.ingsw.server.model.player.school;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.server.model.StudentsManager;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Models School Room part of the Player's {@link SchoolDashboard Dashboard}, keeping also track of the teachers.
+ */
 public class SchoolRoom extends StudentsManager {
 
     private final static int lengthOfTables = 10;

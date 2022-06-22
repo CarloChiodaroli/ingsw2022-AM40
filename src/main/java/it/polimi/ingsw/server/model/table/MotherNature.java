@@ -2,6 +2,9 @@ package it.polimi.ingsw.server.model.table;
 
 import java.util.Optional;
 
+/**
+ * Models game's mother nature wood peace with a singleton pattern.
+ */
 public class MotherNature {
 
     private static MotherNature instance = null;

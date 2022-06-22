@@ -1,10 +1,10 @@
 package it.polimi.ingsw.server.model.table;
 
-import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.StudentsManager;
 
 /**
- * CLASS Cloud
+ * Models game's Cloud.
  */
 public class Cloud extends StudentsManager {
     private final String id;
@@ -25,9 +25,9 @@ public class Cloud extends StudentsManager {
         return id;
     }
 
-    public void buildCloud(Bag bag) throws IllegalStateException{
+    public void buildCloud(Bag bag) throws IllegalStateException {
         int color;
-        if(bag.howManyTotStudents() < this.getMaxStudents())
+        if (bag.howManyTotStudents() < this.getMaxStudents())
             throw new IllegalStateException("Not enough students to fill the cloud");
         for (int i = 0; i < this.getMaxStudents(); i++) {
             color = (int) (Math.random() * 5);

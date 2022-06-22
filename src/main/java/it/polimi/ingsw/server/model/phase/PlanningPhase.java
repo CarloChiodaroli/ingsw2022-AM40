@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Models game round's pianification phase
+ * Models games Planning phase and manages play rounds and phases.
  */
 
 public class PlanningPhase {
@@ -139,7 +139,7 @@ public class PlanningPhase {
             } else {
                 actualPlayer = 0;
                 Player actualRealPlayer = getActualPlayer();
-                if(playersToSkip.contains(actualRealPlayer)) throw new IllegalStateException("No Players are Playing");
+                if (playersToSkip.contains(actualRealPlayer)) throw new IllegalStateException("No Players are Playing");
                 game.getActionPhase().startPhase(actualRealPlayer);
                 countRound++;
             }
@@ -165,10 +165,10 @@ public class PlanningPhase {
     public Player getActualPlayer() {
         if (!determinedOrder) return null;
         Player actualRealPlayer = playersInOrder.get(actualPlayer);
-        for(int i = 0; i < 4; i++){
-            if(!playersToSkip.contains(actualRealPlayer)) return actualRealPlayer;
+        for (int i = 0; i < 4; i++) {
+            if (!playersToSkip.contains(actualRealPlayer)) return actualRealPlayer;
             nextPlayer();
-            if(!activated) return actualRealPlayer;
+            if (!activated) return actualRealPlayer;
             actualRealPlayer = playersInOrder.get(actualPlayer);
         }
         return actualRealPlayer;
@@ -189,11 +189,11 @@ public class PlanningPhase {
         return new ArrayList<>(playersInOrder);
     }
 
-    public void skipPlayer(Player player){
+    public void skipPlayer(Player player) {
         playersToSkip.add(player);
     }
 
-    public void unSkipPlayer(Player player){
+    public void unSkipPlayer(Player player) {
         playersToSkip.remove(player);
     }
 

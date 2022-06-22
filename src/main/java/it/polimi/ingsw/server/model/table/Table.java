@@ -6,8 +6,9 @@ import it.polimi.ingsw.server.model.StudentsManager;
 import java.util.*;
 
 /**
- * CLASS TABLE (Idea -> It is a physic table)
- * It controls all the contents
+ * Models game's table, so everything that is set on the table while playing the game:
+ * {@link Bag bags}, {@link Cloud clouds} and {@link Island islands}
+ * (excluding player's {@link it.polimi.ingsw.server.model.player.school.SchoolDashboard dashboard}).
  */
 public class Table {
 
@@ -38,7 +39,7 @@ public class Table {
     /**
      * @param numberOfPlayer number of player to create
      */
-    public void buildClouds(int numberOfPlayer) throws IllegalStateException{
+    public void buildClouds(int numberOfPlayer) throws IllegalStateException {
         cloudList.clear();
         for (int i = 0; i < numberOfPlayer; i++) {
             Cloud cloud = new Cloud("c_" + (i + 1), numberOfPlayer + 1);
@@ -51,7 +52,7 @@ public class Table {
         buildClouds(numOfPlayers);
     }
 
-    public void removeCloud(Cloud cloud){
+    public void removeCloud(Cloud cloud) {
         cloudList.remove(cloud);
     }
 

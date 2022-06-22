@@ -1,13 +1,13 @@
 package it.polimi.ingsw.server.model.table;
 
-import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
+import it.polimi.ingsw.server.model.StudentsManager;
 
 import java.util.Optional;
 
 /**
- * ISLAND'S ID : I_1, I_2 , MERGE(I_1,I_2) -> I_1_2
+ * Models game's Island.
  */
 public class Island extends StudentsManager {
     private final String id;
@@ -113,7 +113,7 @@ public class Island extends StudentsManager {
         return id;
     }
 
-    public int getEquivalent(){
+    public int getEquivalent() {
         return equivalentIsland;
     }
 

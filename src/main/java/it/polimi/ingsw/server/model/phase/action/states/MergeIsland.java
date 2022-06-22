@@ -1,11 +1,15 @@
 package it.polimi.ingsw.server.model.phase.action.states;
 
-import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
+import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.table.Island;
 
 import java.util.List;
 
+/**
+ * 4th Action Phase State, this class models the merging of the islands. Does not correspond to a command sent by a player,
+ * it's automatically called after influence command.
+ */
 public class MergeIsland extends ActionFaseState {
 
     public MergeIsland(ActionPhase actionPhase) {

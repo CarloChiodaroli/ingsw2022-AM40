@@ -2,6 +2,9 @@ package it.polimi.ingsw.server.model.player.school;
 
 import it.polimi.ingsw.server.model.StudentsManager;
 
+/**
+ * Models School Entrance part of the player's {@link SchoolDashboard dashboard}.
+ */
 public class SchoolEntrance extends StudentsManager {
 
     /**

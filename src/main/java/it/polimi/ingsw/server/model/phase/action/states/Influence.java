@@ -1,14 +1,16 @@
 package it.polimi.ingsw.server.model.phase.action.states;
 
 import it.polimi.ingsw.commons.enums.TeacherColor;
-import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
+import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.table.Island;
 
-import java.security.InvalidParameterException;
 import java.util.*;
 
+/**
+ * 3rd Action phase state, this class models the game's influence calc.
+ */
 public class Influence extends ActionFaseState {
 
     public Influence(ActionPhase actionPhase) {
@@ -75,7 +77,7 @@ public class Influence extends ActionFaseState {
 
     private void possessionSwitcher(Island island, Optional<Player> outgoing, Player ingoing) {
         outgoing.ifPresent(x -> x.pushTower(island.howManyTowers()));
-        if(ingoing.getNumberTowersLeft() < island.howManyEquivalents()){
+        if (ingoing.getNumberTowersLeft() < island.howManyEquivalents()) {
             island.setInfluence(ingoing.getTower(ingoing.getNumberTowersLeft()));
         } else {
             island.setInfluence(ingoing.getTower(island.howManyEquivalents()));

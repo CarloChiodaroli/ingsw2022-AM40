@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 3rd type of Character card, this card decors the action phase's {@link Influence} State, modelling all influence calc related character card behaviours.
+ */
 public class InfluenceCard extends CharacterCard {
 
     private Influence decorated;

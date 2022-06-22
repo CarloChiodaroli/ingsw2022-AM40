@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Lots of pieces and entities in the game keep memory of students, this class gets extended by all classes that manage students.
+ */
 public abstract class StudentsManager {
     private final int maxStudents;
     private final int maxStudentsColor;
@@ -22,7 +25,7 @@ public abstract class StudentsManager {
         this.maxStudents = maxStudents;
         this.maxStudentsColor = maxStudentsColor;
         this.manager = new HashMap<>();
-        for(TeacherColor color: TeacherColor.values()){
+        for (TeacherColor color : TeacherColor.values()) {
             manager.put(color, 0);
         }
     }
@@ -31,7 +34,7 @@ public abstract class StudentsManager {
         this.maxStudents = maxStudents;
         this.maxStudentsColor = maxStudents;
         this.manager = new HashMap<>();
-        for(TeacherColor color: TeacherColor.values()) {
+        for (TeacherColor color : TeacherColor.values()) {
             manager.put(color, 0);
         }
     }
@@ -45,8 +48,8 @@ public abstract class StudentsManager {
     public boolean addStudent(TeacherColor color) {
         boolean perm;
         perm = permissionAdd(manager.get(color));
-        if(perm){
-            manager.replace(color, manager.get(color),manager.get(color) + 1);
+        if (perm) {
+            manager.replace(color, manager.get(color), manager.get(color) + 1);
             return true;
         }
         return false;
@@ -61,8 +64,8 @@ public abstract class StudentsManager {
     public boolean removeStudent(TeacherColor color) {
         boolean perm;
         perm = permissionRemove(manager.get(color));
-        if(perm){
-            manager.replace(color, manager.get(color),manager.get(color) - 1);
+        if (perm) {
+            manager.replace(color, manager.get(color), manager.get(color) - 1);
             return true;
         }
         return false;
@@ -98,7 +101,7 @@ public abstract class StudentsManager {
      */
     public int howManyTotStudents() {
         int studentTot = 0;
-        for(TeacherColor color: TeacherColor.values()){
+        for (TeacherColor color : TeacherColor.values()) {
             studentTot += manager.get(color);
         }
         return studentTot;
@@ -117,7 +120,7 @@ public abstract class StudentsManager {
         return maxStudents;
     }
 
-    public Map<TeacherColor, Integer> getMap(){
+    public Map<TeacherColor, Integer> getMap() {
         return manager;
     }
 }

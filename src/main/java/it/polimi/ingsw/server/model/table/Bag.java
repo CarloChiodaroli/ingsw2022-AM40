@@ -1,12 +1,14 @@
 package it.polimi.ingsw.server.model.table;
 
-import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.StudentsManager;
 
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * Models game's Student bag.
+ */
 public class Bag extends StudentsManager {
 
     private final static int defaultColorNumOfStudents = 26;

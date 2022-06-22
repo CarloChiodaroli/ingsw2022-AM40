@@ -1,10 +1,10 @@
 package it.polimi.ingsw.server.model.player;
 
-import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.server.model.player.school.SchoolDashboard;
 import it.polimi.ingsw.server.model.table.Island;
 
@@ -114,8 +114,8 @@ public class Player {
         Optional<StudentsManager> from = getStudentsManagerById(sourceId);
         Optional<StudentsManager> to = getStudentsManagerById(destinationId);
         game.getActionPhase().request(student, from, to);
-        if(dashboard.getRoom().getMoneyPlace()){
-            if(game.getTable().getCoin()){
+        if (dashboard.getRoom().getMoneyPlace()) {
+            if (game.getTable().getCoin()) {
                 money++;
             }
         }
@@ -124,8 +124,8 @@ public class Player {
     public void moveStudent(TeacherColor studentA, TeacherColor studentB, String placeId) {
         controlEnable();
         game.getActionPhase().request(this, studentA, studentB, placeId);
-        if(dashboard.getRoom().getMoneyPlace()){
-            if(game.getTable().getCoin()){
+        if (dashboard.getRoom().getMoneyPlace()) {
+            if (game.getTable().getCoin()) {
                 money++;
             }
         }
@@ -134,7 +134,7 @@ public class Player {
     /**
      * Utility method to find the precise places to move the player to and from
      *
-     * @param id    is the ID of the desired students manager
+     * @param id is the ID of the desired students manager
      * @return the wanted student manager
      */
     public Optional<StudentsManager> getStudentsManagerById(String id) {
@@ -242,7 +242,7 @@ public class Player {
         return dashboard.getRoom().getTeacherPresence(color);
     }
 
-    public int howManyStudentsInRoom(TeacherColor color){
+    public int howManyStudentsInRoom(TeacherColor color) {
         return dashboard.getRoom().howManyStudents(color);
     }
 

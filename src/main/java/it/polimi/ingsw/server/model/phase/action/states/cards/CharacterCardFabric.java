@@ -11,13 +11,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Class used while creating the Action phase to draw the three character cards at the start of the play, and fabricates them.
+ */
 public abstract class CharacterCardFabric {
 
     private final static Map<Characters, Map<String, Integer>> particularities = allParticularities();
 
     public static Map<Characters, CharacterCard> getCards(ActionPhase actionPhase) {
         Map<Characters, CharacterCard> enabledCharacterCards = new HashMap<>();
-        //enabledCharacterCards.put(Characters.JESTER, createCard(Characters.JESTER, actionPhase));
         while (enabledCharacterCards.size() < 3) {
             Characters characters = getRandomCharacter();
             if (!enabledCharacterCards.containsKey(characters)) {

@@ -1,8 +1,11 @@
 package it.polimi.ingsw.server.model.player.school;
 
-import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.commons.enums.TowerColor;
+import it.polimi.ingsw.server.model.StudentsManager;
 
+/**
+ * Models private Player's dashboard, keeping track of {@link SchoolEntrance entrance}, {@link SchoolRoom room} and towers.
+ */
 public class SchoolDashboard {
     private final TowerColor colorOfTowers;
     private int numOfTowers;

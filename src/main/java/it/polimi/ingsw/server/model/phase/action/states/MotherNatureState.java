@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model.phase.action.states;
 
-import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
+import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.table.Island;
 import it.polimi.ingsw.server.model.table.MotherNature;
@@ -9,6 +9,9 @@ import it.polimi.ingsw.server.model.table.MotherNature;
 import java.security.InvalidParameterException;
 import java.util.List;
 
+/**
+ * 2nd Action phase state, This class models mother nature's movements through the islands.
+ */
 public class MotherNatureState extends ActionFaseState {
 
     public MotherNatureState(ActionPhase actionPhase) {

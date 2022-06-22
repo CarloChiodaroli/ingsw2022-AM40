@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server.model.phase.action.states;
 
-import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.player.Player;
@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Abstract Action Phase State, this class manages all common traits of character cards, like characterizations, price, activation ecc...
+ */
 public abstract class CharacterCard extends ActionFaseState {
 
     private final Map<String, Integer> characterization;

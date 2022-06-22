@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model.phase.action.states;
 
-import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.player.Player;
@@ -9,6 +9,11 @@ import it.polimi.ingsw.server.model.player.Player;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+/**
+ * 1st Action Phase State, this class models the movement of a student between places
+ * and the subsequent capturing of teachers by a player.
+ */
 
 public class StudentMovement extends ActionFaseState {
 

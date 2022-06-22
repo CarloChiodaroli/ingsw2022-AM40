@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server.model.phase.action.states.cards;
 
 import it.polimi.ingsw.commons.enums.Characters;
-import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
+import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.server.model.phase.action.states.MotherNatureState;
 import it.polimi.ingsw.server.model.player.Player;
@@ -10,6 +10,9 @@ import it.polimi.ingsw.server.model.player.Player;
 import java.security.InvalidParameterException;
 import java.util.Map;
 
+/**
+ * 2nd type of Character card, this card decors the action phase's {@link MotherNatureState} State, modelling all mother nature related character card behaviours.
+ */
 public class MotherNatureCard extends CharacterCard {
 
     private MotherNatureState decorated;

@@ -1,11 +1,11 @@
 package it.polimi.ingsw.server.model.phase.action.states.cards;
 
-import it.polimi.ingsw.server.model.StudentsManager;
-import it.polimi.ingsw.commons.enums.TeacherColor;
-import it.polimi.ingsw.server.model.phase.action.ActionPhase;
-import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
-import it.polimi.ingsw.server.model.phase.action.StudentsContainer;
 import it.polimi.ingsw.commons.enums.Characters;
+import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.StudentsManager;
+import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
+import it.polimi.ingsw.server.model.phase.action.ActionPhase;
+import it.polimi.ingsw.server.model.phase.action.StudentsContainer;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.server.model.phase.action.states.StudentMovement;
 import it.polimi.ingsw.server.model.player.Player;
@@ -14,7 +14,9 @@ import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+/**
+ * 1st type of Character card, this card decors the action phase's {@link StudentMovement} State, modelling all student movement related character card behaviours.
+ */
 public class StudentMovementCard extends CharacterCard {
 
     private StudentMovement decorated;

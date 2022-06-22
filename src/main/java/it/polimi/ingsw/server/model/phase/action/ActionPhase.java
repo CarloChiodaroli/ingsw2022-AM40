@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
- * Manages the game's Action Phase in normal or in Expert Variant
+ * Manages the game's Action Phase in normal and expert Variants.
  */
 public class ActionPhase {
 

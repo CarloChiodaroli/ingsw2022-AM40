@@ -15,9 +15,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * This class manages all interactions between model and controller and handles model exceptions
+ * This class manages all interactions between model and controller and handles model exceptions.
+ * It's the intended gate for the model package, all model communication shall pass through this class.
  */
-// Removed Javadoc to make this class less overwhelming from 400+ lines to 300 lines
 public class GameModel {
 
     private final Game game;
@@ -350,11 +350,11 @@ public class GameModel {
         return game.getActionPhase().getActualCharacter().orElseThrow(() -> new IllegalStateException("There is no actual character"));
     }
 
-    public void skipPlayer(String name){
+    public void skipPlayer(String name) {
         game.skipPlayer(getPlayer(name));
     }
 
-    public void unSkipPlayer(String name){
+    public void unSkipPlayer(String name) {
         game.unSkipPlayer(getPlayer(name));
     }
 }
