@@ -7,6 +7,11 @@ import it.polimi.ingsw.commons.enums.TowerColor;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Every class which "reads" {@link it.polimi.ingsw.commons.message.play.PlayMessage play messages} needs to implement this interface.
+ * This interface on what the {@link it.polimi.ingsw.commons.message.play.PlayMessage#executeMessage(PlayMessageReader) executeMessage}
+ * method bases itself to call the correct method to run by the "reader".
+ */
 public interface PlayMessageReader {
 
     // Normal

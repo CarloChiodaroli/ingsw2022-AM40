@@ -1,5 +1,8 @@
 package it.polimi.ingsw.commons.message;
 
+/**
+ * Manages common traits of the messages between client and server and viceversa.
+ */
 public class Message {
 
     private final String senderName;
@@ -8,7 +11,8 @@ public class Message {
 
     /**
      * Constructor
-     * @param sender the name of who sends the message
+     *
+     * @param sender      the name of who sends the message
      * @param messageType The type of the message
      */
     protected Message(String sender, MessageType messageType) {
@@ -19,6 +23,7 @@ public class Message {
 
     /**
      * Getter of the name of the sender
+     *
      * @return the name
      */
     public String getSenderName() {
@@ -27,6 +32,7 @@ public class Message {
 
     /**
      * Getter of the type of the message
+     *
      * @return the type
      */
     public MessageType getMessageType() {
@@ -36,16 +42,17 @@ public class Message {
     /**
      * Needed to set the message as written
      */
-    protected void message(){
+    protected void message() {
         written = true;
     }
 
     /**
      * Controls if the message has been written
+     *
      * @throws IllegalStateException if it's not written
      */
-    protected void controlWritten() throws IllegalStateException{
-        if(!written) throw new IllegalStateException("Message not written");
+    protected void controlWritten() throws IllegalStateException {
+        if (!written) throw new IllegalStateException("Message not written");
     }
 
     @Override

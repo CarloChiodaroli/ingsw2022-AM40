@@ -1,5 +1,9 @@
 package it.polimi.ingsw.commons.message;
 
+/**
+ * All {@link LobbyMessage} readers need to implement this interface.
+ * This interface lists all commands sent from server to client and viceversa in the Lobby part of the dialogue.
+ */
 public interface LobbyMessageReader {
 
     void startGame(LobbyMessage message);

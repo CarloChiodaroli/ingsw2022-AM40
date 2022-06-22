@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Manages all common traits of {@link NormalPlayMessage} and {@link ExpertPlayMessage}, their memory and their execution
+ */
 public class PlayMessage extends Message {
 
     private final String move;
@@ -97,7 +100,7 @@ public class PlayMessage extends Message {
         return this.teacherColorList;
     }
 
-    private Map<String, Integer> getStringIntegerMap(){
+    private Map<String, Integer> getStringIntegerMap() {
         return this.stringIntegerMap;
     }
 

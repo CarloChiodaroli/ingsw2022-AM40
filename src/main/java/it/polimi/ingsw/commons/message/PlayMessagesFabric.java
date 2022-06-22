@@ -9,6 +9,9 @@ import it.polimi.ingsw.commons.message.play.NormalPlayMessage;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Fabric class needed to build {@link it.polimi.ingsw.commons.message.play.PlayMessage Play messages}.
+ */
 public abstract class PlayMessagesFabric {
 
     public static NormalPlayMessage playAssistantCard(String player, int weight) {

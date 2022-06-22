@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Class which manages all Expert variant play messages.
+ */
 public class ExpertPlayMessage extends PlayMessage {
 
     private final static MessageType messageType = MessageType.EXPERT;

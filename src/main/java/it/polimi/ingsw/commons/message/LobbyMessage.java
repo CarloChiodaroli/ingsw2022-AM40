@@ -4,6 +4,9 @@ import it.polimi.ingsw.commons.enums.Wizard;
 
 import java.util.List;
 
+/**
+ * This class manages all messages in the Lobby client server dialogue.
+ */
 public class LobbyMessage extends Message {
 
     private List<String> nicknameList;
@@ -48,14 +51,14 @@ public class LobbyMessage extends Message {
         super.message();
     }
 
-    public LobbyMessage(String sender, String command){
+    public LobbyMessage(String sender, String command) {
         super(sender, MessageType.LOBBY);
         this.command = command;
         isStartGame = true;
         super.message();
     }
 
-    public LobbyMessage(String sender, String command, boolean boolArg){
+    public LobbyMessage(String sender, String command, boolean boolArg) {
         super(sender, MessageType.LOBBY);
         this.command = command;
         isStartGame = true;
@@ -63,7 +66,7 @@ public class LobbyMessage extends Message {
         super.message();
     }
 
-    public LobbyMessage(String sender, String command, List<Wizard> available){
+    public LobbyMessage(String sender, String command, List<Wizard> available) {
         super(sender, MessageType.LOBBY);
         this.command = command;
         isStartGame = true;
@@ -71,7 +74,7 @@ public class LobbyMessage extends Message {
         super.message();
     }
 
-    public String getCommand(){
+    public String getCommand() {
         controlWritten();
         return command;
     }
@@ -91,7 +94,7 @@ public class LobbyMessage extends Message {
         return stringArg;
     }
 
-    public int studentNumber()  {
+    public int studentNumber() {
         controlWritten();
         return numOfPlayers;
     }
