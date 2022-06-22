@@ -230,6 +230,7 @@ public class GameModelTest {
 
         model.moveStudent(aldoName, TeacherColor.BLUE, "Entrance", testIslandId);
         model.moveStudent(aldoName, TeacherColor.BLUE, "Entrance", "Room");
+        model.getGame().getActionPhase().setStudentMoves(3);
 
         aldo.enable();
         assertInvalidParameterException(() -> model.moveMotherNature(aldoName, 3));

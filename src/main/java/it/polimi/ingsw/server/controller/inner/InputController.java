@@ -132,17 +132,4 @@ public class InputController {
         if (!isIslandId(id)) throw new InvalidParameterException("Gotten id is not island id");
     }
 
-    public static boolean checkLoginNickname(String nickname, VirtualView view, Set<String> names) {
-        if (nickname.isEmpty() || nickname.equalsIgnoreCase("server")) {
-            view.showGenericMessage("Forbidden name.");
-            view.showLoginResult(false, true);
-            return false;
-        } else if (names.contains(nickname)) {
-            view.showGenericMessage("Nickname already taken.");
-            view.showLoginResult(false, true);
-            return false;
-        }
-        return true;
-    }
-
 }

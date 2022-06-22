@@ -48,17 +48,15 @@ public class Gui extends ViewObservable implements View {
      * {@inheritDoc}
      */
     @Override
-    public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname) {
-        if (!nicknameAccepted || !connectionSuccessful) {
-            if (!nicknameAccepted && connectionSuccessful) {
+    public void showLoginResult(boolean connectionCompleted, boolean connectionSuccessful, String nickname) {
+        if (!connectionCompleted || !connectionSuccessful) {
+            if (!connectionCompleted && connectionSuccessful) {
                 Platform.runLater(() -> {
-                    SceneController.showAlert(STR_ERROR, "Nickname already taken.");
                     SceneController.changeRootPane(observers, "login_scene.fxml");
                 });
             } else {
                 Platform.runLater(() -> {
-                    SceneController.showAlert(STR_ERROR, "Could not contact server.");
-                    SceneController.changeRootPane(observers, MENU_SCENE_FXML);
+                    SceneController.showAlert(STR_ERROR, "Client will be closed soon");
                 });
             }
         }

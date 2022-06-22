@@ -31,6 +31,7 @@ public class PlayersNumberSceneController  extends ViewObservable implements Gen
     private boolean expert;
     private boolean numOfPlayersOk;
     private boolean expertOk;
+    private boolean first = true;
 
     /**
      * Default constructor.
@@ -93,6 +94,10 @@ public class PlayersNumberSceneController  extends ViewObservable implements Gen
             return;
         }
         if(what.equals("Expert")){
+            if(first){
+                first = false;
+                return;
+            }
             radioBtn3.setDisable(true);
             radioBtn4.setDisable(true);
             expertOk = true;

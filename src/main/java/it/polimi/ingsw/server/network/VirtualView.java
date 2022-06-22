@@ -44,8 +44,8 @@ public class VirtualView {
         sendMessage(new ErrorMessage(server, errorMessage));
     }
 
-    public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful) {
-        sendMessage(new LoginMessage(server, nicknameAccepted, connectionSuccessful));
+    public void showLoginResult(boolean connectionCompleted, boolean connectionStarted) {
+        sendMessage(new LoginMessage(server, connectionCompleted, connectionStarted));
     }
 
     public void showGenericMessage(String genericMessage) {

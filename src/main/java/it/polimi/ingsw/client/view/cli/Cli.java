@@ -357,20 +357,15 @@ public class Cli extends ViewObservable implements View {
      * {@inheritDoc}
      */
     @Override
-    public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname) {
+    public void showLoginResult(boolean connectionCompleted, boolean connectionSuccessful, String nickname) {
         clearCli();
-        if (nicknameAccepted && connectionSuccessful) {
+        if (connectionCompleted && connectionSuccessful) {
             out.println("Hi, " + nickname + "! You connected to the server.");
         } else if (connectionSuccessful) {
-            out.println("Hi, seems like someone has already used your username... Please chose an other one");
-            askNickname();
-        } else if (nicknameAccepted) {
-            out.println("Max players reached. Connection refused.");
-            out.println("EXIT.");
-            System.exit(1);
+            out.println("Please try again setting your name please");
+            //askNickname();
         } else {
-            showErrorAndExit("Could not contact server.");
-            System.exit(1);
+            out.println("The client will be closed soon");
         }
     }
 

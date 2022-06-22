@@ -2,8 +2,8 @@ package it.polimi.ingsw.commons.message;
 
 public class LoginMessage extends Message{
 
-    private final boolean nicknameAccepted;
-    private final boolean connectionSuccessful;
+    private final boolean connectionCompleted;
+    private final boolean connectionStarted;
     private final boolean request;
 
     /**
@@ -12,8 +12,8 @@ public class LoginMessage extends Message{
      */
     public LoginMessage(String sender){
         super(sender, MessageType.LOGIN);
-        nicknameAccepted = false;
-        connectionSuccessful = false;
+        connectionCompleted = false;
+        connectionStarted = false;
         request = true;
         super.message();
     }
@@ -26,8 +26,8 @@ public class LoginMessage extends Message{
      */
     public LoginMessage(String sender, boolean accepted, boolean connected){
         super(sender, MessageType.LOGIN);
-        nicknameAccepted = accepted;
-        connectionSuccessful = connected;
+        connectionCompleted = accepted;
+        connectionStarted = connected;
         request = false;
         super.message();
     }
@@ -39,7 +39,7 @@ public class LoginMessage extends Message{
     public boolean readReply(){
         controlWritten();
         if(request) throw new IllegalStateException("This is a Login reply");
-        return nicknameAccepted && connectionSuccessful;
+        return connectionCompleted && connectionStarted;
     }
 
     /**
@@ -56,16 +56,16 @@ public class LoginMessage extends Message{
      * getter of internal parameter ConnectionSuccessful
      * @return the parameter
      */
-    public boolean isConnectionSuccessful() {
-        return connectionSuccessful;
+    public boolean isConnectionStarted() {
+        return connectionStarted;
     }
 
     /**
      * getter of internal parameter NicknameAccepted
      * @return the parameter
      */
-    public boolean isNicknameAccepted() {
-        return nicknameAccepted;
+    public boolean isConnectionCompleted() {
+        return connectionCompleted;
     }
 
     /**
@@ -79,8 +79,8 @@ public class LoginMessage extends Message{
     @Override
     public String toString() {
         return "LoginMessage{" +
-                "nicknameAccepted=" + nicknameAccepted +
-                ", connectionSuccessful=" + connectionSuccessful +
+                "nicknameAccepted=" + connectionCompleted +
+                ", connectionSuccessful=" + connectionStarted +
                 ", request=" + request +
                 '}';
     }

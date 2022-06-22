@@ -11,7 +11,6 @@ import it.polimi.ingsw.commons.enums.Wizard;
 import it.polimi.ingsw.commons.message.*;
 import it.polimi.ingsw.commons.message.play.ExpertPlayMessage;
 import it.polimi.ingsw.commons.message.play.NormalPlayMessage;
-import it.polimi.ingsw.commons.message.play.PlayMessage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -130,7 +129,8 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     public void login(Message message){
         LoginMessage loginMessage = (LoginMessage) message;
-        taskQueue.execute(() -> view.showLoginResult(loginMessage.isNicknameAccepted(), loginMessage.isConnectionSuccessful(), this.nickname));
+        taskQueue.execute(() -> view.showLoginResult(loginMessage.isConnectionCompleted(), loginMessage.isConnectionStarted(), this.nickname));
+        if(loginMessage.isConnectionCompleted() && !loginMessage.isConnectionStarted()) killMe(0);
     }
 
     public void lobby(Message message){

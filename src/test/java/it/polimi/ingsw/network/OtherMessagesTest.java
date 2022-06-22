@@ -2,7 +2,6 @@ package it.polimi.ingsw.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.commons.message.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,8 +42,8 @@ public class OtherMessagesTest {
 
         LoginMessage arrived = gson.fromJson(gsonSerialization, LoginMessage.class);
 
-        assertFalse(arrived.isConnectionSuccessful());
-        assertFalse(arrived.isNicknameAccepted());
+        assertFalse(arrived.isConnectionStarted());
+        assertFalse(arrived.isConnectionCompleted());
         assertTrue(arrived.isRequest());
         assertEquals(requester, arrived.getSenderName());
         assertDoesNotThrow(arrived::readRequest);
@@ -58,8 +57,8 @@ public class OtherMessagesTest {
 
         arrived = gson.fromJson(gsonSerialization, LoginMessage.class);
 
-        assertTrue(arrived.isConnectionSuccessful());
-        assertTrue(arrived.isNicknameAccepted());
+        assertTrue(arrived.isConnectionStarted());
+        assertTrue(arrived.isConnectionCompleted());
         assertFalse(arrived.isRequest());
         assertEquals("Server", arrived.getSenderName());
         assertDoesNotThrow(arrived::readReply);

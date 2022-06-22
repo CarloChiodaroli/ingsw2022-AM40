@@ -121,7 +121,7 @@ public class ActionPhase {
     public void request(TeacherColor teacherColor, Optional<StudentsManager> from, Optional<StudentsManager> to)
             throws IllegalStateException {
         isStateActivated();
-        if (studentMovements >= possibleStudentMovements || calculatedInfluence)
+        if (studentMovements >= possibleStudentMovements || movedMotherNature)
             throw new IllegalStateException("Cannot move any students");
         if ((from.isEmpty() && getActualCard().isEmpty() && !actualCard.isInUse()) ||
                 (to.isEmpty() && getActualCard().isEmpty() && !actualCard.isInUse()))
@@ -135,7 +135,7 @@ public class ActionPhase {
             states.get(ActionPhaseStateType.STUDENT).handle(teacherColor, from, to);
         }
         studentMovements++;
-        if (studentMovements >= possibleStudentMovements) actualState++;
+        //if (studentMovements >= possibleStudentMovements) actualState++;
     }
 
     /**
@@ -174,10 +174,10 @@ public class ActionPhase {
         isStateActivated();
         if (movedMotherNature)
             throw new IllegalStateException("Mother nature has been already moved once");
-        if (actualState != ActionPhaseStateType.MOTHER.getOrderPlace() &&
-                (studentMovements >= possibleStudentMovements ||
-                        (studentMovements > getMaxStudentMovements() && studentMovements < possibleStudentMovements))) {
+        if (studentMovements >= getMaxStudentMovements() && studentMovements <= possibleStudentMovements) {
             actualState = ActionPhaseStateType.MOTHER.getOrderPlace();
+        } else {
+            throw new IllegalStateException("Too early to move mother nature");
         }
         int maxHops = game.getPianificationFase().getMotherNatureHops(player);
         if (!isExpertVariant()) {
@@ -399,8 +399,8 @@ public class ActionPhase {
         this.chosenCloud = chosenCloud;
     }
 
-    public void setPossibleStudentMovements(int possibleStudentMovements) {
-        this.possibleStudentMovements = possibleStudentMovements;
+    public void setStudentMoves(int studentMoves) {
+        this.studentMovements = studentMoves;
     }
 
     public void setMovedMotherNature(boolean movedMotherNature) {

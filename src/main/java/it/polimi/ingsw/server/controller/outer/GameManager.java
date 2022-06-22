@@ -191,10 +191,11 @@ public class GameManager implements LobbyMessageReader {
                 virtualView.showLoginResult(true, true);
                 virtualView.sendAvailableWizards(availableWizards());
                 virtualView.sendMainPlayer(mainPlayer);
+                virtualView.showExpertVariant(playMessagesReader.isExpertVariant());
             } else {
                 if(this.maxPlayers == DEFAULT_MAX_PLAYERS){
                     virtualView.showError("Main Player needs to choose how many players can Login");
-                    virtualView.showLoginResult(true, false);
+                    virtualView.showLoginResult(false, true);
                     return;
                 }
                 if (virtualViewMap.size() < maxPlayers) {
@@ -257,16 +258,21 @@ public class GameManager implements LobbyMessageReader {
     // outbound communication utilities
 
     public boolean removeVirtualView(String nickname, boolean notifyEnabled) {
-        virtualViewMap.remove(nickname);
+        playerNames.remove(nickname);
+        if(!virtualViewMap.containsKey(nickname)) {
+            return virtualViewMap.isEmpty();
+        }
         if (playMessagesReader.isGameStarted()) {
             playMessagesReader.stopPlayer(nickname);
+            virtualViewMap.remove(nickname);
+            if(virtualViewMap.size() == 1) playMessagesReader.stop();
+            else playMessagesReader.sendStatus();
         } else {
             playMessagesReader.deletePlayer(nickname);
             assignedWizards.remove(nickname);
+            virtualViewMap.remove(nickname);
         }
-        virtualViewMap.values().forEach(x -> x.showDisconnectionMessage(nickname, "Disconnected from the server - waiting to reconnect"));
-        if(virtualViewMap.size() == 1) playMessagesReader.stop();
-        else playMessagesReader.sendStatus();
+        virtualViewMap.values().forEach(x -> x.showDisconnectionMessage(nickname, "Disconnected from the server"));
         return virtualViewMap.isEmpty();
     }
 
@@ -285,7 +291,16 @@ public class GameManager implements LobbyMessageReader {
     }
 
     public boolean checkLoginNickname(String nickname, VirtualView view) {
-        return InputController.checkLoginNickname(nickname, view, virtualViewMap.keySet());
+        if (nickname.isEmpty() || nickname.equalsIgnoreCase("server")) {
+            view.showError("Forbidden name");
+            view.showLoginResult(false, true);
+            return false;
+        } else if (virtualViewMap.containsKey(nickname)) {
+            view.showError("Nickname already taken");
+            view.showLoginResult(false, true);
+            return false;
+        }
+        return true;
     }
 
     public boolean isGameStarted() {

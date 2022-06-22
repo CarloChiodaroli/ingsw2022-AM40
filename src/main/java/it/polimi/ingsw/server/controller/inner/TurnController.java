@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.controller.inner;
 
-import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
 import it.polimi.ingsw.commons.enums.Characters;
+import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,6 @@ public class TurnController {
     private int messages;
     private String savedIsland;
     private List<String> playersToSkip;
-    private String comeBackPlayer;
 
     public TurnController(PlayMessagesReader reader) {
         this.nicknameQueue = new ArrayList<>(reader.getPlayerNames());
@@ -32,7 +31,7 @@ public class TurnController {
         playersToSkip = new ArrayList<>();
     }
 
-    public void setInitialState(){
+    public void setInitialState() {
         this.state = GameState.INITIAL;
     }
 
@@ -40,35 +39,31 @@ public class TurnController {
         return state;
     }
 
-    public void startPlay(List<String> players){
+    public void startPlay(List<String> players) {
         state = GameState.PLANNING;
         this.players = players;
         startingPlayer = 0;
-        if(activePlayer == null) activePlayer = players.get(startingPlayer);
+        if (activePlayer == null) activePlayer = players.get(startingPlayer);
         else {
             int index = players.indexOf(activePlayer);
-            if(index == players.size()) index = 0;
+            if (index == players.size()) index = 0;
             activePlayer = players.get(index);
         }
     }
 
-    public boolean isGameStarted(){
+    public boolean isGameStarted() {
         return state != GameState.INITIAL;
     }
 
     public boolean nextTurn() {
-        if(comeBackPlayer != null) {
-            comeBackPlayer = null;
-            return false;
-        }
         if (state.equals(GameState.PLANNING)) {
             messages++;
             int i = players.indexOf(activePlayer) + 1;
-            if(i >= players.size()) i = 0;
+            if (i >= players.size()) i = 0;
             if (messages >= players.size()) {
                 state = GameState.next(state);
                 nicknameQueue = reader.getPlayersInOrder();
-                if(nicknameQueue.isEmpty()) return false;
+                if (nicknameQueue.isEmpty()) return false;
                 activePlayer = nicknameQueue.get(0);
                 controlAndSkip();
                 return true;
@@ -80,15 +75,17 @@ public class TurnController {
             actualCharacter = null;
             int i = nicknameQueue.indexOf(activePlayer) + 1;
             if (i >= nicknameQueue.size()) {
+                playersToSkip = new ArrayList<>(playersToSkip.stream()
+                        .filter(x -> !players.contains(x)).toList());
                 messages = 0;
                 startingPlayer++;
-                if(startingPlayer >= players.size()) startingPlayer = 0;
+                if (startingPlayer >= players.size()) startingPlayer = 0;
                 state = GameState.next(state);
                 activePlayer = players.get(startingPlayer);
-                controlAndSkip();
                 return true;
             } else {
                 activePlayer = nicknameQueue.get(i);
+                controlAndSkip();
                 return false;
             }
         }
@@ -96,18 +93,14 @@ public class TurnController {
     }
 
     public String getActivePlayer() {
-        if(comeBackPlayer != null){
-            return comeBackPlayer;
-        } else {
-            return activePlayer;
-        }
+        return activePlayer;
     }
 
-    public String getActualState(){
+    public String getActualState() {
         return state.toString();
     }
 
-    public boolean isCharacterActive(){
+    public boolean isCharacterActive() {
         return actualCharacter != null;
     }
 
@@ -115,15 +108,11 @@ public class TurnController {
         return Optional.ofNullable(actualCharacter);
     }
 
-    public void setActualCharacter(Characters character){
+    public void setActualCharacter(Characters character) {
         actualCharacter = character;
     }
 
-    public List<String> getNicknameQueue() {
-        return nicknameQueue;
-    }
-
-    public void saveIsland(String islandId){
+    public void saveIsland(String islandId) {
         savedIsland = islandId;
     }
 
@@ -134,19 +123,17 @@ public class TurnController {
     }
 
     public void skipPlayer(String playerName) {
-        if(getActivePlayer().equals(playerName)) nextTurn();
+        if (getActivePlayer().equals(playerName)) nextTurn();
         playersToSkip.add(playerName);
+        players.remove(playerName);
     }
 
     public void unSkipPlayer(String playerName) {
-        playersToSkip.remove(playerName);
-        if(state.equals(GameState.PLANNING)){
-            comeBackPlayer = playerName;
-        }
+        players.add(playerName);
     }
 
-    private void controlAndSkip(){
-        if(playersToSkip.contains(activePlayer)){
+    private void controlAndSkip() {
+        if (playersToSkip.contains(activePlayer)) {
             nextTurn();
         }
     }

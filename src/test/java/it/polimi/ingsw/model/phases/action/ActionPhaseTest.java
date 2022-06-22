@@ -359,6 +359,7 @@ public class ActionPhaseTest {
 
         Island inpos = MotherNature.getMotherNature().getPosition().get();
         int firstposition = game.getTable().getIslandList().indexOf(inpos);
+        actionPhase.setStudentMoves(3);
         actionPhase.request(game.getPlayers().get(0), 1);
         Island finpos = MotherNature.getMotherNature().getPosition().get();
         int secondposition = game.getTable().getIslandList().indexOf(finpos);

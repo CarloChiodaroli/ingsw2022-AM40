@@ -49,11 +49,11 @@ public interface View {
     /**
      * Used to show the result of the login to the player, shown after asking gor the username.
      * The Confirmation message contains the three arguments:
-     * @param nicknameAccepted if the nickname was accepted;
-     * @param connectionSuccessful it fhe connection was successfully established;
+     * @param connectionCompleted if the nickname has been completely established;
+     * @param connectionStarted it fhe connection has been successfully started;
      * @param nickname the accepted nickname.
      */
-    void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname);
+    void showLoginResult(boolean connectionCompleted, boolean connectionStarted, String nickname);
 
     /**
      * One kind of messages that can be sent by the server are of the GENERIC type; this method shows their's content.

@@ -7,6 +7,7 @@ import it.polimi.ingsw.commons.message.Message;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -28,7 +29,6 @@ public class Server {
 
     public void addClient(String nickname, ClientHandler clientHandler) {
         VirtualView vv = new VirtualView(clientHandler, "server");
-
         if(gameManager.checkLoginNickname(nickname, vv)){
             clientHandlerMap.put(nickname, clientHandler);
             gameManager.loginHandler(nickname, vv);

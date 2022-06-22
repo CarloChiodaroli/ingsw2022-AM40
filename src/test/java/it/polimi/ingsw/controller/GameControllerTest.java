@@ -176,7 +176,7 @@ public class GameControllerTest {
             reader.playAssistantCard(aldoName, 1);
             reader.playAssistantCard(giovanniName, 5);
 
-            game.getActionPhase().setPossibleStudentMovements(0);
+            game.getActionPhase().setStudentMoves(3);
             Island island = game.getTable().getIslandById(testIslandId).get();
             MotherNature.getMotherNature().setPosition(island);
 
