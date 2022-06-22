@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.client.view.gui.JavaFXGui;
+import it.polimi.ingsw.client.CliClientApp;
+import it.polimi.ingsw.client.GuiClientApp;
+import it.polimi.ingsw.server.ServerApp;
 
 public class Eriantys {
 
@@ -31,7 +33,7 @@ public class Eriantys {
         } else if (args[0].equals("--c")) {
             CliClientApp.client();
         } else if (args[0].equals("--g")) {
-            JavaFXGui.loader(args);
+            GuiClientApp.loader(args);
         } else if (args[0].equals("--test")) {
             App.main(args);
         } else {

@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.server.controller.outer.GameManager;
 import it.polimi.ingsw.server.network.Server;
@@ -7,6 +7,9 @@ import it.polimi.ingsw.server.network.SocketServer;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Server loader class, Eriantys class calls this class to launch the server.
+ */
 public class ServerApp {
 
     private final static String port = "--port";

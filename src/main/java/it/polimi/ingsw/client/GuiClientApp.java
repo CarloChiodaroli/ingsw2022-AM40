@@ -1,7 +1,8 @@
-package it.polimi.ingsw.client.view.gui;
+package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.client.network.Client;
+import it.polimi.ingsw.client.view.gui.Gui;
 import it.polimi.ingsw.client.view.gui.scene.MenuSceneController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -17,7 +18,7 @@ import java.util.logging.Level;
 /**
  * Main JavaFX class which starts the main stage and scene.
  */
-public class JavaFXGui extends Application {
+public class GuiClientApp extends Application {
 
     private final static String menuScene = "/fxml/menu_scene.fxml";
 
