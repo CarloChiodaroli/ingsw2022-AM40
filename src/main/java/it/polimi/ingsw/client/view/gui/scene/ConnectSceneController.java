@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.view.gui.scene;
 
 
 import it.polimi.ingsw.client.controller.ClientController;
-import it.polimi.ingsw.client.view.gui.SceneController;
 import it.polimi.ingsw.client.observer.ViewObservable;
 import javafx.css.PseudoClass;
 import javafx.event.Event;

@@ -1,9 +1,6 @@
 package it.polimi.ingsw.client.view.gui.scene;
 
-import it.polimi.ingsw.client.controller.ClientController;
-import it.polimi.ingsw.client.view.gui.SceneController;
 import it.polimi.ingsw.client.observer.ViewObservable;
-import it.polimi.ingsw.client.observer.ViewObserver;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -34,7 +31,7 @@ public class LoginSceneController extends ViewObservable implements GenericScene
     private void onJoinBtnClick(Event event) {
 
         String nickname = nicknameField.getText();
-        
+
 
         new Thread(() -> notifyObserver(obs -> obs.onUpdateNickname(nickname))).start();
     }

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.view.gui.scene;
 
 import it.polimi.ingsw.client.view.gui.SceneController;
-import it.polimi.ingsw.client.view.gui.scene.GenericSceneController;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

@@ -1,12 +1,8 @@
 package it.polimi.ingsw.client.view.gui.scene;
 
 import it.polimi.ingsw.client.observer.ViewObservable;
-import it.polimi.ingsw.client.observer.ViewObserver;
-import it.polimi.ingsw.client.view.gui.SceneController;
 import it.polimi.ingsw.commons.enums.Wizard;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 

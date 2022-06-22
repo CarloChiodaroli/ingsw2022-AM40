@@ -22,7 +22,7 @@ public class GuiClientApp extends Application {
 
     private final static String menuScene = "/fxml/menu_scene.fxml";
 
-    public static void loader(String[] args){
+    public static void loader(String[] args) {
         launch();
     }
 

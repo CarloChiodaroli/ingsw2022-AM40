@@ -5,8 +5,8 @@ import it.polimi.ingsw.client.model.PlayState;
 import it.polimi.ingsw.client.network.Client;
 import it.polimi.ingsw.client.network.SocketClient;
 import it.polimi.ingsw.client.observer.Observer;
-import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.observer.ViewObserver;
+import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.commons.enums.Wizard;
 import it.polimi.ingsw.commons.message.*;
 import it.polimi.ingsw.commons.message.play.ExpertPlayMessage;
@@ -18,7 +18,9 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
+/**
+ * Controls the client reading and managing all not Play messages and forwarding them to the {@link PlayMessageController} class.
+ */
 public class ClientController implements ViewObserver, Observer, LobbyMessageReader {
 
     private final View view;
@@ -64,17 +66,17 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     @Override
     public void onUpdatePlayersNumber(int playersNumber) {
-        if(!haveNickname()) return;
+        if (!haveNickname()) return;
         client.sendMessage(new LobbyMessage(this.nickname, "numOfPlayers", playersNumber));
     }
 
     public void onUpdateWizard(Wizard wizard) {
-        if(!haveNickname()) return;
-        if(state.getWizard().isPresent() && state.getWizard().get().equals(wizard)){
+        if (!haveNickname()) return;
+        if (state.getWizard().isPresent() && state.getWizard().get().equals(wizard)) {
             taskQueue.execute(view::showWizard);
             return;
         }
-        if(!state.getAvailableWizards().contains(wizard)){
+        if (!state.getAvailableWizards().contains(wizard)) {
             showNotCriticalError("Your chosen wizard is not available");
             return;
         }
@@ -83,7 +85,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     public void onUpdateExpert(boolean how) {
-        if(!haveNickname()) return;
+        if (!haveNickname()) return;
         sendMessage(new LobbyMessage(nickname, "expert", how));
     }
 
@@ -94,21 +96,21 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     @Override
     public void onUpdateStart() {
-        if(!haveNickname()) return;
-        if(startedPlaying()) return;
+        if (!haveNickname()) return;
+        if (startedPlaying()) return;
         sendMessage(new LobbyMessage(nickname, "startGame"));
     }
 
-    private boolean haveNickname(){
-        if(nickname == null){
+    private boolean haveNickname() {
+        if (nickname == null) {
             showNotCriticalError("It's too early to use this command");
             return false;
         }
         return true;
     }
 
-    private boolean startedPlaying(){
-        if(playing){
+    private boolean startedPlaying() {
+        if (playing) {
             showNotCriticalError("Game has already started");
             return true;
         }
@@ -119,21 +121,21 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     // First level
     @Override
-    public void update(Message message){
-        try{
+    public void update(Message message) {
+        try {
             this.getClass().getMethod(message.getMessageType().toString().toLowerCase(), Message.class).invoke(this, message);
-        } catch (InvocationTargetException| IllegalAccessException | NoSuchMethodException e) {
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
             notCriticalError("Received illegal message type");
         }
     }
 
-    public void login(Message message){
+    public void login(Message message) {
         LoginMessage loginMessage = (LoginMessage) message;
         taskQueue.execute(() -> view.showLoginResult(loginMessage.isConnectionCompleted(), loginMessage.isConnectionStarted(), this.nickname));
-        if(loginMessage.isConnectionCompleted() && !loginMessage.isConnectionStarted()) killMe(0);
+        if (loginMessage.isConnectionCompleted() && !loginMessage.isConnectionStarted()) killMe(0);
     }
 
-    public void lobby(Message message){
+    public void lobby(Message message) {
         LobbyMessage lm = (LobbyMessage) message;
         try {
             LobbyMessageReader.class.getMethod(lm.getCommand(), LobbyMessage.class).invoke(this, lm);
@@ -142,7 +144,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         }
     }
 
-    public void expert(Message message){
+    public void expert(Message message) {
         ExpertPlayMessage pm = (ExpertPlayMessage) message;
         taskQueue.execute(() -> {
             try {
@@ -153,7 +155,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         });
     }
 
-    public void play(Message message){
+    public void play(Message message) {
         NormalPlayMessage pm = (NormalPlayMessage) message;
         taskQueue.execute(() -> {
             try {
@@ -164,11 +166,11 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         });
     }
 
-    public void generic(Message message){
+    public void generic(Message message) {
         taskQueue.execute(() -> view.showGenericMessage(((GenericMessage) message).getMessage()));
     }
 
-    public void error(Message message){
+    public void error(Message message) {
         ErrorMessage em = (ErrorMessage) message;
         taskQueue.execute(() -> view.showError(em.getError()));
     }
@@ -218,7 +220,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     @Override
     public void wizardList(LobbyMessage message) {
         state.setAvailableWizards(message.getAvailableWizards());
-        if(state.getWizard().isEmpty()){
+        if (state.getWizard().isEmpty()) {
             taskQueue.execute(view::showAvailableWizards);
         }
     }
@@ -255,7 +257,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         Client.LOGGER.severe(error);
     }
 
-    private void showNotCriticalError(String error){
+    private void showNotCriticalError(String error) {
         taskQueue.execute(() -> view.showError(error));
     }
 

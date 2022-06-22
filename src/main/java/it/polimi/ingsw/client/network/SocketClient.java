@@ -1,14 +1,17 @@
 package it.polimi.ingsw.client.network;
 
-import it.polimi.ingsw.commons.message.*;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.io.*;
+import it.polimi.ingsw.commons.message.ErrorMessage;
+import it.polimi.ingsw.commons.message.Message;
+import it.polimi.ingsw.commons.message.PingMessage;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,7 +28,7 @@ public class SocketClient extends Client {
     private final ExecutorService readExecutionQueue;
     private final ScheduledExecutorService pinger;
 
-    private final PrintWriter   output;
+    private final PrintWriter output;
     private final BufferedReader input;
 
     private final Gson gson;
@@ -35,11 +38,11 @@ public class SocketClient extends Client {
     private final static String defaultAddress = "localhost";
     private final static String defaultPort = "16847";
 
-    public static String getDefaultAddress(){
+    public static String getDefaultAddress() {
         return defaultAddress;
     }
 
-    public static String getDefaultPort(){
+    public static String getDefaultPort() {
         return defaultPort;
     }
 
@@ -80,7 +83,7 @@ public class SocketClient extends Client {
                     String rawGson;
                     do {
                         rawGson = input.readLine();
-                    } while(rawGson == null);
+                    } while (rawGson == null);
                     message = gson.fromJson(rawGson, Message.class);
                     message = (Message) gson.fromJson(rawGson, message.getMessageType().getImplementingClass());
                     String forLambda = rawGson;

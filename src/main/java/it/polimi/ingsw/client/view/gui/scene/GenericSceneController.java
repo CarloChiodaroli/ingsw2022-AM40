@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.view.gui.scene;
 
+/**
+ * Represents the generic Scene controller.
+ */
 public interface GenericSceneController {
 
     /**

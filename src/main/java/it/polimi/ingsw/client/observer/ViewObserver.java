@@ -1,4 +1,5 @@
 package it.polimi.ingsw.client.observer;
+
 import it.polimi.ingsw.commons.enums.Wizard;
 
 import java.util.Map;

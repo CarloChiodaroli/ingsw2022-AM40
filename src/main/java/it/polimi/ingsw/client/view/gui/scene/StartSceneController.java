@@ -1,16 +1,16 @@
 package it.polimi.ingsw.client.view.gui.scene;
 
 import it.polimi.ingsw.client.observer.ViewObservable;
-import it.polimi.ingsw.commons.enums.Wizard;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
-import java.util.List;
-
-public class StartSceneController extends ViewObservable implements GenericSceneController{
+/**
+ * Implements the start scene.
+ */
+public class StartSceneController extends ViewObservable implements GenericSceneController {
     @FXML
     private Button confirmBtn;
     @FXML
@@ -22,14 +22,14 @@ public class StartSceneController extends ViewObservable implements GenericScene
     private int players;
     private boolean main;
 
-    public StartSceneController(){
+    public StartSceneController() {
         status = false;
         players = 0;
     }
 
     @FXML
     public void initialize() {
-        if(status)
+        if (status)
             variantLbl.setText("Expert game!");
         else
             variantLbl.setText("Normal game!");

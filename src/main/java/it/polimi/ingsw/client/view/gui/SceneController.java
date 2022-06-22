@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.client.network.Client;
+import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.client.observer.ViewObserver;
 import it.polimi.ingsw.client.view.gui.scene.AlertSceneController;
 import it.polimi.ingsw.client.view.gui.scene.GenericSceneController;
-import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.client.view.gui.scene.WinSceneController;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -160,7 +160,7 @@ public class SceneController extends ViewObservable {
         alertSceneController.displayAlert();
     }
 
-    public static void sendConfirm(String what){
+    public static void sendConfirm(String what) {
         activeController.onConfirm(what);
     }
 

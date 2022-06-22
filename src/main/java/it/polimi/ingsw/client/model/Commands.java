@@ -5,22 +5,28 @@ import it.polimi.ingsw.commons.enums.TeacherColor;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
+/**
+ * This class translates String Play commands to method calls, checking for data correctness, and fixing Case errors.
+ */
 public class Commands {
 
     private Object userInputLock;
     private final PlayMessageController playMessageController;
 
 
-    public Commands(PlayMessageController playMessageController){
+    public Commands(PlayMessageController playMessageController) {
         userInputLock = new Object();
         this.playMessageController = playMessageController;
     }
 
     /**
      * Called by the views to send Play type commands to the server
-     *
+     * <p>
      * The Accepted commands are:
      * <pre>
      *
@@ -205,7 +211,7 @@ public class Commands {
      * {@link it.polimi.ingsw.client.view.cli.Cli#abbreviation(List) abbreviation} of
      * {@link #character(List) character}
      */
-    public void ca(List<String> args) throws IllegalStateException{
+    public void ca(List<String> args) throws IllegalStateException {
         character(args);
     }
 

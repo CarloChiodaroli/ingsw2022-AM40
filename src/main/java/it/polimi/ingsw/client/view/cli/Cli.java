@@ -7,9 +7,7 @@ import it.polimi.ingsw.client.network.SocketClient;
 import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.client.observer.ViewObserver;
 import it.polimi.ingsw.client.view.View;
-import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.Wizard;
-import it.polimi.ingsw.commons.enums.Characters;
 
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
@@ -19,7 +17,6 @@ import java.util.*;
 
 /**
  * This class offers a Command Line User Interface. It is an implementation of the {@link View} interface.
- *
  */
 public class Cli extends ViewObservable implements View {
 
@@ -65,7 +62,7 @@ public class Cli extends ViewObservable implements View {
     /**
      * Called from the Client Input Stream class which manages the input stream of commands.
      * This method divides the received command argument in parts and calls the correct method to run the user desired command.
-     *
+     * <p>
      * The Accepted commands are:
      * <pre>
      *  Connection commands:
@@ -99,7 +96,7 @@ public class Cli extends ViewObservable implements View {
             tiledCommand.remove(head);
             head = head.toLowerCase();
             String forLambda = head;
-            if(Arrays.stream(this.getClass().getMethods()).anyMatch(x -> x.getName().equals(forLambda)))
+            if (Arrays.stream(this.getClass().getMethods()).anyMatch(x -> x.getName().equals(forLambda)))
                 this.getClass().getMethod(head, List.class).invoke(this, tiledCommand);
             else commands.receivedCommand(command);
         }
@@ -394,7 +391,7 @@ public class Cli extends ViewObservable implements View {
      */
     @Override
     public void showAvailableWizards() {
-        if(shownPlayCustom) out.println("available wizards are: " + statePrinter.availableWizards());
+        if (shownPlayCustom) out.println("available wizards are: " + statePrinter.availableWizards());
     }
 
     /**

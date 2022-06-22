@@ -154,11 +154,10 @@ public class Gui extends ViewObservable implements View {
      */
     @Override
     public void update() {
-        if(!inPlay){
+        if (!inPlay) {
             getPlaySceneController();
             inPlay = true;
-        }
-        else sendConfirmation("update");
+        } else sendConfirmation("update");
     }
 
     private void getPlaySceneController() {
@@ -214,7 +213,7 @@ public class Gui extends ViewObservable implements View {
         okVariant = true;
         status = expertStatus;
         sendConfirmation("Expert");
-        if(okNumber)
+        if (okNumber)
             askPlayCustomization();
     }
 
@@ -223,10 +222,10 @@ public class Gui extends ViewObservable implements View {
      */
     @Override
     public void showEndGame(String winner) {
-            Platform.runLater(() -> {
-                SceneController.showWin(winner);
-                SceneController.changeRootPane(observers, MENU_SCENE_FXML);
-            });
+        Platform.runLater(() -> {
+            SceneController.showWin(winner);
+            SceneController.changeRootPane(observers, MENU_SCENE_FXML);
+        });
     }
 
     /**
@@ -237,11 +236,11 @@ public class Gui extends ViewObservable implements View {
         okNumber = true;
         players = maxPlayers;
         sendConfirmation("Number");
-        if(okVariant)
+        if (okVariant)
             askPlayCustomization();
     }
 
-    private static void sendConfirmation(String what){
+    private static void sendConfirmation(String what) {
         Platform.runLater(() -> SceneController.sendConfirm(what));
     }
 }

@@ -3,7 +3,9 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.client.view.cli.Cli;
 
-
+/**
+ * This class is the Client Cli launcher.
+ */
 public class CliClientApp {
 
     public static void client(){
