@@ -26,8 +26,8 @@ Implementation of Eriantys board game
 ## Actual test coverage
 |   __Package__    | __Class %__ | __Method %__ | __Line %__ |
 |:----------------:|:-----------:|:------------:|:----------:|
-|      model       |     100     |     82,4     |    76,8    |
-| controller.inner |     100     |     75,7     |    69,6    |
+|      model       |     100     |      89      |     86     |
+| controller.inner |     100     |      76      |     73     |
 
 ## Run Instructions
 
