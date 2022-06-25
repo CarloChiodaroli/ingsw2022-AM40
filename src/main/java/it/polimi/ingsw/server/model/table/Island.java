@@ -80,6 +80,10 @@ public class Island extends StudentsManager {
         else return 0;
     }
 
+    /**
+     *
+     * @return how many islands does it match
+     */
     public int howManyEquivalents() {
         return equivalentIsland;
     }

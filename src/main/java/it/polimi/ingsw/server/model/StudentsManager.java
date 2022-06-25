@@ -107,6 +107,9 @@ public abstract class StudentsManager {
         return studentTot;
     }
 
+    /**
+     * @return color of the removed student, if any
+     */
     public Optional<TeacherColor> getStudent() {
         for (TeacherColor color : TeacherColor.values()) {
             if (removeStudent(color)) {
@@ -116,10 +119,17 @@ public abstract class StudentsManager {
         return Optional.empty();
     }
 
+    /**
+     * @return number of max students
+     */
     public int getMaxStudents() {
         return maxStudents;
     }
 
+    /**
+     *
+     * @return a map showing the number of students for each color
+     */
     public Map<TeacherColor, Integer> getMap() {
         return manager;
     }
