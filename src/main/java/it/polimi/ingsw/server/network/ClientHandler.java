@@ -7,9 +7,22 @@ import it.polimi.ingsw.commons.message.Message;
  */
 public interface ClientHandler {
 
+    /**
+     * Returns the connection status
+     *
+     * @return true if the client is connected
+     */
     boolean isConnected();
 
+    /**
+     * Disconnect client
+     */
     void disconnect();
 
+    /**
+     * Sends a message to the client
+     *
+     * @param message message
+     */
     void sendMessage(Message message);
 }

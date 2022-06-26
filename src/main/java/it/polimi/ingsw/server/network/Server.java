@@ -20,12 +20,21 @@ public class Server {
     public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
     private final Object lock;
 
+    /**
+     * Constructor
+     */
     public Server(GameManager gameManager) {
         this.gameManager = gameManager;
         this.clientHandlerMap = Collections.synchronizedMap(new HashMap<>());
         this.lock = new Object();
     }
 
+    /**
+     * Adds a client to be managed by the server instance
+     *
+     * @param nickname the nickname of the client
+     * @param clientHandler the ClientHandler of the client
+     */
     public void addClient(String nickname, ClientHandler clientHandler) {
         VirtualView vv = new VirtualView(clientHandler, "server");
         if (gameManager.checkLoginNickname(nickname, vv)) {
@@ -34,6 +43,12 @@ public class Server {
         }
     }
 
+    /**
+     * Remove a client by his nickname
+     *
+     * @param nickname the VirtualView removed
+     * @param notifyEnabled true to enable a lobby disconnection message
+     */
     public void removeClient(String nickname, boolean notifyEnabled) {
         clientHandlerMap.remove(nickname);
         if (
@@ -44,6 +59,11 @@ public class Server {
     }
 
     //SERVER'S MESSAGE RECEIVED
+    /**
+     * Forwards a received message from client to GameController
+     *
+     * @param message message
+     */
     public void onMessageReceived(Message message) {
         gameManager.onMessageReceived(message);
     }
@@ -73,6 +93,12 @@ public class Server {
         }
     }
 
+    /**
+     * Returns the name of a ClientHandler
+     *
+     * @param clientHandler the client handler
+     * @return name of a ClientHandler
+     */
     private String getNicknameFromClientHandler(ClientHandler clientHandler) {
         return clientHandlerMap.entrySet()
                 .stream()
@@ -82,6 +108,9 @@ public class Server {
                 .orElse(null);
     }
 
+    /**
+     * Exit
+     */
     public void exit() {
         System.exit(0);
     }
