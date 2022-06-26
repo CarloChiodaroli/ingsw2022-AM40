@@ -22,12 +22,16 @@ public class GameModel {
 
     private final Game game;
 
+    /**
+     * Constructor
+     */
     public GameModel() {
         this.game = new Game();
     }
 
     /**
-     * add player to the game
+     * Add player to the game
+     *
      * @param name of player
      */
     public void addPlayer(String name) {
@@ -35,7 +39,7 @@ public class GameModel {
     }
 
     /**
-     * if there's not an exception, start the game
+     * If there's not an exception, start the game
      */
     public void startGame() {
         try {
@@ -46,7 +50,7 @@ public class GameModel {
     }
 
     /**
-     * choose the game mode
+     * Change the game mode
      */
     public void switchExpertVariant() {
         game.switchExpertVariant();
@@ -55,7 +59,8 @@ public class GameModel {
     // Player moves
 
     /**
-     * to get a specific player
+     * Get a player by name
+     *
      * @param playerName name of the player
      * @return the player sought
      * @throws NoSuchElementException there is no player with the name you are looking for
@@ -72,7 +77,8 @@ public class GameModel {
     }
 
     /**
-     * message player not found
+     * Message player not found
+     *
      * @param playerName the player sought
      * @return string told player not found
      */
@@ -81,7 +87,8 @@ public class GameModel {
     }
 
     /**
-     * for play assistant card
+     * Play assistant card in pianification phase
+     *
      * @param playerName the player who is playing the card
      * @param cardWeight the card played
      * @throws GameModelException error in model
@@ -98,7 +105,8 @@ public class GameModel {
     }
 
     /**
-     * move students
+     * The student movement of a specific color from a place to another
+     *
      * @param playerName the player who is moving the student
      * @param color color of the student
      * @param sourceId origin of the student
@@ -117,7 +125,12 @@ public class GameModel {
     }
 
     /**
-     * similar to the previous one useful for the exchange of students of the character cards
+     * The exchange of two students between the entrance and another place
+     *
+     * @param playerName the player who is moving the student
+     * @param entranceStudent color of the student in the entrance
+     * @param otherStudent color of the student in destination
+     * @param destinationId destination place
      */
     public void moveStudent(String playerName, TeacherColor entranceStudent, TeacherColor otherStudent, String destinationId) {
         Player player = getPlayer(playerName);
@@ -131,7 +144,8 @@ public class GameModel {
     }
 
     /**
-     * move mother nature
+     * Move mother nature
+     *
      * @param playerName the player who is moving mother nature
      * @param steps number of steps
      */
@@ -147,7 +161,8 @@ public class GameModel {
     }
 
     /**
-     * calculate influence
+     * Calculate influence
+     *
      * @param playerName the player who is calling the calculate
      */
     public void calcInfluence(String playerName) {
@@ -162,7 +177,8 @@ public class GameModel {
     }
 
     /**
-     * choose the cloud
+     * Choose the cloud
+     *
      * @param playerName the player who is choosing the cloud
      * @param cloudId id of the chosen cloud
      */
@@ -178,9 +194,10 @@ public class GameModel {
     }
 
     /**
-     * for play a card in expert variant
+     * For play a character card in expert variant
+     *
      * @param playerName the player who is playing the card
-     * @param character choosen card
+     * @param character chosen card
      */
     public void playCharacterCard(String playerName, Characters character) {
         Player player = getPlayer(playerName);
@@ -194,7 +211,11 @@ public class GameModel {
     }
 
     /**
-     * similar to the previous used for character cards that require the choice of a color
+     * For play a character card in expert variant that requires a color
+     *
+     * @param playerName the player who is playing the card
+     * @param character chosen card
+     * @param color chosen color
      */
     public void playCharacterCard(String playerName, Characters character, TeacherColor color) {
         Player player = getPlayer(playerName);
@@ -208,7 +229,11 @@ public class GameModel {
     }
 
     /**
-     * similar to the previous used for character cards that require the choice of an island
+     * For play a character card in expert variant that requires an island
+     *
+     * @param playerName the player who is playing the card
+     * @param character chosen card
+     * @param islandId chosen island
      */
     public void playCharacterCard(String playerName, Characters character, String islandId) {
         Player player = getPlayer(playerName);
@@ -224,6 +249,8 @@ public class GameModel {
     // Getter of the model state
 
     /**
+     * Get for each color the number of students there are in a specific island
+     *
      * @param islandId chosen island, if the id does not exist, it returns an error
      * @return a map showing the number of students for each color in the chosen island
      */
@@ -243,6 +270,8 @@ public class GameModel {
     }
 
     /**
+     * Get the color of the tower, if any, in a specific island
+     *
      * @param islandId chosen island, if the id does not exist, it returns an error
      * @return if present, the color of the tower on the chosen island
      */
@@ -258,6 +287,8 @@ public class GameModel {
     }
 
     /**
+     * Get for each color the number of students there are in a specific cloud
+     *
      * @param cloudId chosen cloud, if the id does not exist, it returns an error
      * @return a map showing the number of students for each color in the chosen cloud
      */
@@ -277,6 +308,8 @@ public class GameModel {
     }
 
     /**
+     * For a character card show how many students there are in for each color
+     *
      * @param characters chosen character card
      * @return a map showing the number of students for each color in the chosen card
      */
@@ -290,6 +323,7 @@ public class GameModel {
     }
 
     /**
+     * Get id of the islands
      *
      * @return list of cloud's id
      */
@@ -300,6 +334,7 @@ public class GameModel {
     }
 
     /**
+     * Get the number of coins there are on the table
      *
      * @return number of coins on the table
      */
@@ -308,6 +343,7 @@ public class GameModel {
     }
 
     /**
+     * Get the character card can be activated
      *
      * @return list of character card can be activated
      */
@@ -318,6 +354,7 @@ public class GameModel {
     }
 
     /**
+     * Get the number of players mode of the game
      *
      * @return true if the game is 3 players mode
      */
@@ -326,6 +363,7 @@ public class GameModel {
     }
 
     /**
+     * Get the game mode
      *
      * @return true if the game is in expert mode
      */
@@ -334,6 +372,7 @@ public class GameModel {
     }
 
     /**
+     * Get the position of mother nature
      *
      * @return the id of the island containing mother nature,
      */
@@ -344,6 +383,7 @@ public class GameModel {
     }
 
     /**
+     * Get the islands without prohibition card for expert variant
      *
      * @return the id of the islands without prohibition cards
      */
@@ -357,6 +397,7 @@ public class GameModel {
     // Getter of the player state
 
     /**
+     * Get the number of coins a player has
      *
      * @param playerName name of the player
      * @return number of coins the player has, if the player does not exist, it returns -1
@@ -373,6 +414,7 @@ public class GameModel {
     }
 
     /**
+     * Get for each color the number of student a player has in his entrance
      *
      * @param playerName name of the player
      * @return a map showing the number of students for each color in the entrance of the player
@@ -388,6 +430,7 @@ public class GameModel {
     }
 
     /**
+     * Get for each color the number of student a player has in his rooms
      *
      * @param playerName name of the player
      * @return a map showing the number of students for each color in the rooms of the player
@@ -403,6 +446,7 @@ public class GameModel {
     }
 
     /**
+     * Get the colors of the teachers a player has
      *
      * @param playerName name of the player
      * @return a list showing for each color if the player owns the teacher
@@ -413,6 +457,7 @@ public class GameModel {
     }
 
     /**
+     * Get id of the islands
      *
      * @return list of island's id
      */
@@ -423,6 +468,7 @@ public class GameModel {
     }
 
     /**
+     * Get for each islands shows how many islands it corresponds to
      *
      * @return a map showing how many towers there are for each island, then the number of corresponding islands
      */
@@ -434,6 +480,7 @@ public class GameModel {
     }
 
     /**
+     * Get the order of play for pianification phase
      *
      * @return a list of players in order for the pianification phase
      */
@@ -444,6 +491,7 @@ public class GameModel {
     }
 
     /**
+     * Get for each color the actual number of students in activated character cards
      *
      * @return if a character card with students is active, it returns the number of students for each color
      */
@@ -453,10 +501,10 @@ public class GameModel {
     }
 
     /**
+     * Get for each color the actual number of students in character cards
      *
      * @param character chosen card
-     * @return
-    a map with the number of students for each color on the card
+     * @retur a map with the number of students for each color on the card
      */
     public Map<TeacherColor, Integer> getCardMemory(Characters character) {
         Map<TeacherColor, Integer> studentContent = new HashMap<>();
@@ -472,6 +520,7 @@ public class GameModel {
     }
 
     /**
+     * Get for each active character card the cost
      *
      * @return cost of active character cards
      */
@@ -480,6 +529,7 @@ public class GameModel {
     }
 
     /**
+     * Get if the game is finish
      *
      * @return true if the game is finish
      */
@@ -488,6 +538,7 @@ public class GameModel {
     }
 
     /**
+     * Get the winner of the game
      *
      * @return name of the winner
      */
@@ -495,11 +546,17 @@ public class GameModel {
         return game.getEndPlayer();
     }
 
+    /**
+     * Get game
+     *
+     * @return game
+     */
     public Game getGame() {
         return game;
     }
 
     /**
+     * Get the color of the towers of a specific player
      *
      * @param playerName chosen player
      * @return color of the player's towers
@@ -509,6 +566,7 @@ public class GameModel {
     }
 
     /**
+     * Get for each player the number of coins he has
      *
      * @return a map in which for each player the corresponding number of coins he owns
      */
@@ -519,6 +577,7 @@ public class GameModel {
     }
 
     /**
+     * Get the actual character card
      *
      * @return if present, the current character cards
      */
@@ -527,6 +586,7 @@ public class GameModel {
     }
 
     /**
+     * Skip a player
      *
      * @param name name of the player to skip
      */
@@ -535,6 +595,7 @@ public class GameModel {
     }
 
     /**
+     * Don't skip a player
      *
      * @param name name of the player to not skip
      */

@@ -22,6 +22,9 @@ public class InfluenceCard extends CharacterCard {
     private Influence decorated;
     private int noEntryCounter = 0;
 
+    /**
+     * Constructor
+     */
     public InfluenceCard(Characters characters, ActionPhase actionPhase, Map<String, Integer> args) {
         super(args, characters, actionPhase);
         if (super.getCharacterization("Memory") > 0) {
@@ -40,11 +43,23 @@ public class InfluenceCard extends CharacterCard {
         decoratedCaller(player, island);
     }
 
+    /**
+     * If the island has the prohibition card, return else decorate
+     *
+     * @param player player play card
+     * @param island chosen island
+     */
     private void decoratedCaller(Player player, Island island) {
         if (decorated.noEntryTile(island)) return;
         decoratingHandle(player, island);
     }
 
+    /**
+     * According to the type of card, different actions are taken to modify the influence
+     *
+     * @param player player
+     * @param island chosen island
+     */
     private void decoratingHandle(Player player, Island island) {
         List<Player> players = this.getActionFase().getGame().getPlayers();
         Map<Player, Integer> influences = new HashMap<>();
@@ -111,6 +126,9 @@ public class InfluenceCard extends CharacterCard {
         }
     }
 
+    /**
+     * If not all prohibition cards are back, add one
+     */
     public void giveNoEntryBack() {
         if (super.getCharacterization("NoEntrySetter") == 0) {
             throw new IllegalStateException("Card does not manage no entry cards");

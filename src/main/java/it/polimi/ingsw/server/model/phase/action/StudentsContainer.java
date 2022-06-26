@@ -7,6 +7,9 @@ import it.polimi.ingsw.server.model.StudentsManager;
  */
 public class StudentsContainer extends StudentsManager {
 
+    /**
+     * Constructor
+     */
     public StudentsContainer(int capacity) {
         super(capacity);
     }

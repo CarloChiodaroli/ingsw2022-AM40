@@ -10,7 +10,8 @@ public class Cloud extends StudentsManager {
     private final String id;
 
     /**
-     * @param id             Cloud's Id
+     * Constructor
+     * @param id Cloud's Id
      * @param equalsStudents number of student that cloud can contains
      */
     public Cloud(String id, int equalsStudents) {
@@ -19,12 +20,18 @@ public class Cloud extends StudentsManager {
     }
 
     /**
+     * Get the is of the cloud
      * @return String Cloud's ID
      */
     public String getId() {
         return id;
     }
 
+    /**
+     * Build and fill the clouds
+     * @param bag from where students are caught
+     * @throws IllegalStateException the bag is empty
+     */
     public void buildCloud(Bag bag) throws IllegalStateException {
         int color;
         if (bag.howManyTotStudents() < this.getMaxStudents())

@@ -40,7 +40,7 @@ public abstract class StudentsManager {
     }
 
     /**
-     * if it's allowed, add one student
+     * If it's allowed, add one student of the selected color
      *
      * @param color color of the student to add
      * @return true if the student has been added
@@ -56,7 +56,7 @@ public abstract class StudentsManager {
     }
 
     /**
-     * if it's allowed, remove one student
+     * If it's allowed, remove one student of the selected color
      *
      * @param color color of the student to remove
      * @return true if the student has been removed
@@ -72,7 +72,7 @@ public abstract class StudentsManager {
     }
 
     /**
-     * verify that the student can be added
+     * Verify that can be added the number of students chosen
      *
      * @param students number of students of the color want add
      */
@@ -81,7 +81,7 @@ public abstract class StudentsManager {
     }
 
     /**
-     * verify that the student can be removed
+     * Verify that can be removed the number of students chosen
      *
      * @param students number of students of the color want remove
      */
@@ -90,13 +90,15 @@ public abstract class StudentsManager {
     }
 
     /**
-     * @return how many students there are of the desired color
+     * The number of student of the required color
+     * @return desired color
      */
     public int howManyStudents(TeacherColor color) {
         return manager.get(color);
     }
 
     /**
+     * The number of total students
      * @return how many students there are
      */
     public int howManyTotStudents() {
@@ -108,6 +110,7 @@ public abstract class StudentsManager {
     }
 
     /**
+     * If is allowed, remove one student
      * @return color of the removed student, if any
      */
     public Optional<TeacherColor> getStudent() {
@@ -120,6 +123,7 @@ public abstract class StudentsManager {
     }
 
     /**
+     * Get max students allowed
      * @return number of max students
      */
     public int getMaxStudents() {
@@ -127,7 +131,7 @@ public abstract class StudentsManager {
     }
 
     /**
-     *
+     * Get the number of students for each color
      * @return a map showing the number of students for each color
      */
     public Map<TeacherColor, Integer> getMap() {

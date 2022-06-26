@@ -12,10 +12,16 @@ import java.util.List;
  */
 public class MergeIsland extends ActionFaseState {
 
+    /**
+     * Constructor
+     */
     public MergeIsland(ActionPhase actionPhase) {
         super(actionPhase);
     }
 
+    /**
+     * If is necessary merge neighboring islands
+     */
     @Override
     public void handle() {
         Island mount, valley;

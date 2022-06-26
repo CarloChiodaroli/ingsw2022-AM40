@@ -18,6 +18,12 @@ public abstract class CharacterCardFabric {
 
     private final static Map<Characters, Map<String, Integer>> particularities = allParticularities();
 
+    /**
+     * Get character cards of the game
+     *
+     * @param actionPhase action phase of the game
+     * @return a map witch for each card the character
+     */
     public static Map<Characters, CharacterCard> getCards(ActionPhase actionPhase) {
         Map<Characters, CharacterCard> enabledCharacterCards = new HashMap<>();
         while (enabledCharacterCards.size() < 3) {
@@ -29,6 +35,13 @@ public abstract class CharacterCardFabric {
         return enabledCharacterCards;
     }
 
+    /**
+     * Create the character cards
+     *
+     * @param type characterization of the card
+     * @param actionPhase action phase of the game
+     * @return a card with the required character
+     */
     public static CharacterCard createCard(Characters type, ActionPhase actionPhase) {
         Map<ActionPhaseStateType, CharacterCard> possibleCards = new HashMap<>();
         possibleCards.put(ActionPhaseStateType.STUDENT, new StudentMovementCard(type, actionPhase, getCharacterization(type)));
@@ -37,12 +50,22 @@ public abstract class CharacterCardFabric {
         return possibleCards.get(CharactersLookup.getType(type));
     }
 
+    /**
+     * Get a random character
+     *
+     * @return the caught character
+     */
     public static Characters getRandomCharacter() {
         Random random = new Random();
         int range = Characters.values().length;
         return Characters.values()[random.nextInt(range)];
     }
 
+    /**
+     * Create the characterizations
+     *
+     * @return a map witch the character and an util int
+     */
     private static Map<String, Integer> createBaseCharacterization() {
         Map<String, Integer> result = new HashMap<>();
 
@@ -69,6 +92,9 @@ public abstract class CharacterCardFabric {
         return CardCharacterizations.getMap();
     }
 
+    /**
+     * Getter
+     */
     public static Map<String, Integer> getCharacterization(Characters characters) {
         Map<String, Integer> result = createBaseCharacterization();
         particularities.get(characters).forEach(result::replace);

@@ -14,10 +14,21 @@ import java.util.List;
  */
 public class MotherNatureState extends ActionFaseState {
 
+    /**
+     * Constructor
+     */
     public MotherNatureState(ActionPhase actionPhase) {
         super(actionPhase);
     }
 
+    /**
+     * After check number of steps, move mother nature
+     *
+     * @param player player want to move
+     * @param steps steps the player want
+     * @param maxSteps maximum number of steps are allowed
+     * @throws InvalidParameterException number of steps not compatible
+     */
     @Override
     public void handle(Player player, int steps, int maxSteps) throws InvalidParameterException {
         if (steps > maxSteps || steps == 0)

@@ -16,6 +16,10 @@ public class MotherNature {
     private MotherNature() {
     }
 
+    /**
+     * If mother nature hadn't been instantiated, istance it
+     * @return mother nature
+     */
     public static MotherNature getMotherNature() {
         if (instance == null)
             instance = new MotherNature();
@@ -23,19 +27,23 @@ public class MotherNature {
     }
 
     /**
-     * @return Island MotherNature's Island
+     * Get the position of mother nature
+     * @return the island where mother nature is found
      */
     public Optional<Island> getPosition() {
         return Optional.ofNullable(island);
     }
 
     /**
-     * set MotherNature's Island
+     * Set the position of mother nature
      */
     public void setPosition(Island island) {
         this.island = island;
     }
 
+    /**
+     * Reset the position of mother nature
+     */
     public void resetPosition() {
         this.island = null;
     }

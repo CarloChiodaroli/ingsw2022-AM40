@@ -28,7 +28,9 @@ public abstract class CharacterCard extends ActionFaseState {
     private Island interestingIsland;
     private Player actualPlayer;
 
-
+    /**
+     * Constructor
+     */
     public CharacterCard(Map<String, Integer> args, Characters characters, ActionPhase actionPhase) {
         super(actionPhase);
         this.characterization = args;
@@ -40,6 +42,12 @@ public abstract class CharacterCard extends ActionFaseState {
         this.interestingIsland = null;
     }
 
+    /**
+     * Set if the card was already used and activate it
+     *
+     * @param player player
+     * @return true
+     */
     protected boolean activator(Player player) {
         if (!usedOneTime) usedOneTime = true;
         usesLeft = characterization.get("Usages");
@@ -48,6 +56,13 @@ public abstract class CharacterCard extends ActionFaseState {
         return true;
     }
 
+    /**
+     * Set if the card was already used, the interested color and activate it
+     *
+     * @param player player
+     * @param color chosen color
+     * @return if is allowed to activate, true
+     */
     protected boolean activator(Player player, TeacherColor color) {
         if (getCharacterization("Student") > 0) {
             activator(player);
@@ -57,6 +72,13 @@ public abstract class CharacterCard extends ActionFaseState {
         return false;
     }
 
+    /**
+     * Set if the card was already used, the interested island and activate it
+     *
+     * @param player player
+     * @param island chosen island
+     * @return if is allowed to activate, true
+     */
     protected boolean activator(Player player, Island island) {
         if (getCharacterization("Island") > 0) {
             activator(player);
@@ -66,6 +88,9 @@ public abstract class CharacterCard extends ActionFaseState {
         return false;
     }
 
+    /**
+     * Reduce the uses left
+     */
     public void updateUse() {
         usesLeft--;
         if (usesLeft == 0) {
@@ -73,6 +98,9 @@ public abstract class CharacterCard extends ActionFaseState {
         }
     }
 
+    /**
+     * Reset all
+     */
     private void reset() {
         interestingIsland = null;
         interestingColor = null;
@@ -80,51 +108,118 @@ public abstract class CharacterCard extends ActionFaseState {
         actualPlayer = null;
     }
 
+    /**
+     * Get island
+     *
+     * @return interesting island
+     */
     public Island getInterestingIsland() {
         return interestingIsland;
     }
 
+    /**
+     * Get color
+     *
+     * @return interesting color
+     */
     public TeacherColor getInterestingTeacherColor() {
         return interestingColor;
     }
 
+    /**
+     *
+     *
+     * @param arg
+     * @return
+     */
     public Integer getCharacterization(String arg) {
         return new HashMap<>(characterization).get(arg);
     }
 
+    /**
+     * Get character
+     *
+     * @return character
+     */
     public Characters getCharacter() {
         return characters;
     }
 
+    /**
+     * Price of a card
+     *
+     * @return price
+     */
     public int getPrice() {
         if (usedOneTime) return price + 1;
         else return price;
     }
 
+    /**
+     * Get if the card is in use
+     *
+     * @return true if the card is using
+     */
     public boolean isInUse() {
         return using;
     }
 
+    /**
+     * Get actual player
+     *
+     * @return actual player
+     */
     public Player getActualPlayer() {
         return actualPlayer;
     }
 
+    /**
+     * Check if the payer can pay for the chosen card
+     *
+     * @param player player
+     * @throws InvalidParameterException the parameter is not valid
+     */
     public void playerPays(Player player) throws InvalidParameterException {
         if (!player.pay(getPrice())) throw new InvalidParameterException("Player cannot pay for the card");
     }
 
+    /**
+     * Get students container
+     *
+     * @return students container
+     */
     public Optional<StudentsManager> getStudentContainer() {
         return Optional.empty();
     }
 
+    /**
+     * Activator for character cards who need a color
+     *
+     * @param decorated phase state
+     * @param player player
+     * @param color chosen color
+     */
     public void activator(ActionFaseState decorated, Player player, TeacherColor color) {
         throw new IllegalStateException("Card cannot be activated with this activator");
     }
 
+    /**
+     * Activator for character cards
+     *
+     * @param decorated phase state
+     * @param player player
+     */
     public void activator(ActionFaseState decorated, Player player) {
         throw new IllegalStateException("Card cannot be activated with this activator");
     }
 
+    /**
+     * Activator for character cards who need an island
+     *
+     * @param decorated phase state
+     * @param player player
+     * @param island chosen island
+     */
     public void activator(ActionFaseState decorated, Player player, Island island) {
         throw new IllegalStateException("Card cannot be activated with this activator");
     }

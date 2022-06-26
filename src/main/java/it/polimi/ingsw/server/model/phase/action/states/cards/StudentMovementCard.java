@@ -23,6 +23,9 @@ public class StudentMovementCard extends CharacterCard {
     private StudentsContainer students = null;
     private final int maxUsages;
 
+    /**
+     * Constructor
+     */
     public StudentMovementCard(Characters characters, ActionPhase actionPhase, Map<String, Integer> args) {
         super(args, characters, actionPhase);
         if (args.get("Memory") > 0) {
@@ -34,6 +37,11 @@ public class StudentMovementCard extends CharacterCard {
         this.maxUsages = args.get("Usages");
     }
 
+    /**
+     * Get a student from the bag
+     *
+     * @return color of the caught student
+     */
     private TeacherColor getStudentFromBag(){
         return getActionFase().getGame().getTable().getStudentFromBag().orElseThrow();
     }
@@ -113,6 +121,11 @@ public class StudentMovementCard extends CharacterCard {
         }
     }
 
+    /**
+     * If player has the same number of student in a room, it's given to him the teacher
+     *
+     * @param player player
+     */
     private void controlTeachers(Player player) {
         List<Player> players = super.getActionFase().getGame().getPlayers();
         for (TeacherColor color : TeacherColor.values()) {
@@ -130,6 +143,11 @@ public class StudentMovementCard extends CharacterCard {
         }
     }
 
+    /**
+     * Get the students container
+     *
+     * @return container
+     */
     public StudentsManager getStudents() {
         return students;
     }

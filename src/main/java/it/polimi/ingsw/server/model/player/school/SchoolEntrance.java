@@ -8,7 +8,7 @@ import it.polimi.ingsw.server.model.StudentsManager;
 public class SchoolEntrance extends StudentsManager {
 
     /**
-     * class constructor
+     * Class constructor
      *
      * @param studentCapacity is the number of students a player can keep in its Entrance
      */

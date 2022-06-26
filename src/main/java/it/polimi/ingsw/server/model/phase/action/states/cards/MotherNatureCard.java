@@ -17,6 +17,9 @@ public class MotherNatureCard extends CharacterCard {
 
     private MotherNatureState decorated;
 
+    /**
+     * Constructor
+     */
     public MotherNatureCard(Characters characters, ActionPhase actionPhase, Map<String, Integer> args) {
         super(args, characters, actionPhase);
     }

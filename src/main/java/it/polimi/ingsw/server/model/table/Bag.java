@@ -16,6 +16,7 @@ public class Bag extends StudentsManager {
 
 
     /**
+     * Constructor
      * @param maxStudents      Max number of student
      * @param maxStudentsColor Max number of student for each color
      */
@@ -37,12 +38,17 @@ public class Bag extends StudentsManager {
         }
     }
 
+    /**
+     * Get if there are any student in the bag
+     * @return true if the bag is empty
+     */
     public boolean isEmpty() {
         return howManyTotStudents() == 0;
     }
 
     /**
-     * @return TeacherColor It returns a casual color
+     * If any, remove one student of a random color
+     * @return TeacherColor the color of the caught student
      */
     public TeacherColor getAStudent() {
         if (isEmpty()) return null;

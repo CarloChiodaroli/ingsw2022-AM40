@@ -14,6 +14,9 @@ public abstract class ActionFaseState {
 
     private final ActionPhase actionPhase;
 
+    /**
+     * Constructor
+     */
     protected ActionFaseState(ActionPhase actionPhase) {
         this.actionPhase = actionPhase;
     }

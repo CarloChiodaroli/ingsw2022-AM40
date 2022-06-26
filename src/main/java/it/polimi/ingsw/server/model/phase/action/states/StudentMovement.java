@@ -21,6 +21,15 @@ public class StudentMovement extends ActionFaseState {
         super(actionPhase);
     }
 
+    /**
+     * The starting method for moving student from a place to another, controls the presence of
+     * the places and students
+     *
+     * @param color student color
+     * @param from place where begin the movement
+     * @param to place where finish the movement
+     * @throws IllegalStateException if the player can't move now
+     */
     @Override
     public void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) throws IllegalStateException {
         if (from.isPresent() && to.isPresent())
@@ -30,6 +39,9 @@ public class StudentMovement extends ActionFaseState {
         controlTeachers();
     }
 
+    /**
+     * Control and manage of teachers possession
+     */
     private void controlTeachers() {
         List<Player> players = super.getActionFase().getGame().getPlayers();
         for (TeacherColor color : TeacherColor.values()) {

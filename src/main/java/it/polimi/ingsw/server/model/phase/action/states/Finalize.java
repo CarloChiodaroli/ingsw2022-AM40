@@ -10,10 +10,19 @@ import it.polimi.ingsw.server.model.player.Player;
  */
 public class Finalize extends ActionFaseState {
 
+    /**
+     * Constructor
+     */
     public Finalize(ActionPhase actionPhase) {
         super(actionPhase);
     }
 
+    /**
+     * Fill entrance with students in cloud
+     *
+     * @param player player
+     * @param cloud chosen cloud
+     */
     @Override
     public void handle(Player player, StudentsManager cloud) {
         StudentsManager destination = player.getEntrance();

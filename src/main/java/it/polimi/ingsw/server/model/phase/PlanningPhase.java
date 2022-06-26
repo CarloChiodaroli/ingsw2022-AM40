@@ -174,6 +174,9 @@ public class PlanningPhase {
         return actualRealPlayer;
     }
 
+    /**
+     * Set next player
+     */
     public void nextPlayer() {
         actualPlayer++;
         if (actualPlayer >= playersInOrder.size()) {
@@ -181,18 +184,39 @@ public class PlanningPhase {
         }
     }
 
+    /**
+     * Get mother nature hops
+     *
+     * @param player player
+     * @return number of hops
+     */
     public int getMotherNatureHops(Player player) {
         return playedCards.get(player).getNumOfMotherNatureMovements();
     }
 
+    /**
+     * Get the order of players for pianification phase
+     *
+     * @return list of players
+     */
     public List<Player> getPlayersInOrder() {
         return new ArrayList<>(playersInOrder);
     }
 
+    /**
+     * Skip a player
+     *
+     * @param player player to skip
+     */
     public void skipPlayer(Player player) {
         playersToSkip.add(player);
     }
 
+    /**
+     * Don't skip a player
+     *
+     * @param player player don't skip
+     */
     public void unSkipPlayer(Player player) {
         playersToSkip.remove(player);
     }

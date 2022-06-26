@@ -31,21 +31,21 @@ public class SchoolDashboard {
     }
 
     /**
-     * getter
+     * Get number fo towers in dashboard
      */
     public int getNumOfTowers() {
         return numOfTowers;
     }
 
     /**
-     * getter
+     * Get the color of the towers
      */
     public TowerColor getTowerColor() {
         return colorOfTowers;
     }
 
     /**
-     * remove towers from the school dashboard
+     * Remove towers from the school dashboard
      *
      * @param howManyTowers is the number of towers to remove
      * @return true if successful, false if there is no more towers
@@ -55,7 +55,7 @@ public class SchoolDashboard {
     }
 
     /**
-     * add towers to the school dashboard
+     * Add towers to the school dashboard
      *
      * @param howManyTowers number of towers to be added
      */
@@ -94,10 +94,20 @@ public class SchoolDashboard {
         return true;
     }
 
+    /**
+     * Get a room in dashboard
+     *
+     * @return the required room
+     */
     public SchoolRoom getRoom() {
         return room;
     }
 
+    /**
+     * Get the entrance in dashboard
+     *
+     * @return the entrance
+     */
     public StudentsManager getEntranceAsStudentsManager() {
         return entrance;
     }

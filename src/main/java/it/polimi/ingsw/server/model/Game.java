@@ -74,10 +74,16 @@ public class Game {
         startRound();
     }
 
+    /**
+     * Start the pianification phase
+     */
     private void startRound() {
         planningPhase.activate();
     }
 
+    /**
+     * Update the game state from pianification to action
+     */
     public void updateState() {
         if (planningPhase.isInOrder()) {
             actionPhase.startPhase(planningPhase.getActualPlayer());
@@ -176,6 +182,11 @@ public class Game {
         isExpertVariant = !isExpertVariant;
     }
 
+    /**
+     * Get for each active character card the cost
+     *
+     * @return cost of active character cards
+     */
     public Map<Characters, Integer> getActiveCharactersCosts() {
         return actionPhase.getActiveCharactersCosts();
     }
@@ -323,11 +334,21 @@ public class Game {
         }
     }
 
+    /**
+     * Skip a player
+     *
+     * @param player player to skip
+     */
     public void skipPlayer(Player player) {
         skippablePlayers.add(player);
         planningPhase.skipPlayer(player);
     }
 
+    /**
+     * Don't skip a player
+     *
+     * @param player player to not skip
+     */
     public void unSkipPlayer(Player player) {
         skippablePlayers.remove(player);
         planningPhase.unSkipPlayer(player);
