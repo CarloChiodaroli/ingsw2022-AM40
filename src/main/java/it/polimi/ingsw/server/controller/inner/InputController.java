@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * This Class, with the help of the {@link TurnController} class gives methods to check if communications between controller
- * and model are legal or not.
+ * and model are legal or not
  */
 public class InputController {
 
@@ -22,20 +22,39 @@ public class InputController {
     private Map<Characters, List<String>> characterizingMap;
     private final static List<String> usefulCharacterizations = List.of("Player", "Island", "EffectAllPlayers");
 
+    /**
+     * Constructor
+     */
     public InputController(PlayMessagesReader reader) {
         this.reader = reader;
     }
 
+    /**
+     * Check name is valid and there are less than 3 players
+     *
+     * @param player player to add
+     */
     public void addPlayer(String player) {
         if (reader.getPlayerNames().contains(player))
             throw new InvalidParameterException("Player name already present");
         if (reader.getPlayerNames().size() >= 3) throw new IllegalStateException("There are already 3 players");
     }
 
+    /**
+     * Check name of the player to remove exists
+     *
+     * @param player player to remove
+     */
     public void removePlayer(String player) {
         if (!reader.getPlayerNames().contains(player)) throw new InvalidParameterException("Player name not found");
     }
 
+    /**
+     * Check the name exists in game and is the actual player
+     *
+     * @param actualPlayer name of actual player
+     * @throws InvalidParameterException invalid name
+     */
     public void controlActualPlayer(String actualPlayer) throws InvalidParameterException {
         if (!reader.getPlayerNames().contains(actualPlayer))
             throw new InvalidParameterException("Player is not playing the game");
@@ -43,15 +62,31 @@ public class InputController {
             throw new InvalidParameterException("Player is not the actual player");
     }
 
+    /**
+     * Check the game is in expert mode
+     *
+     * @throws IllegalStateException not in expert
+     */
     public void controlExpertVariant() throws IllegalStateException {
         if (!reader.isExpertVariant()) throw new IllegalStateException("Game is not in Expert variant");
     }
 
+    /**
+     * Check the required state is the current
+     *
+     * @param required required state
+     * @throws IllegalStateException actual and required states aren't equals
+     */
     public void controlGameState(GameState required) throws IllegalStateException {
         if (!reader.getState().equals(required))
             throw new IllegalStateException("Actual state is " + reader.getState() + " when " + required + " is required");
     }
 
+    /**
+     * Check the source of move students is valid
+     *
+     * @param id source of the movement
+     */
     public void controlSourceId(String id) {
         if (reader.isExpertVariant()) {
             String charc = reader.getTurnController().getActualCharacter().map(Enum::toString).orElse(null);
@@ -67,6 +102,11 @@ public class InputController {
         }
     }
 
+    /**
+     * Check the destination of move students is valid
+     *
+     * @param id destination of the movement
+     */
     public void controlDestinationId(String id) {
         if (reader.isExpertVariant()) {
             String charc = reader.getTurnController().getActualCharacter().toString();
@@ -79,11 +119,22 @@ public class InputController {
         }
     }
 
+    /**
+     * Check exclude state
+     *
+     * @param exclude state to exclude
+     * @throws IllegalStateException illegal state
+     */
     public void excludeGameState(GameState exclude) throws IllegalStateException {
         if (reader.getState().equals(exclude))
             throw new IllegalStateException("Actual state is " + reader.getState() + " and it's illegal for this action");
     }
 
+    /**
+     * Check the character card can be played
+     *
+     * @param playerName player who wants to play the card
+     */
     public void playCharacterCardPermit(String playerName) {
         controlExpertVariant();
         controlGameState(GameState.ACTION);
@@ -93,6 +144,11 @@ public class InputController {
 
     // Expert
 
+    /**
+     * Set the actual character cards
+     *
+     * @param prices a map with for each character the price
+     */
     public void setCharacters(Map<Characters, Integer> prices) {
         actualCards = prices;
         characterizingMap = new HashMap<>();
@@ -106,30 +162,70 @@ public class InputController {
                 });
     }
 
+    /**
+     * Check the character is active and contains the characterization Player
+     *
+     * @param characters character required
+     * @return true if all right
+     */
     public boolean characterEffectsPlayer(Characters characters) {
         return reader.isCharacterActive() && characterizingMap.getOrDefault(characters, new ArrayList<>()).contains("Player");
     }
 
+    /**
+     * Check the character is active and contains the characterization Island
+     *
+     * @param characters character required
+     * @return true if all right
+     */
     public boolean characterEffectsIsland(Characters characters) {
         return reader.isCharacterActive() && characterizingMap.getOrDefault(characters, new ArrayList<>()).contains("Island");
     }
 
+    /**
+     * Check the character is active and contains the characterization All Players
+     *
+     * @param characters character required
+     * @return true if all right
+     */
     public boolean characterEffectsAllPlayers(Characters characters) {
         return reader.isCharacterActive() && characterizingMap.getOrDefault(characters, new ArrayList<>()).contains("EffectAllPlayers");
     }
 
+    /**
+     * Check syntax of id island
+     *
+     * @param islandId id
+     * @return true if is valid
+     */
     public boolean isIslandId(String islandId) {
         return islandId.matches("i_[0-9_]*");
     }
 
-    public boolean isCloudId(String islandId) {
-        return islandId.matches("c_[0-9_]*");
+    /**
+     * Check syntax of id cloud
+     *
+     * @param cloudId id
+     * @return true if is valid
+     */
+    public boolean isCloudId(String cloudId) {
+        return cloudId.matches("c_[0-9_]*");
     }
 
+    /**
+     * If id is not valid send an error message
+     *
+     * @param id cloud id
+     */
     public void controlCloudId(String id) {
         if (!isCloudId(id)) throw new InvalidParameterException("Gotten id is not cloud id");
     }
 
+    /**
+     * If id is not valid send an error message
+     *
+     * @param id island id
+     */
     public void controlIslandId(String id) {
         if (!isIslandId(id)) throw new InvalidParameterException("Gotten id is not island id");
     }

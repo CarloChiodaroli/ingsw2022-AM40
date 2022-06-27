@@ -35,6 +35,9 @@ public class PlayMessagesReader implements PlayMessageReader {
     private final String server;
     private boolean stop;
 
+    /**
+     * Constructor
+     */
     public PlayMessagesReader(String mainPlayer, GameManager gameManager) {
         this.mainPlayer = mainPlayer;
         this.playerNames = new ArrayList<>();
@@ -48,28 +51,52 @@ public class PlayMessagesReader implements PlayMessageReader {
         this.gameManager = gameManager;
     }
 
-
+    /**
+     * If number of players is valid, add it to the reader
+     *
+     * @param numOfPlayers number of players
+     */
     public void setNumOfPlayers(int numOfPlayers) {
         if (numOfPlayers != 2 && numOfPlayers != 3) throw new IllegalArgumentException();
         this.numOfPlayers = numOfPlayers;
     }
 
+    /**
+     * Check the state isn't initial and add a player to the controller and the reader
+     *
+     * @param playerName player
+     */
     public void addPlayer(String playerName) {
         inputController.controlGameState(GameState.INITIAL);
         inputController.addPlayer(playerName);
         this.playerNames.add(playerName);
     }
 
+    /**
+     * Check the state isn't initial and remove a player to the controller and the reader
+     *
+     * @param playerName player
+     */
     public void deletePlayer(String playerName) {
         inputController.controlGameState(GameState.INITIAL);
         inputController.removePlayer(playerName);
         playerNames.remove(playerName);
     }
 
+    /**
+     * Get number of current players
+     *
+     * @return number of players
+     */
     public int getNumCurrPlayers() {
         return playerNames.size();
     }
 
+    /**
+     * Save a list of messages with the status of a player
+     *
+     * @param player player
+     */
     private void sendCompleteStatus(String player) {
         List<Message> commonAnswers = new ArrayList<>();
         List<String> islandIds = outbound.getAllIslandIds();
@@ -105,18 +132,31 @@ public class PlayMessagesReader implements PlayMessageReader {
         commonAnswers.forEach(x -> gameManager.sendMessage(player, x));
     }
 
+    /**
+     * Get answer's messages to a player
+     *
+     * @param receiverName player
+     */
     private void sendAllPrivate(String receiverName) {
         List<Message> answers = new ArrayList<>(playerDashboard(receiverName));
         answers.add(PlayMessagesFabric.statusPlanning(server, turnController.getActivePlayer()));
         answers.forEach(answer -> gameManager.sendMessage(receiverName, answer));
     }
 
+    /**
+     * Send all messages
+     *
+     * @param playerName player
+     */
     public void sendCompleteGameStatus(String playerName) {
         sendCompleteStatus(playerName);
         sendAllPrivate(playerName);
         //playerNames.forEach(this::sendAllPrivate);
     }
 
+    /**
+     * Send action or pianification phase informations
+     */
     public void sendStatus() {
         if (turnController.getActualState().equalsIgnoreCase("action"))
             playerNames.forEach(x -> gameManager.sendMessage(x, PlayMessagesFabric.statusAction(server, turnController.getActivePlayer())));
@@ -124,6 +164,12 @@ public class PlayMessagesReader implements PlayMessageReader {
             playerNames.forEach(x -> gameManager.sendMessage(x, PlayMessagesFabric.statusPlanning(server, turnController.getActivePlayer())));
     }
 
+    /**
+     * Save a list of dashboard's info
+     *
+     * @param player player
+     * @return list of messages with dashborad's info
+     */
     private List<Message> playerDashboard(String player) {
         List<Message> answers = new ArrayList<>();
         answers.add(PlayMessagesFabric.statusStudent(server, "Entrance", outbound.getStudentInPlace(player, "Entrance")));
@@ -132,6 +178,9 @@ public class PlayMessagesReader implements PlayMessageReader {
         return answers;
     }
 
+    /**
+     * When the game is started, send all informations for each player
+     */
     public void startGame() {
         try {
             inbound.startGame(playerNames);
@@ -144,24 +193,48 @@ public class PlayMessagesReader implements PlayMessageReader {
         playerNames.forEach(this::sendAllPrivate);
     }
 
+    /**
+     * Get the game start for turn controller
+     *
+     * @return true if game is started
+     */
     public boolean isGameStarted() {
         return turnController.isGameStarted();
     }
 
+    /**
+     * Switch to expert mode
+     */
     public void switchExpertVariant() {
         expertVariant = inbound.switchExpertVariant();
     }
 
+    /**
+     * Skip a player allowed by turn controller
+     *
+     * @param playerName player to skip
+     */
     public void stopPlayer(String playerName) {
         turnController.skipPlayer(playerName);
         inbound.skipPlayer(playerName);
     }
 
+    /**
+     * Don't skip a player allowed by turn controller
+     *
+     * @param playerName player to not skip
+     */
     public void unStopPlayer(String playerName) {
         turnController.unSkipPlayer(playerName);
         inbound.unSkipPlayer(playerName);
     }
 
+    /**
+     * Save messages for play assistant card
+     *
+     * @param player player
+     * @param weight card weight
+     */
     @Override
     public void playAssistantCard(String player, Integer weight) {
         List<Message> answers = new ArrayList<>();
@@ -183,6 +256,14 @@ public class PlayMessagesReader implements PlayMessageReader {
         }
     }
 
+    /**
+     * Save messages for move students
+     *
+     * @param player player
+     * @param color student color
+     * @param fromId source place
+     * @param toId destination place
+     */
     @Override
     public void moveStudent(String player, TeacherColor color, String fromId, String toId) {
         List<Message> answers = new ArrayList<>();
@@ -221,6 +302,14 @@ public class PlayMessagesReader implements PlayMessageReader {
         }
     }
 
+    /**
+     * Save messages for switch students
+     *
+     * @param player player
+     * @param fromColor student color in entrance
+     * @param toColor student olor in other place
+     * @param placeId other place of the switch
+     */
     @Override
     public void moveStudent(String player, TeacherColor fromColor, TeacherColor toColor, String placeId) {
         List<Message> answers = new ArrayList<>();
@@ -249,6 +338,12 @@ public class PlayMessagesReader implements PlayMessageReader {
         }
     }
 
+    /**
+     * Save messages for move mother nature
+     *
+     * @param player player
+     * @param hops number of steps
+     */
     @Override
     public void moveMotherNature(String player, Integer hops) {
         List<Message> answers = new ArrayList<>();
@@ -263,6 +358,11 @@ public class PlayMessagesReader implements PlayMessageReader {
         answers.forEach(gameManager::broadcastMessage);
     }
 
+    /**
+     * Save messages for calculate influence
+     *
+     * @param player player name
+     */
     @Override
     public void calcInfluence(String player) {
         List<Message> answers = new ArrayList<>();
@@ -299,6 +399,12 @@ public class PlayMessagesReader implements PlayMessageReader {
         }
     }
 
+    /**
+     * Save messages for choose a cloud
+     *
+     * @param player player name
+     * @param id cloud id
+     */
     @Override
     public void chooseCloud(String player, String id) {
         List<Message> answers = new ArrayList<>();
@@ -328,6 +434,12 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     }
 
+    /**
+     * Save messages for play a character card
+     *
+     * @param player player name
+     * @param character character chose
+     */
     @Override
     public void playCharacterCard(String player, Characters character) {
         List<Message> answers = new ArrayList<>();
@@ -341,6 +453,13 @@ public class PlayMessagesReader implements PlayMessageReader {
         corePlayCharacterCard(answers);
     }
 
+    /**
+     * Save messages for play a character card that needs an island
+     *
+     * @param player player name
+     * @param character character chose
+     * @param id island id
+     */
     @Override
     public void playCharacterCard(String player, Characters character, String id) {
         List<Message> answers = new ArrayList<>();
@@ -355,6 +474,13 @@ public class PlayMessagesReader implements PlayMessageReader {
         corePlayCharacterCard(answers);
     }
 
+    /**
+     * Save messages for play a character card that needs a color
+     *
+     * @param player player name
+     * @param character character chose
+     * @param color chosen color
+     */
     @Override
     public void playCharacterCard(String player, Characters character, TeacherColor color) {
         List<Message> answers = new ArrayList<>();
@@ -368,6 +494,11 @@ public class PlayMessagesReader implements PlayMessageReader {
         corePlayCharacterCard(answers);
     }
 
+    /**
+     * Manages messages when a character card is played
+     *
+     * @param answers list of answer messages
+     */
     private void corePlayCharacterCard(List<Message> answers) {
         Characters actual = turnController.getActualCharacter().get();
         answers.add(PlayMessagesFabric.statusCharacterCard(server, outbound.getActualCharacterCard()));
@@ -394,21 +525,33 @@ public class PlayMessagesReader implements PlayMessageReader {
         }
     }
 
+    /**
+     * Send error message
+     */
     @Override
     public void statusCharacterCard(String sender, Characters character) {
         errorIllegalMessage();
     }
 
+    /**
+     * Send error message
+     */
     @Override
     public void statusAssistantCard(String sender, String player, Integer weight) {
         errorIllegalMessage();
     }
 
+    /**
+     * Send error message
+     */
     @Override
     public void statusEndGame(String sender, String winner) {
         errorIllegalMessage();
     }
 
+    /**
+     * Send error message
+     */
     @Override
     public void statusStudent(String sender, String id, Map<TeacherColor, Integer> quantity) {
         errorIllegalMessage();
@@ -419,21 +562,33 @@ public class PlayMessagesReader implements PlayMessageReader {
         errorIllegalMessage();
     }
 
+    /**
+     * Send error message
+     */
     @Override
     public void statusTower(String sender, Map<String, TowerColor> conquests) {
         errorIllegalMessage();
     }
 
+    /**
+     * Send error message
+     */
     @Override
     public void statusTower(String sender, String player, TowerColor color) {
         errorIllegalMessage();
     }
 
+    /**
+     * Send error message
+     */
     @Override
     public void statusIslandIds(String sender, List<String> ids) {
         errorIllegalMessage();
     }
 
+    /**
+     * Send error message
+     */
     @Override
     public void statusCloudIds(String sender, List<String> ids) {
         errorIllegalMessage();
@@ -444,6 +599,9 @@ public class PlayMessagesReader implements PlayMessageReader {
         errorIllegalMessage();
     }
 
+    /**
+     * Send error message
+     */
     @Override
     public void statusAction(String sender, String actualPlayer) {
         errorIllegalMessage();
@@ -454,99 +612,167 @@ public class PlayMessagesReader implements PlayMessageReader {
         errorIllegalMessage();
     }
 
+    /**
+     * Send error message
+     */
     @Override
     public void statusCharacterCard(String sender, Map<String, Integer> money) {
         errorIllegalMessage();
     }
 
+    /**
+     * Send error message
+     */
     @Override
     public void statusPlayerMoney(String sender, Map<String, Integer> money) {
         errorIllegalMessage();
     }
 
+    /**
+     * Send error message
+     */
     @Override
     public void statusStudent(String sender, Characters character, Map<TeacherColor, Integer> quantity) {
         errorIllegalMessage();
     }
 
+    /**
+     * Send error message
+     */
     @Override
     public void statusNoEntry(String sender, List<String> islandIds) {
         errorIllegalMessage();
     }
 
+    /**
+     * Send in broadcast who wins the game
+     *
+     * @param winner name of winner
+     */
     private void sendEndGame(String winner) {
         gameManager.broadcastMessage(PlayMessagesFabric.statusEndGame(server, winner));
     }
 
+    /**
+     * Send error message in broadcast
+     */
     private void errorIllegalMessage() {
         Message error = new ErrorMessage(server, server + " should not receive this message");
         gameManager.broadcastMessage(error);
     }
 
+    /**
+     * Send error message in broadcast
+     */
     private void errorInExecution(String error) {
         Message horror = new ErrorMessage(server, error);
         gameManager.broadcastMessage(horror);
     }
 
+    /**
+     * Send error message in broadcast
+     */
     private void errorInExecution(String playerName, String error) {
         Message horror = new ErrorMessage(server, error);
         gameManager.sendMessage(playerName, horror);
     }
 
+    /**
+     * Getter
+     */
     public TurnController getTurnController() {
         return turnController;
     }
 
+    /**
+     * Getter
+     */
     public InboundController getInbound() {
         return inbound;
     }
 
+    /**
+     * Getter
+     */
     public OutboundController getOutbound() {
         return outbound;
     }
 
+    /**
+     * Getter
+     */
     public GameState getState() {
         return turnController.getState();
     }
 
+    /**
+     * Getter
+     */
     public boolean isCharacterActive() {
         return turnController.isCharacterActive();
     }
 
+    /**
+     * Getter
+     */
     public List<String> getPlayersInOrder() {
         return outbound.getPlayersInOrder();
     }
 
+    /**
+     * Getter
+     */
     public String getActualPlayer() {
         return turnController.getActivePlayer();
     }
 
+    /**
+     * Getter
+     */
     public boolean isExpertVariant() {
         return expertVariant;
     }
 
+    /**
+     * Getter
+     */
     public List<String> getPlayerNames() {
         return new ArrayList<>(playerNames);
     }
 
+    /**
+     * Getter
+     */
     public String getMainPlayer() {
         return mainPlayer;
     }
 
+    /**
+     * Getter
+     */
     public int getNumOfPlayers() {
         return numOfPlayers;
     }
 
+    /**
+     * Send a game stop message
+     */
     public void stop() {
         stop = true;
         gameManager.broadcastMessage(new GenericMessage("Game is stopped"));
     }
 
+    /**
+     * Send a game resumed  message
+     */
     public void unStop() {
         gameManager.broadcastMessage(new GenericMessage("Game has resumed"));
         stop = false;
     }
 
+    /**
+     * Getter
+     */
     public boolean isStopped() {
         return stop;
     }

@@ -33,7 +33,9 @@ public class GameManager implements LobbyMessageReader {
     private static final int DEFAULT_MAX_PLAYERS = 1;
     private final Map<String, Wizard> assignedWizards;
 
-
+    /**
+     * Constructor
+     */
     public GameManager() {
         this.playerNames = new ArrayList<>();
         initGameController();
