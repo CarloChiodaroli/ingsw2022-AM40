@@ -210,6 +210,10 @@ public class InputController {
         return reader.isCharacterActive() && characterizingMap.getOrDefault(characters, new ArrayList<>()).contains("EffectAllPlayers");
     }
 
+    public boolean characterTeacherBehaviour(Characters characters) {
+        return reader.isCharacterActive() && CardCharacterizations.particular(characters).getOrDefault("TeacherBehaviour", 0) > 0;
+    }
+
     /**
      * Check syntax of id island
      *

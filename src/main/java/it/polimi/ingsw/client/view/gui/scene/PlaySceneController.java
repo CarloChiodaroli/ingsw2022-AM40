@@ -584,7 +584,10 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         for (Node child : teachers.getChildren()) child.setVisible(false);
         for (String color : dashboardRoomOrder) {
             Node child = teachers.getChildren().get(actualChildNumber);
-            if (state.getTeachers().contains(TeacherColor.valueOf(color))) child.setVisible(true);
+            if (state.getTeachers().contains(TeacherColor.valueOf(color))) {
+                child.setVisible(true);
+            }
+            actualChildNumber++;
         }
     }
 
@@ -741,6 +744,9 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         removeAllClicked(container.getChildren());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onConfirm(String what) {
         if (what.equals("update")) {

@@ -52,7 +52,7 @@ public class StudentMovementCard extends CharacterCard {
     @Override
     public void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) {
         if (!isInUse()) throw new IllegalStateException("Card has been already used");
-        if (from.isEmpty() && super.getCharacterization("Bidirectional") == 0) {
+        if (from.isEmpty() && super.getCharacterization("Bidirectional") == 0 && super.getCharacterization("Memory") > 0) {
             decorated.handle(color, Optional.of(students), to);
             students.addStudent(getStudentFromBag());
         } else {
@@ -62,7 +62,6 @@ public class StudentMovementCard extends CharacterCard {
             controlTeachers(super.getActualPlayer());
         }
         super.updateUse();
-
     }
 
     /**
@@ -105,6 +104,9 @@ public class StudentMovementCard extends CharacterCard {
         playerPays(player);
         this.decorated = (StudentMovement) decorated;
         super.activator(player);
+        if(super.getCharacterization("TeacherBehaviour") > 0){
+            controlTeachers(player);
+        }
     }
 
     @Override

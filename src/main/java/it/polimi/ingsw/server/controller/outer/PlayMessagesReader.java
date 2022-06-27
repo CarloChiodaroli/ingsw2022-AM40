@@ -514,9 +514,10 @@ public class PlayMessagesReader implements PlayMessageReader {
             answers.add(PlayMessagesFabric.statusStudent(server, actualIsland, outbound.getStudentInPlace(getActualPlayer(), actualIsland)));
         playerNames.forEach(player -> {
             List<Message> particular = new ArrayList<>(answers);
-            if (inputController.characterEffectsAllPlayers(actual)) answers.addAll(playerDashboard(player));
+            if (inputController.characterEffectsAllPlayers(actual)) particular.addAll(playerDashboard(player));
             else if (player.equals(getActualPlayer()) && inputController.characterEffectsPlayer(actual))
                 particular.addAll(playerDashboard(player));
+            if (inputController.characterTeacherBehaviour(actual)) particular.add(PlayMessagesFabric.statusTeacher(server, player, outbound.getTeacherInPlace(player)));
             particular.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
             particular.forEach(answer -> gameManager.sendMessage(player, answer));
         });
