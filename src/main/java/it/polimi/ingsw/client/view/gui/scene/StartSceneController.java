@@ -8,7 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
 /**
- * Implements the start scene.
+ * Implements the start scene
  */
 public class StartSceneController extends ViewObservable implements GenericSceneController {
     @FXML
@@ -38,15 +38,31 @@ public class StartSceneController extends ViewObservable implements GenericScene
         confirmBtn.setDisable(!main);
     }
 
+    /**
+     * Handle click on Confirm button
+     *
+     * @param event mouse click
+     */
     private void onConfirmBtnClick(Event event) {
         new Thread(() -> notifyObserver(obs -> obs.onUpdateStart())).start();
     }
 
+    /**
+     * Get game params
+     *
+     * @param status game mode
+     * @param players number of players
+     */
     public void getGameParams(boolean status, int players) {
         this.status = status;
         this.players = players;
     }
 
+    /**
+     * Set main player
+     *
+     * @param main true if is main
+     */
     public void setMainPlayer(boolean main) {
         this.main = main;
     }

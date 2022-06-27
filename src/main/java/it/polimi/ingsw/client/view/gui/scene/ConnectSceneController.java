@@ -38,9 +38,9 @@ public class ConnectSceneController extends ViewObservable implements GenericSce
     }
 
     /**
-     * Handle the click on the connect button.
+     * Handle the click on the connect button
      *
-     * @param event the mouse click event.
+     * @param event mouse click event
      */
     private void onConnectBtnClick(Event event) {
         String address = serverAddressField.getText();

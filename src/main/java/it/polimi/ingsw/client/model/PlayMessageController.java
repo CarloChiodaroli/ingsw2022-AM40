@@ -35,6 +35,9 @@ public class PlayMessageController implements PlayMessageReader {
     }
 
 
+    /**
+     * Setter
+     */
     public void setExpert(boolean expert) {
         state.setExpert(expert);
     }

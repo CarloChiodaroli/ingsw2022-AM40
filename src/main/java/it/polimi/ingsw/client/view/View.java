@@ -28,7 +28,7 @@ public interface View {
 
     /**
      * When a client Finds out to be a main player client, will show to the user this screen "asking to set the game".
-     * That is to say ask the number of players and the variant.
+     * That is to say ask the number of players and the mode
      */
     // Incorporates old ask player number
     void askPlaySettings();
@@ -39,96 +39,96 @@ public interface View {
     void askPlayCustomization();
 
     /**
-     * Used to show the main player to the user.
+     * Used to show the main player to the user
      *
-     * @param mainPlayerName the name of the main player.
+     * @param mainPlayerName name of the main player
      */
     void showMainPlayerName(String mainPlayerName);
 
     /**
-     * Used to show the result of the login to the player, shown after asking gor the username.
-     * The Confirmation message contains the three arguments:
+     * Used to show the result of the login to the player, shown after asking gor the username
      *
-     * @param connectionCompleted if the nickname has been completely established;
-     * @param connectionStarted   it fhe connection has been successfully started;
-     * @param nickname            the accepted nickname.
+     * @param connectionCompleted if the nickname has been completely established
+     * @param connectionStarted true if connection has been successfully started
+     * @param nickname accepted nickname
      */
     void showLoginResult(boolean connectionCompleted, boolean connectionStarted, String nickname);
 
     /**
-     * One kind of messages that can be sent by the server are of the GENERIC type; this method shows their's content.
+     * One kind of messages that can be sent by the server are of the GENERIC type
      *
-     * @param genericMessage message's content;
+     * @param genericMessage message's content
      */
     void showGenericMessage(String genericMessage);
 
     /**
-     * Shows to the user if the client has been disconnected from the server.
+     * Shows to the user if the client has been disconnected from the server
      *
-     * @param nicknameDisconnected
-     * @param text                 the message of the disconnection.
+     * @param nicknameDisconnected name disconnected
+     * @param text message of the disconnection
      */
     void showDisconnectionMessage(String nicknameDisconnected, String text);
 
     /**
-     * Shows the disconnection of an other player.
+     * Shows the disconnection of another player
      *
-     * @param nicknameDisconnected the nickname who disconnected;
-     * @param text                 the message if the disconnection.
+     * @param nicknameDisconnected nickname who disconnected
+     * @param text message of the disconnection
      */
     void showOtherDisconnectionMessage(String nicknameDisconnected, String text);
 
     /**
-     * @param error
+     * Error and exit
+     * @param error error
      */
     void showErrorAndExit(String error);
 
     /**
-     * Called every time a player joins, shows the complete lobby iof players.
+     * Called every time a player joins
      *
-     * @param nicknameList the list of players;
-     * @param numPlayers   the max number of players who should be connected.
+     * @param nicknameList list of players
+     * @param numPlayers max number of players who should be connected
      */
     void showLobby(List<String> nicknameList, int numPlayers);
 
     /**
-     * Shows the content of the error message sent by the server.
+     * Shows the content of the error message sent by the server
      *
-     * @param errorMessage the content of the ERROR type message.
+     * @param errorMessage content of the ERROR message
      */
     void showError(String errorMessage);
 
     /**
-     * Shows if the player's preference on the wizard's choice was accepted or discarded.
+     * Shows if the player's preference on the wizard's choice was accepted or discarded
      */
     void showWizard();
 
     /**
-     * Shows which wizards are available to be chosen.
+     * Shows which wizards are available to be chosen
      */
     void showAvailableWizards();
 
     /**
-     * Shows to the user how many players will this game gave, as for what the main player has chosen.
+     * Shows to the user how many players will this game gave, as for what the main player has chosen
      *
-     * @param maxPlayers the max number of players.
+     * @param maxPlayers max number of players
      */
     void showChosenNumOfPlayers(int maxPlayers);
 
     /**
-     * Shows if the play is in the expert variant or in the normal one.
+     * Shows if the play is in the expert variant or in the normal one
      *
-     * @param expertStatus true if the play is in expert variant, false else.
+     * @param expertStatus true if the play is in expert variant, false else
      */
     void showExpert(boolean expertStatus);
 
     /**
-     * Shows the content of the end game play message received from the server.
+     * Shows the content of the end game play message received from the server
      */
     void showEndGame(String winnerName);
 
     /**
-     * After having changed the game status in the Play message class, this method is called to print the actual state of the game.
+     * After having changed the game status in the Play message class, this method is called to print the actual state of the game
      */
     void update();
 }

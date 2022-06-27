@@ -31,7 +31,7 @@ public class AlertSceneController implements GenericSceneController {
     private Button okBtn;
 
     /**
-     * Default constructor.
+     * Default constructor
      */
     public AlertSceneController() {
         stage = new Stage();
@@ -51,9 +51,9 @@ public class AlertSceneController implements GenericSceneController {
     }
 
     /**
-     * Handles the mouse pressed event preparing the coordinates for dragging the window.
+     * Handles the mouse pressed event preparing the coordinates for dragging the window
      *
-     * @param event the mouse pressed event.
+     * @param event mouse pressed
      */
     private void onRootPaneMousePressed(MouseEvent event) {
         xOffset = stage.getX() - event.getScreenX();
@@ -61,9 +61,9 @@ public class AlertSceneController implements GenericSceneController {
     }
 
     /**
-     * Handles the mouse dragged event by moving the window around the screen.
+     * Handles the mouse dragged event by moving the window around the screen
      *
-     * @param event the mouse dragged event.
+     * @param event mouse dragged
      */
     private void onRootPaneMouseDragged(MouseEvent event) {
         stage.setX(event.getScreenX() + xOffset);
@@ -71,28 +71,28 @@ public class AlertSceneController implements GenericSceneController {
     }
 
     /**
-     * Handles the click on the Ok button.
-     * An alert message will be shown.
+     * Handles the click on the Ok button
+     * An alert message will be shown
      *
-     * @param event the mouse click event.
+     * @param event mouse click
      */
     private void onOkBtnClick(MouseEvent event) {
         stage.close();
     }
 
     /**
-     * Sets the title of the Alert Scene.
+     * Sets the title of the Alert Scene
      *
-     * @param str title of the Alert Scene.
+     * @param str title
      */
     public void setAlertTitle(String str) {
         titleLbl.setText(str);
     }
 
     /**
-     * Sets the message of the Alert Scene.
+     * Sets the message of the Alert Scene
      *
-     * @param str message of the Alert Scene.
+     * @param str message
      */
     public void setAlertMessage(String str) {
         messageLbl.setText(str);
@@ -106,9 +106,9 @@ public class AlertSceneController implements GenericSceneController {
     }
 
     /**
-     * Sets the scene of the stage.
+     * Sets the scene of the stage
      *
-     * @param scene the scene to be set.
+     * @param scene scene
      */
     public void setScene(Scene scene) {
         stage.setScene(scene);

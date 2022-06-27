@@ -24,15 +24,13 @@ public class LoginSceneController extends ViewObservable implements GenericScene
     }
 
     /**
-     * Handle click on Join button.
+     * Handle click on Join button
      *
-     * @param event the mouse click event.
+     * @param event mouse click
      */
     private void onJoinBtnClick(Event event) {
 
         String nickname = nicknameField.getText();
-
-
         new Thread(() -> notifyObserver(obs -> obs.onUpdateNickname(nickname))).start();
     }
 

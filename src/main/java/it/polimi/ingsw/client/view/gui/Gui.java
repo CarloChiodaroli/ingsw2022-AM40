@@ -160,6 +160,9 @@ public class Gui extends ViewObservable implements View {
         } else sendConfirmation("update");
     }
 
+    /**
+     * Get the main scene
+     */
     private void getPlaySceneController() {
         PlaySceneController psc;
         try {

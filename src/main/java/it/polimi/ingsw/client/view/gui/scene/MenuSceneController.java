@@ -26,7 +26,7 @@ public class MenuSceneController extends ViewObservable implements GenericSceneC
     /**
      * Handles click on Play button.
      *
-     * @param event the mouse click event.
+     * @param event mouse click
      */
     private void onPlayBtnClick(Event event) {
         SceneController.changeRootPane(observers, event, "connect_scene.fxml");

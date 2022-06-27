@@ -23,18 +23,18 @@ public class SceneController extends ViewObservable {
     private static GenericSceneController activeController;
 
     /**
-     * Returns the active scene.
+     * Returns the active scene
      *
-     * @return active scene.
+     * @return active scene
      */
     public static Scene getActiveScene() {
         return activeScene;
     }
 
     /**
-     * Returns the active controller.
+     * Returns the active controller
      *
-     * @return active controller.
+     * @return active controller
      */
     public static GenericSceneController getActiveController() {
         return activeController;
@@ -42,13 +42,13 @@ public class SceneController extends ViewObservable {
 
 
     /**
-     * Changes the root panel of the scene argument.
+     * Changes the root panel of the scene argument
      *
-     * @param observerList a list of observers to be set into the scene controller.
-     * @param scene        the scene whose change the root panel. This will become the active scene.
-     * @param fxml         the new scene fxml name. It must include the extension ".fxml" (i.e. next_scene.fxml).
-     * @param <T>          this is the type parameter.
-     * @return the controller of the new scene loaded by the FXMLLoader.
+     * @param observerList a list of observers to be set into the scene controller
+     * @param scene  scene whose change the root panel. This will become the active scene
+     * @param fxml  new scene fxml name
+     * @param <T>  type parameter
+     * @return  controller of the new scene loaded by the FXMLLoader
      */
     public static <T> T changeRootPane(List<ViewObserver> observerList, Scene scene, String fxml) {
         T controller = null;
@@ -70,13 +70,13 @@ public class SceneController extends ViewObservable {
     }
 
     /**
-     * Changes the root panel of the scene argument.
+     * Changes the root panel of the scene argument
      *
-     * @param observerList a list of observers to be set into the scene controller.
-     * @param event        the event which is happened into the scene.
-     * @param fxml         the new scene fxml name. It must include the extension ".fxml" (i.e. next_scene.fxml).
-     * @param <T>          this is the type parameter.
-     * @return the controller of the new scene loaded by the FXMLLoader.
+     * @param observerList a list of observers to be set into the scene controller
+     * @param event event which is happened into the scene
+     * @param fxml new scene fxml name
+     * @param <T>  type parameter
+     * @return  controller of the new scene loaded by the FXMLLoader
      */
     public static <T> T changeRootPane(List<ViewObserver> observerList, Event event, String fxml) {
         Scene scene = ((Node) event.getSource()).getScene();
@@ -84,29 +84,27 @@ public class SceneController extends ViewObservable {
     }
 
     /**
-     * Changes the root panel of the active scene.
+     * Changes the root panel of the active scene
      *
-     * @param observerList a list of observers to be set into the scene controller.
-     * @param fxml         the new scene fxml name. It must include the extension ".fxml" (i.e. next_scene.fxml).
-     * @param <T>          this is the type parameter.
-     * @return the controller of the new scene loaded by the FXMLLoader.
+     * @param observerList a list of observers to be set into the scene controller
+     * @param fxml the new scene fxml name
+     * @param <T> this is the type parameter
+     * @return the controller of the new scene loaded by the FXMLLoader
      */
     public static <T> T changeRootPane(List<ViewObserver> observerList, String fxml) {
         return changeRootPane(observerList, activeScene, fxml);
     }
 
     /**
-     * Changes the root panel of the scene argument.
-     * Offers the possibility to set a custom controller to the FXMLLoader.
+     * Changes the root panel of the scene argument
      *
-     * @param controller the custom controller that will be set into the FXMLLoader.
-     * @param scene      the scene whose change the root panel. This will become the active scene.
-     * @param fxml       the new scene fxml name. It must include the extension ".fxml" (i.e. next_scene.fxml).
+     * @param controller custom controller that will be set into the FXMLLoader
+     * @param scene scene whose change the root panel. This will become the active scene
+     * @param fxml new scene fxml name
      */
     public static void changeRootPane(GenericSceneController controller, Scene scene, String fxml) {
         try {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/" + fxml));
-            // Setting the controller BEFORE the load() method.
             loader.setController(controller);
             activeController = controller;
             Parent root = loader.load();
@@ -119,12 +117,11 @@ public class SceneController extends ViewObservable {
     }
 
     /**
-     * Changes the root panel of the scene argument.
-     * Offers the possibility to set a custom controller to the FXMLLoader.
+     * Changes the root panel of the scene argument
      *
-     * @param controller the custom controller that will be set into the FXMLLoader.
-     * @param event      the event which is happened into the scene.
-     * @param fxml       the new scene fxml name. It must include the extension ".fxml" (i.e. next_scene.fxml).
+     * @param controller  custom controller that will be set into the FXMLLoader
+     * @param event event which is happened into the scene
+     * @param fxml  new scene fxml name
      */
     public static void changeRootPane(GenericSceneController controller, Event event, String fxml) {
         Scene scene = ((Node) event.getSource()).getScene();
@@ -132,16 +129,21 @@ public class SceneController extends ViewObservable {
     }
 
     /**
-     * Changes the root panel of the active scene.
-     * Offers the possibility to set a custom controller to the FXMLLoader.
+     * Changes the root panel of the active scene
      *
-     * @param controller the custom controller that will be set into the FXMLLoader.
-     * @param fxml       the new scene fxml name. It must include the extension ".fxml" (i.e. next_scene.fxml).
+     * @param controller custom controller that will be set into the FXMLLoader
+     * @param fxml  new scene fxml name
      */
     public static void changeRootPane(GenericSceneController controller, String fxml) {
         changeRootPane(controller, activeScene, fxml);
     }
 
+    /**
+     * Shows a custom message in a popup
+     *
+     * @param title title of the popup
+     * @param message message of the popup
+     */
     public static void showAlert(String title, String message) {
         FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/alert_scene.fxml"));
 
@@ -164,6 +166,11 @@ public class SceneController extends ViewObservable {
         activeController.onConfirm(what);
     }
 
+    /**
+     * Shows the win message popup
+     *
+     * @param nickname name of the winner
+     */
     public static void showWin(String nickname) {
         FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/win_scene.fxml"));
 

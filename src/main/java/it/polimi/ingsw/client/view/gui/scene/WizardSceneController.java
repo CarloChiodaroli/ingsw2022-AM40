@@ -26,7 +26,7 @@ public class WizardSceneController extends ViewObservable implements GenericScen
     private ImageView bambooGuyWizard;
 
     /**
-     * Default constructor.
+     * Default constructor
      */
     public WizardSceneController() {
         this.availableWizard = new ArrayList<>();
@@ -47,9 +47,9 @@ public class WizardSceneController extends ViewObservable implements GenericScen
     }
 
     /**
-     * Handle the click on the worker.
+     * Handle the click on the worker
      *
-     * @param wizard wizard picked by user.
+     * @param wizard wizard picked
      */
     private void onWizardClick(Wizard wizard) {
         magicianWizard.setDisable(true);
@@ -60,9 +60,9 @@ public class WizardSceneController extends ViewObservable implements GenericScen
     }
 
     /**
-     * Set the wizard which are pickable by user.
+     * Set the wizard which are available by user
      *
-     * @param availableWizard available colors.
+     * @param availableWizard available wizards
      */
     public void setAvailableWizard(List<Wizard> availableWizard) {
         this.availableWizard = availableWizard;

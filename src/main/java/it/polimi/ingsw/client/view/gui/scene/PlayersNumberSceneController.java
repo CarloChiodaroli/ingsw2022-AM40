@@ -9,7 +9,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 
 /**
- * This class implements the Player number and expert variant choose scene.
+ * This class implements the Player number and expert variant choose scene
  */
 public class PlayersNumberSceneController extends ViewObservable implements GenericSceneController {
 
@@ -56,9 +56,9 @@ public class PlayersNumberSceneController extends ViewObservable implements Gene
     }
 
     /**
-     * Handles click on Confirm button.
+     * Handles click on Confirm button
      *
-     * @param event the mouse click event.
+     * @param event mouse click
      */
     private void onConfirmBtnClick(Event event) {
         confirmBtn.setDisable(true);
@@ -73,10 +73,10 @@ public class PlayersNumberSceneController extends ViewObservable implements Gene
     }
 
     /**
-     * Initialises the values for the radioButtons.
+     * Initialises the values for the radioButtons
      *
-     * @param minPlayers the minimum number of players.
-     * @param maxPlayers the maximum number of players.
+     * @param minPlayers minimum number of players
+     * @param maxPlayers maximum number of players
      */
     public void setPlayersRange(int minPlayers, int maxPlayers) {
         this.minPlayers = minPlayers;

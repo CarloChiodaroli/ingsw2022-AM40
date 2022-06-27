@@ -35,9 +35,9 @@ public class LobbySceneController extends ViewObservable implements GenericScene
     }
 
     /**
-     * Handle click on back to menu button.
+     * Handle click on back to menu button
      *
-     * @param event the mouse click event.
+     * @param event mouse click event
      */
     private void onBackToMenuBtnClick(Event event) {
         backToMenuBtn.setDisable(true);
@@ -46,25 +46,25 @@ public class LobbySceneController extends ViewObservable implements GenericScene
     }
 
     /**
-     * Set nicknames already logged in game.
+     * Set nicknames already logged in game
      *
-     * @param nicknames list of nicknames.
+     * @param nicknames list of nicknames
      */
     public void setNicknames(List<String> nicknames) {
         this.nicknames = nicknames;
     }
 
     /**
-     * Set number of max players chosen by first user.
+     * Set number of max players chosen by first user
      *
-     * @param maxPlayers number of max players in game.
+     * @param maxPlayers number of max players in game
      */
     public void setMaxPlayers(int maxPlayers) {
         this.maxPlayers = maxPlayers;
     }
 
     /**
-     * Update nicknames and number of players connecte every time a user join.
+     * Update nicknames and number of players connect every time a user join
      */
     public void updateValues() {
         playersLbl.setText(String.join(", ", this.nicknames));
