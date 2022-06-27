@@ -55,15 +55,17 @@ public class SchoolRoom extends StudentsManager {
         return teachers.get(color);
     }
 
+    /**
+     * Controls if conditions to add a coin are met and
+     * {@inheritDoc}
+     */
     @Override
     public boolean addStudent(TeacherColor color) {
         int old = super.howManyStudents(color);
         boolean result = super.addStudent(color);
         int actual = super.howManyStudents(color);
         if(result){
-            if(old < actual && actual!=0 && actual%3 == 0){
-                this.moneyPlace = true;
-            }
+            this.moneyPlace = old < actual && actual!=0 && actual%3 == 0;
         }
         return result;
     }

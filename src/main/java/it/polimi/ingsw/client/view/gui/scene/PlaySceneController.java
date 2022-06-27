@@ -77,8 +77,6 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
     private Label actualCommandPrinter;
     @FXML
     private GridPane expertThings;
-    /*@FXML
-    private GridPane character;*/
 
 
     public PlaySceneController() {
@@ -614,6 +612,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                 for (TeacherColor color : TeacherColor.values()) {
                     while (cloudStudentRep.get(color) > 0) {
                         Node studRep = cloudRep.getChildren().get(cloudChildNumber);
+                        studRep.getStyleClass().removeAll(dashboardRoomOrder);
                         studRep.getStyleClass().add(color.toString());
                         cloudStudentRep.replace(color, cloudStudentRep.get(color), cloudStudentRep.get(color) - 1);
                         cloudChildNumber++;

@@ -61,7 +61,11 @@ public class InboundController {
         inputController.controlGameState(GameState.ACTION);
         inputController.controlActualPlayer(playerName);
         inputController.controlSourceId(sourceId);
-        inputController.controlDestinationId(destinationId);
+        if(sourceId.equals("Card")){
+            inputController.controlCardDestinationId(destinationId);
+        } else {
+            inputController.controlDestinationId(destinationId);
+        }
         model.moveStudent(playerName, color, sourceId, destinationId);
     }
 

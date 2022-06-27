@@ -26,16 +26,19 @@ public class StudentMovement extends ActionFaseState {
      * the places and students
      *
      * @param color student color
-     * @param from place where begin the movement
-     * @param to place where finish the movement
+     * @param from  place where begin the movement
+     * @param to    place where finish the movement
      * @throws IllegalStateException if the player can't move now
      */
     @Override
     public void handle(TeacherColor color, Optional<StudentsManager> from, Optional<StudentsManager> to) throws IllegalStateException {
         if (from.isPresent() && to.isPresent())
-            if (from.get().removeStudent(color))
-                to.get().addStudent(color);
-            else throw new IllegalStateException("There is no " + color + " student in from place");
+            if (from.get().removeStudent(color)) {
+                if (!to.get().addStudent(color)) {
+                    from.get().addStudent(color);
+                    throw new IllegalStateException("Destination cannot accept any students");
+                }
+            } else throw new IllegalStateException("There is no " + color + " student in from place");
         controlTeachers();
     }
 

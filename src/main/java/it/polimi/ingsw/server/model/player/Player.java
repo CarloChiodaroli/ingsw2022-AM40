@@ -117,6 +117,7 @@ public class Player {
         if (dashboard.getRoom().getMoneyPlace()) {
             if (game.getTable().getCoin()) {
                 money++;
+                dashboard.getRoom().resetMoneyPlace();
             }
         }
     }
@@ -127,6 +128,7 @@ public class Player {
         if (dashboard.getRoom().getMoneyPlace()) {
             if (game.getTable().getCoin()) {
                 money++;
+                dashboard.getRoom().resetMoneyPlace();
             }
         }
     }
@@ -217,11 +219,6 @@ public class Player {
         return dashboard.getTowerColor();
     }
 
-    /*@Deprecated
-    public StudentsManager getRoomTable(TeacherColor color) {
-        return dashboard.getRoom().getTable(color);
-    }*/
-
     /**
      * Get a room
      *
@@ -231,22 +228,8 @@ public class Player {
         return dashboard.getRoom();
     }
 
-    /*
-    public void addTeacher(TeacherColor color){
-        dashboard.getRoom().getTable(color).setTeacherPresence(true);
-    }
-
-    public void removeTeacher(TeacherColor color){
-        dashboard.getRoom().getTable(color).setTeacherPresence(false);
-    }
-
-    public boolean hasTeacher(TeacherColor color){
-        return dashboard.getRoom().getTable(color).hasTeacher();
-    }
-     */
-
     /**
-     * Add tge teacher of the required color
+     * Add the teacher of the required color
      *
      * @param color color of the required teacher
      */
@@ -408,21 +391,21 @@ public class Player {
     }
 
     /**
-     * Set the enable true
+     * Enables the player to launch play commands
      */
     public void enable() {
         enable = true;
     }
 
     /**
-     * Set the enable false
+     * Disables the player to launch play commands
      */
     public void disable() {
         enable = false;
     }
 
     /**
-     * Get the enable state
+     * Get enable state
      *
      * @return true if enable
      */
@@ -431,7 +414,7 @@ public class Player {
     }
 
     /**
-     * If enable is false return an expection
+     * If player is not enabled throws an exception
      *
      * @throws IllegalStateException the player can't make moves
      */

@@ -2,7 +2,9 @@ package it.polimi.ingsw.server.controller.inner;
 
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
+import it.polimi.ingsw.server.enums.ActionPhaseStateType;
 import it.polimi.ingsw.server.enums.CardCharacterizations;
+import it.polimi.ingsw.server.enums.CharactersLookup;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -89,13 +91,15 @@ public class InputController {
      */
     public void controlSourceId(String id) {
         if (reader.isExpertVariant()) {
-            String charc = reader.getTurnController().getActualCharacter().map(Enum::toString).orElse(null);
+            Characters charc = reader.getTurnController().getActualCharacter().orElse(null);
             if (charc == null) {
                 if (!id.equals("Entrance")) throw new IllegalStateException(id + " is not valid from id");
             } else {
-                if (!id.equals("Entrance") && !id.equals(charc)
-                        && (reader.getTurnController().getActualCharacter().isPresent() && characterEffectsIsland(reader.getTurnController().getActualCharacter().get()) && id.equals("Place") && !isIslandId(id))
-                        && !id.equals("Room")) throw new IllegalStateException(id + " is not valid from id");
+                Map<String, Integer> characterization = CardCharacterizations.particular(charc);
+                if (!id.equals("Entrance")
+                        && !id.equals("Card")
+                        && characterization.get("Memory") == 0)
+                    throw new IllegalStateException(id + " is not valid from id");
             }
         } else {
             if (!id.equals("Entrance")) throw new IllegalStateException(id + " is not valid from id");
@@ -112,11 +116,25 @@ public class InputController {
             String charc = reader.getTurnController().getActualCharacter().toString();
             if ((!id.equals("Entrance")) && !id.equals(charc)
                     && !isIslandId(id)
-                    && !id.equals("Room")) throw new IllegalStateException(id + " is not valid from id");
+                    && !id.equals("Room")) throw new IllegalStateException(id + " is not valid to id");
         } else {
             if (id.equals("Entrance") || id.matches("^c_[0-9_]*"))
                 throw new IllegalStateException(id + " is not valid to id");
         }
+    }
+
+    public void controlCardDestinationId(String id){
+        if (!reader.isExpertVariant()) throw new IllegalStateException("It's not expert variant");
+        Characters charc = reader.getTurnController().getActualCharacter().orElseThrow(() -> new IllegalStateException("No active character card"));
+        if(!CharactersLookup.getType(charc).equals(ActionPhaseStateType.STUDENT)) throw new IllegalStateException("Active card is not a student movement card");
+        Map<String, Integer> characterization = CardCharacterizations.particular(charc);
+        if (characterization.getOrDefault("Island", 0) > 0 && isIslandId(id)){
+            return;
+        }
+        if (characterization.getOrDefault("Room", 0) > 0 && id.equals("Room")){
+            return;
+        }
+        throw new IllegalArgumentException("Received wrong to id");
     }
 
     /**
