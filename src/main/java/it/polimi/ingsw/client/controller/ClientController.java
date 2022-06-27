@@ -169,7 +169,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     // First level
     /**
-     * Check the type of message received
+     * Check the type of message received, and invokes the correct handler
      *
      * @param message message received from the server
      */
@@ -183,7 +183,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     /**
-     * If is possible, login
+     * Login message handler
      *
      * @param message message received from the server
      */
@@ -194,7 +194,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     /**
-     * If is possible, put in lobby
+     * Lobby message handler
      *
      * @param message message received from the server
      */
@@ -208,7 +208,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     /**
-     * If is possible, change in expert mode
+     * Expert message handler
      *
      * @param message message received from the server
      */
@@ -224,7 +224,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     /**
-     * If is possible, change in normal mode
+     * Play message handler
      *
      * @param message message received from the server
      */
@@ -240,7 +240,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     /**
-     * Generic message
+     * Generic message handler
      *
      * @param message message received from the server
      */
@@ -249,7 +249,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     /**
-     * Error message
+     * Error message handler
      *
      * @param message message received from the server
      */
@@ -260,9 +260,9 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     // Second layer - Lobby Messages
     /**
-     * Change in expert mode
+     * Receives actual game mode.
      *
-     * @param message lobby message received
+     * <br> {@inheritDoc}
      */
     @Override
     public void expert(LobbyMessage message) {
@@ -271,9 +271,9 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     /**
-     * Error in start
+     * Sends error on start game request. Receiving this message goes against the communication protocol.
      *
-     * @param message lobby message received
+     * <br> {@inheritDoc}
      */
     @Override
     public void startGame(LobbyMessage message) {
@@ -281,9 +281,9 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     /**
-     * Show lobby
+     * Receives actual play player name list.
      *
-     * @param message lobby message received
+     * <br> {@inheritDoc}
      */
     @Override
     public void lobbyPlayers(LobbyMessage message) {
@@ -291,9 +291,9 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     /**
-     * Take main player
+     * Receives actual play main player name
      *
-     * @param message lobby message received
+     * <br> {@inheritDoc}
      */
     @Override
     public void mainPlayer(LobbyMessage message) {
@@ -309,9 +309,10 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     /**
-     * Take wizard
+     * Receives wizard choice confirmation.
+     * while reconnecting receives the old wizard choice and sets it in the client.
      *
-     * @param message lobby message received
+     * <br> {@inheritDoc}
      */
     @Override
     public void wizard(LobbyMessage message) {
@@ -325,9 +326,9 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     /**
-     * Take wizard list
+     * Receives remaining available wizards.
      *
-     * @param message lobby message received
+     * <br> {@inheritDoc}
      */
     @Override
     public void wizardList(LobbyMessage message) {
@@ -338,9 +339,9 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     /**
-     * Take number fo players
+     * Receives actual play max num of players.
      *
-     * @param message lobby message received
+     * <br> {@inheritDoc}
      */
     @Override
     public void numOfPlayers(LobbyMessage message) {
@@ -349,9 +350,9 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     /**
-     * Take disconnection
+     * Receives actual player disconnection messages.
      *
-     * @param message lobby message received
+     * <br> {@inheritDoc}
      */
     @Override
     public void disconnection(LobbyMessage message) {
@@ -383,7 +384,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     /**
-     * Send not critically error
+     * Shows and logs not critical error
      *
      * @param error error
      */
@@ -393,7 +394,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     /**
-     * Show not critically error
+     * Show not critical error
      *
      * @param error error
      */
@@ -401,13 +402,17 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         taskQueue.execute(() -> view.showError(error));
     }
 
+    /**
+     * shows and logs critical errors and closes the client.
+     * @param error
+     */
     public void criticalError(String error) {
         notCriticalError("Severe " + error);
         killMe(1);
     }
 
     /**
-     * Closing connection
+     * Closes the client.
      *
      * @param status exit
      */

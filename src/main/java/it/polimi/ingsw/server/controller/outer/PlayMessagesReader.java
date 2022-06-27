@@ -495,7 +495,7 @@ public class PlayMessagesReader implements PlayMessageReader {
     }
 
     /**
-     * Manages messages when a character card is played
+     * Manages answer messages when a character card is played
      *
      * @param answers list of answer messages
      */
