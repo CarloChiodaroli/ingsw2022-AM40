@@ -11,22 +11,47 @@ public abstract class ViewObservable {
 
     protected final List<ViewObserver> observers = new ArrayList<>();
 
+    /**
+     * Add an observer
+     *
+     * @param obs observer to be added
+     */
     public void addObserver(ViewObserver obs) {
         observers.add(obs);
     }
 
+    /**
+     * Add a list of observer
+     *
+     * @param observerList list of observer to be added
+     */
     public void addAllObservers(List<ViewObserver> observerList) {
         observers.addAll(observerList);
     }
 
+    /**
+     * Remove an observer
+     *
+     * @param obs observer to be removed
+     */
     public void removeObserver(ViewObserver obs) {
         observers.remove(obs);
     }
 
+    /**
+     * Remove a list of observer
+     *
+     * @param observerList list of observer to be removed
+     */
     public void removeAllObservers(List<ViewObserver> observerList) {
         observers.removeAll(observerList);
     }
 
+    /**
+     * Notifies all the current observers through the lambda argument
+     *
+     * @param lambda lambda to be called on the observers
+     */
     protected void notifyObserver(Consumer<ViewObserver> lambda) {
         for (ViewObserver observer : observers) {
             lambda.accept(observer);

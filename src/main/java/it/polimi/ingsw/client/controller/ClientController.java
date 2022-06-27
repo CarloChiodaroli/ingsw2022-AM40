@@ -32,6 +32,9 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     private final PlayMessageController playMessageReader;
     private final PlayState state;
 
+    /**
+     * Constructor
+     */
     public ClientController(View view) {
         this.view = view;
         taskQueue = Executors.newSingleThreadExecutor();
@@ -40,11 +43,20 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         playing = false;
     }
 
+    /**
+     * Getter
+     */
     public ExecutorService getTaskQueue() {
         return taskQueue;
     }
 
     // Communication Client - Server
+    /**
+     * Create a new Socket Connection to the server with the updated info
+     * An error view is shown if connection is killed
+     *
+     * @param serverInfo a map of server address and server port
+     */
     @Override
     public void onUpdateServerInfo(Map<String, String> serverInfo) {
         try {
@@ -58,18 +70,33 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         }
     }
 
+    /**
+     * Sends a message to the server with the updated nickname
+     *
+     * @param nickname nickname to be sent
+     */
     @Override
     public void onUpdateNickname(String nickname) {
         this.nickname = nickname;
         client.sendMessage(new LoginMessage(this.nickname));
     }
 
+    /**
+     * Sends a message to the server with the player number chosen by the main player
+     *
+     * @param playersNumber number of players
+     */
     @Override
     public void onUpdatePlayersNumber(int playersNumber) {
         if (!haveNickname()) return;
         client.sendMessage(new LobbyMessage(this.nickname, "numOfPlayers", playersNumber));
     }
 
+    /**
+     * Sends a message to the server with the wizard chosen by the user
+     *
+     * @param wizard chosen wizard
+     */
     public void onUpdateWizard(Wizard wizard) {
         if (!haveNickname()) return;
         if (state.getWizard().isPresent() && state.getWizard().get().equals(wizard)) {
@@ -84,16 +111,27 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         sendMessage(new LobbyMessage(nickname, wizard));
     }
 
+    /**
+     * Sends a message to the server with the game mode
+     *
+     * @param how true if is expert
+     */
     public void onUpdateExpert(boolean how) {
         if (!haveNickname()) return;
         sendMessage(new LobbyMessage(nickname, "expert", how));
     }
 
+    /**
+     * Disconnect the client
+     */
     @Override
     public void onDisconnection() {
         client.disconnect();
     }
 
+    /**
+     * Sends a message to the server the game is started
+     */
     @Override
     public void onUpdateStart() {
         if (!haveNickname()) return;
@@ -101,6 +139,11 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         sendMessage(new LobbyMessage(nickname, "startGame"));
     }
 
+    /**
+     * Send a message if is possible to have name
+     *
+     * @return true if isn't too early
+     */
     private boolean haveNickname() {
         if (nickname == null) {
             showNotCriticalError("It's too early to use this command");
@@ -109,6 +152,11 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         return true;
     }
 
+    /**
+     * Send a message if the game is started
+     *
+     * @return true if is started
+     */
     private boolean startedPlaying() {
         if (playing) {
             showNotCriticalError("Game has already started");
@@ -120,6 +168,11 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     // Communication Server - Client
 
     // First level
+    /**
+     * Check the type of message received
+     *
+     * @param message message received from the server
+     */
     @Override
     public void update(Message message) {
         try {
@@ -129,12 +182,22 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         }
     }
 
+    /**
+     * If is possible, login
+     *
+     * @param message message received from the server
+     */
     public void login(Message message) {
         LoginMessage loginMessage = (LoginMessage) message;
         taskQueue.execute(() -> view.showLoginResult(loginMessage.isConnectionCompleted(), loginMessage.isConnectionStarted(), this.nickname));
         if (loginMessage.isConnectionCompleted() && !loginMessage.isConnectionStarted()) killMe(0);
     }
 
+    /**
+     * If is possible, put in lobby
+     *
+     * @param message message received from the server
+     */
     public void lobby(Message message) {
         LobbyMessage lm = (LobbyMessage) message;
         try {
@@ -144,6 +207,11 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         }
     }
 
+    /**
+     * If is possible, change in expert mode
+     *
+     * @param message message received from the server
+     */
     public void expert(Message message) {
         ExpertPlayMessage pm = (ExpertPlayMessage) message;
         taskQueue.execute(() -> {
@@ -155,6 +223,11 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         });
     }
 
+    /**
+     * If is possible, change in normal mode
+     *
+     * @param message message received from the server
+     */
     public void play(Message message) {
         NormalPlayMessage pm = (NormalPlayMessage) message;
         taskQueue.execute(() -> {
@@ -166,33 +239,62 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         });
     }
 
+    /**
+     * Generic message
+     *
+     * @param message message received from the server
+     */
     public void generic(Message message) {
         taskQueue.execute(() -> view.showGenericMessage(((GenericMessage) message).getMessage()));
     }
 
+    /**
+     * Error message
+     *
+     * @param message message received from the server
+     */
     public void error(Message message) {
         ErrorMessage em = (ErrorMessage) message;
         taskQueue.execute(() -> view.showError(em.getError()));
     }
 
     // Second layer - Lobby Messages
-
+    /**
+     * Change in expert mode
+     *
+     * @param message lobby message received
+     */
     @Override
     public void expert(LobbyMessage message) {
         playMessageReader.setExpert(message.isExpert());
         taskQueue.execute(() -> view.showExpert(message.isExpert()));
     }
 
+    /**
+     * Error in start
+     *
+     * @param message lobby message received
+     */
     @Override
     public void startGame(LobbyMessage message) {
         notCriticalError("Received wrong message from server");
     }
 
+    /**
+     * Show lobby
+     *
+     * @param message lobby message received
+     */
     @Override
     public void lobbyPlayers(LobbyMessage message) {
         taskQueue.execute(() -> view.showLobby(message.getLobbyPlayers(), message.studentNumber()));
     }
 
+    /**
+     * Take main player
+     *
+     * @param message lobby message received
+     */
     @Override
     public void mainPlayer(LobbyMessage message) {
         if (playMessageReader.getMainPlayer() != null) return;
@@ -206,6 +308,11 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         }
     }
 
+    /**
+     * Take wizard
+     *
+     * @param message lobby message received
+     */
     @Override
     public void wizard(LobbyMessage message) {
         if (!message.getAccepted()) {
@@ -217,6 +324,11 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         taskQueue.execute(view::showWizard);
     }
 
+    /**
+     * Take wizard list
+     *
+     * @param message lobby message received
+     */
     @Override
     public void wizardList(LobbyMessage message) {
         state.setAvailableWizards(message.getAvailableWizards());
@@ -225,12 +337,22 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         }
     }
 
+    /**
+     * Take number fo players
+     *
+     * @param message lobby message received
+     */
     @Override
     public void numOfPlayers(LobbyMessage message) {
         state.setNumPlayers(message.getMaxPlayers());
         taskQueue.execute(() -> view.showChosenNumOfPlayers(message.getMaxPlayers()));
     }
 
+    /**
+     * Take disconnection
+     *
+     * @param message lobby message received
+     */
     @Override
     public void disconnection(LobbyMessage message) {
         String outgoingName = message.getDisconnection();
@@ -244,19 +366,37 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     // Utility
 
+    /**
+     * getter
+     */
     public String getNickname() {
         return nickname;
     }
 
+    /**
+     * Send a message to server
+     *
+     * @param message message to sent
+     */
     public void sendMessage(Message message) {
         client.sendMessage(message);
     }
 
+    /**
+     * Send not critically error
+     *
+     * @param error error
+     */
     private void notCriticalError(String error) {
         showNotCriticalError(error);
         Client.LOGGER.severe(error);
     }
 
+    /**
+     * Show not critically error
+     *
+     * @param error error
+     */
     private void showNotCriticalError(String error) {
         taskQueue.execute(() -> view.showError(error));
     }
@@ -266,6 +406,11 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         killMe(1);
     }
 
+    /**
+     * Closing connection
+     *
+     * @param status exit
+     */
     private void killMe(int status) {
         Client.LOGGER.info("Closing client");
         client.disconnect();

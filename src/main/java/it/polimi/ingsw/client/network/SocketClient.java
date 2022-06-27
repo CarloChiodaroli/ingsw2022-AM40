@@ -38,14 +38,26 @@ public class SocketClient extends Client {
     private final static String defaultAddress = "localhost";
     private final static String defaultPort = "16847";
 
+    /**
+     * Getter
+     */
     public static String getDefaultAddress() {
         return defaultAddress;
     }
 
+    /**
+     * Getter
+     */
     public static String getDefaultPort() {
         return defaultPort;
     }
 
+    /**
+     * Check the port is valid
+     *
+     * @param portStr port
+     * @return true if is valid
+     */
     public static boolean isValidPort(String portStr) {
         try {
             int port = Integer.parseInt(portStr);
@@ -55,6 +67,12 @@ public class SocketClient extends Client {
         }
     }
 
+    /**
+     * Check the address is valid
+     *
+     * @param ip address
+     * @return true if is valid
+     */
     public static boolean isValidIpAddress(String ip) {
         String regex = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                 "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
@@ -63,6 +81,9 @@ public class SocketClient extends Client {
         return ip.matches(regex);
     }
 
+    /**
+     * Constructor
+     */
     public SocketClient(String address, int port) throws IOException {
         this.socket = new Socket();
         this.socket.connect(new InetSocketAddress(address, port)/*, /*SOCKET_TIMEOUT*/);
@@ -74,6 +95,9 @@ public class SocketClient extends Client {
         this.gson = gsonBuilder.create();
     }
 
+    /**
+     * Read a message from the server with socket and notifies the ClientController
+     */
     @Override
     public void readMessage() {
         readExecutionQueue.execute(() -> {
@@ -98,6 +122,11 @@ public class SocketClient extends Client {
         });
     }
 
+    /**
+     * Sends a message to the server with socket
+     *
+     * @param message message to be sent
+     */
     @Override
     public void sendMessage(Message message) {
         String rawGson = gson.toJson(message);
@@ -122,7 +151,7 @@ public class SocketClient extends Client {
     }
 
     /**
-     * Enable a heartbeat (ping messages) between client and server sockets to keep the connection alive.
+     * Enable a ping messages between client and server sockets to keep the connection alive
      */
     public void enablePinger(boolean enabled) {
         if (enabled) {
