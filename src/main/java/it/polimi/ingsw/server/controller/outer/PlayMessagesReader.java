@@ -594,6 +594,9 @@ public class PlayMessagesReader implements PlayMessageReader {
         errorIllegalMessage();
     }
 
+    /**
+     * Send error message
+     */
     @Override
     public void statusMotherNature(String sender, String islandId) {
         errorIllegalMessage();
@@ -607,6 +610,9 @@ public class PlayMessagesReader implements PlayMessageReader {
         errorIllegalMessage();
     }
 
+    /**
+     * Send error message
+     */
     @Override
     public void statusPlanning(String sender, String actualPlayer) {
         errorIllegalMessage();

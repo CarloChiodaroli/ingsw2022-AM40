@@ -43,10 +43,18 @@ public class GameManager implements LobbyMessageReader {
         this.assignedWizards = new HashMap<>();
     }
 
+    /**
+     * Initializes the class building base structures to manage players and messages.
+     */
     public void initGameController() {
         this.virtualViewMap = Collections.synchronizedMap(new HashMap<>());
     }
 
+    /**
+     * Messages that come to the server are first treated by this method.
+     * This method receives messages and accepts and treats them according to the state of the server.
+     * @param receivedMessage
+     */
     public void onMessageReceived(Message receivedMessage) {
         if (!playerNames.contains(receivedMessage.getSenderName())) {
             virtualViewMap.get(receivedMessage.getSenderName()).showError("You have not logged in");
@@ -70,6 +78,13 @@ public class GameManager implements LobbyMessageReader {
 
     // LOBBY message part
 
+    /**
+     * On receiving a Lobby message this method calls the corresponding message handler method.
+     * @param receivedMessage the received lobby message to read
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
     private void preInitState(Message receivedMessage) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (receivedMessage.getMessageType() == MessageType.LOBBY) {
             LobbyMessage message = (LobbyMessage) receivedMessage;
@@ -77,6 +92,9 @@ public class GameManager implements LobbyMessageReader {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void startGame(LobbyMessage message) {
         if (!message.getSenderName().equals(mainPlayer)) {
@@ -92,22 +110,30 @@ public class GameManager implements LobbyMessageReader {
             return;
         }
         if (virtualViewMap.size() == maxPlayers && !playMessagesReader.isGameStarted())
-            initGame();
+            playMessagesReader.startGame();
         else
             virtualViewMap.get(message.getSenderName()).showError("Game already started");
 
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void lobbyPlayers(LobbyMessage message) {
         // should not receive this
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void mainPlayer(LobbyMessage message) {
         // should not receive this
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void wizard(LobbyMessage message) {
         if (assignedWizards.entrySet().stream().noneMatch(x -> x.getValue().equals(message.getWizard()))) {
@@ -123,11 +149,17 @@ public class GameManager implements LobbyMessageReader {
         virtualViewMap.values().forEach(x -> x.sendAvailableWizards(availableWizards()));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void wizardList(LobbyMessage message) {
         // should not receive this
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void numOfPlayers(LobbyMessage message) {
         if (maxPlayers != DEFAULT_MAX_PLAYERS) {
@@ -142,11 +174,17 @@ public class GameManager implements LobbyMessageReader {
         virtualViewMap.values().forEach(x -> x.showNumOfPlayers(maxPlayers));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void disconnection(LobbyMessage message) {
         // should not receive this
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void expert(LobbyMessage message) {
         if (playMessagesReader == null || playMessagesReader.isGameStarted() || !message.getSenderName().equals(mainPlayer)) {
@@ -159,14 +197,12 @@ public class GameManager implements LobbyMessageReader {
         virtualViewMap.values().forEach(x -> x.showExpertVariant(playMessagesReader.isExpertVariant()));
     }
 
-    // LOBBY message Utility
-
-    private void initGame() {
-        playMessagesReader.startGame();
-    }
-
     // PLAY message part
 
+    /**
+     * Redirects play messages to be treated in the {@link PlayMessagesReader} class
+     * @param receivedMessage
+     */
     private void inGameState(Message receivedMessage) {
         if (playMessagesReader.isStopped()) {
             virtualViewMap.get(receivedMessage.getSenderName()).showError("Game is stopped, server won't run this command");
@@ -183,6 +219,11 @@ public class GameManager implements LobbyMessageReader {
 
     // LOGIN message part
 
+    /**
+     * Manages Login requests, accepting and denying them.
+     * @param nickname
+     * @param virtualView
+     */
     public void loginHandler(String nickname, VirtualView virtualView) {
         if (playMessagesReader == null || !playMessagesReader.isGameStarted()) { // game not started
             if (virtualViewMap.isEmpty()) { // First player logged. Ask number of players.
@@ -236,10 +277,22 @@ public class GameManager implements LobbyMessageReader {
         }
     }
 
+    // outbound communication utilities
+
+    /**
+     * Adds a new virtual view to the known ones.
+     * Since client server communications work via the {@link VirtualView} class,
+     * on registering a new player a new entity of that is created and saved with the others.
+     * @param nickname the nickname of the player of which the virtual view
+     * @param virtualView the newly created virtual view.
+     */
     public void addVirtualView(String nickname, VirtualView virtualView) {
         virtualViewMap.put(nickname, virtualView);
     }
 
+    /**
+     * @return list of the remaining wizards
+     */
     private List<Wizard> availableWizards() {
         return Arrays.stream(Wizard.values())
                 .filter(x -> !assignedWizards.values().stream()
@@ -248,8 +301,12 @@ public class GameManager implements LobbyMessageReader {
                 .collect(Collectors.toList());
     }
 
-    // outbound communication utilities
-
+    /**
+     * Contrary to the {@link #addVirtualView(String, VirtualView) addVirtualView}, this method deletes a virtual view on player removal.
+     * @param nickname
+     * @param notifyEnabled
+     * @return
+     */
     public boolean removeVirtualView(String nickname, boolean notifyEnabled) {
         playerNames.remove(nickname);
         if (!virtualViewMap.containsKey(nickname)) {
@@ -269,6 +326,11 @@ public class GameManager implements LobbyMessageReader {
         return virtualViewMap.isEmpty();
     }
 
+    /**
+     * Sends a message to a specific player
+     * @param playerName is the player's name
+     * @param message the message to send
+     */
     public void sendMessage(String playerName, Message message) {
         virtualViewMap.entrySet().stream()
                 .filter(x -> x.getKey().equals(playerName))
@@ -277,12 +339,22 @@ public class GameManager implements LobbyMessageReader {
                 .ifPresent(x -> x.sendMessage(message));
     }
 
+    /**
+     * Broadcasts a message
+     * @param message the message to broadcast
+     */
     public void broadcastMessage(Message message) {
         virtualViewMap.entrySet().stream()
                 .map(Map.Entry::getValue)
                 .forEach(x -> x.sendMessage(message));
     }
 
+    /**
+     * On new Login request this method controls if the player chosen name is vaild or not.
+     * @param nickname name to check
+     * @param view {@link VirtualView} to send errors
+     * @return true if it's valid, false if not.
+     */
     public boolean checkLoginNickname(String nickname, VirtualView view) {
         if (nickname.isEmpty() || nickname.equalsIgnoreCase("server")) {
             view.showError("Forbidden name");
@@ -296,10 +368,18 @@ public class GameManager implements LobbyMessageReader {
         return true;
     }
 
+    /**
+     * Getter
+     * @return true if the game is started, else false.
+     */
     public boolean isGameStarted() {
         return playMessagesReader != null && playMessagesReader.isGameStarted();
     }
 
+    /**
+     * Getter
+     * @return The name of all actual registered player names
+     */
     public List<String> getPlayerNames() {
         return virtualViewMap.keySet().stream().toList();
     }
