@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.phases.action;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
+import it.polimi.ingsw.server.model.phase.action.states.cards.InfluenceCard;
 import it.polimi.ingsw.server.model.phase.action.states.cards.MotherNatureCard;
 import it.polimi.ingsw.server.model.phase.action.states.MotherNatureState;
 import it.polimi.ingsw.server.model.table.Island;
@@ -14,8 +15,13 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
+/**
+ * This class tests the {@link MotherNatureCard} methods, character cards who modify mother nature
+ */
 public class MotherNatureCardTest {
+    /**
+     * Test Messenger card
+     */
     @Test
     public void motherNatureCardTest(){
         Game game = new Game();

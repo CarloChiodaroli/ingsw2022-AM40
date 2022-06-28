@@ -2,20 +2,31 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.server.model.player.Player;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class tests the {@link Game} methods
+ */
 public class GameTest {
 
+    /**
+     * Test game
+     */
     @Test
     public void playerTest(){
         Game game = new Game();
         playerTest(game);
     }
 
+    /**
+     * Test add players
+     * @param game game
+     */
     public void playerTest(Game game){
         assertTrue(game.addPlayer("Alice"));
         assertTrue(game.addPlayer("Bob"));
@@ -23,6 +34,9 @@ public class GameTest {
         assertFalse(game.addPlayer("Dan"));
     }
 
+    /**
+     * Test switch game mode
+     */
     @Test
     public void expertVariantSwitchTest(){
         Game game = new Game();
@@ -33,6 +47,9 @@ public class GameTest {
         assertFalse(game.isExpertVariant());
     }
 
+    /**
+     * Test game start
+     */
     @Test
     public void startGameTest(){
         Game game = new Game();
@@ -46,6 +63,9 @@ public class GameTest {
         assertEquals(9, game.getPlayers().get(2).getEntrance().howManyTotStudents());
     }
 
+    /**
+     * Test find the winner
+     */
     @Test
     @DisplayName("Finding right winner")
     public void winnerFinderTest(){

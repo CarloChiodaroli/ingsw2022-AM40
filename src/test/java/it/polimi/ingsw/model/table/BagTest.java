@@ -1,13 +1,20 @@
 package it.polimi.ingsw.model.table;
 
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.table.Bag;
 import org.junit.jupiter.api.Test;
 
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class tests the {@link Bag} methods
+ */
 public class BagTest {
+    /**
+     * Test add, remove and number of students in bag
+     */
     @Test
     public void bagTest(){
         Bag bag = new Bag(130, 26);

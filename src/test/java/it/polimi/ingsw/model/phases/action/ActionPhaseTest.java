@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.enums.ActionPhaseStateType;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.phase.PlanningPhase;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
@@ -19,6 +20,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class tests the {@link ActionPhase} methods
+ */
 public class ActionPhaseTest {
 
     public static void assertThrowsIllegalStateException(org.junit.jupiter.api.function.Executable executable) {
@@ -33,6 +37,9 @@ public class ActionPhaseTest {
         assertThrows(NoSuchElementException.class, executable);
     }
 
+    /**
+     * Test start action phase
+     */
     @Test
     public void startPhaseTest(){
         Game game = new Game();
@@ -51,6 +58,9 @@ public class ActionPhaseTest {
         assertTrue(actionPhase.isActivated());
     }
 
+    /**
+     * Test activate Centaur character cards
+     */
     @Test
     public void activateCardTest(){
         Game game = new Game();
@@ -129,7 +139,9 @@ public class ActionPhaseTest {
         assertEquals(camilla.getTowerColor(), testIsland.getTowerColor().get());
     }
 
-
+    /**
+     * Test activate Sorcerer character cards
+     */
     @Test
     public void activateCardTest2(){
         Game game = new Game();
@@ -221,6 +233,9 @@ public class ActionPhaseTest {
         assertEquals(3, camilla.getEntrance().howManyTotStudents());
     }
 
+    /**
+     * Test activate Crier character cards
+     */
     @Test
     public void activateCardTest3(){
         Game game = new Game();
@@ -288,7 +303,9 @@ public class ActionPhaseTest {
 
     }
 
-
+    /**
+     * Test play 2 character cards
+     */
     @Test
     public void requestTest(){
         Game game = new Game();
@@ -310,6 +327,9 @@ public class ActionPhaseTest {
 
     }
 
+    /**
+     * Test request color in entrance
+     */
     @Test
     public void requestColorTest(){
         Game game = new Game();
@@ -343,6 +363,9 @@ public class ActionPhaseTest {
 
     }
 
+    /**
+     * Test request move mother nature
+     */
     @Test
     public void requestMotherNatureTest(){
         Game game = new Game();
@@ -372,6 +395,9 @@ public class ActionPhaseTest {
 
     }
 
+    /**
+     * Test merge islands
+     */
     @Test
     public void requestMergeIslandTest(){
         Game game = new Game();
@@ -399,6 +425,9 @@ public class ActionPhaseTest {
 
     }
 
+    /**
+     * Test switch students
+     */
     @Test
     public void requestSpecialColorTest(){
         Game game = new Game();
@@ -416,6 +445,9 @@ public class ActionPhaseTest {
                 TeacherColor.RED, "plinio"));
     }
 
+    /**
+     * Test switch students
+     */
     @Test
     public void requestSpecialColorTest2(){
         Game game = new Game();

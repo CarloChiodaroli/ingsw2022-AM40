@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.table;
 
+import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.server.model.table.Island;
@@ -12,7 +13,13 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class tests the {@link Table} methods
+ */
 public class TableTest {
+    /**
+     * Test generate clouds correctly
+     */
     @Test
     public void generateCloudsTest() {
         Table table = new Table(2);
@@ -36,6 +43,9 @@ public class TableTest {
         assertThrows(NoSuchElementException.class , () -> finalTable.getCloudById("c_4").orElseThrow());
     }
 
+    /**
+     * Test generate islands correctly
+     */
     @Test
     public void generateIslandTest() {
         Table table = new Table(2);
@@ -52,6 +62,9 @@ public class TableTest {
         assertEquals(12, table.getIslandList().size());
     }
 
+    /**
+     * Test correctly islands fill with 2 players
+     */
     @Test
     public void fillIsland2playerTest() {
         int studentsYellow = 0;
@@ -121,6 +134,9 @@ public class TableTest {
         assertEquals(indexEmpty, indexEmpty2 - 6);
     }
 
+    /**
+     * Test correctly islands fill with 3 players
+     */
     @Test
     public void fillIsland3playerTest() {
         int studentsYellow = 0;
@@ -190,6 +206,9 @@ public class TableTest {
         assertEquals(indexEmpty, indexEmpty2 - 6);
     }
 
+    /**
+     * Test remove and add coins
+     */
     @Test
     public void coinTest() {
         Table table;
@@ -208,7 +227,9 @@ public class TableTest {
         }
     }
 
-
+    /**
+     * Test merge islands
+     */
     @Test
     public void mergeIslandTest() {
         Table table = new Table(2);

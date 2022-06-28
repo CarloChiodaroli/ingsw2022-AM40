@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.phases.action;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.states.Finalize;
 import it.polimi.ingsw.server.model.phase.action.states.StudentMovement;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,13 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * This class tests the {@link Finalize} methods
+ */
 public class FinalizeTest {
+    /**
+     * test finalize with 2 players
+     */
     @Test
     public void finalizeTest(){
         Game game = new Game();
@@ -116,6 +123,9 @@ public class FinalizeTest {
 
     }
 
+    /**
+     * test finalize with 3 players
+     */
     @Test
     public void finalize3PlayersTest(){
         Game game = new Game();

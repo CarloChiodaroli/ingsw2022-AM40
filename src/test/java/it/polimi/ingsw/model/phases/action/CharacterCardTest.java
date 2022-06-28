@@ -8,7 +8,13 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 import java.util.HashMap;
 
+/**
+ * This class tests the {@link CharacterCard} methods
+ */
 public class CharacterCardTest {
+    /**
+     * Test istance a card
+     */
     @Test
     public void characterCardTest(){
         Game game = new Game();
@@ -21,6 +27,10 @@ public class CharacterCardTest {
 }
 
 class CharacterCardIstance extends CharacterCard {
+    /**
+     * Test characterizations
+     * @return map with characterizations and int
+     */
     private static Map<String, Integer> createBaseCharacterization(){
         Map<String, Integer> result = new HashMap<>();
 

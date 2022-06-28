@@ -1,15 +1,22 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.server.model.player.AssistantCard;
+import it.polimi.ingsw.server.model.player.school.SchoolDashboard;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+/**
+ * This class tests the {@link AssistantCard} methods
+ */
 @DisplayName("Assistant Card test")
 public class AssistantCardTest {
 
+    /**
+     * Test the creation of assistant cards
+     */
     @Test
     @DisplayName("Control the correct functioning of the constructor")
     public void creationTest() {
@@ -54,6 +61,9 @@ public class AssistantCardTest {
         assertEquals(5, card.getNumOfMotherNatureMovements());
     }
 
+    /**
+     * Test to compare two cards
+     */
     @Test
     @DisplayName("Test of the compareTo function")
     public void compareTest() {
@@ -68,6 +78,9 @@ public class AssistantCardTest {
         }
     }
 
+    /**
+     * Test play card
+     */
     @Test
     public void miscellaneousTest() {
         AssistantCard card1 = new AssistantCard(5);
