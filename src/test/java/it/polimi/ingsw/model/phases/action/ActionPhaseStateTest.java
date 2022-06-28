@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class tests the {@link it.polimi.ingsw.server.enums.ActionPhaseStateType} methods
+ * This class test the {@link it.polimi.ingsw.server.enums.ActionPhaseStateType} methods
  */
 public class ActionPhaseStateTest {
     /**

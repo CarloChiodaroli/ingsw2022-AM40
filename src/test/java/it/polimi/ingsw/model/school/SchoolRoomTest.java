@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class tests the {@link SchoolRoom} methods
+ * This class test the {@link SchoolRoom} methods
  */
 public class SchoolRoomTest {
     /**

@@ -11,7 +11,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class tests the {@link Island} methods
+ * This class test the {@link Island} methods
  */
 public class IslandTest {
     Island to = new Island("C_2");

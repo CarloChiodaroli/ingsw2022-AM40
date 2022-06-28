@@ -10,7 +10,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class tests the {@link MotherNature} methods
+ * This class test the {@link MotherNature} methods
  */
 public class MotherNatureTest {
     /**

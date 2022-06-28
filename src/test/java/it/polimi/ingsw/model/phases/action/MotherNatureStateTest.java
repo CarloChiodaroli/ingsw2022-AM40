@@ -13,7 +13,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class tests the {@link MotherNatureState} methods
+ * This class test the {@link MotherNatureState} methods
  */
 public class MotherNatureStateTest {
     /**

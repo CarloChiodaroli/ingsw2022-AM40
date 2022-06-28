@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * This class tests the {@link Finalize} methods
+ * This class test the {@link Finalize} methods
  */
 public class FinalizeTest {
     /**

@@ -18,7 +18,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class tests the {@link StudentMovementCard} methods, character cards who modify student movement
+ * This class test the {@link StudentMovementCard} methods, character cards who modify student movement
  */
 public class StudentMovementCardTest {
 

@@ -19,7 +19,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class tests the {@link InfluenceCard} methods, character cards who modify influence
+ * This class test the {@link InfluenceCard} methods, character cards who modify influence
  */
 public class InfluenceCardTest {
 

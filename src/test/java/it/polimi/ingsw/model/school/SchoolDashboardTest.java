@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class tests the {@link SchoolDashboard} methods
+ * This class test the {@link SchoolDashboard} methods
  */
 public class SchoolDashboardTest {
     /**

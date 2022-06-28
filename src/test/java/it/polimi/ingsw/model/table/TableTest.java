@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class tests the {@link Table} methods
+ * This class test the {@link Table} methods
  */
 public class TableTest {
     /**

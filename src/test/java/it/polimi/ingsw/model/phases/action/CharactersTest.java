@@ -14,7 +14,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * This class tests the {@link Character} methods
+ * This class test the {@link Character} methods
  */
 @DisplayName("Character test")
 public class CharactersTest {

@@ -21,7 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class tests the {@link GameModel} methods
+ * This class test the {@link GameModel} methods
  */
 public class GameModelTest {
 

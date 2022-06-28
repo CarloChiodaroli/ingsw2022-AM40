@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * This class tests the {@link MotherNatureCard} methods, character cards who modify mother nature
+ * This class test the {@link MotherNatureCard} methods, character cards who modify mother nature
  */
 public class MotherNatureCardTest {
     /**

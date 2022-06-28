@@ -9,7 +9,7 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class tests the {@link StudentsManager} methods
+ * This class test the {@link StudentsManager} methods
  */
 public class StudentsManagerTest {
     /**

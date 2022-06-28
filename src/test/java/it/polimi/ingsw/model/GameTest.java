@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class tests the {@link Game} methods
+ * This class test the {@link Game} methods
  */
 public class GameTest {
 

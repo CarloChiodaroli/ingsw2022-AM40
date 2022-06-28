@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class tests the {@link CharacterCardFabric} methods
+ * This class test the {@link CharacterCardFabric} methods
  */
 @DisplayName("Character Card Fabric")
 public class CharacterCardFabricTest {

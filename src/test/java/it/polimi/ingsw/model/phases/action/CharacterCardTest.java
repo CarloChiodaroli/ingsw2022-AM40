@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * This class tests the {@link CharacterCard} methods
+ * This class test the {@link CharacterCard} methods
  */
 public class CharacterCardTest {
     /**

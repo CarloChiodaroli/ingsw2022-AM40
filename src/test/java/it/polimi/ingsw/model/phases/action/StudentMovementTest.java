@@ -12,7 +12,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class tests the {@link StudentMovement} methods
+ * This class test the {@link StudentMovement} methods
  */
 public class StudentMovementTest {
 

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * This class tests the {@link Influence} methods
+ * This class test the {@link Influence} methods
  */
 public class InfluenceTest {
 

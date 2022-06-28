@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
- * This class tests the {@link AssistantCard} methods
+ * This class test the {@link AssistantCard} methods
  */
 @DisplayName("Assistant Card test")
 public class AssistantCardTest {
