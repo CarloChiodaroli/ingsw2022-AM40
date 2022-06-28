@@ -28,39 +28,69 @@ public class PlayMessage extends Message {
     private List<TeacherColor> teacherColorList;
     private List<String> stringList;
 
+    /**
+     * Constructor
+     */
     PlayMessage(String sender, String move, MessageType type) {
         super(sender, type);
         this.move = move;
     }
 
+    /**
+     * Setter
+     */
     void setParams(Object[] params) {
         this.params = params;
     }
 
+    /**
+     * Setter
+     */
     void setParamsTypeNames(List<String> paramsTypeNames) {
         this.paramsTypeNames = paramsTypeNames;
     }
 
+    /**
+     * Setter
+     */
     void setStringList(List<String> stringList) {
         this.stringList = stringList;
     }
 
+    /**
+     * Setter
+     */
     void setStringTowerColorMap(Map<String, TowerColor> stringTowerColorMap) {
         this.stringTowerColorMap = stringTowerColorMap;
     }
 
+    /**
+     * Setter
+     */
     void setTeacherColorIntegerMap(Map<TeacherColor, Integer> teacherColorIntegerMap) {
         this.teacherColorIntegerMap = teacherColorIntegerMap;
     }
 
+    /**
+     * Setter
+     */
     void setTeacherColorList(List<TeacherColor> teacherColorList) {
         this.teacherColorList = teacherColorList;
     }
 
+    /**
+     * Setter
+     */
     void setStringIntegerMap(Map<String, Integer> stringIntegerMap) {
         this.stringIntegerMap = stringIntegerMap;
     }
 
+    /**
+     * Get result of methods
+     *
+     * @return map with class and methods
+     * @throws NoSuchMethodException not exists methods
+     */
     private static Map<Class<?>, Method> getParserMap() throws NoSuchMethodException {
         Map<Class<?>, Method> result = new HashMap<>();
         result.put(Integer.class, PlayMessage.class.getDeclaredMethod("getInt", String.class));
@@ -73,6 +103,11 @@ public class PlayMessage extends Message {
         return result;
     }
 
+    /**
+     * Execute the message
+     *
+     * @param manager reader
+     */
     public void executeMessage(PlayMessageReader manager) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
         super.controlWritten();
         Map<Class<?>, Method> parser = getParserMap();
@@ -88,26 +123,44 @@ public class PlayMessage extends Message {
         method.invoke(manager, params);
     }
 
+    /**
+     * Getter
+     */
     private Map<TeacherColor, Integer> getTeacherColorIntegerMap() {
         return this.teacherColorIntegerMap;
     }
 
+    /**
+     * Getter
+     */
     private Map<String, TowerColor> getStringTowerColorMap() {
         return this.stringTowerColorMap;
     }
 
+    /**
+     * Getter
+     */
     private List<TeacherColor> getTeacherColorList() {
         return this.teacherColorList;
     }
 
+    /**
+     * Getter
+     */
     private Map<String, Integer> getStringIntegerMap() {
         return this.stringIntegerMap;
     }
 
+    /**
+     * Getter
+     */
     private List<String> getStringList() {
         return this.stringList;
     }
 
+    /**
+     * Getter
+     */
     private Map<?, ?> getMap(String data) {
         Map<String, Map<?, ?>> baseMap = new HashMap<>();
         baseMap.put("getTeacherColorIntegerMap", teacherColorIntegerMap);
@@ -116,30 +169,48 @@ public class PlayMessage extends Message {
         return new HashMap<>(baseMap.get(data));
     }
 
+    /**
+     * Getter
+     */
     private List<?> getList(String data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         return (List<?>) PlayMessage.class.getDeclaredMethod(data).invoke(this);
     }
 
+    /**
+     * Getter
+     */
     private String getString(String data) {
         return data;
     }
 
+    /**
+     * Getter
+     */
     private Integer getInt(String data) {
         Double tmp = Double.parseDouble(data); // Needs to be a Double... do not listen to intellij
         return tmp.intValue();
     }
 
+    /**
+     * Getter
+     */
     private TeacherColor getTeacherColor(String data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method valueOf = TeacherColor.class.getMethod("valueOf", String.class);
         System.out.println(valueOf);
         return (TeacherColor) valueOf.invoke(TeacherColor.class, data);
     }
 
+    /**
+     * Getter
+     */
     private TowerColor getTowerColor(String data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method valueOf = TowerColor.class.getMethod("valueOf", String.class);
         return (TowerColor) valueOf.invoke(TowerColor.class, data);
     }
 
+    /**
+     * Getter
+     */
     private Characters getCharacters(String data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method valueOf = Characters.class.getMethod("valueOf", String.class);
         return (Characters) valueOf.invoke(Characters.class, data);

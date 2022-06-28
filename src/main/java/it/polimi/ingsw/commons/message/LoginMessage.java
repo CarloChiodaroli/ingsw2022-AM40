@@ -61,7 +61,7 @@ public class LoginMessage extends Message {
     }
 
     /**
-     * getter of internal parameter ConnectionSuccessful
+     * Getter of internal parameter ConnectionSuccessful
      *
      * @return the parameter
      */
@@ -70,7 +70,7 @@ public class LoginMessage extends Message {
     }
 
     /**
-     * getter of internal parameter NicknameAccepted
+     * Getter of internal parameter NicknameAccepted
      *
      * @return the parameter
      */
@@ -79,7 +79,7 @@ public class LoginMessage extends Message {
     }
 
     /**
-     * getter of internal parameter Request for testing purposes
+     * Getter of internal parameter Request for testing purposes
      *
      * @return the parameter
      */

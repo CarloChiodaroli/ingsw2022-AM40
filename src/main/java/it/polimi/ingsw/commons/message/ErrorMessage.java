@@ -7,12 +7,18 @@ public class ErrorMessage extends Message {
 
     private final String error;
 
+    /**
+     * Constructor
+     */
     public ErrorMessage(String nickname, String error) {
         super(nickname, MessageType.ERROR);
         this.error = error;
         super.message();
     }
 
+    /**
+     * Getter
+     */
     public String getError() {
         controlWritten();
         return error;
