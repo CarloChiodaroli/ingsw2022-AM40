@@ -91,7 +91,7 @@ public class GameModel {
      *
      * @param playerName the player who is playing the card
      * @param cardWeight the card played
-     * @throws GameModelException error in model
+     * @throws GameModelException     error in model
      * @throws NoSuchElementException there is no more cards available
      */
     public void playAssistantCard(String playerName, int cardWeight)
@@ -107,11 +107,11 @@ public class GameModel {
     /**
      * The student movement of a specific color from a place to another
      *
-     * @param playerName the player who is moving the student
-     * @param color color of the student
-     * @param sourceId origin of the student
+     * @param playerName    the player who is moving the student
+     * @param color         color of the student
+     * @param sourceId      origin of the student
      * @param destinationId destination of the student
-     * @throws GameModelException error in model
+     * @throws GameModelException     error in model
      * @throws NoSuchElementException there is no more students
      */
     public void moveStudent(String playerName, TeacherColor color, String sourceId, String destinationId)
@@ -127,10 +127,10 @@ public class GameModel {
     /**
      * The exchange of two students between the entrance and another place
      *
-     * @param playerName the player who is moving the student
+     * @param playerName      the player who is moving the student
      * @param entranceStudent color of the student in the entrance
-     * @param otherStudent color of the student in destination
-     * @param destinationId destination place
+     * @param otherStudent    color of the student in destination
+     * @param destinationId   destination place
      */
     public void moveStudent(String playerName, TeacherColor entranceStudent, TeacherColor otherStudent, String destinationId) {
         Player player = getPlayer(playerName);
@@ -147,7 +147,7 @@ public class GameModel {
      * Move mother nature
      *
      * @param playerName the player who is moving mother nature
-     * @param steps number of steps
+     * @param steps      number of steps
      */
     public void moveMotherNature(String playerName, int steps) {
         Player player = getPlayer(playerName);
@@ -180,7 +180,7 @@ public class GameModel {
      * Choose the cloud
      *
      * @param playerName the player who is choosing the cloud
-     * @param cloudId id of the chosen cloud
+     * @param cloudId    id of the chosen cloud
      */
     public void chooseCloud(String playerName, String cloudId) {
         Player player = getPlayer(playerName);
@@ -197,7 +197,7 @@ public class GameModel {
      * For play a character card in expert variant
      *
      * @param playerName the player who is playing the card
-     * @param character chosen card
+     * @param character  chosen card
      */
     public void playCharacterCard(String playerName, Characters character) {
         Player player = getPlayer(playerName);
@@ -214,8 +214,8 @@ public class GameModel {
      * For play a character card in expert variant that requires a color
      *
      * @param playerName the player who is playing the card
-     * @param character chosen card
-     * @param color chosen color
+     * @param character  chosen card
+     * @param color      chosen color
      */
     public void playCharacterCard(String playerName, Characters character, TeacherColor color) {
         Player player = getPlayer(playerName);
@@ -232,8 +232,8 @@ public class GameModel {
      * For play a character card in expert variant that requires an island
      *
      * @param playerName the player who is playing the card
-     * @param character chosen card
-     * @param islandId chosen island
+     * @param character  chosen card
+     * @param islandId   chosen island
      */
     public void playCharacterCard(String playerName, Characters character, String islandId) {
         Player player = getPlayer(playerName);
@@ -388,10 +388,29 @@ public class GameModel {
      * @return the id of the islands without prohibition cards
      */
     public List<String> getIslandsWithNoEntry() {
-        return game.getTable().getIslandList().stream()
+        int availableTiles = game.getActionPhase().getCharacterCards().values().stream()
+                .filter(x -> x.getCharacterization("NoEntrySetter") > 0)
+                .map(x -> x.getCharacterization("Memory"))
+                .peek(System.out::println)
+                .reduce(Integer::max)
+                .orElse(0);
+        if(availableTiles == 0){
+            return new ArrayList<>();
+        }
+        List<String> result = new ArrayList<>(availableTiles);
+        for(int i = 0; i< availableTiles; i++){
+            result.add(i, "");
+        }
+        List<String> islands = game.getTable().getIslandList().stream()
                 .filter(Island::hasNoEntryTile)
                 .map(Island::getId)
                 .toList();
+        for(int i = 0; i< islands.size(); i++){
+            result.remove(i);
+            result.add(i, islands.get(i));
+        }
+        System.out.println(result);
+        return result;
     }
 
     // Getter of the player state

@@ -164,6 +164,7 @@ public class OutboundController {
      * @return list of islands with prohibition card
      */
     public List<String> getIslandsWithNoEntry() {
+        inputController.controlExpertVariant();
         inputController.excludeGameState(GameState.INITIAL);
         return model.getIslandsWithNoEntry();
     }

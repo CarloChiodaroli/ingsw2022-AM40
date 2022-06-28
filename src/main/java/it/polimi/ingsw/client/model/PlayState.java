@@ -328,7 +328,12 @@ public class PlayState {
     }
 
     public void setNoEntryIslands(List<String> noEntryIslands) {
+
         this.noEntryIslands = noEntryIslands;
+    }
+
+    public int getAvailableNoEntry(){
+        return noEntryIslands.size() - noEntryIslands.stream().filter(x -> !x.equals("")).toList().size();
     }
 
     public int numMyTowers() {
