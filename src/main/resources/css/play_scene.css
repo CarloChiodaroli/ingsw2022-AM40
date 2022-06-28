@@ -348,6 +348,17 @@ GridPane {
 .command {
     -fx-min-width: 40px;
     -fx-min-height: 40px;
+    -fx-background-color: lightblue;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: darkBlue;
+    -fx-border-width: 2px;
+    -fx-content-display: center;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-font-size: 13px;
+    -fx-font-style: bold;
+
 }
 
 .clickable:hover {
@@ -360,6 +371,16 @@ GridPane {
     -fx-border-color: fuchsia;
     -fx-border-width: 3px;
     -fx-border-radius: 7px;
+}
+
+.submit {
+    -fx-background-color: darkgreen;
+    -fx-text-fill: lightGreen;
+}
+
+.delete {
+    -fx-background-color: darkred;
+    -fx-text-fill: lightpink;
 }
 
 #semaphoreNo {
