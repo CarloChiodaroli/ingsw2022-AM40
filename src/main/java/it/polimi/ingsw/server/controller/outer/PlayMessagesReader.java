@@ -389,7 +389,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         if (expertVariant && savedIslandId != null)
             answers.add(PlayMessagesFabric.statusStudent(server, savedIslandId, outbound.getStudentInPlace(player, savedIslandId)));
         answers.add(PlayMessagesFabric.statusMotherNature(server, outbound.actualMotherNaturePosition()));
-        answers.add(PlayMessagesFabric.statusNoEntry(server, outbound.getIslandsWithNoEntry()));
+        if(expertVariant) answers.add(PlayMessagesFabric.statusNoEntry(server, outbound.getIslandsWithNoEntry()));
         answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         // sending answers
         answers.forEach(gameManager::broadcastMessage);

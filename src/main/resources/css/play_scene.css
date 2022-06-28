@@ -51,6 +51,7 @@ Label {
 
 .BLACK {
     -fx-background-image: url("../images/assets/wood/tower/TBLACK.png");
+    -fx-text-fill: white;
 }
 
 .GREY {
@@ -195,6 +196,7 @@ Label {
     -fx-min-height: 150px;
     -fx-background-size: contain;
     -fx-background-repeat: no-repeat;
+    -fx-padding: 10px 20px 10px 20px;
 }
 
 .cloud {
@@ -401,4 +403,8 @@ GridPane {
     -fx-min-width: 50px;
     -fx-min-height: 50px;
     -fx-font-size: 40px;
+}
+
+.NO_ENTRY {
+    -fx-background-image: url("../images/assets/NoEntry.png");
 }

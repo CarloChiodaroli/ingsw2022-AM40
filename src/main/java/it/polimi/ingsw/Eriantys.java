@@ -6,16 +6,28 @@ import it.polimi.ingsw.server.ServerApp;
 
 public class Eriantys {
 
-    private final static String BIG_ERIANTYS = "";
+    private final static String BIG_ERIANTYS = """
+            ╔══════════════════════════════════════════════════════════════════════════╗
+            ║   ▄▄▄▄▄▄  ▄▄▄▄▄▄   ▄      ▄      ▄▄       ▄  ▄▄▄▄▄▄▄  ▄     ▄   ▄▄▄▄▄▄   ║
+            ║  █▀▀▀▀▀▀  █▀▀▀▀▀█  █     █▀█     ██▄      █  ▀▀▀█▀▀▀  █     █  █▀▀▀▀▀▀█  ║
+            ║  █        █     █  █    █▀ ▀█    █ ▀█     █     █     █     █  █         ║
+            ║  █        █     █  █   █▀   ▀█   █  ▀█    █     █     ▀█   █▀  █         ║
+            ║  ███████  ██████▀  █  █▀     ▀█  █   ▀█   █     █      ▀█ █▀   ▀██████▄  ║
+            ║  █        █  █     █  █▀▀███▀▀█  █    ▀█  █     █       ▀█▀           █  ║
+            ║  █        █   █    █  █       █  █     ▀█ █     █        █            █  ║
+            ║  █▄▄▄▄▄▄  █    █   █  █       █  █      ▀██     █        █     █▄▄▄▄▄▄█  ║
+            ║   ▀▀▀▀▀▀  ▀     ▀  ▀  ▀       ▀  ▀       ▀▀     ▀        ▀      ▀▀▀▀▀▀   ║
+            ╚══════════════════════════════════════════════════════════════════════════╝
+            """;
 
     public static void main(String[] args) {
         System.out.println(BIG_ERIANTYS);
         if (args.length < 1) {
             System.out.println("Got wrong argument, please retry.\nCorrect arguments:\n" +
-                    "\teriantys --s - to launch a server\n" +
-                    "\teriantys --s --port <number> - to launch a server on a custom port number\n" +
-                    "\teriantys --c - to launch a cli client\n" +
-                    "\teriantys --g - to launch a gui client\n");
+                    "\tAM40.jar --s - to launch a server\n" +
+                    "\tAM40.jar --s --port <number> - to launch a server on a custom port number\n" +
+                    "\tAM40.jar --c - to launch a cli client\n" +
+                    "\tAM40.jar --g - to launch a gui client\n");
         } else if (args[0].equals("--s")) {
             ServerApp.server(args);
         } else if (args[0].equals("--c")) {
@@ -26,10 +38,10 @@ public class Eriantys {
             App.main(args);
         } else {
             System.out.println("Got wrong argument, please retry.\nCorrect arguments:\n" +
-                    "\teriantys s - to launch a server \n" +
-                    "\teriantys s -port <number> - to launch a server on a custom port number\n" +
-                    "\teriantys c - to launch a cli client \n" +
-                    "\teriantys g - to launch a gui client (for now launches cli client) \n");
+                    "\tAM40.jar s - to launch a server \n" +
+                    "\tAM40.jar s -port <number> - to launch a server on a custom port number\n" +
+                    "\tAM40.jar c - to launch a cli client \n" +
+                    "\tAM40.jar g - to launch a gui client (for now launches cli client) \n");
         }
     }
 }

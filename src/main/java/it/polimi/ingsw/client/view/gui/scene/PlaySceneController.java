@@ -189,8 +189,16 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         actual.getStyleClass().add("submit");
         GridPane.setRowIndex(actual, 0);
         GridPane.setColumnIndex(actual, 5);
-        GridPane.setRowSpan(actual, 2);
         actual.addEventHandler(MouseEvent.MOUSE_CLICKED, this::sendCommand);
+        actual.getStyleClass().add("clickable");
+        commands.getChildren().add(actual);
+
+        actual = new Label("DEL");
+        actual.getStyleClass().add("command");
+        actual.getStyleClass().add("delete");
+        GridPane.setRowIndex(actual, 1);
+        GridPane.setColumnIndex(actual, 5);
+        actual.addEventHandler(MouseEvent.MOUSE_CLICKED, this::deleteCommand);
         actual.getStyleClass().add("clickable");
         commands.getChildren().add(actual);
 
@@ -371,27 +379,38 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         List<GridPane> islands = new ArrayList<>();
         List<String> islandStyles = List.of(new String[]{"island1", "island2", "island3"});
         List<String> islandContents = List.of(new String[]{
+                TowerColor.BLACK.toString(),
+                TowerColor.GREY.toString(),
+                TowerColor.WHITE.toString(),
+                "MOTHER",
+                "NO_ENTRY",
                 TeacherColor.YELLOW.toString(),
                 TeacherColor.BLUE.toString(),
                 TeacherColor.GREEN.toString(),
                 TeacherColor.RED.toString(),
-                TeacherColor.PINK.toString(),
-                TowerColor.BLACK.toString(),
-                TowerColor.GREY.toString(),
-                TowerColor.WHITE.toString(),
-                "MOTHER"});
+                TeacherColor.PINK.toString()});
 
         for (int i = 0; i < 12; i++) {
             GridPane island = new GridPane();
             island.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> islandSelector(event, island));
             island.getStyleClass().add("clickable");
-            for (int j = 0; j < 9; j++) {
+            int j = 0;
+            for (String content : islandContents) {
+                if (Arrays.stream(TowerColor.values()).noneMatch(x -> x.toString().equals(content))) {
+                    j++;
+                }
                 Label actual = new Label();
                 actual.getStyleClass().add("wood");
-                actual.getStyleClass().add(islandContents.get(j));
+                actual.getStyleClass().add(content);
                 GridPane.setRowIndex(actual, j % 3);
                 GridPane.setColumnIndex(actual, j / 3);
-                island.getChildren().add(actual);
+                if (state.isExpert()) {
+                    island.getChildren().add(actual);
+                } else {
+                    if (!content.equals("NO_ENTRY")) {
+                        island.getChildren().add(actual);
+                    }
+                }
             }
             GridPane.setColumnIndex(island, i % 6);
             GridPane.setRowIndex(island, (i / 6));
@@ -437,6 +456,15 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                     GridPane.setRowIndex(student, 4 + (j / 3));
                     card.getChildren().add(student);
                 }
+            }
+            if (characters.equals(Characters.SORCERESS)) {
+                Label noEntry = new Label();
+                noEntry.getStyleClass().add("wood");
+                noEntry.getStyleClass().add("NO_ENTRY");
+                GridPane.setColumnIndex(noEntry, 1);
+                GridPane.setRowIndex(noEntry, 4);
+                card.getChildren().add(noEntry);
+                System.out.println("Done");
             }
             card.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> idGetter(event, card));
             characterCardRep.getChildren().add(card);
@@ -494,6 +522,10 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                     motherRep.setVisible(true);
                 } else {
                     motherRep.setVisible(false);
+                }
+                if (state.isExpert()) {
+                    Label noEntryRep = (Label) getNodeByStyleClass(islandRep.getChildren(), "NO_ENTRY");
+                    noEntryRep.setVisible(state.getNoEntryIslands().contains(id));
                 }
                 islandRep.setVisible(true);
                 actualChildNumber++;
@@ -692,6 +724,10 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                     }
                 }
             }
+            if (card.getId().equals("SORCERESS")) {
+                Label noEntry = (Label) getNodeByStyleClass(card.getChildren(), "NO_ENTRY");
+                noEntry.setText("" + state.getAvailableNoEntry());
+            }
         }
     }
 
@@ -716,7 +752,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
     /**
      * Append commands
      *
-     * @param event event
+     * @param event    event
      * @param argument actual command
      */
     private void commandAppender(Event event, String argument) {
@@ -739,6 +775,10 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                 SceneController.showAlert("Error - ", "I did not understand, Please repeat");
             });
         }
+        deleteCommand(event);
+    }
+
+    private void deleteCommand(Event event){
         actualCommand = "";
         actualCommandPrinter.setText(actualCommand);
         removeAllClicked(container.getChildren());
@@ -757,7 +797,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
     /**
      * Get node using css style class
      *
-     * @param where list of nodes
+     * @param where   list of nodes
      * @param classId style class
      * @return node
      */
@@ -785,7 +825,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
     /**
      * Given an island if actual command is move mother nature computes the number of steps
      *
-     * @param event click event
+     * @param event  click event
      * @param island selected island
      */
     private void islandSelector(Event event, GridPane island) {
@@ -817,7 +857,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
      * Node getter
      *
      * @param event event
-     * @param node node
+     * @param node  node
      */
     private void idGetter(Event event, Node node) {
         commandAppender(event, node.getId());
