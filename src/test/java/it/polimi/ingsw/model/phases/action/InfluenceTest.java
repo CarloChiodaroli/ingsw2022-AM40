@@ -5,6 +5,7 @@ import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.server.model.phase.action.states.Influence;
 import it.polimi.ingsw.server.model.phase.action.states.StudentMovement;
+import it.polimi.ingsw.server.model.phase.action.states.cards.StudentMovementCard;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -12,8 +13,14 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * This class test the {@link Influence} methods
+ */
 public class InfluenceTest {
 
+    /**
+     * Test calculate influence
+     */
     @Test
     public void influenceTest() {
         Game game = new Game();
@@ -73,6 +80,9 @@ public class InfluenceTest {
         else assertEquals(Optional.of(towerColor1), game.getTable().getIslandList().get(7).getTowerColor());
     }
 
+    /**
+     * Test calculate influence
+     */
     @Test
     public void littleTest() {
         Game game = new Game();

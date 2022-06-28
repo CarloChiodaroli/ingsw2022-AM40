@@ -20,7 +20,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+/**
+ * This class test the {@link GameModel} methods
+ */
 public class GameModelTest {
 
     public static void assertThrowsNoSNoSuchElementException(org.junit.jupiter.api.function.Executable executable) {
@@ -35,6 +37,9 @@ public class GameModelTest {
         assertThrows(InvalidParameterException.class, executable);
     }
 
+    /**
+     * Verify no element exception
+     */
     @Test
     @DisplayName("'Player not found' exception")
     public void noSuchElementTest() {
@@ -61,6 +66,9 @@ public class GameModelTest {
     @Nested
     class playerInteractionTest {
 
+        /**
+         * Test play assistant card
+         */
         @Test
         @DisplayName("Play Assistant Card")
         public void playAssistantCardTest() {
@@ -82,6 +90,9 @@ public class GameModelTest {
 
     }
 
+    /**
+     * Test game mode expert
+     */
     @Test
     public void expertVariantTest() {
         GameModel model = new GameModel();
@@ -97,6 +108,9 @@ public class GameModelTest {
         assertFalse((model.isExpertVariant()));
     }
 
+    /**
+     * Test three players
+     */
     @Test
     public void threePlayerTest() {
         GameModel model = new GameModel();
@@ -112,6 +126,9 @@ public class GameModelTest {
         assertTrue(model.isThreePlayerGame());
     }
 
+    /**
+     * Test play assistant card
+     */
     @Test
     public void playAssistantCardTest(){
         GameModel model = new GameModel();
@@ -182,6 +199,9 @@ public class GameModelTest {
         assertThrowsGameModelException(() -> model.moveStudent(giovanniName, TeacherColor.PINK, "Entrance", "Room"));
     }
 
+    /**
+     * Test move mother nature, calculate influence and choose cloud
+     */
     @Test
     public void moveMotherNatureCalcInfluenceChooseCloudTest(){
         GameModel model = new GameModel();
@@ -262,6 +282,9 @@ public class GameModelTest {
 
     }
 
+    /**
+     * Test play character cards
+     */
     @Test
     public void playCharacterCardTest(){
         GameModel model = new GameModel();

@@ -1,11 +1,18 @@
 package it.polimi.ingsw.model.table;
 
+import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.table.Bag;
 import it.polimi.ingsw.server.model.table.Cloud;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class test the {@link Cloud} methods
+ */
 public class CloudTest {
+    /**
+     * Test correct generation of clouds id
+     */
     @Test
     public void idCloudTest(){
         Cloud cloud;
@@ -24,6 +31,9 @@ public class CloudTest {
 
     }
 
+    /**
+     * Test correct clouds fill
+     */
     @Test
     public void cloudTest(){
         Bag bag = new Bag(130, 26);

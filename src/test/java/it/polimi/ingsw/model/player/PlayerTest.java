@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.server.model.player.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.server.model.player.school.SchoolDashboard;
 import org.junit.jupiter.api.Test;
 
 import java.security.InvalidParameterException;
@@ -12,9 +13,14 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+/**
+ * This class test the {@link Player} methods
+ */
 public class PlayerTest {
 
+    /**
+     * Test play assistant card
+     */
     @Test
     public void assistantCardTest() {
         Game game = new Game();
@@ -43,6 +49,9 @@ public class PlayerTest {
 
     }
 
+    /**
+     * Test ids in player table
+     */
     @Test
     public void miscellaneousTest() {
         Game game = new Game();

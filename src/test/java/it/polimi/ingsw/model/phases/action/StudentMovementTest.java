@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.phase.action.states.MotherNatureState;
 import it.polimi.ingsw.server.model.phase.action.states.StudentMovement;
 import it.polimi.ingsw.server.model.player.Player;
 import org.junit.jupiter.api.Test;
@@ -10,8 +11,14 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class test the {@link StudentMovement} methods
+ */
 public class StudentMovementTest {
 
+    /**
+     * Test student movement to rooms
+     */
     @Test
     public void studentMovementToRoomTableTest() {
         Game game = new Game();
@@ -89,6 +96,9 @@ public class StudentMovementTest {
         }
     }
 
+    /**
+     * Test student movement to islands
+     */
     @Test
     public void studentMovementToIslandTest() {
         Game game = new Game();

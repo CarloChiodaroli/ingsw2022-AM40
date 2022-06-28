@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.phase.action.states.MergeIsland;
 import it.polimi.ingsw.server.model.phase.action.states.MotherNatureState;
 import it.polimi.ingsw.server.model.table.Island;
 import it.polimi.ingsw.server.model.table.MotherNature;
@@ -11,7 +12,13 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class test the {@link MotherNatureState} methods
+ */
 public class MotherNatureStateTest {
+    /**
+     * Test mother nature position with 2 players
+     */
     @Test
     public void motherNatureStateTest() {
         Game game = new Game();
@@ -56,6 +63,9 @@ public class MotherNatureStateTest {
 
     }
 
+    /**
+     * Test mother nature position with 3 players
+     */
     @Test
     public void motherNatureState3PlayersTest() {
         Game game = new Game();

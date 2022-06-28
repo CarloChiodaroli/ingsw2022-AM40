@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.phases.action;
 import it.polimi.ingsw.server.enums.ActionPhaseStateType;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.server.enums.CharactersLookup;
+import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -12,7 +13,9 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+/**
+ * This class test the {@link Character} methods
+ */
 @DisplayName("Character test")
 public class CharactersTest {
 

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.table;
 
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
+import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.table.Island;
 import org.junit.jupiter.api.Test;
 
@@ -9,9 +10,15 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class test the {@link Island} methods
+ */
 public class IslandTest {
     Island to = new Island("C_2");
 
+    /**
+     * Test correct merge islands
+     */
     @Test
     public void elaborationMergeIslandIdTest() {
         Island is1 = new Island("I_1_2");
@@ -22,8 +29,11 @@ public class IslandTest {
         assertEquals(2, new Island(is1, is2).howManyEquivalents());
     }
 
+    /**
+     * Test correct movement of students in islands
+     */
     @Test
-    public void MoveStudentTest() {
+    public void moveStudentTest() {
         Island island = new Island("I_1");
         Island newisland = new Island("I_2");
         for (TeacherColor tc : TeacherColor.values()) {
@@ -45,6 +55,9 @@ public class IslandTest {
 
     }
 
+    /**
+     * Test prohibition cards
+     */
     @Test
     public void noEntryTest() {
         Island is1, is2;
@@ -70,6 +83,9 @@ public class IslandTest {
         assertFalse(is1.hasNoEntryTile());
     }
 
+    /**
+     * Test tower presence and color
+     */
     @Test
     public void towersTest(){
         Island is1;
@@ -81,6 +97,9 @@ public class IslandTest {
         assertEquals(Optional.of(TowerColor.WHITE) , is1.getTowerColor());
     }
 
+    /**
+     * Test merge 2 or 3 islands
+     */
     @Test
     public void mergeTest() {
         // 2 Island

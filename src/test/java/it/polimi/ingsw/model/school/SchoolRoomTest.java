@@ -3,10 +3,17 @@ package it.polimi.ingsw.model.school;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.server.model.player.school.SchoolRoom;
+import it.polimi.ingsw.server.model.table.Table;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class test the {@link SchoolRoom} methods
+ */
 public class SchoolRoomTest {
+    /**
+     * Test creation rooms
+     */
     @Test
     public void creationTest() {
         SchoolRoom room = new SchoolRoom();
@@ -24,6 +31,9 @@ public class SchoolRoomTest {
         }
     }
 
+    /**
+     * Test money place in 3rd, 6th and 9th positions
+     */
     @Test
     public void seeMoneyPlaceTest() {
         SchoolRoom room = new SchoolRoom();

@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.server.model.phase.action.states.StudentMovement;
+import it.polimi.ingsw.server.model.phase.action.states.cards.InfluenceCard;
 import it.polimi.ingsw.server.model.phase.action.states.cards.StudentMovementCard;
 import it.polimi.ingsw.server.model.player.Player;
 import org.junit.jupiter.api.RepeatedTest;
@@ -16,6 +17,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class test the {@link StudentMovementCard} methods, character cards who modify student movement
+ */
 public class StudentMovementCardTest {
 
     private static Map<String, Integer> createBaseCharacterization() {
@@ -39,6 +43,9 @@ public class StudentMovementCardTest {
         return result;
     }
 
+    /**
+     * Test cards price
+     */
     @Test
     public void priceTest() {
         Map<String, Integer> custom = createBaseCharacterization();
@@ -61,6 +68,9 @@ public class StudentMovementCardTest {
         assertEquals(2, card.getPrice());
     }
 
+    /**
+     * Test room attributes
+     */
     @RepeatedTest(30)
     public void roomAttributeTest() {
         Map<String, Integer> custom = createBaseCharacterization();
@@ -127,6 +137,9 @@ public class StudentMovementCardTest {
 
     }
 
+    /**
+     * Test card memory
+     */
     @RepeatedTest(30)
     public void memory6AttributeTest() {
         Map<String, Integer> custom = createBaseCharacterization();
@@ -251,6 +264,9 @@ public class StudentMovementCardTest {
         }
     }
 
+    /**
+     * Test Host card
+     */
     @RepeatedTest(10)
     public void teacherBehaviourTest() {
         Map<String, Integer> custom = createBaseCharacterization();

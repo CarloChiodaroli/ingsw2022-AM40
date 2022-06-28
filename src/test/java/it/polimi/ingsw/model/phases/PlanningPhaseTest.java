@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.phase.PlanningPhase;
 import it.polimi.ingsw.server.model.player.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.server.model.player.school.SchoolDashboard;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -12,8 +13,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class test the {@link PlanningPhase} methods
+ */
 public class PlanningPhaseTest {
 
+    /**
+     * Test the correct creation and activation of the Pianification Phase
+     */
     @Test
     @DisplayName("Controls the correct creation and activation of the Pianification Phase")
     public void activationTest(){
@@ -32,6 +39,9 @@ public class PlanningPhaseTest {
         assertTrue(phase.isActivated());
     }
 
+    /**
+     * Test 2 players operations
+     */
     @Test
     @DisplayName("Control simple 2 player operations")
     public void simple2PlayerTest(){
@@ -73,6 +83,9 @@ public class PlanningPhaseTest {
         assertNull(phase.getActualPlayer());
     }
 
+    /**
+     * Test 3 players operations
+     */
     @Test
     @DisplayName("Control simple 3 player operations")
     public void simple3PlayerTest(){

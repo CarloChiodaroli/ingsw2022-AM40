@@ -8,9 +8,15 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class test the {@link StudentsManager} methods
+ */
 public class StudentsManagerTest {
+    /**
+     * Verify the correct addition, remove and count of students
+     */
     @Test
-    public void addStudentsTest(){
+    public void numberStudentsTest(){
         StudentsManagerIstance manager = new StudentsManagerIstance(130, 26);
         HashMap<TeacherColor, Integer> managerTest = new HashMap<>();
         for(TeacherColor color: TeacherColor.values()){

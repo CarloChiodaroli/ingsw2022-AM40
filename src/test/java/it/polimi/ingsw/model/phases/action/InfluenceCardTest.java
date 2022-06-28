@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.enums.ActionPhaseStateType;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.phase.action.states.Finalize;
 import it.polimi.ingsw.server.model.phase.action.states.Influence;
 import it.polimi.ingsw.server.model.phase.action.states.StudentMovement;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
@@ -17,8 +18,14 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class test the {@link InfluenceCard} methods, character cards who modify influence
+ */
 public class InfluenceCardTest {
 
+    /**
+     * Test Sorceress card
+     */
     @Test
     public void influenceCardSorceressTest() {
         Game game = new Game();
@@ -95,6 +102,9 @@ public class InfluenceCardTest {
         assertEquals(camilla.getTowerColor(), testIsland.getTowerColor().get());
     }
 
+    /**
+     * Test Sorcerer card
+     */
     @Test
     public void influenceCardSorcererTest() {
         Game game = new Game();
@@ -165,6 +175,9 @@ public class InfluenceCardTest {
 
     }
 
+    /**
+     * Test Centaur card
+     */
     @Test
     public void influenceCardCentaurTest() {
         Game game = new Game();
@@ -255,6 +268,9 @@ public class InfluenceCardTest {
         assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
     }
 
+    /**
+     * Test Knight card
+     */
     @Test
     public void influenceCardKnightTest() {
         Game game = new Game();
@@ -330,6 +346,9 @@ public class InfluenceCardTest {
         assertEquals(anja.getTowerColor(), testIsland.getTowerColor().get());
     }
 
+    /**
+     * Test Crier card
+     */
     @Test
     public void influenceCardCrierTest() {
         Game game = new Game();

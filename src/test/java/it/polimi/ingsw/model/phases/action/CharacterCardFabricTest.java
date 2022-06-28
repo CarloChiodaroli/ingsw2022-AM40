@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.phases.action;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.server.enums.CharactersLookup;
+import it.polimi.ingsw.server.model.phase.action.ActionPhase;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.server.model.phase.action.states.cards.CharacterCardFabric;
 import it.polimi.ingsw.server.model.phase.action.states.cards.InfluenceCard;
@@ -19,9 +20,16 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class test the {@link CharacterCardFabric} methods
+ */
 @DisplayName("Character Card Fabric")
 public class CharacterCardFabricTest {
 
+    /**
+     * Test creation of character cards
+     * @param character chosen character
+     */
     @DisplayName("Test of character card's creation")
     @ParameterizedTest
     @EnumSource(Characters.class)
@@ -53,6 +61,9 @@ public class CharacterCardFabricTest {
         assertEquals(character, card.getCharacter());
     }
 
+    /**
+     * Test of creation a random character card
+     */
     @DisplayName("Test of random card creation")
     @RepeatedTest(30)
     public void randomCardCreation(){

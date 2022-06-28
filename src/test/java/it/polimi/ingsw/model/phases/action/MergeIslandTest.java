@@ -2,12 +2,19 @@ package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.commons.enums.TowerColor;
+import it.polimi.ingsw.server.model.phase.action.states.Influence;
 import it.polimi.ingsw.server.model.phase.action.states.MergeIsland;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class test the {@link MergeIsland} methods
+ */
 public class MergeIslandTest {
+    /**
+     * Test merge island with 2 players
+     */
     @Test
     public void mergeIsland2PlayersTest(){
         Game game = new Game();
@@ -40,6 +47,9 @@ public class MergeIslandTest {
 
     }
 
+    /**
+     * Test merge island with 3 players
+     */
     @Test
     public void mergeIsland3PlayersTest(){
         Game game = new Game();

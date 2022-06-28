@@ -2,10 +2,17 @@ package it.polimi.ingsw.model.school;
 
 import it.polimi.ingsw.commons.enums.TowerColor;
 import it.polimi.ingsw.server.model.player.school.SchoolDashboard;
+import it.polimi.ingsw.server.model.table.Table;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class test the {@link SchoolDashboard} methods
+ */
 public class SchoolDashboardTest {
+    /**
+     * Test creation of dashboard
+     */
     @Test
     public void schoolDashboardTest(){
         SchoolDashboard dashboard = new SchoolDashboard(false, TowerColor.WHITE);
@@ -29,6 +36,9 @@ public class SchoolDashboardTest {
         assertEquals(TowerColor.GREY, dashboard.getTowerColor());
     }
 
+    /**
+     * Test get and number of towers
+     */
     @Test
     public void getTowerTest(){
         SchoolDashboard dashboard;
@@ -70,6 +80,9 @@ public class SchoolDashboardTest {
 
     }
 
+    /**
+     * Test push and number of towers
+     */
     @Test
     public void pushTowerTest(){
         SchoolDashboard dashboard;
