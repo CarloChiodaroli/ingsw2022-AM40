@@ -58,6 +58,9 @@ public class GameControllerTest {
         assertThrows(IllegalStateException.class, executable);
     }
 
+    /**
+     * Test init a game in normal game mode
+     */
     @Nested
     @DisplayName("Non Expert Variant Tests")
     class NonExpertTests{
@@ -97,6 +100,9 @@ public class GameControllerTest {
             }
         }
 
+        /**
+         * Test play assistant card
+         */
         @Test
         public void playAssistantCardTest() {
 
@@ -145,8 +151,11 @@ public class GameControllerTest {
             assertDoesNotThrow(() -> inbound.moveStudent(aldoName, TeacherColor.BLUE, "Entrance", "Room"));
         }
 
+        /**
+         * Test move student from the entrance
+         */
         @Test
-        public void MoveStudentTest() {
+        public void moveStudentTest() {
 
             reader.playAssistantCard(aldoName, 1);
             reader.playAssistantCard(giovanniName, 5);
@@ -170,8 +179,11 @@ public class GameControllerTest {
             assertThrowsIllegalArgumentException(() -> inbound.moveStudent(giovanniName, TeacherColor.BLUE, "Entrance", "Room"));
         }
 
+        /**
+         * Test move mother nature
+         */
         @Test
-        public void MoveMotherNatureTest(){
+        public void moveMotherNatureTest(){
 
             reader.playAssistantCard(aldoName, 1);
             reader.playAssistantCard(giovanniName, 5);
@@ -187,6 +199,9 @@ public class GameControllerTest {
             assertThrowsIllegalArgumentException(() -> inbound.moveMotherNature(giovanniName, 1));
         }
 
+        /**
+         * Test calculate influence
+         */
         @Test
         public void calcInfluenceTest(){
 
@@ -219,6 +234,9 @@ public class GameControllerTest {
             assertThrowsIllegalArgumentException(() -> inbound.calcInfluence(giovanniName));
         }
 
+        /**
+         * Test choose cloud
+         */
         @Test
         public void chooseCloudTest(){
 
@@ -264,6 +282,9 @@ public class GameControllerTest {
     @DisplayName("Expert Variant Tests")
     class ExpertTests{
 
+        /**
+         * Test init a game in expert mode
+         */
         @BeforeEach
         public void initTest() {
 
@@ -303,6 +324,9 @@ public class GameControllerTest {
             reader.playAssistantCard(giovanniName, 5);
         }
 
+        /**
+         * Test move student with character cards
+         */
         @Test
         public void expertStudentMovementTest(){
 
@@ -327,6 +351,9 @@ public class GameControllerTest {
             assertEquals(0, aldo.getRoomTable().howManyStudents(TeacherColor.PINK));
         }
 
+        /**
+         * Test play character card
+         */
         @Test
         public void playCharacterCardTest(){
             game.getActionPhase().getCharacterCards().putIfAbsent(Characters.FRIAR,CharacterCardFabric.createCard(Characters.FRIAR, game.getActionPhase()));
@@ -338,6 +365,9 @@ public class GameControllerTest {
             assertEquals(Characters.FRIAR, game.getActionPhase().getActualCharacter().get());
         }
 
+        /**
+         * Test play character card who required a color
+         */
         @Test
         public void playCharacterCardTeacherColorTest(){
             game.getActionPhase().getCharacterCards().putIfAbsent(Characters.SORCERER, CharacterCardFabric.createCard(Characters.SORCERER, game.getActionPhase()));
@@ -349,6 +379,9 @@ public class GameControllerTest {
             assertEquals(Characters.SORCERER, game.getActionPhase().getActualCharacter().get());
         }
 
+        /**
+         * Test play character card who required an island
+         */
         @Test
         public void playCharacterCardIslandTest(){
             game.getActionPhase().getCharacterCards().putIfAbsent(Characters.CRIER,CharacterCardFabric.createCard(Characters.CRIER, game.getActionPhase()));
@@ -364,6 +397,9 @@ public class GameControllerTest {
     @Nested
     @DisplayName("Before round Tests")
     class BeforeRoundTests{
+        /**
+         * Test can't add 4 players
+         */
         @Test
         public void playerAdditionTest() {
             String carloName = "Carlo";
@@ -399,6 +435,9 @@ public class GameControllerTest {
             assertEquals(enricoName, game.getPlayers().stream().filter(player -> player.getName().equals(enricoName)).findAny().get().getName());
         }
 
+        /**
+         * Test set expert game mode
+         */
         @Test
         public void setExpertVariantTest() {
 
@@ -433,6 +472,9 @@ public class GameControllerTest {
             assertFalse(game.isExpertVariant());
         }
 
+        /**
+         * Test game in 3 players mode
+         */
         @Test
         public void threePlayerGameTest() {
 

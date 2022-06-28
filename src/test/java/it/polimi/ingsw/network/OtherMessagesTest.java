@@ -19,6 +19,9 @@ public class OtherMessagesTest {
         gson = builder.create();
     }
 
+    /**
+     * Test ping messages
+     */
     @Test
     public void pingTest(){
         PingMessage pingMessage = new PingMessage("Server");
@@ -30,6 +33,9 @@ public class OtherMessagesTest {
         PingMessage arrived = gson.fromJson(gsonSerialization, PingMessage.class);
     }
 
+    /**
+     * Test login messages
+     */
     @Test
     public void loginTest(){
         String requester = "Aldo";

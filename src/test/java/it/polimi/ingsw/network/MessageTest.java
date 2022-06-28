@@ -41,6 +41,9 @@ public class MessageTest {
     private FakeServer server;
     private Gson gson;
 
+    /**
+     * Test messages
+     */
     @Test
     public void minestroneTest() throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, NoSuchMethodException {
 
@@ -94,12 +97,18 @@ public class MessageTest {
         assertEquals(1, outbound.getStudentInPlace(aldoName, "Room").get(TeacherColor.BLUE));
     }
 
+    /**
+     * Init the builder
+     */
     @BeforeEach
     public void initAll(){
         GsonBuilder builder = new GsonBuilder();
         gson = builder.create();
     }
 
+    /**
+     * Test messages
+     */
     @Test
     public void message1Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
@@ -112,6 +121,9 @@ public class MessageTest {
         message.executeMessage(manager);
     }
 
+    /**
+     * Test messages
+     */
     @Test
     public void message2Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
@@ -125,6 +137,9 @@ public class MessageTest {
         message.executeMessage(manager);
     }
 
+    /**
+     * Test messages
+     */
     @Test
     public void message3Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
@@ -140,6 +155,9 @@ public class MessageTest {
 
     }
 
+    /**
+     * Test messages
+     */
     @Test
     public void message4Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
@@ -154,6 +172,9 @@ public class MessageTest {
 
     }
 
+    /**
+     * Test messages
+     */
     @Test
     public void message5Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
@@ -170,6 +191,9 @@ public class MessageTest {
 
     }
 
+    /**
+     * Test messages
+     */
     @Test
     public void message6Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
@@ -184,6 +208,9 @@ public class MessageTest {
 
     }
 
+    /**
+     * Test messages
+     */
     @Test
     public void message7Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
@@ -199,6 +226,9 @@ public class MessageTest {
 
     }
 
+    /**
+     * Test messages
+     */
     @Test
     public void message11Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
@@ -212,6 +242,9 @@ public class MessageTest {
         message.executeMessage(manager);
     }
 
+    /**
+     * Test messages
+     */
     @Test
     public void message12Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
@@ -225,6 +258,9 @@ public class MessageTest {
         message.executeMessage(manager);
     }
 
+    /**
+     * Test messages
+     */
     @Test
     public void message8Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
@@ -245,6 +281,9 @@ public class MessageTest {
 
     }
 
+    /**
+     * Test messages
+     */
     @Test
     public void message9Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
@@ -268,6 +307,9 @@ public class MessageTest {
 
     }
 
+    /**
+     * Test messages
+     */
     @Test
     public void message10Test() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         FakeGameManager manager = new FakeGameManager();
@@ -294,11 +336,17 @@ class FakeServer extends Server {
 
 class FakeGameManager implements PlayMessageReader {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void playAssistantCard(String player, Integer weight) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveStudent(String player, TeacherColor color, String fromId, String toId) {
         assertEquals(String.class, player.getClass());
@@ -307,6 +355,9 @@ class FakeGameManager implements PlayMessageReader {
         assertEquals(String.class, toId.getClass());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveStudent(String player, TeacherColor fromColor, TeacherColor toColor, String placeId) {
         assertEquals(String.class, player.getClass());
@@ -315,29 +366,44 @@ class FakeGameManager implements PlayMessageReader {
         assertEquals(String.class, placeId.getClass());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveMotherNature(String player, Integer hops) {
         assertEquals(String.class, player.getClass());
         assertEquals(2, hops);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void calcInfluence(String player) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void chooseCloud(String player, String id) {
         assertEquals(String.class, player.getClass());
         assertEquals(String.class, id.getClass());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void playCharacterCard(String player, Characters character) {
         assertEquals(String.class, player.getClass());
         assertEquals(Characters.class, character.getClass());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void playCharacterCard(String player, Characters character, String id) {
         assertEquals(String.class, player.getClass());
@@ -345,6 +411,9 @@ class FakeGameManager implements PlayMessageReader {
         assertEquals(String.class, id.getClass());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void playCharacterCard(String player, Characters character, TeacherColor color) {
         assertEquals(String.class, player.getClass());
@@ -352,6 +421,9 @@ class FakeGameManager implements PlayMessageReader {
         assertEquals(TeacherColor.class, color.getClass());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void statusStudent(String sender, String id, Map<TeacherColor, Integer> quantity) {
         assertEquals(String.class, sender.getClass());
@@ -359,6 +431,9 @@ class FakeGameManager implements PlayMessageReader {
         assertTrue(Arrays.stream(quantity.getClass().getInterfaces()).collect(Collectors.toList()).contains(Map.class));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void statusTeacher(String sender, String id, List<TeacherColor> which) {
         assertEquals(String.class, sender.getClass());
@@ -366,73 +441,115 @@ class FakeGameManager implements PlayMessageReader {
         assertTrue(Arrays.stream(which.getClass().getInterfaces()).collect(Collectors.toList()).contains(List.class));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void statusTower(String sender, Map<String, TowerColor> conquests) {
         assertEquals(String.class, sender.getClass());
         assertTrue(Arrays.stream(conquests.getClass().getInterfaces()).collect(Collectors.toList()).contains(Map.class));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void statusTower(String sender, String player, TowerColor color) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void statusIslandIds(String sender, List<String> ids) {
         assertEquals(String.class, sender.getClass());
         assertTrue(Arrays.stream(ids.getClass().getInterfaces()).collect(Collectors.toList()).contains(List.class));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void statusCloudIds(String sender, List<String> ids) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void statusMotherNature(String sender, String islandId) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void statusAction(String sender, String actualPlayer) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void statusPlanning(String sender, String actualPlayer) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void statusCharacterCard(String sender, Characters character) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void statusAssistantCard(String sender, String player, Integer weight) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void statusEndGame(String sender, String winner) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void statusCharacterCard(String sender, Map<String, Integer> money) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void statusPlayerMoney(String sender, Map<String, Integer> money) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void statusStudent(String sender, Characters character, Map<TeacherColor, Integer> quantity) {
 
     }
 
+    /**
+    * {@inheritDoc}
+    */
     @Override
     public void statusNoEntry(String sender, List<String> islandIds) {
 
