@@ -83,35 +83,35 @@ public class TurnController {
      */
     public boolean nextTurn() {
         if (state.equals(GameState.PLANNING)) {
-            messages++;
             int i = players.indexOf(activePlayer) + 1;
-            if (i >= players.size()) i = 0;
-            if (messages >= players.size()) {
+            if (i >= players.size()) {
                 state = GameState.next(state);
                 nicknameQueue = reader.getPlayersInOrder();
                 if (nicknameQueue.isEmpty()) return false;
                 activePlayer = nicknameQueue.get(0);
-                controlAndSkip();
+                if(playersToSkip.contains(activePlayer)) nextTurn();
                 return true;
             } else {
                 activePlayer = players.get(i);
+                if(playersToSkip.contains(activePlayer)) nextTurn();
                 return false;
             }
         } else if (state.equals(GameState.ACTION)) {
             actualCharacter = null;
+            nicknameQueue = reader.getPlayersInOrder();
             int i = nicknameQueue.indexOf(activePlayer) + 1;
             if (i >= nicknameQueue.size()) {
-                playersToSkip = new ArrayList<>(playersToSkip.stream()
-                        .filter(x -> !players.contains(x)).toList());
-                messages = 0;
-                startingPlayer++;
-                if (startingPlayer >= players.size()) startingPlayer = 0;
+                String player = players.get(0);
+                players.remove(player);
+                players.add(player);
+                playersToSkip = new ArrayList<>(playersToSkip);
                 state = GameState.next(state);
-                activePlayer = players.get(startingPlayer);
+                activePlayer = players.get(0);
+                if(playersToSkip.contains(activePlayer)) nextTurn();
                 return true;
             } else {
                 activePlayer = nicknameQueue.get(i);
-                controlAndSkip();
+                if(playersToSkip.contains(activePlayer)) nextTurn();
                 return false;
             }
         }

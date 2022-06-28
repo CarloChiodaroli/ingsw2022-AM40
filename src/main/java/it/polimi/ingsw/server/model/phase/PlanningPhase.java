@@ -134,7 +134,7 @@ public class PlanningPhase {
     private void endPhase() {
         if (playersInOrder.size() == players - playersToSkip.size()) {
             determinedOrder = true;
-            if (game.getTable().getBag().orElseThrow().howManyTotStudents() < game.getNumOfRegisteredPlayers() * game.getNumOfRegisteredPlayers() + 1) {
+            if (game.getTable().getBag().orElseThrow().howManyTotStudents() < game.getNumOfRegisteredPlayers() * (game.getNumOfRegisteredPlayers() + 1)) {
                 game.endGame();
             } else {
                 actualPlayer = 0;
@@ -164,14 +164,7 @@ public class PlanningPhase {
      */
     public Player getActualPlayer() {
         if (!determinedOrder) return null;
-        Player actualRealPlayer = playersInOrder.get(actualPlayer);
-        for (int i = 0; i < 4; i++) {
-            if (!playersToSkip.contains(actualRealPlayer)) return actualRealPlayer;
-            nextPlayer();
-            if (!activated) return actualRealPlayer;
-            actualRealPlayer = playersInOrder.get(actualPlayer);
-        }
-        return actualRealPlayer;
+        return playersInOrder.get(actualPlayer);
     }
 
     /**
@@ -181,6 +174,9 @@ public class PlanningPhase {
         actualPlayer++;
         if (actualPlayer >= playersInOrder.size()) {
             reset();
+        } else {
+            if(playersToSkip.contains(playersInOrder.get(actualPlayer)))
+                nextPlayer();
         }
     }
 
@@ -219,6 +215,10 @@ public class PlanningPhase {
      */
     public void unSkipPlayer(Player player) {
         playersToSkip.remove(player);
+    }
+
+    public List<Player> getPlayersToSkip(){
+        return playersToSkip;
     }
 
     // End of Round

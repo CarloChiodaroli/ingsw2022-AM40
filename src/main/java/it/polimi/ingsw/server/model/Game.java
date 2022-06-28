@@ -326,7 +326,8 @@ public class Game {
             return;
         }
         Player actualPlayer = planningPhase.getActualPlayer();
-        if (skippablePlayers.contains(actualPlayer)) return;
+        if (skippablePlayers.contains(actualPlayer))
+            throw new IllegalStateException("Impossible place to be");
         if (planningPhase.isInOrder()) {
             actionPhase.startPhase(actualPlayer);
         } else {

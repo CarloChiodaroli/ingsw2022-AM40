@@ -409,7 +409,6 @@ public class GameModel {
             result.remove(i);
             result.add(i, islands.get(i));
         }
-        System.out.println(result);
         return result;
     }
 

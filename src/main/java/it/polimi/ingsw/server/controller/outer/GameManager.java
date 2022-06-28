@@ -302,7 +302,7 @@ public class GameManager implements LobbyMessageReader {
     }
 
     /**
-     * Contrary to the {@link #addVirtualView(String, VirtualView) addVirtualView}, this method deletes a virtual view on player removal.
+     * Contrary to the {@link #addVirtualView(String, VirtualView) addVirtualView}, this method deletes a virtual view, and manages player removal.
      * @param nickname
      * @param notifyEnabled
      * @return
@@ -313,10 +313,12 @@ public class GameManager implements LobbyMessageReader {
             return virtualViewMap.isEmpty();
         }
         if (playMessagesReader.isGameStarted()) {
-            playMessagesReader.stopPlayer(nickname);
             virtualViewMap.remove(nickname);
             if (virtualViewMap.size() == 1) playMessagesReader.stop();
-            else playMessagesReader.sendStatus();
+            else {
+                playMessagesReader.stopPlayer(nickname);
+                playMessagesReader.sendStatus();
+            }
         } else {
             playMessagesReader.deletePlayer(nickname);
             assignedWizards.remove(nickname);

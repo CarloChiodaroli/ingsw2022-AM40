@@ -78,6 +78,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     @Override
     public void onUpdateNickname(String nickname) {
         this.nickname = nickname;
+        state.setMyName(nickname);
         client.sendMessage(new LoginMessage(this.nickname));
     }
 

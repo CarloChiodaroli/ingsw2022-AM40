@@ -464,7 +464,6 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                 GridPane.setColumnIndex(noEntry, 1);
                 GridPane.setRowIndex(noEntry, 4);
                 card.getChildren().add(noEntry);
-                System.out.println("Done");
             }
             card.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> idGetter(event, card));
             characterCardRep.getChildren().add(card);
@@ -667,16 +666,12 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
     private void updateAssistant() {
         int actualChildNumber = 0;
         assistant.setVisible(true);
-        for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < 10; i++) {
             Node assistantRep = assistant.getChildren().get(actualChildNumber);
-            assistantRep.setVisible(false);
-        }
-        for (int i = 1; i <= 10; i++) {
-            Node assistantRep = assistant.getChildren().get(actualChildNumber);
-            if (state.getAssistantCards().contains(i)) {
+            if (state.getAssistantCards().contains(i + 1)) {
                 assistantRep.setVisible(true);
             } else {
-                assistantRep.getStyleClass().remove("a" + (i));
+                assistantRep.getStyleClass().remove("a" + (i + 1));
                 assistantRep.getStyleClass().add(state.getWizard().get().toString());
             }
             actualChildNumber++;

@@ -39,14 +39,16 @@ public class Table {
     /**
      * Build the clouds
      *
-     * @param numberOfPlayer number of player to create
+     * @param numberOfClouds number of player to create
      */
-    public void buildClouds(int numberOfPlayer) throws IllegalStateException {
-        cloudList.clear();
-        for (int i = 0; i < numberOfPlayer; i++) {
-            Cloud cloud = new Cloud("c_" + (i + 1), numberOfPlayer + 1);
-            cloud.buildCloud(bag);
-            cloudList.add(cloud);
+    public void buildClouds(int numberOfClouds) throws IllegalStateException {
+        for (int i = 0; i < numberOfClouds; i++) {
+            String id = "c_" + (i + 1);
+            if(cloudList.stream().noneMatch(x-> x.getId().equals(id))){
+                Cloud cloud = new Cloud(id, numberOfClouds + 1);
+                cloud.buildCloud(bag);
+                cloudList.add(cloud);
+            }
         }
     }
 

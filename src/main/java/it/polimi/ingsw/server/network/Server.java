@@ -32,7 +32,7 @@ public class Server {
     /**
      * Adds a client to be managed by the server instance
      *
-     * @param nickname the nickname of the client
+     * @param nickname      the nickname of the client
      * @param clientHandler the ClientHandler of the client
      */
     public void addClient(String nickname, ClientHandler clientHandler) {
@@ -46,19 +46,19 @@ public class Server {
     /**
      * Remove a client by his nickname
      *
-     * @param nickname the VirtualView removed
+     * @param nickname      the VirtualView removed
      * @param notifyEnabled true to enable a lobby disconnection message
      */
     public void removeClient(String nickname, boolean notifyEnabled) {
         clientHandlerMap.remove(nickname);
-        if (
-                gameManager.removeVirtualView(nickname, notifyEnabled)) {
+        if (gameManager.removeVirtualView(nickname, notifyEnabled)) {
             exit();
         }
         LOGGER.info(() -> "Removed " + nickname + " from the client list.");
     }
 
     //SERVER'S MESSAGE RECEIVED
+
     /**
      * Forwards a received message from client to GameController
      *
