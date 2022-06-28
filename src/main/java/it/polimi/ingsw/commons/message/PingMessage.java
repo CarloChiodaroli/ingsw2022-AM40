@@ -5,6 +5,11 @@ package it.polimi.ingsw.commons.message;
  */
 public class PingMessage extends Message {
 
+    /**
+     * Constructor
+     *
+     * @param sender sender
+     */
     public PingMessage(String sender) {
         super(sender, MessageType.PING);
         super.message();

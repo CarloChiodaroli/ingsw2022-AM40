@@ -8,14 +8,18 @@ public class GenericMessage extends Message {
 
     private final String message;
 
-
+    /**
+     * Constructor
+     */
     public GenericMessage(String message) {
         super("server", MessageType.GENERIC);
         this.message = message;
         super.message();
     }
 
-
+    /**
+     * Getter
+     */
     public String getMessage() {
         controlWritten();
         return message;

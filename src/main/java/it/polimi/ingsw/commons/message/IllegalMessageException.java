@@ -5,10 +5,16 @@ package it.polimi.ingsw.commons.message;
  */
 public class IllegalMessageException extends RuntimeException {
 
+    /**
+     * Constructor
+     */
     public IllegalMessageException() {
         super();
     }
 
+    /**
+     * Constructor
+     */
     public IllegalMessageException(String message) {
         super(message);
     }
