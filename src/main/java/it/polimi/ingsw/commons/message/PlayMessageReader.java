@@ -149,6 +149,14 @@ public interface PlayMessageReader {
      */
     void statusEndGame(String sender, String winner);
 
+    /**
+     * While reconnecting, takes the personal deck status of the reconnecting client
+     *
+     * @param sender sender
+     * @param assistants list which represents the personal deck
+     */
+    void statusRemainingAssistants(String sender, List<String> assistants);
+
     // Expert
 
     /**

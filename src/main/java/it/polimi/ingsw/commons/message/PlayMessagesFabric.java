@@ -195,6 +195,10 @@ public abstract class PlayMessagesFabric {
         return new NormalPlayMessage(sender, "statusEndGame", winnerName);
     }
 
+    public static NormalPlayMessage statusRemainingAssistants(String sender, List<String> assistants){
+        return new NormalPlayMessage(sender, "statusRemainingAssistants", assistants);
+    }
+
     // Expert part
 
     /**

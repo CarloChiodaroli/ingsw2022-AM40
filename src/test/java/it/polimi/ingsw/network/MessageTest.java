@@ -523,6 +523,11 @@ class FakeGameManager implements PlayMessageReader {
 
     }
 
+    @Override
+    public void statusRemainingAssistants(String sender, List<String> assistants) {
+
+    }
+
     /**
      * {@inheritDoc}
      */

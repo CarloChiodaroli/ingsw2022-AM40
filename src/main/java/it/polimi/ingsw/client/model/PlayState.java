@@ -343,4 +343,8 @@ public class PlayState {
     public int getNumOfStudentsInCloud() {
         return numPlayers + 1;
     }
+
+    public void setPersonalDeck(List<String> personalDeck){
+        this.assistantCards = new ArrayList<>(personalDeck.stream().map(Integer::parseInt).toList());
+    }
 }

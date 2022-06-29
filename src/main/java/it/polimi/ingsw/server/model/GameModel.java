@@ -620,4 +620,9 @@ public class GameModel {
     public void unSkipPlayer(String name) {
         game.unSkipPlayer(getPlayer(name));
     }
+
+    public List<String> getRemainingAssistants(String name){
+        Player player = getPlayer(name);
+        return player.getPersonalDeck().stream().map(x -> "" + x.getWeight()).toList();
+    }
 }

@@ -168,4 +168,9 @@ public class OutboundController {
         inputController.excludeGameState(GameState.INITIAL);
         return model.getIslandsWithNoEntry();
     }
+
+    public List<String> getRemainingAssistants(String playerName) {
+        inputController.excludeGameState(GameState.INITIAL);
+        return model.getRemainingAssistants(playerName);
+    }
 }

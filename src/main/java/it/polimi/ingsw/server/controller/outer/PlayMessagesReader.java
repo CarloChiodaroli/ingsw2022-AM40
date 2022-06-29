@@ -98,38 +98,40 @@ public class PlayMessagesReader implements PlayMessageReader {
      * @param player player
      */
     private void sendCompleteStatus(String player) {
-        List<Message> commonAnswers = new ArrayList<>();
+        List<Message> answers = new ArrayList<>();
         List<String> islandIds = outbound.getAllIslandIds();
         List<String> cloudIds = outbound.getAllCloudIds();
-        commonAnswers.add(PlayMessagesFabric.statusIslandIds(server, islandIds));
+        answers.add(PlayMessagesFabric.statusIslandIds(server, islandIds));
         for (String islandId : islandIds) {
-            commonAnswers.add(PlayMessagesFabric.statusStudent(server, islandId, outbound.getStudentInPlace(mainPlayer, islandId)));
+            answers.add(PlayMessagesFabric.statusStudent(server, islandId, outbound.getStudentInPlace(mainPlayer, islandId)));
         }
-        commonAnswers.add(PlayMessagesFabric.statusMotherNature(server, outbound.actualMotherNaturePosition()));
-        commonAnswers.add(PlayMessagesFabric.statusCloudIds(server, cloudIds));
+        answers.add(PlayMessagesFabric.statusTower(server, conquestsMapBuilder(islandIds)));
+        answers.add(PlayMessagesFabric.statusMotherNature(server, outbound.actualMotherNaturePosition()));
+        answers.add(PlayMessagesFabric.statusCloudIds(server, cloudIds));
         for (String id : cloudIds) {
-            commonAnswers.add(PlayMessagesFabric.statusStudent(server, id, outbound.getStudentInPlace(mainPlayer, id)));
+            answers.add(PlayMessagesFabric.statusStudent(server, id, outbound.getStudentInPlace(mainPlayer, id)));
         }
         for (String name : playerNames) {
-            commonAnswers.add(PlayMessagesFabric.statusTower(server, name, outbound.getPlayerTowerColor(name)));
+            answers.add(PlayMessagesFabric.statusTower(server, name, outbound.getPlayerTowerColor(name)));
         }
+        answers.add(PlayMessagesFabric.statusRemainingAssistants(server, outbound.getRemainingAssistants(player)));
         if (expertVariant) {
             Map<Characters, Integer> prices = outbound.getCharacterCardPrices();
             inputController.setCharacters(prices);
             Map<String, Integer> pricesString = new HashMap<>();
             prices.forEach((k, v) -> pricesString.put(k.toString(), v));
-            commonAnswers.add(PlayMessagesFabric.statusCharacterCard(server, pricesString));
-            commonAnswers.add(PlayMessagesFabric.statusPlayerMoney(server, outbound.getPlayerMoney()));
+            answers.add(PlayMessagesFabric.statusCharacterCard(server, pricesString));
+            answers.add(PlayMessagesFabric.statusPlayerMoney(server, outbound.getPlayerMoney()));
             prices.entrySet().stream()
                     .filter(e -> CardCharacterizations.particular(e.getKey()).getOrDefault("Memory", -1) > 0)
                     .forEach(e -> {
                         Map<TeacherColor, Integer> toAdd = outbound.getStudentInPlace(mainPlayer, e.getKey().toString());
                         if (!toAdd.isEmpty())
-                            commonAnswers.add(PlayMessagesFabric.statusStudent(server, e.getKey(), toAdd));
+                            answers.add(PlayMessagesFabric.statusStudent(server, e.getKey(), toAdd));
                     });
-            commonAnswers.add(PlayMessagesFabric.statusNoEntry(server, outbound.getIslandsWithNoEntry()));
+            answers.add(PlayMessagesFabric.statusNoEntry(server, outbound.getIslandsWithNoEntry()));
         }
-        commonAnswers.forEach(x -> gameManager.sendMessage(player, x));
+        answers.forEach(x -> gameManager.sendMessage(player, x));
     }
 
     /**
@@ -260,9 +262,9 @@ public class PlayMessagesReader implements PlayMessageReader {
      * Save messages for move students
      *
      * @param player player
-     * @param color student color
+     * @param color  student color
      * @param fromId source place
-     * @param toId destination place
+     * @param toId   destination place
      */
     @Override
     public void moveStudent(String player, TeacherColor color, String fromId, String toId) {
@@ -305,10 +307,10 @@ public class PlayMessagesReader implements PlayMessageReader {
     /**
      * Save messages for switch students
      *
-     * @param player player
+     * @param player    player
      * @param fromColor student color in entrance
-     * @param toColor student olor in other place
-     * @param placeId other place of the switch
+     * @param toColor   student olor in other place
+     * @param placeId   other place of the switch
      */
     @Override
     public void moveStudent(String player, TeacherColor fromColor, TeacherColor toColor, String placeId) {
@@ -342,7 +344,7 @@ public class PlayMessagesReader implements PlayMessageReader {
      * Save messages for move mother nature
      *
      * @param player player
-     * @param hops number of steps
+     * @param hops   number of steps
      */
     @Override
     public void moveMotherNature(String player, Integer hops) {
@@ -375,12 +377,12 @@ public class PlayMessagesReader implements PlayMessageReader {
         }
         // command to read model
         List<String> islandIds = outbound.getAllIslandIds();
-        Map<String, TowerColor> dominia = new HashMap<>();
+        /*Map<String, TowerColor> dominia = new HashMap<>();
         islandIds.forEach(id ->
-                outbound.getTowerInPlace(id).ifPresent(tower -> dominia.put(id, tower)));
+                outbound.getTowerInPlace(id).ifPresent(tower -> dominia.put(id, tower)));*/
         // building answer list
         answers.add(PlayMessagesFabric.statusIslandIds(server, islandIds));
-        answers.add(PlayMessagesFabric.statusTower(server, dominia));
+        answers.add(PlayMessagesFabric.statusTower(server, conquestsMapBuilder(islandIds)));
         answers.add(PlayMessagesFabric.statusStudent(
                 server,
                 outbound.actualMotherNaturePosition(),
@@ -389,7 +391,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         if (expertVariant && savedIslandId != null)
             answers.add(PlayMessagesFabric.statusStudent(server, savedIslandId, outbound.getStudentInPlace(player, savedIslandId)));
         answers.add(PlayMessagesFabric.statusMotherNature(server, outbound.actualMotherNaturePosition()));
-        if(expertVariant) answers.add(PlayMessagesFabric.statusNoEntry(server, outbound.getIslandsWithNoEntry()));
+        if (expertVariant) answers.add(PlayMessagesFabric.statusNoEntry(server, outbound.getIslandsWithNoEntry()));
         answers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
         // sending answers
         answers.forEach(gameManager::broadcastMessage);
@@ -399,11 +401,18 @@ public class PlayMessagesReader implements PlayMessageReader {
         }
     }
 
+    private Map<String, TowerColor> conquestsMapBuilder(List<String> islandIds) {
+        Map<String, TowerColor> dominia = new HashMap<>();
+        islandIds.forEach(id ->
+                outbound.getTowerInPlace(id).ifPresent(tower -> dominia.put(id, tower)));
+        return dominia;
+    }
+
     /**
      * Save messages for choose a cloud
      *
      * @param player player name
-     * @param id cloud id
+     * @param id     cloud id
      */
     @Override
     public void chooseCloud(String player, String id) {
@@ -437,7 +446,7 @@ public class PlayMessagesReader implements PlayMessageReader {
     /**
      * Save messages for play a character card
      *
-     * @param player player name
+     * @param player    player name
      * @param character character chose
      */
     @Override
@@ -456,9 +465,9 @@ public class PlayMessagesReader implements PlayMessageReader {
     /**
      * Save messages for play a character card that needs an island
      *
-     * @param player player name
+     * @param player    player name
      * @param character character chose
-     * @param id island id
+     * @param id        island id
      */
     @Override
     public void playCharacterCard(String player, Characters character, String id) {
@@ -477,9 +486,9 @@ public class PlayMessagesReader implements PlayMessageReader {
     /**
      * Save messages for play a character card that needs a color
      *
-     * @param player player name
+     * @param player    player name
      * @param character character chose
-     * @param color chosen color
+     * @param color     chosen color
      */
     @Override
     public void playCharacterCard(String player, Characters character, TeacherColor color) {
@@ -517,7 +526,8 @@ public class PlayMessagesReader implements PlayMessageReader {
             if (inputController.characterEffectsAllPlayers(actual)) particular.addAll(playerDashboard(player));
             else if (player.equals(getActualPlayer()) && inputController.characterEffectsPlayer(actual))
                 particular.addAll(playerDashboard(player));
-            if (inputController.characterTeacherBehaviour(actual)) particular.add(PlayMessagesFabric.statusTeacher(server, player, outbound.getTeacherInPlace(player)));
+            if (inputController.characterTeacherBehaviour(actual))
+                particular.add(PlayMessagesFabric.statusTeacher(server, player, outbound.getTeacherInPlace(player)));
             particular.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));
             particular.forEach(answer -> gameManager.sendMessage(player, answer));
         });
@@ -528,6 +538,8 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     /**
      * Send error message
+     *
+     * <br> {@inheritDoc}
      */
     @Override
     public void statusCharacterCard(String sender, Characters character) {
@@ -536,6 +548,8 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     /**
      * Send error message
+     *
+     * <br> {@inheritDoc}
      */
     @Override
     public void statusAssistantCard(String sender, String player, Integer weight) {
@@ -544,6 +558,8 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     /**
      * Send error message
+     *
+     * <br> {@inheritDoc}
      */
     @Override
     public void statusEndGame(String sender, String winner) {
@@ -552,12 +568,29 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     /**
      * Send error message
+     *
+     * <br> {@inheritDoc}
+     */
+    @Override
+    public void statusRemainingAssistants(String sender, List<String> assistants) {
+        errorIllegalMessage();
+    }
+
+    /**
+     * Send error message
+     *
+     * <br> {@inheritDoc}
      */
     @Override
     public void statusStudent(String sender, String id, Map<TeacherColor, Integer> quantity) {
         errorIllegalMessage();
     }
 
+    /**
+     * Send error message
+     *
+     * <br> {@inheritDoc}
+     */
     @Override
     public void statusTeacher(String sender, String id, List<TeacherColor> which) {
         errorIllegalMessage();
@@ -565,6 +598,8 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     /**
      * Send error message
+     *
+     * <br> {@inheritDoc}
      */
     @Override
     public void statusTower(String sender, Map<String, TowerColor> conquests) {
@@ -573,6 +608,8 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     /**
      * Send error message
+     *
+     * <br> {@inheritDoc}
      */
     @Override
     public void statusTower(String sender, String player, TowerColor color) {
@@ -581,6 +618,8 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     /**
      * Send error message
+     *
+     * <br> {@inheritDoc}
      */
     @Override
     public void statusIslandIds(String sender, List<String> ids) {
@@ -589,6 +628,8 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     /**
      * Send error message
+     *
+     * <br> {@inheritDoc}
      */
     @Override
     public void statusCloudIds(String sender, List<String> ids) {
@@ -597,6 +638,8 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     /**
      * Send error message
+     *
+     * <br> {@inheritDoc}
      */
     @Override
     public void statusMotherNature(String sender, String islandId) {
@@ -605,6 +648,8 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     /**
      * Send error message
+     *
+     * <br> {@inheritDoc}
      */
     @Override
     public void statusAction(String sender, String actualPlayer) {
@@ -613,6 +658,8 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     /**
      * Send error message
+     *
+     * <br> {@inheritDoc}
      */
     @Override
     public void statusPlanning(String sender, String actualPlayer) {
@@ -621,6 +668,8 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     /**
      * Send error message
+     *
+     * <br> {@inheritDoc}
      */
     @Override
     public void statusCharacterCard(String sender, Map<String, Integer> money) {
@@ -629,6 +678,8 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     /**
      * Send error message
+     *
+     * <br> {@inheritDoc}
      */
     @Override
     public void statusPlayerMoney(String sender, Map<String, Integer> money) {
@@ -637,6 +688,8 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     /**
      * Send error message
+     *
+     * <br> {@inheritDoc}
      */
     @Override
     public void statusStudent(String sender, Characters character, Map<TeacherColor, Integer> quantity) {
@@ -645,6 +698,8 @@ public class PlayMessagesReader implements PlayMessageReader {
 
     /**
      * Send error message
+     *
+     * <br> {@inheritDoc}
      */
     @Override
     public void statusNoEntry(String sender, List<String> islandIds) {

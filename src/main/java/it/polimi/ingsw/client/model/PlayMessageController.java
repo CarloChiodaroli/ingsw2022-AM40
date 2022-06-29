@@ -261,6 +261,12 @@ public class PlayMessageController implements PlayMessageReader {
         controller.getTaskQueue().execute(() -> view.showEndGame(state.getWinner()));
     }
 
+    @Override
+    public void statusRemainingAssistants(String sender, List<String> assistants) {
+        controlServer(sender);
+        state.setPersonalDeck(assistants);
+    }
+
     // Expert
 
     /**
