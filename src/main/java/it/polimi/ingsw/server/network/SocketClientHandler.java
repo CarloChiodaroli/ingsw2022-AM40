@@ -32,6 +32,7 @@ public class SocketClientHandler implements ClientHandler, Runnable {
     private final Gson gson;
 
     private boolean receivedPing;
+    private Thread pingThread;
 
     /**
      * Default constructor
@@ -142,6 +143,7 @@ public class SocketClientHandler implements ClientHandler, Runnable {
                 Server.LOGGER.severe(e.getMessage());
             }
             connected = false;
+            pingThread.interrupt();
             Thread.currentThread().interrupt();
 
             socketServer.onDisconnect(this);
@@ -164,7 +166,7 @@ public class SocketClientHandler implements ClientHandler, Runnable {
     }
 
     private void pingKeepAlive() {
-        new Thread(new Runnable() {
+        pingThread = new Thread(new Runnable() {
             int misses = 0;
 
             @Override
@@ -188,7 +190,9 @@ public class SocketClientHandler implements ClientHandler, Runnable {
                     }
                 }
             }
-        }).start();
+        });
+
+        pingThread.start();
     }
 
 }
