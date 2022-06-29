@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Socket implementation of the {@link ClientHandler} interface.
@@ -32,7 +35,14 @@ public class SocketClientHandler implements ClientHandler, Runnable {
     private final Gson gson;
 
     private boolean receivedPing;
-    private Thread pingThread;
+    private boolean receivedMessage;
+    private ScheduledExecutorService pinger;
+    private Thread baseHandlerThread;
+    private int misses = 0;
+    private int fromLastMessage = 0;
+
+    private final static int PING_TO_LOSE = 5;
+    private final static int TIME_TO_LOSE = 120;
 
     /**
      * Default constructor
@@ -48,6 +58,8 @@ public class SocketClientHandler implements ClientHandler, Runnable {
         this.inputLock = new Object();
         this.outputLock = new Object();
 
+        this.pinger = Executors.newSingleThreadScheduledExecutor();
+
         try {
             this.output = new PrintWriter(client.getOutputStream(), true); // Output to client
             this.input = new BufferedReader(new InputStreamReader(client.getInputStream())); // Input from client
@@ -56,12 +68,14 @@ public class SocketClientHandler implements ClientHandler, Runnable {
         }
 
         receivedPing = false;
+        receivedMessage = false;
     }
 
     @Override
     public void run() {
         try {
             pingKeepAlive();
+            baseHandlerThread = Thread.currentThread();
             handleClientConnection();
         } catch (IOException e) {
             Server.LOGGER.severe("Client " + client.getInetAddress() + " connection dropped.");
@@ -100,16 +114,19 @@ public class SocketClientHandler implements ClientHandler, Runnable {
                         Server.LOGGER.info(() -> "Error in input stream " + e.getMessage());
                         disconnect();
                     }
-                    if (message != null)
+                    if (message != null) {
+
                         if (message.getMessageType() != MessageType.PING) {
                             if (message.getMessageType() == MessageType.LOGIN) {
                                 socketServer.addClient(message.getSenderName(), this);
                             } else {
                                 socketServer.onMessageReceived(message);
                             }
+                            receivedMessage = true;
                         } else {
                             receivedPing = true;
                         }
+                    }
                 }
             }
         } catch (ClassCastException e) {
@@ -143,8 +160,8 @@ public class SocketClientHandler implements ClientHandler, Runnable {
                 Server.LOGGER.severe(e.getMessage());
             }
             connected = false;
-            pingThread.interrupt();
-            Thread.currentThread().interrupt();
+            pinger.shutdownNow();
+            baseHandlerThread.interrupt();
 
             socketServer.onDisconnect(this);
         }
@@ -166,33 +183,31 @@ public class SocketClientHandler implements ClientHandler, Runnable {
     }
 
     private void pingKeepAlive() {
-        pingThread = new Thread(new Runnable() {
-            int misses = 0;
+        pinger.scheduleAtFixedRate(this::pingerControls, 0, 1000, TimeUnit.MILLISECONDS);
+    }
 
-            @Override
-            public void run() {
-                while (true) {
-                    if (!receivedPing) {
-                        System.out.println("MISSED ping from " + client.getInetAddress() + ":" + client.getPort());
-                        System.out.println(misses);
-                        misses++;
-                    } else {
-                        System.out.println("received ping from " + client.getInetAddress() + ":" + client.getPort());
-                        misses = 0;
-                        receivedPing = false;
-                    }
-                    if (misses >= 5) disconnect();
-                    sendMessage(new PingMessage("server"));
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+    private void pingerControls() {
+        if (!receivedPing) {
+            if (misses > (PING_TO_LOSE - 3)) {
+                Server.LOGGER.info(() -> "MISSED ping from" + client.getPort() + " for the " + misses + "th time");
             }
-        });
-
-        pingThread.start();
+            misses++;
+        } else {
+            misses = 0;
+            receivedPing = false;
+        }
+        if (!receivedMessage) {
+            if (fromLastMessage > (TIME_TO_LOSE - 5)) {
+                Server.LOGGER.info(() -> "Not Received messages from" + client.getPort() + " from " + fromLastMessage + " seconds");
+            }
+            fromLastMessage++;
+        } else {
+            fromLastMessage = 0;
+            receivedMessage = false;
+        }
+        if (misses >= PING_TO_LOSE) disconnect();
+        if (fromLastMessage >= TIME_TO_LOSE) disconnect();
+        sendMessage(new PingMessage("server"));
     }
 
 }

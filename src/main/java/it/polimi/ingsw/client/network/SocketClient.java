@@ -38,6 +38,7 @@ public class SocketClient extends Client {
     private int misses;
 
     private static final int SOCKET_TIMEOUT = 10000;
+    private final static int PING_TO_LOSE = 5;
 
     private final static String defaultAddress = "localhost";
     private final static String defaultPort = "16847";
@@ -117,14 +118,15 @@ public class SocketClient extends Client {
                     message = gson.fromJson(rawGson, Message.class);
                     message = (Message) gson.fromJson(rawGson, message.getMessageType().getImplementingClass());
                 } catch (IOException e) {
-                    message = new ErrorMessage(null, "Connection lost with the server.");
                     disconnect();
                     readExecutionQueue.shutdownNow();
+                    return;
                 }
-                if(message.getMessageType().equals(MessageType.PING)){
+                if(message != null){
                     receivedPing = true;
-                } else {
-                    notifyObserver(message);
+                    if(!message.getMessageType().equals(MessageType.PING)){
+                        notifyObserver(message);
+                    }
                 }
             }
         });
@@ -152,6 +154,8 @@ public class SocketClient extends Client {
                 readExecutionQueue.shutdownNow();
                 enablePinger(false);
                 socket.close();
+                Message message = new ErrorMessage(null, "Connection lost with the server.");
+                notifyObserver(message);
             }
         } catch (IOException e) {
             notifyObserver(new ErrorMessage(null, "Could not disconnect."));
@@ -176,6 +180,7 @@ public class SocketClient extends Client {
             misses = 0;
             receivedPing = false;
         }
+        if(misses >= PING_TO_LOSE) disconnect();
         sendMessage(new PingMessage("Client"));
     }
 }

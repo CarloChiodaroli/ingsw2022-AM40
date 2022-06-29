@@ -14,6 +14,7 @@ import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 /**
  * 1st type of Character card, this card decors the action phase's {@link StudentMovement} State, modelling all student movement related character card behaviours.
  */
@@ -42,7 +43,7 @@ public class StudentMovementCard extends CharacterCard {
      *
      * @return color of the caught student
      */
-    private TeacherColor getStudentFromBag(){
+    private TeacherColor getStudentFromBag() {
         return getActionFase().getGame().getTable().getStudentFromBag().orElseThrow();
     }
 
@@ -70,11 +71,15 @@ public class StudentMovementCard extends CharacterCard {
     @Override
     public void handle(Player player, TeacherColor fromEntrance, TeacherColor toColor, String place) {
         if (!isInUse()) return;
-        if (super.getCharacterization("Room") != 0 && place.equals("Room")) {
-            decorated.handle(fromEntrance, Optional.of(player.getEntrance()), Optional.of(player.getRoomTable()));
-            decorated.handle(toColor, Optional.of(player.getRoomTable()), Optional.of(player.getEntrance()));
-            super.updateUse();
-        } else if (super.getCharacterization("Memory") == 6 && place.equals("Card")) {
+        if (super.getCharacterization("Room") != 0)
+            if (place.equals("Room")) {
+                decorated.handle(fromEntrance, Optional.of(player.getEntrance()), Optional.of(player.getRoomTable()));
+                decorated.handle(toColor, Optional.of(player.getRoomTable()), Optional.of(player.getEntrance()));
+                super.updateUse();
+            } else {
+                throw new IllegalArgumentException("Not valid place id");
+            }
+        else if (super.getCharacterization("Memory") == 6 && place.equals("Card")) {
             TeacherColor tmp = null;
             for (TeacherColor color : TeacherColor.values()) {
                 if (color != fromEntrance && color != toColor && students.howManyStudents(color) > 0) {
@@ -90,6 +95,8 @@ public class StudentMovementCard extends CharacterCard {
             decorated.handle(toColor, Optional.of(students), Optional.of(player.getEntrance()));
             students.addStudent(tmp);
             super.updateUse();
+        } else {
+            throw new IllegalStateException("Not valid command in this state");
         }
     }
 
@@ -98,13 +105,13 @@ public class StudentMovementCard extends CharacterCard {
      */
     @Override
     public void activator(ActionFaseState decorated, Player player) throws InvalidParameterException {
-        if(super.getCharacterization("EffectAllPlayers") > 0){
+        if (super.getCharacterization("EffectAllPlayers") > 0) {
             throw new IllegalStateException("This card needs a student color to be activated");
         }
         playerPays(player);
         this.decorated = (StudentMovement) decorated;
         super.activator(player);
-        if(super.getCharacterization("TeacherBehaviour") > 0){
+        if (super.getCharacterization("TeacherBehaviour") > 0) {
             controlTeachers(player);
         }
     }
@@ -158,11 +165,11 @@ public class StudentMovementCard extends CharacterCard {
      * {@inheritDoc}
      */
     @Override
-    public Optional<StudentsManager> getStudentContainer(){
+    public Optional<StudentsManager> getStudentContainer() {
         return Optional.ofNullable(students);
     }
 
-    public int getMaxUsages(){
+    public int getMaxUsages() {
         return maxUsages;
     }
 }
