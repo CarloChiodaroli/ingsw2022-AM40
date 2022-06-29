@@ -265,6 +265,7 @@ public class GameManager implements LobbyMessageReader {
                     virtualView.showLoginResult(true, true);
                     virtualView.showAssignedWizard(assignedWizards.get(nickname));
                     virtualView.showNumOfPlayers(maxPlayers);
+                    virtualView.showExpertVariant(playMessagesReader.isExpertVariant());
                     playMessagesReader.unStopPlayer(nickname);
                     playMessagesReader.sendCompleteGameStatus(nickname);
                     playMessagesReader.sendStatus();

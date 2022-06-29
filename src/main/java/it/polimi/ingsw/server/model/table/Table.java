@@ -48,6 +48,12 @@ public class Table {
                 Cloud cloud = new Cloud(id, numberOfClouds + 1);
                 cloud.buildCloud(bag);
                 cloudList.add(cloud);
+            } else {
+                Cloud cloud = cloudList.stream().filter(x -> x.getId().equals(id)).findFirst().get();
+                int remainingStudents = cloud.getMaxStudents() - cloud.howManyTotStudents();
+                for(int j = 0; j < remainingStudents; j++){
+                    bag.getStudent().ifPresent(cloud::addStudent);
+                }
             }
         }
     }

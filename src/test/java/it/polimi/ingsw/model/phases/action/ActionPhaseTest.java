@@ -480,7 +480,7 @@ public class ActionPhaseTest {
         actionPhase.activateCard(Characters.JESTER, game.getPlayers().get(0));
         TeacherColor color = game.getPlayers().get(0).getEntrance().getStudent().get();
         game.getPlayers().get(0).getEntrance().addStudent(color);
-        actionPhase.request(game.getPlayers().get(0), color, TeacherColor.PINK, "old");
+        assertThrowsIllegalStateException(() -> actionPhase.request(game.getPlayers().get(0), color, TeacherColor.PINK, "old"));
     }
 
 }

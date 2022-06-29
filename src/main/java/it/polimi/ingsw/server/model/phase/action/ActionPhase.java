@@ -15,7 +15,10 @@ import it.polimi.ingsw.server.model.table.Island;
 import it.polimi.ingsw.server.model.table.MotherNature;
 
 import java.security.InvalidParameterException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 /**
  * Manages the game's Action Phase in normal and expert Variants.
@@ -339,6 +342,12 @@ public class ActionPhase {
         }
         if (!characterCards.containsKey(character)) {
             throw new IllegalStateException("Requested card is not in this play");
+        }
+    }
+
+    public void autoRun(Player player) {
+        if (player.getEntrance().getMaxStudents() > player.getEntrance().howManyTotStudents()) {
+            states.get(ActionPhaseStateType.CLOUD).handle(player, game.getTable().getCloudList().get(0));
         }
     }
 

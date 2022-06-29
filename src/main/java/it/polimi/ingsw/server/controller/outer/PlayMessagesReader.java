@@ -141,7 +141,6 @@ public class PlayMessagesReader implements PlayMessageReader {
      */
     private void sendAllPrivate(String receiverName) {
         List<Message> answers = new ArrayList<>(playerDashboard(receiverName));
-        answers.add(PlayMessagesFabric.statusPlanning(server, turnController.getActivePlayer()));
         answers.forEach(answer -> gameManager.sendMessage(receiverName, answer));
     }
 
@@ -153,6 +152,7 @@ public class PlayMessagesReader implements PlayMessageReader {
     public void sendCompleteGameStatus(String playerName) {
         sendCompleteStatus(playerName);
         sendAllPrivate(playerName);
+        sendStatus();
         //playerNames.forEach(this::sendAllPrivate);
     }
 
@@ -193,6 +193,7 @@ public class PlayMessagesReader implements PlayMessageReader {
         }
         playerNames.forEach(this::sendCompleteStatus);
         playerNames.forEach(this::sendAllPrivate);
+        sendStatus();
     }
 
     /**
@@ -431,6 +432,9 @@ public class PlayMessagesReader implements PlayMessageReader {
             broadcastAnswers.add(PlayMessagesFabric.statusStudent(server, cId, outbound.getStudentInPlace(mainPlayer, cId)));
         }
         if (turnController.nextTurn()) {
+            playerNames.forEach(name -> {
+                sendAllPrivate(name);
+            });
             broadcastAnswers.add(PlayMessagesFabric.statusPlanning(server, getActualPlayer()));
         } else {
             broadcastAnswers.add(PlayMessagesFabric.statusAction(server, turnController.getActivePlayer()));

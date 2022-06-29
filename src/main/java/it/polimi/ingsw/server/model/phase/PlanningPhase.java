@@ -215,7 +215,9 @@ public class PlanningPhase {
      */
     public void skipPlayer(Player player) {
         playersToSkip.add(player);
-        playersInOrder.remove(player);
+        if(playersInOrder.indexOf(getActualPlayer()) > actualPlayer){
+            playersInOrder.remove(player);
+        }
     }
 
     /**

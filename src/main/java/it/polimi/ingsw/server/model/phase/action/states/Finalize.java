@@ -28,8 +28,15 @@ public class Finalize extends ActionFaseState {
         StudentsManager destination = player.getEntrance();
         int tmp = cloud.howManyTotStudents();
         for (int i = 0; i < tmp; i++) {
-            cloud.getStudent().ifPresent(destination::addStudent);
+            cloud.getStudent().ifPresent(x -> {
+                if(!destination.addStudent(x)){
+                    cloud.addStudent(x);
+                    return;
+                }
+            });
         }
-        getActionFase().getGame().removeCloud(cloud);
+        if(cloud.howManyTotStudents() == 0){
+            getActionFase().getGame().removeCloud(cloud);
+        }
     }
 }

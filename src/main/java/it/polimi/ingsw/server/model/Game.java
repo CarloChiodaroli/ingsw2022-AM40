@@ -30,6 +30,7 @@ public class Game {
     private String endPlayer = null;
     private static final String draw = "No one";
     private List<Player> skippablePlayers;
+    private List<Player> playersToUnskip;
 
 
     /**
@@ -41,6 +42,7 @@ public class Game {
         this.skippablePlayers = new ArrayList<>();
         initializeOrder();
         this.preGamePlayersList = new EnumMap<>(TowerColor.class);
+        this.playersToUnskip = new ArrayList<>();
     }
 
     /**
@@ -331,6 +333,9 @@ public class Game {
         if (planningPhase.isInOrder()) {
             actionPhase.startPhase(actualPlayer);
         } else {
+            skippablePlayers.forEach(x -> actionPhase.autoRun(x));
+            playersToUnskip.forEach(x -> skippablePlayers.remove(x));
+            playersToUnskip.clear();
             planningPhase.activate();
         }
     }
@@ -353,7 +358,7 @@ public class Game {
      * @param player player to not skip
      */
     public void unSkipPlayer(Player player) {
-        skippablePlayers.remove(player);
+        playersToUnskip.add(player);
         planningPhase.unSkipPlayer(player);
     }
 
