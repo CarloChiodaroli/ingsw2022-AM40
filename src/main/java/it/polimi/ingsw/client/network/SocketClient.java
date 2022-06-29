@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.commons.message.ErrorMessage;
 import it.polimi.ingsw.commons.message.Message;
+import it.polimi.ingsw.commons.message.MessageType;
 import it.polimi.ingsw.commons.message.PingMessage;
 
 import java.io.BufferedReader;
@@ -32,6 +33,9 @@ public class SocketClient extends Client {
     private final BufferedReader input;
 
     private final Gson gson;
+
+    private boolean receivedPing;
+    private int misses;
 
     private static final int SOCKET_TIMEOUT = 10000;
 
@@ -93,6 +97,8 @@ public class SocketClient extends Client {
         this.pinger = Executors.newSingleThreadScheduledExecutor();
         GsonBuilder gsonBuilder = new GsonBuilder();
         this.gson = gsonBuilder.create();
+        this.receivedPing = false;
+        this.misses = 0;
     }
 
     /**
@@ -110,14 +116,16 @@ public class SocketClient extends Client {
                     } while (rawGson == null);
                     message = gson.fromJson(rawGson, Message.class);
                     message = (Message) gson.fromJson(rawGson, message.getMessageType().getImplementingClass());
-                    String forLambda = rawGson;
-                    //Client.LOGGER.info(() -> "Received: " + forLambda);
                 } catch (IOException e) {
                     message = new ErrorMessage(null, "Connection lost with the server.");
                     disconnect();
                     readExecutionQueue.shutdownNow();
                 }
-                notifyObserver(message);
+                if(message.getMessageType().equals(MessageType.PING)){
+                    receivedPing = true;
+                } else {
+                    notifyObserver(message);
+                }
             }
         });
     }
@@ -155,9 +163,19 @@ public class SocketClient extends Client {
      */
     public void enablePinger(boolean enabled) {
         if (enabled) {
-            pinger.scheduleAtFixedRate(() -> sendMessage(new PingMessage("Client")), 0, 1000, TimeUnit.MILLISECONDS);
+            pinger.scheduleAtFixedRate(this::pingerControls, 0, 1000, TimeUnit.MILLISECONDS);
         } else {
             pinger.shutdownNow();
         }
+    }
+
+    private void pingerControls(){
+        if(!receivedPing) {
+            misses++;
+        } else {
+            misses = 0;
+            receivedPing = false;
+        }
+        sendMessage(new PingMessage("Client"));
     }
 }

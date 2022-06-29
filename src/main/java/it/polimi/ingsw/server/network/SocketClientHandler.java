@@ -6,6 +6,7 @@ import com.google.gson.JsonSyntaxException;
 import it.polimi.ingsw.commons.message.ErrorMessage;
 import it.polimi.ingsw.commons.message.Message;
 import it.polimi.ingsw.commons.message.MessageType;
+import it.polimi.ingsw.commons.message.PingMessage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class SocketClientHandler implements ClientHandler, Runnable {
 
     private final Gson gson;
 
+    private boolean receivedPing;
 
     /**
      * Default constructor
@@ -51,11 +53,14 @@ public class SocketClientHandler implements ClientHandler, Runnable {
         } catch (IOException e) {
             Server.LOGGER.severe(e.getMessage());
         }
+
+        receivedPing = false;
     }
 
     @Override
     public void run() {
         try {
+            pingKeepAlive();
             handleClientConnection();
         } catch (IOException e) {
             Server.LOGGER.severe("Client " + client.getInetAddress() + " connection dropped.");
@@ -94,15 +99,16 @@ public class SocketClientHandler implements ClientHandler, Runnable {
                         Server.LOGGER.info(() -> "Error in input stream " + e.getMessage());
                         disconnect();
                     }
-                    if (message != null && message.getMessageType() != MessageType.PING) {
-                        if (message.getMessageType() == MessageType.LOGIN) {
-                            socketServer.addClient(message.getSenderName(), this);
+                    if (message != null)
+                        if (message.getMessageType() != MessageType.PING) {
+                            if (message.getMessageType() == MessageType.LOGIN) {
+                                socketServer.addClient(message.getSenderName(), this);
+                            } else {
+                                socketServer.onMessageReceived(message);
+                            }
                         } else {
-                            Message forLambda = message;
-                            //Server.LOGGER.info(() -> "Received: " + forLambda);
-                            socketServer.onMessageReceived(message);
+                            receivedPing = true;
                         }
-                    }
                 }
             }
         } catch (ClassCastException e) {
@@ -152,8 +158,37 @@ public class SocketClientHandler implements ClientHandler, Runnable {
         synchronized (outputLock) {
             String rawGson = gson.toJson(message);
             output.println(rawGson);
-            if (!message.getMessageType().equals(MessageType.PING)) Server.LOGGER.info(() -> "Sent: " + rawGson);
+            if (!message.getMessageType().equals(MessageType.PING))
+                Server.LOGGER.info(() -> "Sent: " + rawGson);
         }
+    }
+
+    private void pingKeepAlive() {
+        new Thread(new Runnable() {
+            int misses = 0;
+
+            @Override
+            public void run() {
+                while (true) {
+                    if (!receivedPing) {
+                        System.out.println("MISSED ping from " + client.getInetAddress() + ":" + client.getPort());
+                        System.out.println(misses);
+                        misses++;
+                    } else {
+                        System.out.println("received ping from " + client.getInetAddress() + ":" + client.getPort());
+                        misses = 0;
+                        receivedPing = false;
+                    }
+                    if (misses >= 5) disconnect();
+                    sendMessage(new PingMessage("server"));
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
 }

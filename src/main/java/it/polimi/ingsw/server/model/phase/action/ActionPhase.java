@@ -101,7 +101,6 @@ public class ActionPhase {
         if (activated) return;
         if (!game.getPianificationFase().getActualPlayer().equals(player)) return;
         player.enable();
-        System.out.println(player);
         // reset of action phase state
         activated = true;
         possibleStudentMovements = getMaxStudentMovements();
