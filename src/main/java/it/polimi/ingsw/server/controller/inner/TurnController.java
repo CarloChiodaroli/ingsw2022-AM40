@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.controller.inner;
 
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
+import it.polimi.ingsw.server.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class TurnController {
     private int messages;
     private String savedIsland;
     private List<String> playersToSkip;
+    private List<String> playersToAdd;
 
     /**
      * Constructor
@@ -32,6 +34,7 @@ public class TurnController {
         this.reader = reader;
         setInitialState();
         playersToSkip = new ArrayList<>();
+        playersToAdd = new ArrayList<>();
     }
 
     /**
@@ -101,6 +104,8 @@ public class TurnController {
             nicknameQueue = reader.getPlayersInOrder();
             int i = nicknameQueue.indexOf(activePlayer) + 1;
             if (i >= nicknameQueue.size()) {
+                players.addAll(playersToAdd);
+                playersToAdd.clear();
                 String player = players.get(0);
                 players.remove(player);
                 players.add(player);
@@ -200,7 +205,8 @@ public class TurnController {
      * @param playerName player don't skip
      */
     public void unSkipPlayer(String playerName) {
-        players.add(playerName);
+        playersToSkip.remove(playerName);
+        playersToAdd.add(playerName);
     }
 
     /**

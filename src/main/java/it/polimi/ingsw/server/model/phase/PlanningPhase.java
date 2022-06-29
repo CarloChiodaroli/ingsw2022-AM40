@@ -23,6 +23,7 @@ public class PlanningPhase {
     private final Game game;
     private int countRound = 0;
     private List<Player> playersToSkip;
+    private List<Player> playersToUnskip;
 
     /**
      * Class Constructor
@@ -38,6 +39,7 @@ public class PlanningPhase {
             this.players = 2;
         }
         this.playersToSkip = new ArrayList<>();
+        this.playersToUnskip = new ArrayList<>();
     }
 
     // Start of Planning phase
@@ -54,6 +56,8 @@ public class PlanningPhase {
         playersInOrder = new ArrayList<>();
         playedCards = new IdentityHashMap<>();
         actualPlayer = 0;
+        playersToSkip.removeAll(playersToUnskip);
+        playersToUnskip.clear();
         game.buildClouds();
     }
 
@@ -81,6 +85,8 @@ public class PlanningPhase {
             throw new IllegalStateException("Planning phase is not activated");
         if (determinedOrder)
             throw new IllegalStateException("Player's order already determined");
+        if (playersToSkip.contains(applicantPlayer))
+            throw new InvalidParameterException("Player needs to wait next round");
         if (isPlayerPresent(applicantPlayer))
             throw new IllegalStateException("Player has already played a card");
         if (!acceptedPlayerCard(card, applicantPlayer))
@@ -132,14 +138,17 @@ public class PlanningPhase {
      * Asks the game to create new clouds with students
      */
     private void endPhase() {
-        if (playersInOrder.size() == players - playersToSkip.size()) {
+        if (playersInOrder.size() >= players - playersToSkip.size()) {
             determinedOrder = true;
             if (game.getTable().getBag().orElseThrow().howManyTotStudents() < game.getNumOfRegisteredPlayers() * (game.getNumOfRegisteredPlayers() + 1)) {
                 game.endGame();
             } else {
                 actualPlayer = 0;
                 Player actualRealPlayer = getActualPlayer();
-                if (playersToSkip.contains(actualRealPlayer)) throw new IllegalStateException("No Players are Playing");
+                if (playersToSkip.contains(actualRealPlayer)) {
+                    nextPlayer();
+                    actualRealPlayer = getActualPlayer();
+                }
                 game.getActionPhase().startPhase(actualRealPlayer);
                 countRound++;
             }
@@ -206,6 +215,7 @@ public class PlanningPhase {
      */
     public void skipPlayer(Player player) {
         playersToSkip.add(player);
+        playersInOrder.remove(player);
     }
 
     /**
@@ -214,7 +224,7 @@ public class PlanningPhase {
      * @param player player don't skip
      */
     public void unSkipPlayer(Player player) {
-        playersToSkip.remove(player);
+        playersToUnskip.add(player);
     }
 
     public List<Player> getPlayersToSkip(){
