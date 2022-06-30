@@ -42,7 +42,7 @@ public class SocketClientHandler implements ClientHandler, Runnable {
     private int fromLastMessage = 0;
 
     private final static int PING_TO_LOSE = 5;
-    private final static int TIME_TO_LOSE = 120;
+    private final static int TIME_TO_LOSE = 180;
 
     /**
      * Default constructor

@@ -58,9 +58,11 @@ public class StudentMovementCard extends CharacterCard {
             students.addStudent(getStudentFromBag());
         } else {
             decorated.handle(color, from, to);
-        }
-        if (super.getCharacterization("TeacherBehaviour") > 0) {
-            controlTeachers(super.getActualPlayer());
+            if (super.getCharacterization("TeacherBehaviour") > 0) {
+                controlTeachers(super.getActualPlayer());
+                super.updateUse();
+            }
+            return;
         }
         super.updateUse();
     }
