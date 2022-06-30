@@ -196,7 +196,6 @@ public class PlayMessage extends Message {
      */
     private TeacherColor getTeacherColor(String data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method valueOf = TeacherColor.class.getMethod("valueOf", String.class);
-        System.out.println(valueOf);
         return (TeacherColor) valueOf.invoke(TeacherColor.class, data);
     }
 

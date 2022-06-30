@@ -391,7 +391,6 @@ public class GameModel {
         int availableTiles = game.getActionPhase().getCharacterCards().values().stream()
                 .filter(x -> x.getCharacterization("NoEntrySetter") > 0)
                 .map(x -> x.getCharacterization("Memory"))
-                .peek(System.out::println)
                 .reduce(Integer::max)
                 .orElse(0);
         if (availableTiles == 0) {
@@ -522,7 +521,7 @@ public class GameModel {
      * Get for each color the actual number of students in character cards
      *
      * @param character chosen card
-     * @retur a map with the number of students for each color on the card
+     * @return a map with the number of students for each color on the card
      */
     public Map<TeacherColor, Integer> getCardMemory(Characters character) {
         Map<TeacherColor, Integer> studentContent = new HashMap<>();
