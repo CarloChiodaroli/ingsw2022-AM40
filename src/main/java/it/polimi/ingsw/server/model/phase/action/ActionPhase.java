@@ -133,8 +133,8 @@ public class ActionPhase {
         isStateActivated();
         if (studentMovements >= possibleStudentMovements || movedMotherNature)
             throw new IllegalStateException("Cannot move any students");
-        if ((from.isEmpty() && getActualCard().isEmpty() && !actualCard.isInUse()) ||
-                (to.isEmpty() && getActualCard().isEmpty() && !actualCard.isInUse()))
+        if ((from.isEmpty() && getActualCard().isPresent() && !actualCard.isInUse()) ||
+                (to.isEmpty() && getActualCard().isPresent() && !actualCard.isInUse()))
             throw new InvalidParameterException("from or to place not found");
         if (isExpertVariant() &&
                 getActualCard().isPresent() &&
