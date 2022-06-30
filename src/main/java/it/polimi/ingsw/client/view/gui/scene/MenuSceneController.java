@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.view.gui.scene;
 
-import it.polimi.ingsw.client.view.gui.SceneController;
 import it.polimi.ingsw.client.observer.ViewObservable;
+import it.polimi.ingsw.client.view.gui.SceneController;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,6 +18,9 @@ public class MenuSceneController extends ViewObservable implements GenericSceneC
     @FXML
     private Button playBtn;
 
+    /**
+     * FXML's initialize method
+     */
     @FXML
     public void initialize() {
         playBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onPlayBtnClick);
@@ -26,12 +29,15 @@ public class MenuSceneController extends ViewObservable implements GenericSceneC
     /**
      * Handles click on Play button.
      *
-     * @param event the mouse click event.
+     * @param event mouse click
      */
     private void onPlayBtnClick(Event event) {
         SceneController.changeRootPane(observers, event, "connect_scene.fxml");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onConfirm(String what) {
 

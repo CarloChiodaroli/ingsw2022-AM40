@@ -2,22 +2,38 @@ package it.polimi.ingsw.server.model.phase.action.states;
 
 import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
-import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
+import it.polimi.ingsw.server.model.phase.action.ActionPhaseState;
 import it.polimi.ingsw.server.model.player.Player;
 
-public class Finalize extends ActionFaseState {
+/**
+ * 5th state of Action phase, this class models the choice and use of a cloud.
+ */
+public class Finalize extends ActionPhaseState {
 
+    /**
+     * Constructor
+     */
     public Finalize(ActionPhase actionPhase) {
         super(actionPhase);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void handle(Player player, StudentsManager cloud) {
         StudentsManager destination = player.getEntrance();
         int tmp = cloud.howManyTotStudents();
         for (int i = 0; i < tmp; i++) {
-            cloud.getStudent().ifPresent(destination::addStudent);
+            cloud.getStudent().ifPresent(x -> {
+                if (!destination.addStudent(x)) {
+                    cloud.addStudent(x);
+                    return;
+                }
+            });
         }
-        getActionFase().getGame().removeCloud(cloud);
+        if (cloud.howManyTotStudents() == 0) {
+            getActionPhase().getGame().removeCloud(cloud);
+        }
     }
 }

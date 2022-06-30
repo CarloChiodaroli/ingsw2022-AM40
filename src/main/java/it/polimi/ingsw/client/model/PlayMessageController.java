@@ -35,6 +35,9 @@ public class PlayMessageController implements PlayMessageReader {
     }
 
 
+    /**
+     * Setter
+     */
     public void setExpert(boolean expert) {
         state.setExpert(expert);
     }
@@ -256,6 +259,12 @@ public class PlayMessageController implements PlayMessageReader {
         controlServer(sender);
         state.setWinner(winner);
         controller.getTaskQueue().execute(() -> view.showEndGame(state.getWinner()));
+    }
+
+    @Override
+    public void statusRemainingAssistants(String sender, List<String> assistants) {
+        controlServer(sender);
+        state.setPersonalDeck(assistants);
     }
 
     // Expert

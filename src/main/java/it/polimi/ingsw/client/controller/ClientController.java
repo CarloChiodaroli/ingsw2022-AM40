@@ -5,13 +5,12 @@ import it.polimi.ingsw.client.model.PlayState;
 import it.polimi.ingsw.client.network.Client;
 import it.polimi.ingsw.client.network.SocketClient;
 import it.polimi.ingsw.client.observer.Observer;
-import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.observer.ViewObserver;
+import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.commons.enums.Wizard;
 import it.polimi.ingsw.commons.message.*;
 import it.polimi.ingsw.commons.message.play.ExpertPlayMessage;
 import it.polimi.ingsw.commons.message.play.NormalPlayMessage;
-import it.polimi.ingsw.commons.message.play.PlayMessage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -19,7 +18,9 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
+/**
+ * Controls the client reading and managing all not Play messages and forwarding them to the {@link PlayMessageController} class.
+ */
 public class ClientController implements ViewObserver, Observer, LobbyMessageReader {
 
     private final View view;
@@ -31,6 +32,9 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     private final PlayMessageController playMessageReader;
     private final PlayState state;
 
+    /**
+     * Constructor
+     */
     public ClientController(View view) {
         this.view = view;
         taskQueue = Executors.newSingleThreadExecutor();
@@ -39,11 +43,21 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         playing = false;
     }
 
+    /**
+     * Getter
+     */
     public ExecutorService getTaskQueue() {
         return taskQueue;
     }
 
     // Communication Client - Server
+
+    /**
+     * Create a new Socket Connection to the server with the updated info
+     * An error view is shown if connection is killed
+     *
+     * @param serverInfo a map of server address and server port
+     */
     @Override
     public void onUpdateServerInfo(Map<String, String> serverInfo) {
         try {
@@ -57,25 +71,41 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         }
     }
 
+    /**
+     * Sends a message to the server with the updated nickname
+     *
+     * @param nickname nickname to be sent
+     */
     @Override
     public void onUpdateNickname(String nickname) {
         this.nickname = nickname;
+        state.setMyName(nickname);
         client.sendMessage(new LoginMessage(this.nickname));
     }
 
+    /**
+     * Sends a message to the server with the player number chosen by the main player
+     *
+     * @param playersNumber number of players
+     */
     @Override
     public void onUpdatePlayersNumber(int playersNumber) {
-        if(!haveNickname()) return;
+        if (!haveNickname()) return;
         client.sendMessage(new LobbyMessage(this.nickname, "numOfPlayers", playersNumber));
     }
 
+    /**
+     * Sends a message to the server with the wizard chosen by the user
+     *
+     * @param wizard chosen wizard
+     */
     public void onUpdateWizard(Wizard wizard) {
-        if(!haveNickname()) return;
-        if(state.getWizard().isPresent() && state.getWizard().get().equals(wizard)){
+        if (!haveNickname()) return;
+        if (state.getWizard().isPresent() && state.getWizard().get().equals(wizard)) {
             taskQueue.execute(view::showWizard);
             return;
         }
-        if(!state.getAvailableWizards().contains(wizard)){
+        if (!state.getAvailableWizards().contains(wizard)) {
             showNotCriticalError("Your chosen wizard is not available");
             return;
         }
@@ -83,33 +113,54 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         sendMessage(new LobbyMessage(nickname, wizard));
     }
 
+    /**
+     * Sends a message to the server with the game mode
+     *
+     * @param how true if is expert
+     */
     public void onUpdateExpert(boolean how) {
-        if(!haveNickname()) return;
+        if (!haveNickname()) return;
         sendMessage(new LobbyMessage(nickname, "expert", how));
     }
 
+    /**
+     * Disconnect the client
+     */
     @Override
     public void onDisconnection() {
         client.disconnect();
     }
 
+    /**
+     * Sends a message to the server the game is started
+     */
     @Override
     public void onUpdateStart() {
-        if(!haveNickname()) return;
-        if(startedPlaying()) return;
+        if (!haveNickname()) return;
+        if (startedPlaying()) return;
         sendMessage(new LobbyMessage(nickname, "startGame"));
     }
 
-    private boolean haveNickname(){
-        if(nickname == null){
+    /**
+     * Send a message if is possible to have name
+     *
+     * @return true if isn't too early
+     */
+    private boolean haveNickname() {
+        if (nickname == null) {
             showNotCriticalError("It's too early to use this command");
             return false;
         }
         return true;
     }
 
-    private boolean startedPlaying(){
-        if(playing){
+    /**
+     * Send a message if the game is started
+     *
+     * @return true if is started
+     */
+    private boolean startedPlaying() {
+        if (playing) {
             showNotCriticalError("Game has already started");
             return true;
         }
@@ -119,78 +170,141 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     // Communication Server - Client
 
     // First level
+
+    /**
+     * Check the type of message received, and invokes the correct handler
+     *
+     * @param message message received from the server
+     */
     @Override
-    public void update(Message message){
-        try{
+    public void update(Message message) {
+        try {
             this.getClass().getMethod(message.getMessageType().toString().toLowerCase(), Message.class).invoke(this, message);
-        } catch (InvocationTargetException| IllegalAccessException | NoSuchMethodException e) {
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
             notCriticalError("Received illegal message type");
         }
     }
 
-    public void login(Message message){
+    /**
+     * Login message handler
+     *
+     * @param message message received from the server
+     */
+    public void login(Message message) {
         LoginMessage loginMessage = (LoginMessage) message;
-        taskQueue.execute(() -> view.showLoginResult(loginMessage.isNicknameAccepted(), loginMessage.isConnectionSuccessful(), this.nickname));
+        taskQueue.execute(() -> view.showLoginResult(loginMessage.isConnectionCompleted(), loginMessage.isConnectionStarted(), this.nickname));
+        if (loginMessage.isConnectionCompleted() && !loginMessage.isConnectionStarted()) killMe(0);
     }
 
-    public void lobby(Message message){
+    /**
+     * Lobby message handler
+     *
+     * @param message message received from the server
+     */
+    public void lobby(Message message) {
         LobbyMessage lm = (LobbyMessage) message;
         try {
             LobbyMessageReader.class.getMethod(lm.getCommand(), LobbyMessage.class).invoke(this, lm);
         } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+            e.getCause().printStackTrace();
             notCriticalError("Error while managing message from server: " + e.getCause().getMessage());
         }
     }
 
-    public void expert(Message message){
+    /**
+     * Expert message handler
+     *
+     * @param message message received from the server
+     */
+    public void expert(Message message) {
         ExpertPlayMessage pm = (ExpertPlayMessage) message;
         taskQueue.execute(() -> {
             try {
                 pm.executeMessage(playMessageReader);
             } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                e.printStackTrace();
+                e.getCause().printStackTrace();
                 notCriticalError("Error while managing message from server: " + e.getMessage());
             }
         });
     }
 
-    public void play(Message message){
+    /**
+     * Play message handler
+     *
+     * @param message message received from the server
+     */
+    public void play(Message message) {
         NormalPlayMessage pm = (NormalPlayMessage) message;
         taskQueue.execute(() -> {
             try {
                 pm.executeMessage(playMessageReader);
             } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                e.printStackTrace();
+                e.getCause().printStackTrace();
                 notCriticalError("Error while managing message from server: " + e.getMessage());
             }
         });
     }
 
-    public void generic(Message message){
+    /**
+     * Generic message handler
+     *
+     * @param message message received from the server
+     */
+    public void generic(Message message) {
         taskQueue.execute(() -> view.showGenericMessage(((GenericMessage) message).getMessage()));
     }
 
-    public void error(Message message){
+    /**
+     * Error message handler
+     *
+     * @param message message received from the server
+     */
+    public void error(Message message) {
         ErrorMessage em = (ErrorMessage) message;
         taskQueue.execute(() -> view.showError(em.getError()));
     }
 
     // Second layer - Lobby Messages
 
+    /**
+     * Receives actual game mode.
+     *
+     * <br> {@inheritDoc}
+     */
     @Override
     public void expert(LobbyMessage message) {
         playMessageReader.setExpert(message.isExpert());
         taskQueue.execute(() -> view.showExpert(message.isExpert()));
     }
 
+    /**
+     * Sends error on start game request. Receiving this message goes against the communication protocol.
+     *
+     * <br> {@inheritDoc}
+     */
     @Override
     public void startGame(LobbyMessage message) {
         notCriticalError("Received wrong message from server");
     }
 
+    /**
+     * Receives actual play player name list.
+     *
+     * <br> {@inheritDoc}
+     */
     @Override
     public void lobbyPlayers(LobbyMessage message) {
         taskQueue.execute(() -> view.showLobby(message.getLobbyPlayers(), message.studentNumber()));
     }
 
+    /**
+     * Receives actual play main player name
+     *
+     * <br> {@inheritDoc}
+     */
     @Override
     public void mainPlayer(LobbyMessage message) {
         if (playMessageReader.getMainPlayer() != null) return;
@@ -204,28 +318,52 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
         }
     }
 
+    /**
+     * Receives wizard choice confirmation.
+     * while reconnecting receives the old wizard choice and sets it in the client.
+     *
+     * <br> {@inheritDoc}
+     */
     @Override
     public void wizard(LobbyMessage message) {
         if (!message.getAccepted()) {
             state.setWizard(null);
         }
+        if (message.getWizard() != null) {
+            state.setWizard(message.getWizard());
+        }
         taskQueue.execute(view::showWizard);
     }
 
+    /**
+     * Receives remaining available wizards.
+     *
+     * <br> {@inheritDoc}
+     */
     @Override
     public void wizardList(LobbyMessage message) {
         state.setAvailableWizards(message.getAvailableWizards());
-        if(state.getWizard().isEmpty()){
+        if (state.getWizard().isEmpty()) {
             taskQueue.execute(view::showAvailableWizards);
         }
     }
 
+    /**
+     * Receives actual play max num of players.
+     *
+     * <br> {@inheritDoc}
+     */
     @Override
     public void numOfPlayers(LobbyMessage message) {
         state.setNumPlayers(message.getMaxPlayers());
         taskQueue.execute(() -> view.showChosenNumOfPlayers(message.getMaxPlayers()));
     }
 
+    /**
+     * Receives actual player disconnection messages.
+     *
+     * <br> {@inheritDoc}
+     */
     @Override
     public void disconnection(LobbyMessage message) {
         String outgoingName = message.getDisconnection();
@@ -239,28 +377,56 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     // Utility
 
+    /**
+     * getter
+     */
     public String getNickname() {
         return nickname;
     }
 
+    /**
+     * Send a message to server
+     *
+     * @param message message to sent
+     */
     public void sendMessage(Message message) {
         client.sendMessage(message);
     }
 
+    /**
+     * Shows and logs not critical error
+     *
+     * @param error error
+     */
     private void notCriticalError(String error) {
         showNotCriticalError(error);
         Client.LOGGER.severe(error);
     }
 
-    private void showNotCriticalError(String error){
+    /**
+     * Show not critical error
+     *
+     * @param error error
+     */
+    private void showNotCriticalError(String error) {
         taskQueue.execute(() -> view.showError(error));
     }
 
+    /**
+     * shows and logs critical errors and closes the client.
+     *
+     * @param error
+     */
     public void criticalError(String error) {
         notCriticalError("Severe " + error);
         killMe(1);
     }
 
+    /**
+     * Closes the client.
+     *
+     * @param status exit
+     */
     private void killMe(int status) {
         Client.LOGGER.info("Closing client");
         client.disconnect();

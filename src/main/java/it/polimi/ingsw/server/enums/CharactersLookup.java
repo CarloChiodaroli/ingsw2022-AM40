@@ -5,6 +5,9 @@ import it.polimi.ingsw.commons.enums.Characters;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Maps every character with his type.
+ */
 public class CharactersLookup {
 
     private static final Map<Characters, ActionPhaseStateType> map = new HashMap<>() {{
@@ -22,6 +25,12 @@ public class CharactersLookup {
         put(Characters.THIEF, ActionPhaseStateType.STUDENT);
     }};
 
+    /**
+     * Getter
+     *
+     * @param character the character card character of which to know the type
+     * @return the type
+     */
     public static ActionPhaseStateType getType(Characters character) {
         return map.get(character);
     }

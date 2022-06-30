@@ -1,11 +1,11 @@
 package it.polimi.ingsw.client.view.gui;
 
+import it.polimi.ingsw.client.model.Commands;
 import it.polimi.ingsw.client.model.PlayMessageController;
 import it.polimi.ingsw.client.model.PlayState;
 import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.gui.scene.*;
-import it.polimi.ingsw.commons.enums.Wizard;
 import javafx.application.Platform;
 
 import java.util.List;
@@ -20,9 +20,9 @@ public class Gui extends ViewObservable implements View {
     private boolean okVariant = false;
     private boolean status;
     private int players = 0;
-    private PlayState state;
     private boolean inPlay = false;
-    private PlayMessageController playMessageController;
+    private PlayState state;
+    private Commands commands;
 
 
     /**
@@ -48,17 +48,15 @@ public class Gui extends ViewObservable implements View {
      * {@inheritDoc}
      */
     @Override
-    public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname) {
-        if (!nicknameAccepted || !connectionSuccessful) {
-            if (!nicknameAccepted && connectionSuccessful) {
+    public void showLoginResult(boolean connectionCompleted, boolean connectionSuccessful, String nickname) {
+        if (!connectionCompleted || !connectionSuccessful) {
+            if (!connectionCompleted && connectionSuccessful) {
                 Platform.runLater(() -> {
-                    SceneController.showAlert(STR_ERROR, "Nickname already taken.");
                     SceneController.changeRootPane(observers, "login_scene.fxml");
                 });
             } else {
                 Platform.runLater(() -> {
-                    SceneController.showAlert(STR_ERROR, "Could not contact server.");
-                    SceneController.changeRootPane(observers, MENU_SCENE_FXML);
+                    SceneController.showAlert(STR_ERROR, "Client will be closed soon");
                 });
             }
         }
@@ -121,7 +119,7 @@ public class Gui extends ViewObservable implements View {
      */
     @Override
     public void setStatePrinter(PlayMessageController playMessageController) {
-        this.playMessageController = playMessageController;
+        commands = new Commands(playMessageController);
         state = playMessageController.getState();
     }
 
@@ -156,13 +154,15 @@ public class Gui extends ViewObservable implements View {
      */
     @Override
     public void update() {
-        if(!inPlay){
+        if (!inPlay) {
             getPlaySceneController();
             inPlay = true;
-        }
-        else sendConfirmation("update");
+        } else sendConfirmation("update");
     }
 
+    /**
+     * Get the main scene
+     */
     private void getPlaySceneController() {
         PlaySceneController psc;
         try {
@@ -171,7 +171,7 @@ public class Gui extends ViewObservable implements View {
             psc = new PlaySceneController();
             psc.addAllObservers(observers);
             psc.addGameState(state);
-            psc.addPlayMessageController(playMessageController);
+            psc.addCommandSender(commands);
             PlaySceneController finalPsc = psc;
             Platform.runLater(() -> SceneController.changeRootPane(finalPsc, "play_scene.fxml"));
         }
@@ -216,7 +216,7 @@ public class Gui extends ViewObservable implements View {
         okVariant = true;
         status = expertStatus;
         sendConfirmation("Expert");
-        if(okNumber)
+        if (okNumber)
             askPlayCustomization();
     }
 
@@ -225,10 +225,10 @@ public class Gui extends ViewObservable implements View {
      */
     @Override
     public void showEndGame(String winner) {
-            Platform.runLater(() -> {
-                SceneController.showWin(winner);
-                SceneController.changeRootPane(observers, MENU_SCENE_FXML);
-            });
+        Platform.runLater(() -> {
+            SceneController.showWin(winner);
+            SceneController.changeRootPane(observers, MENU_SCENE_FXML);
+        });
     }
 
     /**
@@ -239,11 +239,16 @@ public class Gui extends ViewObservable implements View {
         okNumber = true;
         players = maxPlayers;
         sendConfirmation("Number");
-        if(okVariant)
+        if (okVariant)
             askPlayCustomization();
     }
 
-    private static void sendConfirmation(String what){
+    /**
+     * Sends confirmations to the actual scene.
+     *
+     * @param what the argument of the confirmation.
+     */
+    private static void sendConfirmation(String what) {
         Platform.runLater(() -> SceneController.sendConfirm(what));
     }
 }

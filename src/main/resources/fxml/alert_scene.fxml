@@ -20,20 +20,20 @@
                         <Image url="@../images/btn.png"/>
                     </image>
                 </ImageView>
-                <Label fx:id="titleLbl" alignment="CENTER" layoutX="179.0" layoutY="38.0" prefHeight="22.0"
+                <Label fx:id="titleLbl" alignment="CENTER" layoutX="179.0" layoutY="50.0" prefHeight="22.0"
                        prefWidth="180.0" styleClass="customText" text="ERROR">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="18.0"/>
                     </font>
                 </Label>
-                <Label fx:id="messageLbl" alignment="CENTER" layoutX="84.0" layoutY="83.0" prefHeight="85.0"
+                <Label fx:id="messageLbl" alignment="CENTER" layoutX="84.0" layoutY="100.0" prefHeight="85.0"
                        prefWidth="370.0" styleClass="alertText" text="Something went wrong :(" wrapText="true">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="18.0"/>
                     </font>
                 </Label>
-                <Button fx:id="okBtn" layoutX="167.0" layoutY="189.0" mnemonicParsing="false" prefHeight="47.0"
-                        prefWidth="204.0" styleClass="smallButton" text="OK"/>
+                <Button fx:id="okBtn" layoutX="184.0" layoutY="189.0" mnemonicParsing="false" prefHeight="59.0"
+                        prefWidth="170.0" styleClass="smallButton" text="OK"/>
             </children>
         </AnchorPane>
     </top>

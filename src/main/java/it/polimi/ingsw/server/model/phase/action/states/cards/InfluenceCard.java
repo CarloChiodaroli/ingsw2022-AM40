@@ -2,8 +2,8 @@ package it.polimi.ingsw.server.model.phase.action.states.cards;
 
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
-import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
+import it.polimi.ingsw.server.model.phase.action.ActionPhaseState;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.server.model.phase.action.states.Influence;
 import it.polimi.ingsw.server.model.player.Player;
@@ -14,11 +14,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 3rd type of Character card, this card decors the action phase's {@link Influence} State, modelling all influence calc related character card behaviours.
+ */
 public class InfluenceCard extends CharacterCard {
 
     private Influence decorated;
     private int noEntryCounter = 0;
 
+    /**
+     * Constructor
+     */
     public InfluenceCard(Characters characters, ActionPhase actionPhase, Map<String, Integer> args) {
         super(args, characters, actionPhase);
         if (super.getCharacterization("Memory") > 0) {
@@ -37,13 +43,25 @@ public class InfluenceCard extends CharacterCard {
         decoratedCaller(player, island);
     }
 
+    /**
+     * If the island has the prohibition card, return else decorate
+     *
+     * @param player player play card
+     * @param island chosen island
+     */
     private void decoratedCaller(Player player, Island island) {
         if (decorated.noEntryTile(island)) return;
         decoratingHandle(player, island);
     }
 
+    /**
+     * According to the type of card, different actions are taken to modify the influence
+     *
+     * @param player player
+     * @param island chosen island
+     */
     private void decoratingHandle(Player player, Island island) {
-        List<Player> players = this.getActionFase().getGame().getPlayers();
+        List<Player> players = this.getActionPhase().getGame().getPlayers();
         Map<Player, Integer> influences = new HashMap<>();
         players.forEach(x -> influences.put(x, 0));
 
@@ -64,7 +82,7 @@ public class InfluenceCard extends CharacterCard {
      * {@inheritDoc}
      */
     @Override
-    public void activator(ActionFaseState decorated, Player player) throws InvalidParameterException {
+    public void activator(ActionPhaseState decorated, Player player) throws InvalidParameterException {
         if (super.getCharacterization("Island") > 0) {
             throw new InvalidParameterException("An island Id is needed to activate this card");
         }
@@ -80,7 +98,7 @@ public class InfluenceCard extends CharacterCard {
      * {@inheritDoc}
      */
     @Override
-    public void activator(ActionFaseState decorated, Player player, TeacherColor color) throws InvalidParameterException {
+    public void activator(ActionPhaseState decorated, Player player, TeacherColor color) throws InvalidParameterException {
         if (super.getCharacterization("Island") > 0) {
             throw new InvalidParameterException("An island Id is needed to activate this card");
         }
@@ -93,7 +111,7 @@ public class InfluenceCard extends CharacterCard {
      * {@inheritDoc}
      */
     @Override
-    public void activator(ActionFaseState decorated, Player player, Island island) throws InvalidParameterException {
+    public void activator(ActionPhaseState decorated, Player player, Island island) throws InvalidParameterException {
         if (super.getCharacterization("Student") > 0) {
             throw new InvalidParameterException("A teacher color is needed to activate this card");
         }
@@ -108,6 +126,9 @@ public class InfluenceCard extends CharacterCard {
         }
     }
 
+    /**
+     * If not all prohibition cards are back, add one
+     */
     public void giveNoEntryBack() {
         if (super.getCharacterization("NoEntrySetter") == 0) {
             throw new IllegalStateException("Card does not manage no entry cards");

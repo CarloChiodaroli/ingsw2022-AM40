@@ -1,9 +1,6 @@
 package it.polimi.ingsw.client.view.gui.scene;
 
-import it.polimi.ingsw.client.controller.ClientController;
-import it.polimi.ingsw.client.view.gui.SceneController;
 import it.polimi.ingsw.client.observer.ViewObservable;
-import it.polimi.ingsw.client.observer.ViewObserver;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,24 +18,28 @@ public class LoginSceneController extends ViewObservable implements GenericScene
     @FXML
     private Button joinBtn;
 
+    /**
+     * FXML's initialize method
+     */
     @FXML
     public void initialize() {
         joinBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onJoinBtnClick);
     }
 
     /**
-     * Handle click on Join button.
+     * Handle click on Join button
      *
-     * @param event the mouse click event.
+     * @param event mouse click
      */
     private void onJoinBtnClick(Event event) {
 
         String nickname = nicknameField.getText();
-        
-
         new Thread(() -> notifyObserver(obs -> obs.onUpdateNickname(nickname))).start();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onConfirm(String what) {
 

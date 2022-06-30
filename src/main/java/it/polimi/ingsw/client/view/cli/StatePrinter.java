@@ -311,6 +311,11 @@ public class StatePrinter {
         }
     }
 
+    /**
+     * Shows available wizards
+     *
+     * @return available wizards.
+     */
     public String availableWizards() {
         String result = playState.getAvailableWizards().toString();
         result = result.replace("[", "");
@@ -318,10 +323,20 @@ public class StatePrinter {
         return result;
     }
 
+    /**
+     * Getter
+     *
+     * @return Winner name
+     */
     public String getWinner() {
         return playState.getWinner();
     }
 
+    /**
+     * Shows personal deck
+     *
+     * @return the string representation of the personal deck
+     */
     private String myAssistantCards() {
         String list = playState.getAssistantCards().toString();
         list = list.replace("[", "");
@@ -330,6 +345,11 @@ public class StatePrinter {
         return list;
     }
 
+    /**
+     * Shows Character cards
+     *
+     * @return the string representation of character cards
+     */
     private String characterCards() {
         List<String> lines = new ArrayList<>();
         playState.getCharacterCosts().forEach((key, value) -> lines.add(key.toString() + ": " + value + verticalLineElement));
@@ -342,10 +362,20 @@ public class StatePrinter {
         return result;
     }
 
+    /**
+     * Shows how much money the player has
+     *
+     * @return a string representation of the money
+     */
     private String myMoney() {
         return "You have " + playState.getMyMoney() + " coins\n";
     }
 
+    /**
+     * Represents character cards student content if present
+     *
+     * @return a string representation of available character cards students
+     */
     private String characterStudentState() {
         List<String> actualCharacters = playState.getAvailableCharacters().stream().map(Enum::toString).toList();
 

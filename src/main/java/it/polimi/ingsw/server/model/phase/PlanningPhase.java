@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Models game round's pianification phase
+ * Models games Planning phase and manages play rounds and phases.
  */
 
 public class PlanningPhase {
@@ -23,6 +23,7 @@ public class PlanningPhase {
     private final Game game;
     private int countRound = 0;
     private List<Player> playersToSkip;
+    private List<Player> playersToUnskip;
 
     /**
      * Class Constructor
@@ -38,6 +39,7 @@ public class PlanningPhase {
             this.players = 2;
         }
         this.playersToSkip = new ArrayList<>();
+        this.playersToUnskip = new ArrayList<>();
     }
 
     // Start of Planning phase
@@ -54,6 +56,8 @@ public class PlanningPhase {
         playersInOrder = new ArrayList<>();
         playedCards = new IdentityHashMap<>();
         actualPlayer = 0;
+        playersToSkip.removeAll(playersToUnskip);
+        playersToUnskip.clear();
         game.buildClouds();
     }
 
@@ -81,6 +85,8 @@ public class PlanningPhase {
             throw new IllegalStateException("Planning phase is not activated");
         if (determinedOrder)
             throw new IllegalStateException("Player's order already determined");
+        if (playersToSkip.contains(applicantPlayer))
+            throw new InvalidParameterException("Player needs to wait next round");
         if (isPlayerPresent(applicantPlayer))
             throw new IllegalStateException("Player has already played a card");
         if (!acceptedPlayerCard(card, applicantPlayer))
@@ -132,14 +138,17 @@ public class PlanningPhase {
      * Asks the game to create new clouds with students
      */
     private void endPhase() {
-        if (playersInOrder.size() == players - playersToSkip.size()) {
+        if (playersInOrder.size() >= players - playersToSkip.size()) {
             determinedOrder = true;
-            if (game.getTable().getBag().orElseThrow().howManyTotStudents() < game.getNumOfRegisteredPlayers() * game.getNumOfRegisteredPlayers() + 1) {
+            if (game.getTable().getBag().orElseThrow().howManyTotStudents() < game.getNumOfRegisteredPlayers() * (game.getNumOfRegisteredPlayers() + 1)) {
                 game.endGame();
             } else {
                 actualPlayer = 0;
                 Player actualRealPlayer = getActualPlayer();
-                if(playersToSkip.contains(actualRealPlayer)) throw new IllegalStateException("No Players are Playing");
+                if (playersToSkip.contains(actualRealPlayer)) {
+                    nextPlayer();
+                    actualRealPlayer = getActualPlayer();
+                }
                 game.getActionPhase().startPhase(actualRealPlayer);
                 countRound++;
             }
@@ -164,37 +173,69 @@ public class PlanningPhase {
      */
     public Player getActualPlayer() {
         if (!determinedOrder) return null;
-        Player actualRealPlayer = playersInOrder.get(actualPlayer);
-        for(int i = 0; i < 4; i++){
-            if(!playersToSkip.contains(actualRealPlayer)) return actualRealPlayer;
-            nextPlayer();
-            if(!activated) return actualRealPlayer;
-            actualRealPlayer = playersInOrder.get(actualPlayer);
-        }
-        return actualRealPlayer;
+        return playersInOrder.get(actualPlayer);
     }
 
+    /**
+     * Set next player
+     */
     public void nextPlayer() {
         actualPlayer++;
         if (actualPlayer >= playersInOrder.size()) {
             reset();
+        } else {
+            if (playersToSkip.contains(playersInOrder.get(actualPlayer)))
+                nextPlayer();
         }
     }
 
+    /**
+     * Get mother nature hops
+     *
+     * @param player player
+     * @return number of hops
+     */
     public int getMotherNatureHops(Player player) {
         return playedCards.get(player).getNumOfMotherNatureMovements();
     }
 
+    /**
+     * Get the order of players for pianification phase
+     *
+     * @return list of players
+     */
     public List<Player> getPlayersInOrder() {
         return new ArrayList<>(playersInOrder);
     }
 
-    public void skipPlayer(Player player){
+    /**
+     * Skip a player
+     *
+     * @param player player to skip
+     */
+    public void skipPlayer(Player player) {
         playersToSkip.add(player);
+        if (playersInOrder.indexOf(getActualPlayer()) > actualPlayer) {
+            playersInOrder.remove(player);
+        }
     }
 
-    public void unSkipPlayer(Player player){
-        playersToSkip.remove(player);
+    /**
+     * Don't skip a player
+     *
+     * @param player player don't skip
+     */
+    public void unSkipPlayer(Player player) {
+        playersToUnskip.add(player);
+    }
+
+    /**
+     * Getter
+     *
+     * @return the list of the players to skip
+     */
+    public List<Player> getPlayersToSkip() {
+        return playersToSkip;
     }
 
     // End of Round

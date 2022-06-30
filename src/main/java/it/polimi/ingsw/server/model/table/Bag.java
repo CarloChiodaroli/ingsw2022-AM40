@@ -1,12 +1,14 @@
 package it.polimi.ingsw.server.model.table;
 
-import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.commons.enums.TeacherColor;
+import it.polimi.ingsw.server.model.StudentsManager;
 
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * Models game's Student bag.
+ */
 public class Bag extends StudentsManager {
 
     private final static int defaultColorNumOfStudents = 26;
@@ -14,6 +16,8 @@ public class Bag extends StudentsManager {
 
 
     /**
+     * Constructor
+     *
      * @param maxStudents      Max number of student
      * @param maxStudentsColor Max number of student for each color
      */
@@ -35,12 +39,19 @@ public class Bag extends StudentsManager {
         }
     }
 
+    /**
+     * Get if there are any student in the bag
+     *
+     * @return true if the bag is empty
+     */
     public boolean isEmpty() {
         return howManyTotStudents() == 0;
     }
 
     /**
-     * @return TeacherColor It returns a casual color
+     * If any, remove one student of a random color
+     *
+     * @return TeacherColor the color of the caught student
      */
     public TeacherColor getAStudent() {
         if (isEmpty()) return null;

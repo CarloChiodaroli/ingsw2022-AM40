@@ -6,8 +6,9 @@ import it.polimi.ingsw.server.model.StudentsManager;
 import java.util.*;
 
 /**
- * CLASS TABLE (Idea -> It is a physic table)
- * It controls all the contents
+ * Models game's table, so everything that is set on the table while playing the game:
+ * {@link Bag bags}, {@link Cloud clouds} and {@link Island islands}
+ * (excluding player's {@link it.polimi.ingsw.server.model.player.school.SchoolDashboard dashboard}).
  */
 public class Table {
 
@@ -36,25 +37,49 @@ public class Table {
     }
 
     /**
-     * @param numberOfPlayer number of player to create
+     * Build the clouds, and if there are some clouds that are not completely filled, refills them.
+     *
+     * @param numberOfClouds number of player to create
      */
-    public void buildClouds(int numberOfPlayer) throws IllegalStateException{
-        cloudList.clear();
-        for (int i = 0; i < numberOfPlayer; i++) {
-            Cloud cloud = new Cloud("c_" + (i + 1), numberOfPlayer + 1);
-            cloud.buildCloud(bag);
-            cloudList.add(cloud);
+    private void buildClouds(int numberOfClouds) throws IllegalStateException {
+        for (int i = 0; i < numberOfClouds; i++) {
+            String id = "c_" + (i + 1);
+            if (cloudList.stream().noneMatch(x -> x.getId().equals(id))) {
+                Cloud cloud = new Cloud(id, numberOfClouds + 1);
+                cloud.buildCloud(bag);
+                cloudList.add(cloud);
+            } else {
+                Cloud cloud = cloudList.stream().filter(x -> x.getId().equals(id)).findFirst().get();
+                int remainingStudents = cloud.getMaxStudents() - cloud.howManyTotStudents();
+                for (int j = 0; j < remainingStudents; j++) {
+                    bag.getStudent().ifPresent(cloud::addStudent);
+                }
+            }
         }
     }
 
+    /**
+     * Build the clouds
+     */
     public void buildClouds() {
         buildClouds(numOfPlayers);
     }
 
-    public void removeCloud(Cloud cloud){
+    /**
+     * Remove a cloud
+     *
+     * @param cloud the cloud to remove
+     */
+    public void removeCloud(Cloud cloud) {
         cloudList.remove(cloud);
     }
 
+    /**
+     * Fill the clouds at the start of the game with one student, except the island where there's mother nature
+     * and the opposite
+     *
+     * @param randomFirstIsland
+     */
     public void FillCInitialIslandWithStudent(int randomFirstIsland) {
         int emptyIsland1;
         int emptyIsland2;
@@ -87,7 +112,7 @@ public class Table {
     }
 
     /**
-     *
+     * Build islands
      */
     private void buildIslands() {
         for (int i = 0; i < numOfIslandsToCreate; i++) {
@@ -96,22 +121,34 @@ public class Table {
     }
 
     /**
+     * Check there are coins left
+     *
      * @return boolean It allows to getCoin requested by the Game
      */
     public boolean getCoin() {
         return coinsLeft > 0;
     }
 
+    /**
+     * Get the number of coins left
+     *
+     * @return number of coins left
+     */
     public int getNumCoin() {
         return coinsLeft;
     }
 
+    /**
+     * If any, remove one coin
+     */
     public void giveCoin() {
         if (getCoin())
             coinsLeft--;
     }
 
     /**
+     * Get the status of the bag
+     *
      * @return Bag status
      */
     public Optional<StudentsManager> getBag() {
@@ -119,6 +156,8 @@ public class Table {
     }
 
     /**
+     * Merge two islands in one removing the two islands and creating a new one
+     *
      * @param island1 First island to merge
      * @param island2 Second island to merge
      */
@@ -134,6 +173,8 @@ public class Table {
     }
 
     /**
+     * Get islands list
+     *
      * @return List of island
      */
     public List<Island> getIslandList() {
@@ -141,6 +182,8 @@ public class Table {
     }
 
     /**
+     * Get clouds list
+     *
      * @return List of Cloud
      */
     public List<Cloud> getCloudList() {
@@ -148,6 +191,8 @@ public class Table {
     }
 
     /**
+     * If the id exists, return the required cloud
+     *
      * @param id Cloud's Id
      * @return Cloud you are looking for
      */
@@ -158,6 +203,8 @@ public class Table {
     }
 
     /**
+     * If the id exists, return the required island
+     *
      * @param id Island's id
      * @return Island you are looking for
      */
@@ -167,10 +214,20 @@ public class Table {
                 .findAny();
     }
 
+    /**
+     * Get a student from the bag
+     *
+     * @return the color of the students removed from bag
+     */
     public Optional<TeacherColor> getStudentFromBag() {
         return Optional.ofNullable(bag.getAStudent());
     }
 
+    /**
+     * Get if the bag is empty
+     *
+     * @return true if the bag is empty
+     */
     public boolean isBagEmpty() {
         return bag.isEmpty();
     }

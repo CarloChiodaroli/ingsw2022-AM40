@@ -11,13 +11,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Class used while creating the Action phase to draw the three character cards at the start of the play, and fabricates them.
+ */
 public abstract class CharacterCardFabric {
 
     private final static Map<Characters, Map<String, Integer>> particularities = allParticularities();
 
+    /**
+     * Get character cards of the game
+     *
+     * @param actionPhase action phase of the game
+     * @return a map witch for each card the character
+     */
     public static Map<Characters, CharacterCard> getCards(ActionPhase actionPhase) {
         Map<Characters, CharacterCard> enabledCharacterCards = new HashMap<>();
-        //enabledCharacterCards.put(Characters.JESTER, createCard(Characters.JESTER, actionPhase));
         while (enabledCharacterCards.size() < 3) {
             Characters characters = getRandomCharacter();
             if (!enabledCharacterCards.containsKey(characters)) {
@@ -27,6 +35,13 @@ public abstract class CharacterCardFabric {
         return enabledCharacterCards;
     }
 
+    /**
+     * Create the character cards
+     *
+     * @param type        characterization of the card
+     * @param actionPhase action phase of the game
+     * @return a card with the required character
+     */
     public static CharacterCard createCard(Characters type, ActionPhase actionPhase) {
         Map<ActionPhaseStateType, CharacterCard> possibleCards = new HashMap<>();
         possibleCards.put(ActionPhaseStateType.STUDENT, new StudentMovementCard(type, actionPhase, getCharacterization(type)));
@@ -35,12 +50,22 @@ public abstract class CharacterCardFabric {
         return possibleCards.get(CharactersLookup.getType(type));
     }
 
+    /**
+     * Get a random character
+     *
+     * @return the caught character
+     */
     public static Characters getRandomCharacter() {
         Random random = new Random();
         int range = Characters.values().length;
         return Characters.values()[random.nextInt(range)];
     }
 
+    /**
+     * Create the characterizations
+     *
+     * @return a map witch the character and an util int
+     */
     private static Map<String, Integer> createBaseCharacterization() {
         Map<String, Integer> result = new HashMap<>();
 
@@ -63,10 +88,19 @@ public abstract class CharacterCardFabric {
         return result;
     }
 
+    /**
+     * Getter of all particular characterizations of every single character
+     */
     private static Map<Characters, Map<String, Integer>> allParticularities() {
         return CardCharacterizations.getMap();
     }
 
+    /**
+     * Getter of a particular characterization
+     *
+     * @param characters the character of which we want the characterization
+     * @return the characterization map
+     */
     public static Map<String, Integer> getCharacterization(Characters characters) {
         Map<String, Integer> result = createBaseCharacterization();
         particularities.get(characters).forEach(result::replace);

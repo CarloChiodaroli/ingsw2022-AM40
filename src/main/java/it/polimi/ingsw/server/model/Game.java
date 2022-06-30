@@ -13,7 +13,7 @@ import it.polimi.ingsw.server.model.table.Table;
 import java.util.*;
 
 /**
- * Class which represents the whole game model managing its components
+ * Class which represents the whole game model and manages all its components.
  */
 public class Game {
     private final List<Player> players;
@@ -30,6 +30,7 @@ public class Game {
     private String endPlayer = null;
     private static final String draw = "No one";
     private List<Player> skippablePlayers;
+    private List<Player> playersToUnskip;
 
 
     /**
@@ -41,6 +42,7 @@ public class Game {
         this.skippablePlayers = new ArrayList<>();
         initializeOrder();
         this.preGamePlayersList = new EnumMap<>(TowerColor.class);
+        this.playersToUnskip = new ArrayList<>();
     }
 
     /**
@@ -74,10 +76,16 @@ public class Game {
         startRound();
     }
 
+    /**
+     * Start the pianification phase
+     */
     private void startRound() {
         planningPhase.activate();
     }
 
+    /**
+     * Update the game state from pianification to action
+     */
     public void updateState() {
         if (planningPhase.isInOrder()) {
             actionPhase.startPhase(planningPhase.getActualPlayer());
@@ -86,6 +94,7 @@ public class Game {
 
     /**
      * Initializes player's entrance with adequate number of students
+     *
      * @param player the one to initialize
      */
     private void initializePlayer(Player player) {
@@ -175,6 +184,11 @@ public class Game {
         isExpertVariant = !isExpertVariant;
     }
 
+    /**
+     * Get for each active character card the cost
+     *
+     * @return cost of active character cards
+     */
     public Map<Characters, Integer> getActiveCharactersCosts() {
         return actionPhase.getActiveCharactersCosts();
     }
@@ -210,7 +224,7 @@ public class Game {
      * Command to build new clouds
      */
     public void buildClouds() {
-        try{
+        try {
             table.buildClouds();
         } catch (IllegalStateException e) {
             this.endGame();
@@ -296,7 +310,7 @@ public class Game {
                 max = p.getTeachers().size();
                 maxPlayer = p;
             }
-        if(maxPlayer == null){
+        if (maxPlayer == null) {
             return draw;
         } else {
             return maxPlayer.getName();
@@ -310,25 +324,41 @@ public class Game {
         actionPhase.reset();
         planningPhase.getActualPlayer().disable();
         planningPhase.nextPlayer();
-        if(skippablePlayers.size() == players.size()){
+        if (skippablePlayers.size() == players.size()) {
             return;
         }
         Player actualPlayer = planningPhase.getActualPlayer();
-        if(skippablePlayers.contains(actualPlayer)) return;
+        if (skippablePlayers.contains(actualPlayer))
+            throw new IllegalStateException("Impossible place to be");
         if (planningPhase.isInOrder()) {
             actionPhase.startPhase(actualPlayer);
         } else {
+            skippablePlayers.forEach(x -> actionPhase.autoRun(x));
+            playersToUnskip.forEach(x -> skippablePlayers.remove(x));
+            playersToUnskip.clear();
             planningPhase.activate();
         }
     }
 
-    public void skipPlayer(Player player){
+    /**
+     * Skip a player
+     *
+     * @param player player to skip
+     */
+    public void skipPlayer(Player player) {
+        Player actualPlayer = planningPhase.getActualPlayer();
+        if (player.equals(actualPlayer)) nextPlayer();
         skippablePlayers.add(player);
         planningPhase.skipPlayer(player);
     }
 
-    public void unSkipPlayer(Player player){
-        skippablePlayers.remove(player);
+    /**
+     * Don't skip a player
+     *
+     * @param player player to not skip
+     */
+    public void unSkipPlayer(Player player) {
+        playersToUnskip.add(player);
         planningPhase.unSkipPlayer(player);
     }
 

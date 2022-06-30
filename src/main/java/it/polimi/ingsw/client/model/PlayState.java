@@ -301,11 +301,11 @@ public class PlayState {
         setMyMoney(money.get(myName));
     }
 
-    public boolean myTurn(){
+    public boolean myTurn() {
         return myName.equals(actualPlayer);
     }
 
-    public int getNumOfIslands(){
+    public int getNumOfIslands() {
         return islandSize.size();
     }
 
@@ -328,14 +328,23 @@ public class PlayState {
     }
 
     public void setNoEntryIslands(List<String> noEntryIslands) {
+
         this.noEntryIslands = noEntryIslands;
     }
 
-    public int numMyTowers(){
+    public int getAvailableNoEntry() {
+        return noEntryIslands.size() - noEntryIslands.stream().filter(x -> !x.equals("")).toList().size();
+    }
+
+    public int numMyTowers() {
         return numTowers(myName);
     }
 
-    public int getNumOfStudentsInCloud(){
+    public int getNumOfStudentsInCloud() {
         return numPlayers + 1;
+    }
+
+    public void setPersonalDeck(List<String> personalDeck) {
+        this.assistantCards = new ArrayList<>(personalDeck.stream().map(Integer::parseInt).toList());
     }
 }

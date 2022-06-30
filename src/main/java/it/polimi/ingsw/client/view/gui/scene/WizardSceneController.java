@@ -1,12 +1,8 @@
 package it.polimi.ingsw.client.view.gui.scene;
 
 import it.polimi.ingsw.client.observer.ViewObservable;
-import it.polimi.ingsw.client.observer.ViewObserver;
-import it.polimi.ingsw.client.view.gui.SceneController;
 import it.polimi.ingsw.commons.enums.Wizard;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
@@ -30,12 +26,15 @@ public class WizardSceneController extends ViewObservable implements GenericScen
     private ImageView bambooGuyWizard;
 
     /**
-     * Default constructor.
+     * Default constructor
      */
     public WizardSceneController() {
         this.availableWizard = new ArrayList<>();
     }
 
+    /**
+     * FXML's initialize method
+     */
     @FXML
     public void initialize() {
         magicianWizard.setDisable(!availableWizard.contains(Wizard.MAGICIAN));
@@ -51,9 +50,9 @@ public class WizardSceneController extends ViewObservable implements GenericScen
     }
 
     /**
-     * Handle the click on the worker.
+     * Handle the click on the worker
      *
-     * @param wizard wizard picked by user.
+     * @param wizard wizard picked
      */
     private void onWizardClick(Wizard wizard) {
         magicianWizard.setDisable(true);
@@ -64,14 +63,17 @@ public class WizardSceneController extends ViewObservable implements GenericScen
     }
 
     /**
-     * Set the wizard which are pickable by user.
+     * Set the wizard which are available by user
      *
-     * @param availableWizard available colors.
+     * @param availableWizard available wizards
      */
     public void setAvailableWizard(List<Wizard> availableWizard) {
         this.availableWizard = availableWizard;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onConfirm(String what) {
 

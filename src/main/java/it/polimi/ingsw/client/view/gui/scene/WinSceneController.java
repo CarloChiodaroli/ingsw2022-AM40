@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.view.gui.scene;
 
 import it.polimi.ingsw.client.view.gui.SceneController;
-import it.polimi.ingsw.client.view.gui.scene.GenericSceneController;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -33,7 +32,7 @@ public class WinSceneController implements GenericSceneController {
 
 
     /**
-     * Default constructor.
+     * Default constructor
      */
     public WinSceneController() {
         stage = new Stage();
@@ -45,6 +44,9 @@ public class WinSceneController implements GenericSceneController {
         yOffset = 0;
     }
 
+    /**
+     * FXML's initialize method
+     */
     @FXML
     public void initialize() {
         rootPane.addEventHandler(MouseEvent.MOUSE_PRESSED, this::onRootPaneMousePressed);
@@ -53,9 +55,9 @@ public class WinSceneController implements GenericSceneController {
     }
 
     /**
-     * Handles the mouse pressed event preparing the coordinates for dragging the window.
+     * Handles the mouse pressed event preparing the coordinates for dragging the window
      *
-     * @param event the mouse pressed event.
+     * @param event mouse click
      */
     private void onRootPaneMousePressed(MouseEvent event) {
         xOffset = stage.getX() - event.getScreenX();
@@ -63,9 +65,9 @@ public class WinSceneController implements GenericSceneController {
     }
 
     /**
-     * Handles the mouse dragged event by moving the window around the screen.
+     * Handles the mouse dragged event by moving the window around the screen
      *
-     * @param event the mouse dragged event.
+     * @param event mouse dragged
      */
     private void onRootPaneMouseDragged(MouseEvent event) {
         stage.setX(event.getScreenX() + xOffset);
@@ -73,39 +75,42 @@ public class WinSceneController implements GenericSceneController {
     }
 
     /**
-     * Handles click on Ok button.
+     * Handles click on Ok button
      *
-     * @param event the mouse click event.
+     * @param event mouse click
      */
     private void onOkBtnClick(MouseEvent event) {
         stage.close();
     }
 
     /**
-     * Sets the name of the winner.
+     * Sets the name of the winner
      *
-     * @param winnerNickname the nickname of the winner.
+     * @param winnerNickname name of winner
      */
     public void setWinnerNickname(String winnerNickname) {
         nicknameLbl.setText(winnerNickname);
     }
 
     /**
-     * Displays the victory scene.
+     * Displays the victory scene
      */
     public void displayWinScene() {
         stage.showAndWait();
     }
 
     /**
-     * Sets the scene of the stage.
+     * Sets the scene of the stage
      *
-     * @param scene the scene to be set.
+     * @param scene scene to be set
      */
     public void setScene(Scene scene) {
         stage.setScene(scene);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onConfirm(String what) {
 

@@ -21,13 +21,13 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
- * Manages the game's Action Phase in normal or in Expert Variant
+ * Manages the game's Action Phase in normal and expert Variants.
  */
 public class ActionPhase {
 
     // Variables
     private final Game game;
-    private final Map<ActionPhaseStateType, ActionFaseState> states;
+    private final Map<ActionPhaseStateType, ActionPhaseState> states;
     private boolean activated;
 
     // Non expert Status variables
@@ -71,10 +71,20 @@ public class ActionPhase {
         actualState = -1;
     }
 
+    /**
+     * Get character cards
+     *
+     * @return map of character card and for each the characterization
+     */
     public Map<Characters, CharacterCard> getCharacterCards() {
         return characterCards;
     }
 
+    /**
+     * Maximum number of students can move according to number of players
+     *
+     * @return number of students can move
+     */
     private int getMaxStudentMovements() {
         if (game.isThreePlayerGame()) {
             return normal3PlayerSM;
@@ -121,21 +131,20 @@ public class ActionPhase {
     public void request(TeacherColor teacherColor, Optional<StudentsManager> from, Optional<StudentsManager> to)
             throws IllegalStateException {
         isStateActivated();
-        if (studentMovements >= possibleStudentMovements || calculatedInfluence)
+        if (studentMovements >= possibleStudentMovements || movedMotherNature)
             throw new IllegalStateException("Cannot move any students");
-        if ((from.isEmpty() && getActualCard().isEmpty() && !actualCard.isInUse()) ||
-                (to.isEmpty() && getActualCard().isEmpty() && !actualCard.isInUse()))
+        if ((from.isEmpty() && getActualCard().isPresent() && !actualCard.isInUse()) ||
+                (to.isEmpty() && getActualCard().isPresent() && !actualCard.isInUse()))
             throw new InvalidParameterException("from or to place not found");
         if (isExpertVariant() &&
                 getActualCard().isPresent() &&
                 CharactersLookup.getType(actualCard.getCharacter()).equals(ActionPhaseStateType.STUDENT) &&
-                from.isEmpty()) {
+                actualCard.isInUse()) {
             actualCard.handle(teacherColor, from, to);
         } else {
             states.get(ActionPhaseStateType.STUDENT).handle(teacherColor, from, to);
         }
         studentMovements++;
-        if (studentMovements >= possibleStudentMovements) actualState++;
     }
 
     /**
@@ -174,10 +183,10 @@ public class ActionPhase {
         isStateActivated();
         if (movedMotherNature)
             throw new IllegalStateException("Mother nature has been already moved once");
-        if (actualState != ActionPhaseStateType.MOTHER.getOrderPlace() &&
-                (studentMovements >= possibleStudentMovements ||
-                        (studentMovements > getMaxStudentMovements() && studentMovements < possibleStudentMovements))) {
+        if (studentMovements >= getMaxStudentMovements() && studentMovements <= possibleStudentMovements) {
             actualState = ActionPhaseStateType.MOTHER.getOrderPlace();
+        } else {
+            throw new IllegalStateException("Too early to move mother nature");
         }
         int maxHops = game.getPianificationFase().getMotherNatureHops(player);
         if (!isExpertVariant()) {
@@ -258,7 +267,7 @@ public class ActionPhase {
     public void activateCard(Characters characters, Player player)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(CharactersLookup.getType(tmp.getCharacter()));
+        ActionPhaseState decorated = states.get(CharactersLookup.getType(tmp.getCharacter()));
         tmp.activator(decorated, player);
         actualCard = tmp;
     }
@@ -277,7 +286,7 @@ public class ActionPhase {
     public void activateCard(Characters characters, Player player, TeacherColor color)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(CharactersLookup.getType(tmp.getCharacter()));
+        ActionPhaseState decorated = states.get(CharactersLookup.getType(tmp.getCharacter()));
         tmp.activator(decorated, player, color);
         actualCard = tmp;
     }
@@ -296,7 +305,7 @@ public class ActionPhase {
     public void activateCard(Characters characters, Player player, Island island)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(CharactersLookup.getType(tmp.getCharacter()));
+        ActionPhaseState decorated = states.get(CharactersLookup.getType(tmp.getCharacter()));
         tmp.activator(decorated, player, island);
         actualCard = tmp;
     }
@@ -337,6 +346,19 @@ public class ActionPhase {
     }
 
     /**
+     * Toned down action phase used when players disconnect half way throw their action phase.
+     * After all playing players have finished their turn, this is called to populate the entrance of the disconnected
+     * player back to the max number if needed using one of the remaining clouds.
+     *
+     * @param player
+     */
+    public void autoRun(Player player) {
+        if (player.getEntrance().getMaxStudents() > player.getEntrance().howManyTotStudents()) {
+            states.get(ActionPhaseStateType.CLOUD).handle(player, game.getTable().getCloudList().get(0));
+        }
+    }
+
+    /**
      * Simple getter of the game
      *
      * @return the game
@@ -355,14 +377,28 @@ public class ActionPhase {
         return characterCards.containsKey(character);
     }
 
+    /**
+     * Get actual character
+     *
+     * @return if present, character
+     */
     public Optional<Characters> getActualCharacter() {
         return getActualCard().map(CharacterCard::getCharacter);
     }
 
+    /**
+     * Get student container of character card, if presents
+     *
+     * @param character character
+     * @return student container
+     */
     public Optional<StudentsManager> getCardMemory(Characters character) {
         return characterCards.get(character).getStudentContainer();
     }
 
+    /**
+     * Give back a prohibition card
+     */
     public void giveNoEntryTileBack() {
         controlExpertVariant();
         InfluenceCard noEntryCard = (InfluenceCard) characterCards.entrySet().stream()
@@ -373,69 +409,144 @@ public class ActionPhase {
         noEntryCard.giveNoEntryBack();
     }
 
+    /**
+     * Get the cost of active character cards
+     *
+     * @return a map of characters and the relative cost
+     */
     public Map<Characters, Integer> getActiveCharactersCosts() {
         Map<Characters, Integer> result = new HashMap<>();
         characterCards.forEach((key, value) -> result.put(key, value.getPrice()));
         return result;
     }
 
+    /**
+     * Get the activation state
+     *
+     * @return true if is active
+     */
     public boolean isActivated() {
         return activated;
     }
 
+    /**
+     * Check the action phase is active
+     *
+     * @throws IllegalStateException if action phase isn't active
+     */
     private void isStateActivated() throws IllegalStateException {
         if (!isActivated()) throw new IllegalStateException("Action Phase is not Activated");
     }
 
+    /**
+     * Reset activation
+     */
     public void reset() {
         activated = false;
     }
 
+    /**
+     * Set influence
+     *
+     * @param calculatedInfluence influence
+     */
     public void setCalculatedInfluence(boolean calculatedInfluence) {
         this.calculatedInfluence = calculatedInfluence;
     }
 
+    /**
+     * Set chosen cloud
+     *
+     * @param chosenCloud chosen cloud
+     */
     public void setChosenCloud(boolean chosenCloud) {
         this.chosenCloud = chosenCloud;
     }
 
-    public void setPossibleStudentMovements(int possibleStudentMovements) {
-        this.possibleStudentMovements = possibleStudentMovements;
+    /**
+     * Set student moves
+     *
+     * @param studentMoves student moves
+     */
+    public void setStudentMoves(int studentMoves) {
+        this.studentMovements = studentMoves;
     }
 
+    /**
+     * Set if mother nature is moved
+     *
+     * @param movedMotherNature true if mother nature is moved
+     */
     public void setMovedMotherNature(boolean movedMotherNature) {
         this.movedMotherNature = movedMotherNature;
     }
 
+    /**
+     * Set merged islands
+     *
+     * @param mergedIslands merged islands
+     */
     public void setMergedIslands(boolean mergedIslands) {
         this.mergedIslands = mergedIslands;
     }
 
+    /**
+     * Check the game is in expert mode
+     *
+     * @throws IllegalStateException if the game isn't in expert mode
+     */
     public void controlExpertVariant() throws IllegalStateException {
         if (!isExpertVariant())
             throw new IllegalStateException("Game is not in expert variant");
     }
 
+    /**
+     * Get the game mode
+     *
+     * @return true if is expert mode
+     */
     public boolean isExpertVariant() {
         return expertVariant;
     }
 
+    /**
+     * If present, get actual character card
+     *
+     * @return character card
+     */
     public Optional<CharacterCard> getActualCard() {
         return Optional.ofNullable(actualCard);
     }
 
+    /**
+     * Check there's an active character card
+     *
+     * @throws IllegalStateException if there isn't an active card
+     */
     public void controlActualCard() throws IllegalStateException {
         if (getActualCard().isEmpty()) {
             throw new IllegalStateException("There is no activated card");
         }
     }
 
+    /**
+     * Set the number of action phase state
+     *
+     * @param state number of state
+     */
     public void setActualState(int state) {
         this.actualState = state;
     }
 
     // for testing purposes
-    public ActionFaseState getState(ActionPhaseStateType which) {
+
+    /**
+     * Get action phase state
+     *
+     * @param which phase type
+     * @return phase state
+     */
+    public ActionPhaseState getState(ActionPhaseStateType which) {
         return states.get(which);
     }
 }

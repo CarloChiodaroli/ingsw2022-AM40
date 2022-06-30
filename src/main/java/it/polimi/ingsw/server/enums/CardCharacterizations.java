@@ -5,8 +5,16 @@ import it.polimi.ingsw.commons.enums.Characters;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Lists the singular characterizations of the characters.
+ */
 public abstract class CardCharacterizations {
 
+    /**
+     * Creates the map which contains all characterizations of all character cards
+     *
+     * @return the map
+     */
     public static Map<Characters, Map<String, Integer>> getMap() {
         Map<Characters, Map<String, Integer>> allCharacterizations = new HashMap<>();
 
@@ -20,24 +28,20 @@ public abstract class CardCharacterizations {
         allCharacterizations.get(Characters.FRIAR).put("Island", 1);
 
         allCharacterizations.get(Characters.HOST).put("Price", 2);
-        //allCharacterizations.get(Characters.HOST).put("Price", 1);
         allCharacterizations.get(Characters.HOST).put("Usages", 3);
         allCharacterizations.get(Characters.HOST).put("TeacherBehaviour", 1);
 
         allCharacterizations.get(Characters.CRIER).put("Price", 3);
-        //allCharacterizations.get(Characters.CRIER).put("Price", 1);
         allCharacterizations.get(Characters.CRIER).put("Island", 1);
 
         allCharacterizations.get(Characters.MESSENGER).put("Price", 1);
 
         allCharacterizations.get(Characters.SORCERESS).put("Price", 2);
-        //allCharacterizations.get(Characters.SORCERESS).put("Price", 1);
         allCharacterizations.get(Characters.SORCERESS).put("Memory", 4);
         allCharacterizations.get(Characters.SORCERESS).put("Island", 1);
         allCharacterizations.get(Characters.SORCERESS).put("NoEntrySetter", 1);
 
         allCharacterizations.get(Characters.CENTAUR).put("Price", 3);
-        //allCharacterizations.get(Characters.CENTAUR).put("Price", 1);
         allCharacterizations.get(Characters.CENTAUR).put("Tower", 1);
 
         allCharacterizations.get(Characters.JESTER).put("Price", 1);
@@ -49,11 +53,9 @@ public abstract class CardCharacterizations {
         allCharacterizations.get(Characters.JESTER).put("Player", 1);
 
         allCharacterizations.get(Characters.KNIGHT).put("Price", 2);
-        //allCharacterizations.get(Characters.KNIGHT).put("Price", 1);
         allCharacterizations.get(Characters.KNIGHT).put("Player", 2);
 
         allCharacterizations.get(Characters.SORCERER).put("Price", 3);
-        //allCharacterizations.get(Characters.SORCERER).put("Price", 1);
         allCharacterizations.get(Characters.SORCERER).put("Student", 1);
 
         allCharacterizations.get(Characters.MINSTREL).put("Price", 1);
@@ -65,20 +67,25 @@ public abstract class CardCharacterizations {
         allCharacterizations.get(Characters.MINSTREL).put("Student", 2);
 
         allCharacterizations.get(Characters.QUEEN).put("Price", 2);
-        //allCharacterizations.get(Characters.QUEEN).put("Price", 1);
         allCharacterizations.get(Characters.QUEEN).put("Memory", 4);
         allCharacterizations.get(Characters.QUEEN).put("Usages", 1);
         allCharacterizations.get(Characters.QUEEN).put("Room", 1);
         allCharacterizations.get(Characters.QUEEN).put("Player", 1);
 
         allCharacterizations.get(Characters.THIEF).put("Price", 3);
-        //allCharacterizations.get(Characters.THIEF).put("Price", 1);
         allCharacterizations.get(Characters.THIEF).put("Usages", 0);
+        allCharacterizations.get(Characters.THIEF).put("Student", 1);
         allCharacterizations.get(Characters.THIEF).put("EffectAllPlayers", 1);
 
         return allCharacterizations;
     }
 
+    /**
+     * Getter of a particular characterization map
+     *
+     * @param characters the character of which you want the characterization
+     * @return the map
+     */
     public static Map<String, Integer> particular(Characters characters) {
         return getMap().get(characters);
     }

@@ -1,14 +1,18 @@
 package it.polimi.ingsw.client.network;
 
-import it.polimi.ingsw.commons.message.*;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.io.*;
+import it.polimi.ingsw.commons.message.ErrorMessage;
+import it.polimi.ingsw.commons.message.Message;
+import it.polimi.ingsw.commons.message.MessageType;
+import it.polimi.ingsw.commons.message.PingMessage;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,24 +29,40 @@ public class SocketClient extends Client {
     private final ExecutorService readExecutionQueue;
     private final ScheduledExecutorService pinger;
 
-    private final PrintWriter   output;
+    private final PrintWriter output;
     private final BufferedReader input;
 
     private final Gson gson;
 
+    private boolean receivedPing;
+    private int misses;
+
     private static final int SOCKET_TIMEOUT = 10000;
+    private final static int PING_TO_LOSE = 5;
 
     private final static String defaultAddress = "localhost";
     private final static String defaultPort = "16847";
 
-    public static String getDefaultAddress(){
+    /**
+     * Getter
+     */
+    public static String getDefaultAddress() {
         return defaultAddress;
     }
 
-    public static String getDefaultPort(){
+    /**
+     * Getter
+     */
+    public static String getDefaultPort() {
         return defaultPort;
     }
 
+    /**
+     * Check the port is valid
+     *
+     * @param portStr port
+     * @return true if is valid
+     */
     public static boolean isValidPort(String portStr) {
         try {
             int port = Integer.parseInt(portStr);
@@ -52,6 +72,12 @@ public class SocketClient extends Client {
         }
     }
 
+    /**
+     * Check the address is valid
+     *
+     * @param ip address
+     * @return true if is valid
+     */
     public static boolean isValidIpAddress(String ip) {
         String regex = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                 "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
@@ -60,6 +86,9 @@ public class SocketClient extends Client {
         return ip.matches(regex);
     }
 
+    /**
+     * Constructor
+     */
     public SocketClient(String address, int port) throws IOException {
         this.socket = new Socket();
         this.socket.connect(new InetSocketAddress(address, port)/*, /*SOCKET_TIMEOUT*/);
@@ -69,8 +98,13 @@ public class SocketClient extends Client {
         this.pinger = Executors.newSingleThreadScheduledExecutor();
         GsonBuilder gsonBuilder = new GsonBuilder();
         this.gson = gsonBuilder.create();
+        this.receivedPing = false;
+        this.misses = 0;
     }
 
+    /**
+     * Read a message from the server with socket and notifies the ClientController
+     */
     @Override
     public void readMessage() {
         readExecutionQueue.execute(() -> {
@@ -80,21 +114,29 @@ public class SocketClient extends Client {
                     String rawGson;
                     do {
                         rawGson = input.readLine();
-                    } while(rawGson == null);
+                    } while (rawGson == null);
                     message = gson.fromJson(rawGson, Message.class);
                     message = (Message) gson.fromJson(rawGson, message.getMessageType().getImplementingClass());
-                    String forLambda = rawGson;
-                    //Client.LOGGER.info(() -> "Received: " + forLambda);
                 } catch (IOException e) {
-                    message = new ErrorMessage(null, "Connection lost with the server.");
                     disconnect();
                     readExecutionQueue.shutdownNow();
+                    return;
                 }
-                notifyObserver(message);
+                if (message != null) {
+                    receivedPing = true;
+                    if (!message.getMessageType().equals(MessageType.PING)) {
+                        notifyObserver(message);
+                    }
+                }
             }
         });
     }
 
+    /**
+     * Sends a message to the server with socket
+     *
+     * @param message message to be sent
+     */
     @Override
     public void sendMessage(Message message) {
         String rawGson = gson.toJson(message);
@@ -112,6 +154,8 @@ public class SocketClient extends Client {
                 readExecutionQueue.shutdownNow();
                 enablePinger(false);
                 socket.close();
+                Message message = new ErrorMessage(null, "Connection lost with the server.");
+                notifyObserver(message);
             }
         } catch (IOException e) {
             notifyObserver(new ErrorMessage(null, "Could not disconnect."));
@@ -119,13 +163,27 @@ public class SocketClient extends Client {
     }
 
     /**
-     * Enable a heartbeat (ping messages) between client and server sockets to keep the connection alive.
+     * Enable a ping messages between client and server sockets to keep the connection alive
      */
     public void enablePinger(boolean enabled) {
         if (enabled) {
-            pinger.scheduleAtFixedRate(() -> sendMessage(new PingMessage("Client")), 0, 1000, TimeUnit.MILLISECONDS);
+            pinger.scheduleAtFixedRate(this::pingerControls, 0, 1000, TimeUnit.MILLISECONDS);
         } else {
             pinger.shutdownNow();
         }
+    }
+
+    /**
+     * Concrete pinger logic implementation.
+     */
+    private void pingerControls() {
+        if (!receivedPing) {
+            misses++;
+        } else {
+            misses = 0;
+            receivedPing = false;
+        }
+        if (misses >= PING_TO_LOSE) disconnect();
+        sendMessage(new PingMessage("Client"));
     }
 }

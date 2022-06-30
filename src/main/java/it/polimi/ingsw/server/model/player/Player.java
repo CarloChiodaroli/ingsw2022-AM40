@@ -1,10 +1,10 @@
 package it.polimi.ingsw.server.model.player;
 
-import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.TowerColor;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.StudentsManager;
 import it.polimi.ingsw.server.model.player.school.SchoolDashboard;
 import it.polimi.ingsw.server.model.table.Island;
 
@@ -114,19 +114,28 @@ public class Player {
         Optional<StudentsManager> from = getStudentsManagerById(sourceId);
         Optional<StudentsManager> to = getStudentsManagerById(destinationId);
         game.getActionPhase().request(student, from, to);
-        if(dashboard.getRoom().getMoneyPlace()){
-            if(game.getTable().getCoin()){
+        if (dashboard.getRoom().getMoneyPlace()) {
+            if (game.getTable().getCoin()) {
                 money++;
+                dashboard.getRoom().resetMoneyPlace();
             }
         }
     }
 
+    /**
+     * Command to execute an Expert student movement between entrance and a place
+     *
+     * @param studentA color of the student from entrance
+     * @param studentB color of the student from place
+     * @param placeId  id of the place.
+     */
     public void moveStudent(TeacherColor studentA, TeacherColor studentB, String placeId) {
         controlEnable();
         game.getActionPhase().request(this, studentA, studentB, placeId);
-        if(dashboard.getRoom().getMoneyPlace()){
-            if(game.getTable().getCoin()){
+        if (dashboard.getRoom().getMoneyPlace()) {
+            if (game.getTable().getCoin()) {
                 money++;
+                dashboard.getRoom().resetMoneyPlace();
             }
         }
     }
@@ -134,7 +143,7 @@ public class Player {
     /**
      * Utility method to find the precise places to move the player to and from
      *
-     * @param id    is the ID of the desired students manager
+     * @param id is the ID of the desired students manager
      * @return the wanted student manager
      */
     public Optional<StudentsManager> getStudentsManagerById(String id) {
@@ -151,6 +160,11 @@ public class Player {
         }
     }
 
+    /**
+     * Get the entrance
+     *
+     * @return entrance
+     */
     public StudentsManager getEntrance() {
         return dashboard.getEntranceAsStudentsManager();
     }
@@ -203,46 +217,59 @@ public class Player {
         }
     }
 
+    /**
+     * Get the color of towers
+     *
+     * @return tower color
+     */
     public TowerColor getTowerColor() {
         return dashboard.getTowerColor();
     }
 
-    /*@Deprecated
-    public StudentsManager getRoomTable(TeacherColor color) {
-        return dashboard.getRoom().getTable(color);
-    }*/
-
+    /**
+     * Get a room
+     *
+     * @return room
+     */
     public StudentsManager getRoomTable() {
         return dashboard.getRoom();
     }
 
-    /*
-    public void addTeacher(TeacherColor color){
-        dashboard.getRoom().getTable(color).setTeacherPresence(true);
-    }
-
-    public void removeTeacher(TeacherColor color){
-        dashboard.getRoom().getTable(color).setTeacherPresence(false);
-    }
-
-    public boolean hasTeacher(TeacherColor color){
-        return dashboard.getRoom().getTable(color).hasTeacher();
-    }
+    /**
+     * Add the teacher of the required color
+     *
+     * @param color color of the required teacher
      */
-
     public void addTeacher(TeacherColor color) {
         dashboard.getRoom().addTeacher(color);
     }
 
+    /**
+     * Remove the teacher of the required color
+     *
+     * @param color color of the required teacher
+     */
     public void removeTeacher(TeacherColor color) {
         dashboard.getRoom().removeTeacher(color);
     }
 
+    /**
+     * Get if there is the teacher of the required color
+     *
+     * @param color color of the required teacher
+     * @return true if there's the teacher
+     */
     public boolean hasTeacher(TeacherColor color) {
         return dashboard.getRoom().getTeacherPresence(color);
     }
 
-    public int howManyStudentsInRoom(TeacherColor color){
+    /**
+     * Get how many students there are in a specific room
+     *
+     * @param color color of the required room
+     * @return number of students
+     */
+    public int howManyStudentsInRoom(TeacherColor color) {
         return dashboard.getRoom().howManyStudents(color);
     }
 
@@ -273,21 +300,44 @@ public class Player {
         return name;
     }
 
+    /**
+     * Play a character card
+     *
+     * @param characters chosen card
+     */
     public void playCharacterCard(Characters characters) {
         controlEnable();
         game.getActionPhase().activateCard(characters, this);
     }
 
+    /**
+     * Play a character card who required a color
+     *
+     * @param characters chosen card
+     * @param color      chosen color
+     */
     public void playCharacterCard(Characters characters, TeacherColor color) {
         controlEnable();
         game.getActionPhase().activateCard(characters, this, color);
     }
 
+    /**
+     * Play a character card who required an island
+     *
+     * @param characters chosen card
+     * @param island     chosen island
+     */
     public void playCharacterCard(Characters characters, Island island) {
         controlEnable();
         game.getActionPhase().activateCard(characters, this, island);
     }
 
+    /**
+     * Check if the player can pay the required coins
+     *
+     * @param howMuch number of coins
+     * @return true if the player has enough money
+     */
     public boolean pay(int howMuch) {
         if (money >= howMuch) {
             money -= howMuch;
@@ -297,12 +347,63 @@ public class Player {
         }
     }
 
+    /**
+     * Get number of coins
+     *
+     * @return number of coins
+     */
     public int getMoney() {
         return money;
     }
 
+    /**
+     * Add coins
+     *
+     * @param howMuch number of coins to add
+     */
     public void giveMoney(int howMuch) {
         money += howMuch;
+    }
+
+    /**
+     * Get the number of towers that the player has not yet placed
+     *
+     * @return number of towers left
+     */
+    public int getNumberTowersLeft() {
+        return dashboard.getNumOfTowers();
+    }
+
+    /**
+     * Enables the player to launch play commands
+     */
+    public void enable() {
+        enable = true;
+    }
+
+    /**
+     * Disables the player to launch play commands
+     */
+    public void disable() {
+        enable = false;
+    }
+
+    /**
+     * Get enable state
+     *
+     * @return true if enable
+     */
+    public boolean isEnabled() {
+        return enable;
+    }
+
+    /**
+     * If player is not enabled throws an exception
+     *
+     * @throws IllegalStateException the player can't make moves
+     */
+    private void controlEnable() throws IllegalStateException {
+        if (!isEnabled()) throw new IllegalStateException("Player can't make any moves now");
     }
 
     @Override
@@ -326,25 +427,5 @@ public class Player {
                 ", game=" + game +
                 ", dashboard=" + dashboard +
                 '}';
-    }
-
-    public int getNumberTowersLeft() {
-        return dashboard.getNumOfTowers();
-    }
-
-    public void enable() {
-        enable = true;
-    }
-
-    public void disable() {
-        enable = false;
-    }
-
-    public boolean isEnabled() {
-        return enable;
-    }
-
-    private void controlEnable() throws IllegalStateException {
-        if (!isEnabled()) throw new IllegalStateException("Player can't make any moves now");
     }
 }

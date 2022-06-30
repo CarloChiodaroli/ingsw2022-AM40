@@ -7,9 +7,7 @@ import it.polimi.ingsw.client.network.SocketClient;
 import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.client.observer.ViewObserver;
 import it.polimi.ingsw.client.view.View;
-import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.commons.enums.Wizard;
-import it.polimi.ingsw.commons.enums.Characters;
 
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
@@ -19,18 +17,15 @@ import java.util.*;
 
 /**
  * This class offers a Command Line User Interface. It is an implementation of the {@link View} interface.
- *
  */
 public class Cli extends ViewObservable implements View {
 
     private final PrintStream out;
     private final ClientInputStream inputStream;
     private Object userInputLock;
-    private PlayMessageController playMessageController;
     private boolean connected;
     private StatePrinter statePrinter;
     private Map<String, String> serverInfo = new HashMap<>();
-    private boolean expert;
     private boolean shownPlayCustom;
     private Commands commands;
 
@@ -50,7 +45,6 @@ public class Cli extends ViewObservable implements View {
      */
     @Override
     public void setStatePrinter(PlayMessageController playMessageController) {
-        this.playMessageController = playMessageController;
         this.commands = new Commands(playMessageController);
         this.statePrinter = new StatePrinter(playMessageController.getState());
     }
@@ -68,7 +62,7 @@ public class Cli extends ViewObservable implements View {
     /**
      * Called from the Client Input Stream class which manages the input stream of commands.
      * This method divides the received command argument in parts and calls the correct method to run the user desired command.
-     *
+     * <p>
      * The Accepted commands are:
      * <pre>
      *  Connection commands:
@@ -102,7 +96,7 @@ public class Cli extends ViewObservable implements View {
             tiledCommand.remove(head);
             head = head.toLowerCase();
             String forLambda = head;
-            if(Arrays.stream(this.getClass().getMethods()).anyMatch(x -> x.getName().equals(forLambda)))
+            if (Arrays.stream(this.getClass().getMethods()).anyMatch(x -> x.getName().equals(forLambda)))
                 this.getClass().getMethod(head, List.class).invoke(this, tiledCommand);
             else commands.receivedCommand(command);
         }
@@ -142,6 +136,10 @@ public class Cli extends ViewObservable implements View {
                         
                     Expert Play commands:
                         abbreviation    command <arg> <arg> <arg>                       : description
+                        ca              character [character]   -   -   -   -   -   -   : to play a character card. 
+                        ca              character [character] [color]   -   -   -   -   : the same of ca, but for those cards who need color.
+                        ca              character [character] [island id]   -   -   -   : the same of ca, but for those cards who need island.
+                        sm              studentmove [from color] [to color] [place id]  : is a particular student move that shifts two students one from the "Entrance" (from color) the other from the place (to color).
                     
                                 
                 To send a valid command please write the command with arguments as for example:
@@ -153,7 +151,7 @@ public class Cli extends ViewObservable implements View {
                 Commands are not case sensitive so you can write:
                     sm blue entrance room
                                 
-                These three example commands do the same thing: move a blue student from the entrance to the room
+                These three example commands do the same thing: move a blue student from the entrance to the room in the user's dashboard
                 """);
     }
 
@@ -360,20 +358,15 @@ public class Cli extends ViewObservable implements View {
      * {@inheritDoc}
      */
     @Override
-    public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname) {
+    public void showLoginResult(boolean connectionCompleted, boolean connectionSuccessful, String nickname) {
         clearCli();
-        if (nicknameAccepted && connectionSuccessful) {
+        if (connectionCompleted && connectionSuccessful) {
             out.println("Hi, " + nickname + "! You connected to the server.");
         } else if (connectionSuccessful) {
-            out.println("Hi, seems like someone has already used your username... Please chose an other one");
-            askNickname();
-        } else if (nicknameAccepted) {
-            out.println("Max players reached. Connection refused.");
-            out.println("EXIT.");
-            System.exit(1);
+            out.println("Please try again setting your name please");
+            //askNickname();
         } else {
-            showErrorAndExit("Could not contact server.");
-            System.exit(1);
+            out.println("The client will be closed soon");
         }
     }
 
@@ -402,7 +395,7 @@ public class Cli extends ViewObservable implements View {
      */
     @Override
     public void showAvailableWizards() {
-        if(shownPlayCustom) out.println("available wizards are: " + statePrinter.availableWizards());
+        if (shownPlayCustom) out.println("available wizards are: " + statePrinter.availableWizards());
     }
 
     /**
@@ -410,7 +403,6 @@ public class Cli extends ViewObservable implements View {
      */
     @Override
     public void showExpert(boolean expertStatus) {
-        expert = expertStatus;
         if (expertStatus) {
             out.println("The game was put in " + EscapeCli.RED + "Expert" + EscapeCli.DEFAULT + " variant");
         } else {

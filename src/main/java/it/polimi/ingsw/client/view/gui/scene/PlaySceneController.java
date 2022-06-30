@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.view.gui.scene;
 
 import it.polimi.ingsw.client.model.Commands;
-import it.polimi.ingsw.client.model.PlayMessageController;
 import it.polimi.ingsw.client.model.PlayState;
 import it.polimi.ingsw.client.observer.ViewObservable;
 import it.polimi.ingsw.client.view.gui.SceneController;
@@ -22,6 +21,9 @@ import org.apache.commons.collections4.list.UnmodifiableList;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+/**
+ * This class implements the Play view. Exiting commands are sent in written form to the {@link Commands} class
+ */
 public class PlaySceneController extends ViewObservable implements GenericSceneController {
 
     private PlayState state;
@@ -75,14 +77,17 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
     private Label actualCommandPrinter;
     @FXML
     private GridPane expertThings;
-    /*@FXML
-    private GridPane character;*/
 
-
+    /**
+     * Constructor
+     */
     public PlaySceneController() {
         actualCommand = "";
     }
 
+    /**
+     * FXML's initialize method
+     */
     @FXML
     public void initialize() {
         buildContainer();
@@ -91,24 +96,33 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         buildAssistant();
         buildDashboard();
         buildCommands();
-        if(state.isExpert()) buildExpertThings();
+        if (state.isExpert()) buildExpertThings();
         update();
     }
 
+    /**
+     * On update info
+     */
     private void update() {
         setSemaphores();
         updateDashboard();
         updateClouds();
         updateIslands();
         updateAssistant();
-        if(state.isExpert()) updateExpertThings();
+        if (state.isExpert()) updateExpertThings();
     }
 
+    /**
+     * Set visible thing in my turn
+     */
     private void setSemaphores() {
         semaphoreYes.setVisible(state.myTurn());
         semaphoreNo.setVisible(!state.myTurn());
     }
 
+    /**
+     * Build containers
+     */
     private void buildContainer() {
         ColumnConstraints col0 = new ColumnConstraints();
         col0.setPercentWidth(75);
@@ -118,6 +132,9 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
 
     }
 
+    /**
+     * Take one piece at time of commands
+     */
     private void buildCommands() {
         Label actual = new Label("SM");
         actual.getStyleClass().add("command");
@@ -177,13 +194,24 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         actual.getStyleClass().add("submit");
         GridPane.setRowIndex(actual, 0);
         GridPane.setColumnIndex(actual, 5);
-        GridPane.setRowSpan(actual, 2);
         actual.addEventHandler(MouseEvent.MOUSE_CLICKED, this::sendCommand);
+        actual.getStyleClass().add("clickable");
+        commands.getChildren().add(actual);
+
+        actual = new Label("DEL");
+        actual.getStyleClass().add("command");
+        actual.getStyleClass().add("delete");
+        GridPane.setRowIndex(actual, 1);
+        GridPane.setColumnIndex(actual, 5);
+        actual.addEventHandler(MouseEvent.MOUSE_CLICKED, this::deleteCommand);
         actual.getStyleClass().add("clickable");
         commands.getChildren().add(actual);
 
     }
 
+    /**
+     * Build clouds
+     */
     private void buildClouds() {
         clouds.setVisible(false);
         List<GridPane> cloudss = new ArrayList<>();
@@ -209,6 +237,9 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         clouds.getChildren().addAll(cloudss);
     }
 
+    /**
+     * Build assistant cards
+     */
     private void buildAssistant() {
         assistant.setVisible(false);
         List<Node> assistantt = new ArrayList<>();
@@ -227,6 +258,11 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         assistant.getChildren().addAll(assistantt);
     }
 
+    /**
+     * Build entrance
+     *
+     * @return a grid with entrance
+     */
     private GridPane buildEntrance() {
         entrance.setVisible(false);
         entrance.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> commandAppender(event, "Entrance"));
@@ -245,6 +281,11 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         return entrance;
     }
 
+    /**
+     * Build teachers
+     *
+     * @return a grid with teachers
+     */
     private GridPane buildTeachers() {
         teachers.setVisible(false);
         List<Node> teacherss = new ArrayList<>();
@@ -261,6 +302,11 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         return teachers;
     }
 
+    /**
+     * Build towers
+     *
+     * @return a grid with towers
+     */
     private GridPane buildTowers() {
         towers.setVisible(false);
         List<Node> towerss = new ArrayList<>();
@@ -277,6 +323,11 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         return towers;
     }
 
+    /**
+     * Build rooms
+     *
+     * @return a grid with rooms
+     */
     private GridPane buildRoom() {
         room.setVisible(false);
         room.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> commandAppender(event, "Room"));
@@ -302,6 +353,11 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         return room;
     }
 
+    /**
+     * Build dashboard, building all components
+     *
+     * @return a grid with dashboard's components
+     */
     private void buildDashboard() {
         dashboard.setVisible(false);
         GridPane entranceD = buildEntrance();
@@ -320,32 +376,46 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         GridPane.setColumnIndex(towersD, 3);
     }
 
+    /**
+     * Build islands grid
+     */
     private void buildIslands() {
         islandGrid.setVisible(false);
         List<GridPane> islands = new ArrayList<>();
         List<String> islandStyles = List.of(new String[]{"island1", "island2", "island3"});
         List<String> islandContents = List.of(new String[]{
+                TowerColor.BLACK.toString(),
+                TowerColor.GREY.toString(),
+                TowerColor.WHITE.toString(),
+                "MOTHER",
+                "NO_ENTRY",
                 TeacherColor.YELLOW.toString(),
                 TeacherColor.BLUE.toString(),
                 TeacherColor.GREEN.toString(),
                 TeacherColor.RED.toString(),
-                TeacherColor.PINK.toString(),
-                TowerColor.BLACK.toString(),
-                TowerColor.GREY.toString(),
-                TowerColor.WHITE.toString(),
-                "MOTHER"});
+                TeacherColor.PINK.toString()});
 
         for (int i = 0; i < 12; i++) {
             GridPane island = new GridPane();
             island.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> islandSelector(event, island));
             island.getStyleClass().add("clickable");
-            for (int j = 0; j < 9; j++) {
+            int j = 0;
+            for (String content : islandContents) {
+                if (Arrays.stream(TowerColor.values()).noneMatch(x -> x.toString().equals(content))) {
+                    j++;
+                }
                 Label actual = new Label();
                 actual.getStyleClass().add("wood");
-                actual.getStyleClass().add(islandContents.get(j));
+                actual.getStyleClass().add(content);
                 GridPane.setRowIndex(actual, j % 3);
                 GridPane.setColumnIndex(actual, j / 3);
-                island.getChildren().add(actual);
+                if (state.isExpert()) {
+                    island.getChildren().add(actual);
+                } else {
+                    if (!content.equals("NO_ENTRY")) {
+                        island.getChildren().add(actual);
+                    }
+                }
             }
             GridPane.setColumnIndex(island, i % 6);
             GridPane.setRowIndex(island, (i / 6));
@@ -357,11 +427,14 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         islandGrid.getChildren().addAll(islands);
     }
 
-    private void buildExpertThings(){
+    /**
+     * Build part of the interface must be show in expert mode
+     */
+    private void buildExpertThings() {
         GridPane characterCardRep = new GridPane();
         characterCardRep.setId("characterCardView");
         int i = 0;
-        for(Characters characters: state.getAvailableCharacters()){
+        for (Characters characters : state.getAvailableCharacters()) {
             GridPane card = new GridPane();
             GridPane.setColumnIndex(card, i);
             card.setId(characters.toString());
@@ -369,25 +442,33 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
             card.getStyleClass().add("character");
             card.getStyleClass().add("clickable");
             ColumnConstraints third = new ColumnConstraints();
-            third.setPercentWidth(100/3.0);
+            third.setPercentWidth(100 / 3.0);
             card.getColumnConstraints().setAll(third, third, third);
             RowConstraints sixth = new RowConstraints();
-            sixth.setPercentHeight(100/7.0);
+            sixth.setPercentHeight(100 / 7.0);
             card.getRowConstraints().setAll(sixth, sixth, sixth, sixth, sixth, sixth, sixth);
             Label coins = new Label();
             coins.setText(state.getCharacterCosts().get(characters).toString());
             coins.getStyleClass().add("coin");
             card.getChildren().add(coins);
             Map<TeacherColor, Integer> map = state.getStudentsInPlaces().getOrDefault(characters.toString(), new HashMap<>());
-            if(!map.isEmpty()){
+            if (!map.isEmpty()) {
                 int howManyStudents = map.values().stream().reduce(Integer::sum).orElse(0);
-                for(int j = 0; j < howManyStudents; j++){
+                for (int j = 0; j < howManyStudents; j++) {
                     Label student = new Label();
                     student.getStyleClass().add("wood");
                     GridPane.setColumnIndex(student, j % 3);
                     GridPane.setRowIndex(student, 4 + (j / 3));
                     card.getChildren().add(student);
                 }
+            }
+            if (characters.equals(Characters.SORCERESS)) {
+                Label noEntry = new Label();
+                noEntry.getStyleClass().add("wood");
+                noEntry.getStyleClass().add("NO_ENTRY");
+                GridPane.setColumnIndex(noEntry, 1);
+                GridPane.setRowIndex(noEntry, 4);
+                card.getChildren().add(noEntry);
             }
             card.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> idGetter(event, card));
             characterCardRep.getChildren().add(card);
@@ -403,6 +484,9 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         expertThings.getChildren().add(myCoins);
     }
 
+    /**
+     * Update island info
+     */
     private void updateIslands() {
         islandGrid.setVisible(true);
         int actualChildNumber = 0;
@@ -443,12 +527,19 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                 } else {
                     motherRep.setVisible(false);
                 }
+                if (state.isExpert()) {
+                    Label noEntryRep = (Label) getNodeByStyleClass(islandRep.getChildren(), "NO_ENTRY");
+                    noEntryRep.setVisible(state.getNoEntryIslands().contains(id));
+                }
                 islandRep.setVisible(true);
                 actualChildNumber++;
             }
         }
     }
 
+    /**
+     * Update dashboard's components info
+     */
     private void updateDashboard() {
         dashboard.setVisible(true);
         updateTeachers();
@@ -457,6 +548,9 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         updateEntrance();
     }
 
+    /**
+     * Update entrance info
+     */
     private void updateEntrance() {
         entrance.setVisible(true);
         int actualChildNumber = 0;
@@ -479,6 +573,9 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         entrance.setVisible(true);
     }
 
+    /**
+     * Update rooms info
+     */
     private void updateRoom() {
         room.setVisible(true);
         int actualChildNumber = 0;
@@ -488,7 +585,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         }
 
         Map<TeacherColor, Integer> roomRep = new HashMap<>(state.getStudentsInPlaces().get("Room"));
-        for (String color: dashboardRoomOrder) {
+        for (String color : dashboardRoomOrder) {
             GridPane colorsRoomRep = (GridPane) room.getChildren().get(actualChildNumber);
             for (int i = 0; i < roomRep.get(TeacherColor.valueOf(color)); i++) {
                 Node studentInRoom = colorsRoomRep.getChildren().get(i);
@@ -499,6 +596,9 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         }
     }
 
+    /**
+     * Update towers info
+     */
     private void updateTowers() {
         towers.setVisible(true);
         int actualChildNumber = 0;
@@ -511,16 +611,25 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         }
     }
 
+    /**
+     * Update teachers info
+     */
     private void updateTeachers() {
         teachers.setVisible(true);
         int actualChildNumber = 0;
         for (Node child : teachers.getChildren()) child.setVisible(false);
-        for(String color: dashboardRoomOrder){
+        for (String color : dashboardRoomOrder) {
             Node child = teachers.getChildren().get(actualChildNumber);
-            if(state.getTeachers().contains(TeacherColor.valueOf(color))) child.setVisible(true);
+            if (state.getTeachers().contains(TeacherColor.valueOf(color))) {
+                child.setVisible(true);
+            }
+            actualChildNumber++;
         }
     }
 
+    /**
+     * Update clouds info
+     */
     private void updateClouds() {
         clouds.setVisible(true);
         int actualChildNumber = 0;
@@ -542,6 +651,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                 for (TeacherColor color : TeacherColor.values()) {
                     while (cloudStudentRep.get(color) > 0) {
                         Node studRep = cloudRep.getChildren().get(cloudChildNumber);
+                        studRep.getStyleClass().removeAll(dashboardRoomOrder);
                         studRep.getStyleClass().add(color.toString());
                         cloudStudentRep.replace(color, cloudStudentRep.get(color), cloudStudentRep.get(color) - 1);
                         cloudChildNumber++;
@@ -555,48 +665,56 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         }
     }
 
+    /**
+     * Update assistant cards info
+     */
     private void updateAssistant() {
         int actualChildNumber = 0;
         assistant.setVisible(true);
-        for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < 10; i++) {
             Node assistantRep = assistant.getChildren().get(actualChildNumber);
-            assistantRep.setVisible(false);
-        }
-        for (int i = 1; i <= 10; i++) {
-            Node assistantRep = assistant.getChildren().get(actualChildNumber);
-            if (state.getAssistantCards().contains(i)) {
+            if (state.getAssistantCards().contains(i + 1)) {
                 assistantRep.setVisible(true);
             } else {
-                assistantRep.getStyleClass().remove("a" + (i));
+                assistantRep.getStyleClass().remove("a" + (i + 1));
                 assistantRep.getStyleClass().add(state.getWizard().get().toString());
             }
             actualChildNumber++;
         }
     }
 
-    private void updateExpertThings(){
+    /**
+     * Update game mode info
+     */
+    private void updateExpertThings() {
         updateCharacterCards();
         updateMyCoins();
     }
 
-    private void updateMyCoins(){
+    /**
+     * Update coins info
+     */
+    private void updateMyCoins() {
         Label myCoins = (Label) expertThings.getChildren().stream().filter(x -> x.getId().equals("myCoins")).findFirst().get();
         myCoins.setText(state.getMyMoney() + "");
     }
 
-    private void updateCharacterCards(){
+    /**
+     * Update character cards info
+     */
+    private void updateCharacterCards() {
         GridPane characterCards = (GridPane) expertThings.getChildren().stream().filter(x -> x.getId().equals("characterCardView")).findFirst().get();
 
-        for(Node cardA: characterCards.getChildren()){
+        for (Node cardA : characterCards.getChildren()) {
             GridPane card = (GridPane) cardA;
             int actualChildNumber = 0;
             Label money = (Label) card.getChildren().get(actualChildNumber);
             actualChildNumber++;
             money.setText("" + state.getCharacterCosts().get(Characters.valueOf(card.getId())));
             Map<TeacherColor, Integer> cardStudents = new HashMap<>(state.getStudentsInPlaces().getOrDefault(card.getId(), new HashMap<>()));
-            if(!cardStudents.isEmpty()){
-                for(TeacherColor color: TeacherColor.values()){
-                    while(cardStudents.get(color)>0){
+            if (!cardStudents.isEmpty()) {
+                for (TeacherColor color : TeacherColor.values()) {
+                    while (cardStudents.get(color) > 0) {
                         Node studRep = card.getChildren().get(actualChildNumber);
                         studRep.getStyleClass().removeAll(Arrays.stream(TeacherColor.values()).map(Enum::toString).toList());
                         studRep.getStyleClass().add(color.toString());
@@ -606,17 +724,37 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                     }
                 }
             }
+            if (card.getId().equals("SORCERESS")) {
+                Label noEntry = (Label) getNodeByStyleClass(card.getChildren(), "NO_ENTRY");
+                noEntry.setText("" + state.getAvailableNoEntry());
+            }
         }
     }
 
+    /**
+     * Set state
+     *
+     * @param state state
+     */
     public void addGameState(PlayState state) {
         this.state = state;
     }
 
-    public void addPlayMessageController(PlayMessageController controller) {
-        this.commandSender = new Commands(controller);
+    /**
+     * Set command sender
+     *
+     * @param commands command sender
+     */
+    public void addCommandSender(Commands commands) {
+        this.commandSender = commands;
     }
 
+    /**
+     * Append commands
+     *
+     * @param event    event
+     * @param argument actual command
+     */
     private void commandAppender(Event event, String argument) {
         Node target = (Node) event.getTarget();
         target.getStyleClass().add("clicked");
@@ -624,6 +762,11 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         actualCommandPrinter.setText(actualCommand);
     }
 
+    /**
+     * Send command
+     *
+     * @param event event
+     */
     private void sendCommand(Event event) {
         try {
             commandSender.receivedCommand(actualCommand);
@@ -632,11 +775,18 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                 SceneController.showAlert("Error - ", "I did not understand, Please repeat");
             });
         }
+        deleteCommand(event);
+    }
+
+    private void deleteCommand(Event event) {
         actualCommand = "";
         actualCommandPrinter.setText(actualCommand);
         removeAllClicked(container.getChildren());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onConfirm(String what) {
         if (what.equals("update")) {
@@ -644,6 +794,13 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         }
     }
 
+    /**
+     * Get node using css style class
+     *
+     * @param where   list of nodes
+     * @param classId style class
+     * @return node
+     */
     private Node getNodeByStyleClass(List<Node> where, String classId) {
         return where.stream()
                 .filter(x -> x.getStyleClass().contains(classId))
@@ -651,6 +808,11 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                 .get();
     }
 
+    /**
+     * Remove clicked children
+     *
+     * @param nodes clicked
+     */
     private void removeAllClicked(List<Node> nodes) {
         List<Node> children = new UnmodifiableList<>(nodes);
         for (Node node : children) {
@@ -661,13 +823,14 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
     }
 
     /**
-     * given an island if actual command is move mother nature computes the number of steps
-     * @param event click event
+     * Given an island if actual command is move mother nature computes the number of steps
+     *
+     * @param event  click event
      * @param island selected island
      */
-    private void islandSelector(Event event, GridPane island){
+    private void islandSelector(Event event, GridPane island) {
         String id = island.getId();
-        if(!actualCommand.equals("mnm ")){
+        if (!actualCommand.equals("mnm ")) {
             commandAppender(event, id);
             return;
         }
@@ -682,7 +845,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
                 .orElseThrow();
         int arriveIndex = islandGrid.getChildren().indexOf(arrive);
         int hops;
-        if(arriveIndex < motherNatureIndex){
+        if (arriveIndex < motherNatureIndex) {
             hops = state.getNumOfIslands() - motherNatureIndex + arriveIndex;
         } else {
             hops = arriveIndex - motherNatureIndex;
@@ -690,7 +853,13 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         commandAppender(event, hops + "");
     }
 
-    private void idGetter(Event event, Node node){
+    /**
+     * Node getter
+     *
+     * @param event event
+     * @param node  node
+     */
+    private void idGetter(Event event, Node node) {
         commandAppender(event, node.getId());
     }
 }
