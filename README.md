@@ -128,23 +128,23 @@ Sequence of commands needed to play the character cards:
 
 ## Project progress:
 
-|                __Phase__                 | __Status__ |
-|:----------------------------------------:|:----------:|
-|  Game model's initial UML class diagram  |    Done    |
-|           Model Implementation           | Retouching |
-|  *Model FA implementation and testing*   |    Done    |
-|        Controller implementation         | Retouching |
-|   *MCV FA implementation and testing*    | Retouching |
-|      Communication protocol design       |    Done    |
-|  Communication protocol Implementation   |    Done    |
-|          Client Implementation           | Retouching |
-|                 CLI view                 | Retouching |
-|                 GUI view                 | Retouching |
+|                __Phase__                 | __Status__  |
+|:----------------------------------------:|:-----------:|
+|  Game model's initial UML class diagram  |    Done     |
+|           Model Implementation           |    Done     |
+|  *Model FA implementation and testing*   | Done (12C)  |
+|        Controller implementation         |    Done     |
+|   *MCV FA implementation and testing*    | Done (C.R.) |
+|      Communication protocol design       |    Done     |
+|  Communication protocol Implementation   |    Done     |
+|          Client Implementation           |    Done     |
+|                 CLI view                 |    Done     |
+|                 GUI view                 |    Done     |
 |||
-|                 Javadoc                  |   Making   |
-|        Final Application Testing         |   Doing    |
-| Delivery of "'deliveries' folder things" |   Making   |
-|    __Final delivery__ on 27th of june    |     -      |
+|                 Javadoc                  |  Generated  |
+|        Final Application Testing         |    Doing    |
+| Delivery of "'deliveries' folder things" |   Making    |
+|    __Final delivery__ on 27th of june    |    Doing    |
 
 *Technical Issues buffer time: 4 days*
 
