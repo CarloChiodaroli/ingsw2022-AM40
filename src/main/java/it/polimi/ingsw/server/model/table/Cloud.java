@@ -11,7 +11,8 @@ public class Cloud extends StudentsManager {
 
     /**
      * Constructor
-     * @param id Cloud's Id
+     *
+     * @param id             Cloud's Id
      * @param equalsStudents number of student that cloud can contains
      */
     public Cloud(String id, int equalsStudents) {
@@ -21,6 +22,7 @@ public class Cloud extends StudentsManager {
 
     /**
      * Get the is of the cloud
+     *
      * @return String Cloud's ID
      */
     public String getId() {
@@ -29,6 +31,7 @@ public class Cloud extends StudentsManager {
 
     /**
      * Build and fill the clouds
+     *
      * @param bag from where students are caught
      * @throws IllegalStateException the bag is empty
      */

@@ -51,6 +51,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     // Communication Client - Server
+
     /**
      * Create a new Socket Connection to the server with the updated info
      * An error view is shown if connection is killed
@@ -169,6 +170,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     // Communication Server - Client
 
     // First level
+
     /**
      * Check the type of message received, and invokes the correct handler
      *
@@ -266,6 +268,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
     }
 
     // Second layer - Lobby Messages
+
     /**
      * Receives actual game mode.
      *
@@ -411,6 +414,7 @@ public class ClientController implements ViewObserver, Observer, LobbyMessageRea
 
     /**
      * shows and logs critical errors and closes the client.
+     *
      * @param error
      */
     public void criticalError(String error) {

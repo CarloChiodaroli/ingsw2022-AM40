@@ -18,6 +18,9 @@ public class LoginSceneController extends ViewObservable implements GenericScene
     @FXML
     private Button joinBtn;
 
+    /**
+     * FXML's initialize method
+     */
     @FXML
     public void initialize() {
         joinBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onJoinBtnClick);
@@ -34,6 +37,9 @@ public class LoginSceneController extends ViewObservable implements GenericScene
         new Thread(() -> notifyObserver(obs -> obs.onUpdateNickname(nickname))).start();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onConfirm(String what) {
 

@@ -57,8 +57,6 @@ public class Server {
         LOGGER.info(() -> "Removed " + nickname + " from the client list.");
     }
 
-    //SERVER'S MESSAGE RECEIVED
-
     /**
      * Forwards a received message from client to GameController
      *
@@ -81,14 +79,6 @@ public class Server {
 
                 boolean gameStarted = gameManager.isGameStarted();
                 removeClient(nickname, !gameStarted); // enable lobby notifications only if the game didn't start yet.
-
-                // Resets server status only if the game was already started.
-                // Otherwise the server will wait for a new player to connect.
-                //if (gameStarted) {
-                //gameManager.broadcastDisconnectionMessage(nickname, " disconnected from the server. GAME ENDED.");
-                //gameManager.endGame();
-                //clientHandlerMap.clear();
-                //}
             }
         }
     }

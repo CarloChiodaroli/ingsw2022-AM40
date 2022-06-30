@@ -184,7 +184,7 @@ public class PlanningPhase {
         if (actualPlayer >= playersInOrder.size()) {
             reset();
         } else {
-            if(playersToSkip.contains(playersInOrder.get(actualPlayer)))
+            if (playersToSkip.contains(playersInOrder.get(actualPlayer)))
                 nextPlayer();
         }
     }
@@ -215,7 +215,7 @@ public class PlanningPhase {
      */
     public void skipPlayer(Player player) {
         playersToSkip.add(player);
-        if(playersInOrder.indexOf(getActualPlayer()) > actualPlayer){
+        if (playersInOrder.indexOf(getActualPlayer()) > actualPlayer) {
             playersInOrder.remove(player);
         }
     }
@@ -229,7 +229,12 @@ public class PlanningPhase {
         playersToUnskip.add(player);
     }
 
-    public List<Player> getPlayersToSkip(){
+    /**
+     * Getter
+     *
+     * @return the list of the players to skip
+     */
+    public List<Player> getPlayersToSkip() {
         return playersToSkip;
     }
 

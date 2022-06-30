@@ -22,6 +22,10 @@ public class SocketServer implements Runnable {
         this.port = port;
     }
 
+    /**
+     * Run method to start a socket listener thread. <br>
+     * After opening a connection with a client, creates a new thread that manages it.
+     */
     @Override
     public void run() {
         try {
@@ -51,7 +55,7 @@ public class SocketServer implements Runnable {
     /**
      * Handles the add of a new client
      *
-     * @param nickname nickname of the client
+     * @param nickname      nickname of the client
      * @param clientHandler ClientHandler of the client
      */
     public void addClient(String nickname, ClientHandler clientHandler) {

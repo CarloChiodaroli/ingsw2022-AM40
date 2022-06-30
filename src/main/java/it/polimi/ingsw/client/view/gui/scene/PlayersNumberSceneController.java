@@ -44,6 +44,9 @@ public class PlayersNumberSceneController extends ViewObservable implements Gene
         expert = false;
     }
 
+    /**
+     * FXML's initialize method
+     */
     @FXML
     public void initialize() {
         radioBtn1.setText(minPlayers + " players");

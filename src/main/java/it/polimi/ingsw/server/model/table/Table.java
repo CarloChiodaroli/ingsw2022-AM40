@@ -37,21 +37,21 @@ public class Table {
     }
 
     /**
-     * Build the clouds
+     * Build the clouds, and if there are some clouds that are not completely filled, refills them.
      *
      * @param numberOfClouds number of player to create
      */
-    public void buildClouds(int numberOfClouds) throws IllegalStateException {
+    private void buildClouds(int numberOfClouds) throws IllegalStateException {
         for (int i = 0; i < numberOfClouds; i++) {
             String id = "c_" + (i + 1);
-            if(cloudList.stream().noneMatch(x-> x.getId().equals(id))){
+            if (cloudList.stream().noneMatch(x -> x.getId().equals(id))) {
                 Cloud cloud = new Cloud(id, numberOfClouds + 1);
                 cloud.buildCloud(bag);
                 cloudList.add(cloud);
             } else {
                 Cloud cloud = cloudList.stream().filter(x -> x.getId().equals(id)).findFirst().get();
                 int remainingStudents = cloud.getMaxStudents() - cloud.howManyTotStudents();
-                for(int j = 0; j < remainingStudents; j++){
+                for (int j = 0; j < remainingStudents; j++) {
                     bag.getStudent().ifPresent(cloud::addStudent);
                 }
             }

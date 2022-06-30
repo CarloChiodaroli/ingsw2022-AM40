@@ -104,9 +104,9 @@ public class PlayMessage extends Message {
     }
 
     /**
-     * Execute the message
+     * Start message execution
      *
-     * @param manager reader
+     * @param manager the reader which executes the message
      */
     public void executeMessage(PlayMessageReader manager) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
         super.controlWritten();

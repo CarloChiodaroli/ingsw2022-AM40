@@ -49,8 +49,8 @@ public interface View {
      * Used to show the result of the login to the player, shown after asking gor the username
      *
      * @param connectionCompleted if the nickname has been completely established
-     * @param connectionStarted true if connection has been successfully started
-     * @param nickname accepted nickname
+     * @param connectionStarted   true if connection has been successfully started
+     * @param nickname            accepted nickname
      */
     void showLoginResult(boolean connectionCompleted, boolean connectionStarted, String nickname);
 
@@ -65,7 +65,7 @@ public interface View {
      * Shows to the user if the client has been disconnected from the server
      *
      * @param nicknameDisconnected name disconnected
-     * @param text message of the disconnection
+     * @param text                 message of the disconnection
      */
     void showDisconnectionMessage(String nicknameDisconnected, String text);
 
@@ -73,12 +73,13 @@ public interface View {
      * Shows the disconnection of another player
      *
      * @param nicknameDisconnected nickname who disconnected
-     * @param text message of the disconnection
+     * @param text                 message of the disconnection
      */
     void showOtherDisconnectionMessage(String nicknameDisconnected, String text);
 
     /**
      * Error and exit
+     *
      * @param error error
      */
     void showErrorAndExit(String error);
@@ -87,7 +88,7 @@ public interface View {
      * Called every time a player joins
      *
      * @param nicknameList list of players
-     * @param numPlayers max number of players who should be connected
+     * @param numPlayers   max number of players who should be connected
      */
     void showLobby(List<String> nicknameList, int numPlayers);
 

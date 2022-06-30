@@ -27,6 +27,9 @@ public class StartSceneController extends ViewObservable implements GenericScene
         players = 0;
     }
 
+    /**
+     * FXML's initialize method
+     */
     @FXML
     public void initialize() {
         if (status)
@@ -50,7 +53,7 @@ public class StartSceneController extends ViewObservable implements GenericScene
     /**
      * Get game params
      *
-     * @param status game mode
+     * @param status  game mode
      * @param players number of players
      */
     public void getGameParams(boolean status, int players) {
@@ -67,6 +70,9 @@ public class StartSceneController extends ViewObservable implements GenericScene
         this.main = main;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onConfirm(String what) {
 

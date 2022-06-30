@@ -332,7 +332,7 @@ public class PlayState {
         this.noEntryIslands = noEntryIslands;
     }
 
-    public int getAvailableNoEntry(){
+    public int getAvailableNoEntry() {
         return noEntryIslands.size() - noEntryIslands.stream().filter(x -> !x.equals("")).toList().size();
     }
 
@@ -344,7 +344,7 @@ public class PlayState {
         return numPlayers + 1;
     }
 
-    public void setPersonalDeck(List<String> personalDeck){
+    public void setPersonalDeck(List<String> personalDeck) {
         this.assistantCards = new ArrayList<>(personalDeck.stream().map(Integer::parseInt).toList());
     }
 }

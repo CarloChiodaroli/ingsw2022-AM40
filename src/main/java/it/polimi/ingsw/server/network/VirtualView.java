@@ -74,7 +74,7 @@ public class VirtualView {
      * Send a message with the results of login
      *
      * @param connectionCompleted true if connection is complete
-     * @param connectionStarted true if connection is start
+     * @param connectionStarted   true if connection is start
      */
     public void showLoginResult(boolean connectionCompleted, boolean connectionStarted) {
         sendMessage(new LoginMessage(server, connectionCompleted, connectionStarted));
@@ -139,7 +139,7 @@ public class VirtualView {
      * Send lobby message
      *
      * @param nicknameList list of players name
-     * @param numPlayers number fo players
+     * @param numPlayers   number fo players
      */
     public void showLobby(List<String> nicknameList, int numPlayers) {
         sendMessage(new LobbyMessage(server, nicknameList, numPlayers));

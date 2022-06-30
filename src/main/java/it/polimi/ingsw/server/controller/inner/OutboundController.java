@@ -47,7 +47,7 @@ public class OutboundController {
      * Get from the model students in the required place
      *
      * @param playerName player
-     * @param placeId required place
+     * @param placeId    required place
      * @return a map with for all color the number of students
      */
     public Map<TeacherColor, Integer> getStudentInPlace(String playerName, String placeId) {
@@ -169,6 +169,12 @@ public class OutboundController {
         return model.getIslandsWithNoEntry();
     }
 
+    /**
+     * Gets the personal deck content of a specific player
+     *
+     * @param playerName the name fo the interesting player
+     * @return the personal deck
+     */
     public List<String> getRemainingAssistants(String playerName) {
         inputController.excludeGameState(GameState.INITIAL);
         return model.getRemainingAssistants(playerName);

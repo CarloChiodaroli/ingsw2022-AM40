@@ -71,6 +71,9 @@ public class SocketClientHandler implements ClientHandler, Runnable {
         receivedMessage = false;
     }
 
+    /**
+     * Run method that starts all necessary functions to keep the connection alive and receive and parse messages.
+     */
     @Override
     public void run() {
         try {
@@ -182,10 +185,16 @@ public class SocketClientHandler implements ClientHandler, Runnable {
         }
     }
 
+    /**
+     * Starts a scheduled executor that handles connection liveliness.
+     */
     private void pingKeepAlive() {
         pinger.scheduleAtFixedRate(this::pingerControls, 0, 1000, TimeUnit.MILLISECONDS);
     }
 
+    /**
+     * Method called by the scheduled executor that actually manages connection liveliness.
+     */
     private void pingerControls() {
         if (!receivedPing) {
             if (misses > (PING_TO_LOSE - 3)) {

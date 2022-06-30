@@ -10,6 +10,11 @@ import java.util.Map;
  */
 public abstract class CardCharacterizations {
 
+    /**
+     * Creates the map which contains all characterizations of all character cards
+     *
+     * @return the map
+     */
     public static Map<Characters, Map<String, Integer>> getMap() {
         Map<Characters, Map<String, Integer>> allCharacterizations = new HashMap<>();
 
@@ -75,6 +80,12 @@ public abstract class CardCharacterizations {
         return allCharacterizations;
     }
 
+    /**
+     * Getter of a particular characterization map
+     *
+     * @param characters the character of which you want the characterization
+     * @return the map
+     */
     public static Map<String, Integer> particular(Characters characters) {
         return getMap().get(characters);
     }

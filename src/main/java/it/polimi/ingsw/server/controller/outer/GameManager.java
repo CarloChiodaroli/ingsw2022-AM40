@@ -53,6 +53,7 @@ public class GameManager implements LobbyMessageReader {
     /**
      * Messages that come to the server are first treated by this method.
      * This method receives messages and accepts and treats them according to the state of the server.
+     *
      * @param receivedMessage
      */
     public void onMessageReceived(Message receivedMessage) {
@@ -80,6 +81,7 @@ public class GameManager implements LobbyMessageReader {
 
     /**
      * On receiving a Lobby message this method calls the corresponding message handler method.
+     *
      * @param receivedMessage the received lobby message to read
      * @throws NoSuchMethodException
      * @throws InvocationTargetException
@@ -115,6 +117,7 @@ public class GameManager implements LobbyMessageReader {
             virtualViewMap.get(message.getSenderName()).showError("Game already started");
 
     }
+
     /**
      * {@inheritDoc}
      */
@@ -201,6 +204,7 @@ public class GameManager implements LobbyMessageReader {
 
     /**
      * Redirects play messages to be treated in the {@link PlayMessagesReader} class
+     *
      * @param receivedMessage
      */
     private void inGameState(Message receivedMessage) {
@@ -221,6 +225,7 @@ public class GameManager implements LobbyMessageReader {
 
     /**
      * Manages Login requests, accepting and denying them.
+     *
      * @param nickname
      * @param virtualView
      */
@@ -285,7 +290,8 @@ public class GameManager implements LobbyMessageReader {
      * Adds a new virtual view to the known ones.
      * Since client server communications work via the {@link VirtualView} class,
      * on registering a new player a new entity of that is created and saved with the others.
-     * @param nickname the nickname of the player of which the virtual view
+     *
+     * @param nickname    the nickname of the player of which the virtual view
      * @param virtualView the newly created virtual view.
      */
     public void addVirtualView(String nickname, VirtualView virtualView) {
@@ -305,6 +311,7 @@ public class GameManager implements LobbyMessageReader {
 
     /**
      * Contrary to the {@link #addVirtualView(String, VirtualView) addVirtualView}, this method deletes a virtual view, and manages player removal.
+     *
      * @param nickname
      * @param notifyEnabled
      * @return
@@ -332,8 +339,9 @@ public class GameManager implements LobbyMessageReader {
 
     /**
      * Sends a message to a specific player
+     *
      * @param playerName is the player's name
-     * @param message the message to send
+     * @param message    the message to send
      */
     public void sendMessage(String playerName, Message message) {
         virtualViewMap.entrySet().stream()
@@ -345,6 +353,7 @@ public class GameManager implements LobbyMessageReader {
 
     /**
      * Broadcasts a message
+     *
      * @param message the message to broadcast
      */
     public void broadcastMessage(Message message) {
@@ -355,8 +364,9 @@ public class GameManager implements LobbyMessageReader {
 
     /**
      * On new Login request this method controls if the player chosen name is vaild or not.
+     *
      * @param nickname name to check
-     * @param view {@link VirtualView} to send errors
+     * @param view     {@link VirtualView} to send errors
      * @return true if it's valid, false if not.
      */
     public boolean checkLoginNickname(String nickname, VirtualView view) {
@@ -374,6 +384,7 @@ public class GameManager implements LobbyMessageReader {
 
     /**
      * Getter
+     *
      * @return true if the game is started, else false.
      */
     public boolean isGameStarted() {
@@ -382,6 +393,7 @@ public class GameManager implements LobbyMessageReader {
 
     /**
      * Getter
+     *
      * @return The name of all actual registered player names
      */
     public List<String> getPlayerNames() {

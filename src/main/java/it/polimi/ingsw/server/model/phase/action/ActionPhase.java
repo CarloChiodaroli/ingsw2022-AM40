@@ -27,7 +27,7 @@ public class ActionPhase {
 
     // Variables
     private final Game game;
-    private final Map<ActionPhaseStateType, ActionFaseState> states;
+    private final Map<ActionPhaseStateType, ActionPhaseState> states;
     private boolean activated;
 
     // Non expert Status variables
@@ -267,7 +267,7 @@ public class ActionPhase {
     public void activateCard(Characters characters, Player player)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(CharactersLookup.getType(tmp.getCharacter()));
+        ActionPhaseState decorated = states.get(CharactersLookup.getType(tmp.getCharacter()));
         tmp.activator(decorated, player);
         actualCard = tmp;
     }
@@ -286,7 +286,7 @@ public class ActionPhase {
     public void activateCard(Characters characters, Player player, TeacherColor color)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(CharactersLookup.getType(tmp.getCharacter()));
+        ActionPhaseState decorated = states.get(CharactersLookup.getType(tmp.getCharacter()));
         tmp.activator(decorated, player, color);
         actualCard = tmp;
     }
@@ -305,7 +305,7 @@ public class ActionPhase {
     public void activateCard(Characters characters, Player player, Island island)
             throws NoSuchElementException, IllegalStateException, InvalidParameterException {
         CharacterCard tmp = coreActivateCard(characters);
-        ActionFaseState decorated = states.get(CharactersLookup.getType(tmp.getCharacter()));
+        ActionPhaseState decorated = states.get(CharactersLookup.getType(tmp.getCharacter()));
         tmp.activator(decorated, player, island);
         actualCard = tmp;
     }
@@ -345,6 +345,13 @@ public class ActionPhase {
         }
     }
 
+    /**
+     * Toned down action phase used when players disconnect half way throw their action phase.
+     * After all playing players have finished their turn, this is called to populate the entrance of the disconnected
+     * player back to the max number if needed using one of the remaining clouds.
+     *
+     * @param player
+     */
     public void autoRun(Player player) {
         if (player.getEntrance().getMaxStudents() > player.getEntrance().howManyTotStudents()) {
             states.get(ActionPhaseStateType.CLOUD).handle(player, game.getTable().getCloudList().get(0));
@@ -539,7 +546,7 @@ public class ActionPhase {
      * @param which phase type
      * @return phase state
      */
-    public ActionFaseState getState(ActionPhaseStateType which) {
+    public ActionPhaseState getState(ActionPhaseStateType which) {
         return states.get(which);
     }
 }

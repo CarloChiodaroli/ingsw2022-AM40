@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server.model.phase.action.states.cards;
 
 import it.polimi.ingsw.commons.enums.Characters;
-import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
+import it.polimi.ingsw.server.model.phase.action.ActionPhaseState;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.server.model.phase.action.states.MotherNatureState;
 import it.polimi.ingsw.server.model.player.Player;
@@ -36,7 +36,7 @@ public class MotherNatureCard extends CharacterCard {
      * {@inheritDoc}
      */
     @Override
-    public void activator(ActionFaseState decorated, Player player) throws InvalidParameterException {
+    public void activator(ActionPhaseState decorated, Player player) throws InvalidParameterException {
         playerPays(player);
         this.decorated = (MotherNatureState) decorated;
         super.activator(player);

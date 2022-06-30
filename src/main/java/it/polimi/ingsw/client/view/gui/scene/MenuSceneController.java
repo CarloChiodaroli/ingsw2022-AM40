@@ -18,6 +18,9 @@ public class MenuSceneController extends ViewObservable implements GenericSceneC
     @FXML
     private Button playBtn;
 
+    /**
+     * FXML's initialize method
+     */
     @FXML
     public void initialize() {
         playBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onPlayBtnClick);
@@ -32,6 +35,9 @@ public class MenuSceneController extends ViewObservable implements GenericSceneC
         SceneController.changeRootPane(observers, event, "connect_scene.fxml");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onConfirm(String what) {
 

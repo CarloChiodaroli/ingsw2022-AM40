@@ -8,7 +8,10 @@ import it.polimi.ingsw.client.view.cli.Cli;
  */
 public class CliClientApp {
 
-    public static void client(){
+    /**
+     * Main load method of cli client.
+     */
+    public static void client() {
         boolean cliParam = true; // default value
         if (cliParam) {
             Cli cli = new Cli();

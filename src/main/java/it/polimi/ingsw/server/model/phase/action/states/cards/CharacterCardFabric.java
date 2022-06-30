@@ -38,7 +38,7 @@ public abstract class CharacterCardFabric {
     /**
      * Create the character cards
      *
-     * @param type characterization of the card
+     * @param type        characterization of the card
      * @param actionPhase action phase of the game
      * @return a card with the required character
      */
@@ -88,12 +88,18 @@ public abstract class CharacterCardFabric {
         return result;
     }
 
+    /**
+     * Getter of all particular characterizations of every single character
+     */
     private static Map<Characters, Map<String, Integer>> allParticularities() {
         return CardCharacterizations.getMap();
     }
 
     /**
-     * Getter
+     * Getter of a particular characterization
+     *
+     * @param characters the character of which we want the characterization
+     * @return the characterization map
      */
     public static Map<String, Integer> getCharacterization(Characters characters) {
         Map<String, Integer> result = createBaseCharacterization();

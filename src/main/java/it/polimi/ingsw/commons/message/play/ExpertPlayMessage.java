@@ -19,11 +19,11 @@ public class ExpertPlayMessage extends PlayMessage {
     /**
      * Constructor of message for switch of 2 students
      *
-     * @param sender sender
-     * @param move move
+     * @param sender    sender
+     * @param move      move
      * @param fromColor color of student in entrance
-     * @param toColor color of student in destination
-     * @param placeId destination place
+     * @param toColor   color of student in destination
+     * @param placeId   destination place
      */
     public ExpertPlayMessage(String sender, String move, TeacherColor fromColor, TeacherColor toColor, String placeId) {
         super(sender, move, messageType);
@@ -36,8 +36,8 @@ public class ExpertPlayMessage extends PlayMessage {
     /**
      * Constructor of the message for the character card
      *
-     * @param sender sender
-     * @param move move
+     * @param sender    sender
+     * @param move      move
      * @param character chosen character
      */
     public ExpertPlayMessage(String sender, String move, Characters character) {
@@ -51,10 +51,10 @@ public class ExpertPlayMessage extends PlayMessage {
     /**
      * Constructor of the message for the character card who needs an island
      *
-     * @param sender sender
-     * @param move move
+     * @param sender    sender
+     * @param move      move
      * @param character chosen character
-     * @param id chosen island
+     * @param id        chosen island
      */
     public ExpertPlayMessage(String sender, String move, Characters character, String id) {
         super(sender, move, messageType);
@@ -67,10 +67,10 @@ public class ExpertPlayMessage extends PlayMessage {
     /**
      * Constructor of the message for the character card who needs a color
      *
-     * @param sender sender
-     * @param move move
+     * @param sender    sender
+     * @param move      move
      * @param character chosen character
-     * @param color chosen color
+     * @param color     chosen color
      */
     public ExpertPlayMessage(String sender, String move, Characters character, TeacherColor color) {
         super(sender, move, messageType);
@@ -83,10 +83,10 @@ public class ExpertPlayMessage extends PlayMessage {
     /**
      * Constructor of the message for the status of students in character card
      *
-     * @param sender sender
-     * @param move move
+     * @param sender    sender
+     * @param move      move
      * @param character chosen character
-     * @param quantity a map with for each color the number of students
+     * @param quantity  a map with for each color the number of students
      */
     public ExpertPlayMessage(String sender, String move, Characters character, Map<TeacherColor, Integer> quantity) {
         super(sender, move, messageType);
@@ -101,8 +101,8 @@ public class ExpertPlayMessage extends PlayMessage {
      * Constructor of the message for the status of coins of players and coins of character cards
      *
      * @param sender sender
-     * @param move move
-     * @param money a map with for each player the coins he has
+     * @param move   move
+     * @param money  a map with for each player the coins he has
      */
     public ExpertPlayMessage(String sender, String move, Map<String, Integer> money) {
         super(sender, move, messageType);
@@ -117,8 +117,8 @@ public class ExpertPlayMessage extends PlayMessage {
      * Constructor of the message for the status of prohibition cards
      *
      * @param sender sender
-     * @param move move
-     * @param ids a list of islands with prohibition cards
+     * @param move   move
+     * @param ids    a list of islands with prohibition cards
      */
     public ExpertPlayMessage(String sender, String move, List<String> ids) {
         super(sender, move, messageType);

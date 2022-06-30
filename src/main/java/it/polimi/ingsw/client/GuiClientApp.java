@@ -26,6 +26,9 @@ public class GuiClientApp extends Application {
         launch();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start(Stage stage) {
         Gui view = new Gui();
@@ -60,6 +63,9 @@ public class GuiClientApp extends Application {
         stage.show();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop() {
         Platform.exit();

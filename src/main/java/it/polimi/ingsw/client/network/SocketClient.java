@@ -122,9 +122,9 @@ public class SocketClient extends Client {
                     readExecutionQueue.shutdownNow();
                     return;
                 }
-                if(message != null){
+                if (message != null) {
                     receivedPing = true;
-                    if(!message.getMessageType().equals(MessageType.PING)){
+                    if (!message.getMessageType().equals(MessageType.PING)) {
                         notifyObserver(message);
                     }
                 }
@@ -173,14 +173,17 @@ public class SocketClient extends Client {
         }
     }
 
-    private void pingerControls(){
-        if(!receivedPing) {
+    /**
+     * Concrete pinger logic implementation.
+     */
+    private void pingerControls() {
+        if (!receivedPing) {
             misses++;
         } else {
             misses = 0;
             receivedPing = false;
         }
-        if(misses >= PING_TO_LOSE) disconnect();
+        if (misses >= PING_TO_LOSE) disconnect();
         sendMessage(new PingMessage("Client"));
     }
 }

@@ -3,8 +3,8 @@ package it.polimi.ingsw.server.model.phase.action.states.cards;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.server.model.StudentsManager;
-import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
+import it.polimi.ingsw.server.model.phase.action.ActionPhaseState;
 import it.polimi.ingsw.server.model.phase.action.StudentsContainer;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.server.model.phase.action.states.StudentMovement;
@@ -44,7 +44,7 @@ public class StudentMovementCard extends CharacterCard {
      * @return color of the caught student
      */
     private TeacherColor getStudentFromBag() {
-        return getActionFase().getGame().getTable().getStudentFromBag().orElseThrow();
+        return getActionPhase().getGame().getTable().getStudentFromBag().orElseThrow();
     }
 
     /**
@@ -106,7 +106,7 @@ public class StudentMovementCard extends CharacterCard {
      * {@inheritDoc}
      */
     @Override
-    public void activator(ActionFaseState decorated, Player player) throws InvalidParameterException {
+    public void activator(ActionPhaseState decorated, Player player) throws InvalidParameterException {
         if (super.getCharacterization("EffectAllPlayers") > 0) {
             throw new IllegalStateException("This card needs a student color to be activated");
         }
@@ -118,13 +118,16 @@ public class StudentMovementCard extends CharacterCard {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void activator(ActionFaseState decorated, Player player, TeacherColor color) throws InvalidParameterException {
+    public void activator(ActionPhaseState decorated, Player player, TeacherColor color) throws InvalidParameterException {
         playerPays(player);
         this.decorated = (StudentMovement) decorated;
         super.activator(player, color);
         if (this.getCharacterization("Usages") == 0) {
-            List<Player> players = super.getActionFase().getGame().getPlayers();
+            List<Player> players = super.getActionPhase().getGame().getPlayers();
             for (Player player1 : players) {
                 for (int i = 0; i < 3; i++)
                     player1.getRoomTable().removeStudent(color);
@@ -138,7 +141,7 @@ public class StudentMovementCard extends CharacterCard {
      * @param player player
      */
     private void controlTeachers(Player player) {
-        List<Player> players = super.getActionFase().getGame().getPlayers();
+        List<Player> players = super.getActionPhase().getGame().getPlayers();
         for (TeacherColor color : TeacherColor.values()) {
 
             Optional<Player> maxPlayer = players.stream()

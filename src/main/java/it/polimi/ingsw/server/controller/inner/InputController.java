@@ -107,7 +107,7 @@ public class InputController {
     }
 
     /**
-     * Check the destination of move students is valid
+     * Check if the destination of move students is valid
      *
      * @param id destination of the movement
      */
@@ -123,15 +123,21 @@ public class InputController {
         }
     }
 
-    public void controlCardDestinationId(String id){
+    /**
+     * Check if the destination of the move with a card place is valid
+     *
+     * @param id the destination id to check
+     */
+    public void controlCardDestinationId(String id) {
         if (!reader.isExpertVariant()) throw new IllegalStateException("It's not expert variant");
         Characters charc = reader.getTurnController().getActualCharacter().orElseThrow(() -> new IllegalStateException("No active character card"));
-        if(!CharactersLookup.getType(charc).equals(ActionPhaseStateType.STUDENT)) throw new IllegalStateException("Active card is not a student movement card");
+        if (!CharactersLookup.getType(charc).equals(ActionPhaseStateType.STUDENT))
+            throw new IllegalStateException("Active card is not a student movement card");
         Map<String, Integer> characterization = CardCharacterizations.particular(charc);
-        if (characterization.getOrDefault("Island", 0) > 0 && isIslandId(id)){
+        if (characterization.getOrDefault("Island", 0) > 0 && isIslandId(id)) {
             return;
         }
-        if (characterization.getOrDefault("Room", 0) > 0 && id.equals("Room")){
+        if (characterization.getOrDefault("Room", 0) > 0 && id.equals("Room")) {
             return;
         }
         throw new IllegalArgumentException("Received wrong to id");

@@ -78,11 +78,16 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
     @FXML
     private GridPane expertThings;
 
-
+    /**
+     * Constructor
+     */
     public PlaySceneController() {
         actualCommand = "";
     }
 
+    /**
+     * FXML's initialize method
+     */
     @FXML
     public void initialize() {
         buildContainer();
@@ -773,7 +778,7 @@ public class PlaySceneController extends ViewObservable implements GenericSceneC
         deleteCommand(event);
     }
 
-    private void deleteCommand(Event event){
+    private void deleteCommand(Event event) {
         actualCommand = "";
         actualCommandPrinter.setText(actualCommand);
         removeAllClicked(container.getChildren());

@@ -378,9 +378,6 @@ public class PlayMessagesReader implements PlayMessageReader {
         }
         // command to read model
         List<String> islandIds = outbound.getAllIslandIds();
-        /*Map<String, TowerColor> dominia = new HashMap<>();
-        islandIds.forEach(id ->
-                outbound.getTowerInPlace(id).ifPresent(tower -> dominia.put(id, tower)));*/
         // building answer list
         answers.add(PlayMessagesFabric.statusIslandIds(server, islandIds));
         answers.add(PlayMessagesFabric.statusTower(server, conquestsMapBuilder(islandIds)));
@@ -402,6 +399,12 @@ public class PlayMessagesReader implements PlayMessageReader {
         }
     }
 
+    /**
+     * Builds the island's conquest map
+     *
+     * @param islandIds the available island ids
+     * @return the map
+     */
     private Map<String, TowerColor> conquestsMapBuilder(List<String> islandIds) {
         Map<String, TowerColor> dominia = new HashMap<>();
         islandIds.forEach(id ->

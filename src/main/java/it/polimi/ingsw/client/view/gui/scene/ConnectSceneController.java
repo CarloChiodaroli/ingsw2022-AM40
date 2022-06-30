@@ -32,6 +32,9 @@ public class ConnectSceneController extends ViewObservable implements GenericSce
     @FXML
     private Button connectBtn;
 
+    /**
+     * FXML's initialize method
+     */
     @FXML
     public void initialize() {
         connectBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConnectBtnClick);
@@ -60,6 +63,9 @@ public class ConnectSceneController extends ViewObservable implements GenericSce
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onConfirm(String what) {
 

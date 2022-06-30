@@ -394,18 +394,18 @@ public class GameModel {
                 .peek(System.out::println)
                 .reduce(Integer::max)
                 .orElse(0);
-        if(availableTiles == 0){
+        if (availableTiles == 0) {
             return new ArrayList<>();
         }
         List<String> result = new ArrayList<>(availableTiles);
-        for(int i = 0; i< availableTiles; i++){
+        for (int i = 0; i < availableTiles; i++) {
             result.add(i, "");
         }
         List<String> islands = game.getTable().getIslandList().stream()
                 .filter(Island::hasNoEntryTile)
                 .map(Island::getId)
                 .toList();
-        for(int i = 0; i< islands.size(); i++){
+        for (int i = 0; i < islands.size(); i++) {
             result.remove(i);
             result.add(i, islands.get(i));
         }
@@ -621,7 +621,13 @@ public class GameModel {
         game.unSkipPlayer(getPlayer(name));
     }
 
-    public List<String> getRemainingAssistants(String name){
+    /**
+     * Getter of a player's personal deck of assistant cards
+     *
+     * @param name the name of the interesting player
+     * @return a list of the values of the possessed cards
+     */
+    public List<String> getRemainingAssistants(String name) {
         Player player = getPlayer(name);
         return player.getPersonalDeck().stream().map(x -> "" + x.getWeight()).toList();
     }

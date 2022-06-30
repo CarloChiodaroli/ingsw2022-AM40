@@ -2,7 +2,6 @@ package it.polimi.ingsw.server.controller.inner;
 
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.server.controller.outer.PlayMessagesReader;
-import it.polimi.ingsw.server.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,6 @@ public class TurnController {
     private Characters actualCharacter;
     private GameState state;
     private int startingPlayer;
-    private int messages;
     private String savedIsland;
     private List<String> playersToSkip;
     private List<String> playersToAdd;
@@ -92,11 +90,11 @@ public class TurnController {
                 nicknameQueue = reader.getPlayersInOrder();
                 if (nicknameQueue.isEmpty()) return false;
                 activePlayer = nicknameQueue.get(0);
-                if(playersToSkip.contains(activePlayer)) nextTurn();
+                if (playersToSkip.contains(activePlayer)) nextTurn();
                 return true;
             } else {
                 activePlayer = players.get(i);
-                if(playersToSkip.contains(activePlayer)) nextTurn();
+                if (playersToSkip.contains(activePlayer)) nextTurn();
                 return false;
             }
         } else if (state.equals(GameState.ACTION)) {
@@ -112,11 +110,11 @@ public class TurnController {
                 playersToSkip = new ArrayList<>(playersToSkip);
                 state = GameState.next(state);
                 activePlayer = players.get(0);
-                if(playersToSkip.contains(activePlayer)) nextTurn();
+                if (playersToSkip.contains(activePlayer)) nextTurn();
                 return true;
             } else {
                 activePlayer = nicknameQueue.get(i);
-                if(playersToSkip.contains(activePlayer)) nextTurn();
+                if (playersToSkip.contains(activePlayer)) nextTurn();
                 return false;
             }
         }

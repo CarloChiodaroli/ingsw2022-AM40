@@ -16,7 +16,7 @@ public abstract class StudentsManager {
     private final HashMap<TeacherColor, Integer> manager;
 
     /**
-     * Class Constructor
+     * Class Constructor where, when completely filled, needs to have equal quantity of students for each color
      *
      * @param maxStudents      max number of total students
      * @param maxStudentsColor max number of students of one color
@@ -30,6 +30,11 @@ public abstract class StudentsManager {
         }
     }
 
+    /**
+     * Class Constructor where students can be of different quantities
+     *
+     * @param maxStudents max number of total students
+     */
     public StudentsManager(int maxStudents) {
         this.maxStudents = maxStudents;
         this.maxStudentsColor = maxStudents;
@@ -91,6 +96,7 @@ public abstract class StudentsManager {
 
     /**
      * The number of student of the required color
+     *
      * @return desired color
      */
     public int howManyStudents(TeacherColor color) {
@@ -99,6 +105,7 @@ public abstract class StudentsManager {
 
     /**
      * The number of total students
+     *
      * @return how many students there are
      */
     public int howManyTotStudents() {
@@ -111,6 +118,7 @@ public abstract class StudentsManager {
 
     /**
      * If is allowed, remove one student
+     *
      * @return color of the removed student, if any
      */
     public Optional<TeacherColor> getStudent() {
@@ -124,6 +132,7 @@ public abstract class StudentsManager {
 
     /**
      * Get max students allowed
+     *
      * @return number of max students
      */
     public int getMaxStudents() {
@@ -132,6 +141,7 @@ public abstract class StudentsManager {
 
     /**
      * Get the number of students for each color
+     *
      * @return a map showing the number of students for each color
      */
     public Map<TeacherColor, Integer> getMap() {

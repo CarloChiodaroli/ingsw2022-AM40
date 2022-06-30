@@ -52,16 +52,16 @@ public class InboundController {
     /**
      * Check is action phase and places for student movement and send info to the model
      *
-     * @param playerName player
-     * @param color student color
-     * @param sourceId source fo movement
+     * @param playerName    player
+     * @param color         student color
+     * @param sourceId      source fo movement
      * @param destinationId destination of movement
      */
     public void moveStudent(String playerName, TeacherColor color, String sourceId, String destinationId) {
         inputController.controlGameState(GameState.ACTION);
         inputController.controlActualPlayer(playerName);
         inputController.controlSourceId(sourceId);
-        if(sourceId.equals("Card")){
+        if (sourceId.equals("Card")) {
             inputController.controlCardDestinationId(destinationId);
         } else {
             inputController.controlDestinationId(destinationId);
@@ -72,10 +72,10 @@ public class InboundController {
     /**
      * Check the player can switch two students and send it to the model
      *
-     * @param playerName player
+     * @param playerName      player
      * @param entranceStudent color of sdtuent in entrance
-     * @param otherStudent color of student in other place
-     * @param placeId place of the switch with entrance
+     * @param otherStudent    color of student in other place
+     * @param placeId         place of the switch with entrance
      */
     public void moveStudent(String playerName, TeacherColor entranceStudent, TeacherColor otherStudent, String placeId) {
         inputController.controlExpertVariant();
@@ -88,7 +88,7 @@ public class InboundController {
      * Check mother nature can be moved and send it to the model
      *
      * @param playerName player
-     * @param steps number of steps
+     * @param steps      number of steps
      * @return id of mother nature position
      */
     public String moveMotherNature(String playerName, int steps) {
@@ -113,7 +113,7 @@ public class InboundController {
      * Check you can choose  a cloud and the id and send it to the model
      *
      * @param playerName player
-     * @param cloudId id of the cloud
+     * @param cloudId    id of the cloud
      */
     public void chooseCloud(String playerName, String cloudId) {
         inputController.controlGameState(GameState.ACTION);
@@ -126,7 +126,7 @@ public class InboundController {
      * Check the character card is permitted and send it to the model
      *
      * @param playerName player
-     * @param character chosen character
+     * @param character  chosen character
      */
     public void playCharacterCard(String playerName, Characters character) {
         inputController.playCharacterCardPermit(playerName);
@@ -137,8 +137,8 @@ public class InboundController {
      * Check the character card is permitted, for character who needs a color, and send it to the model
      *
      * @param playerName player
-     * @param character chosen character
-     * @param color chosen color
+     * @param character  chosen character
+     * @param color      chosen color
      */
     public void playCharacterCard(String playerName, Characters character, TeacherColor color) {
         inputController.playCharacterCardPermit(playerName);
@@ -149,8 +149,8 @@ public class InboundController {
      * Check the character card is permitted, for character who needs an island, and send it to the model
      *
      * @param playerName player
-     * @param character chosen character
-     * @param islandId chosen island
+     * @param character  chosen character
+     * @param islandId   chosen island
      */
     public void playCharacterCard(String playerName, Characters character, String islandId) {
         inputController.playCharacterCardPermit(playerName);

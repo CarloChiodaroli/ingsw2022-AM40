@@ -26,6 +26,9 @@ public class LobbySceneController extends ViewObservable implements GenericScene
     @FXML
     private Button backToMenuBtn;
 
+    /**
+     * FXML's initialize method
+     */
     @FXML
     public void initialize() {
         playersLbl.setText(String.join(", ", nicknames));
@@ -71,6 +74,9 @@ public class LobbySceneController extends ViewObservable implements GenericScene
         numbersLbl.setText(this.nicknames.size() + "/" + this.maxPlayers);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onConfirm(String what) {
 

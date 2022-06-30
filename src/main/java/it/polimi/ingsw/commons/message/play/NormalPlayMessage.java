@@ -18,10 +18,10 @@ public class NormalPlayMessage extends PlayMessage {
      * Constructor of the message for move a student
      *
      * @param sender sender
-     * @param move move
-     * @param color color of student
+     * @param move   move
+     * @param color  color of student
      * @param fromId start of movement
-     * @param toId destination movement
+     * @param toId   destination movement
      */
     public NormalPlayMessage(String sender, String move, TeacherColor color, String fromId, String toId) {
         super(sender, move, messageType);
@@ -35,8 +35,8 @@ public class NormalPlayMessage extends PlayMessage {
      * Constructor of the message for mother nature steps
      *
      * @param sender sender
-     * @param move move
-     * @param hops number of steps
+     * @param move   move
+     * @param hops   number of steps
      */
     public NormalPlayMessage(String sender, String move, Integer hops) {
         super(sender, move, messageType);
@@ -52,8 +52,8 @@ public class NormalPlayMessage extends PlayMessage {
      * and chosen cloud
      *
      * @param sender sender
-     * @param move move
-     * @param id required id
+     * @param move   move
+     * @param id     required id
      */
     public NormalPlayMessage(String sender, String move, String id) {
         super(sender, move, messageType);
@@ -66,9 +66,9 @@ public class NormalPlayMessage extends PlayMessage {
     /**
      * Constructor of the message for the status of students
      *
-     * @param sender sender
-     * @param move move
-     * @param id player
+     * @param sender   sender
+     * @param move     move
+     * @param id       player
      * @param quantity a map with for each color the number of students
      */
     public NormalPlayMessage(String sender, String move, String id, Map<TeacherColor, Integer> quantity) {
@@ -84,9 +84,9 @@ public class NormalPlayMessage extends PlayMessage {
      * Constructor of the message for the status of teachers
      *
      * @param sender sender
-     * @param move move
-     * @param id player
-     * @param which a list with teachers color
+     * @param move   move
+     * @param id     player
+     * @param which  a list with teachers color
      */
     public NormalPlayMessage(String sender, String move, String id, List<TeacherColor> which) {
         super(sender, move, messageType);
@@ -101,8 +101,8 @@ public class NormalPlayMessage extends PlayMessage {
      * Constructor of the message for the status of islands and clouds
      *
      * @param sender sender
-     * @param move move
-     * @param which id of islands or clouds
+     * @param move   move
+     * @param which  id of islands or clouds
      */
     public NormalPlayMessage(String sender, String move, List<String> which) {
         super(sender, move, messageType);
@@ -116,8 +116,8 @@ public class NormalPlayMessage extends PlayMessage {
     /**
      * Constructor of the message for the status of towers on islands
      *
-     * @param sender sender
-     * @param move move
+     * @param sender    sender
+     * @param move      move
      * @param conquests a map with for each island the color of the tower
      */
     public NormalPlayMessage(String sender, String move, Map<String, TowerColor> conquests) {
@@ -133,7 +133,7 @@ public class NormalPlayMessage extends PlayMessage {
      * Default constructor
      *
      * @param sender sender
-     * @param move move
+     * @param move   move
      */
     public NormalPlayMessage(String sender, String move) {
         super(sender, move, messageType);
@@ -147,9 +147,9 @@ public class NormalPlayMessage extends PlayMessage {
      * Constructor of the message for the status of towers in dashboard
      *
      * @param sender sender
-     * @param move move
+     * @param move   move
      * @param player player name
-     * @param color color of towers
+     * @param color  color of towers
      */
     public NormalPlayMessage(String sender, String move, String player, TowerColor color) {
         super(sender, move, messageType);
@@ -163,7 +163,7 @@ public class NormalPlayMessage extends PlayMessage {
      * Constructor of the message for play assistant card
      *
      * @param sender sender
-     * @param move move
+     * @param move   move
      * @param player player
      * @param weight weight of chosen card
      */

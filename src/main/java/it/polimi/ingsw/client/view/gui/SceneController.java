@@ -45,10 +45,10 @@ public class SceneController extends ViewObservable {
      * Changes the root panel of the scene argument
      *
      * @param observerList a list of observers to be set into the scene controller
-     * @param scene  scene whose change the root panel. This will become the active scene
-     * @param fxml  new scene fxml name
-     * @param <T>  type parameter
-     * @return  controller of the new scene loaded by the FXMLLoader
+     * @param scene        scene whose change the root panel. This will become the active scene
+     * @param fxml         new scene fxml name
+     * @param <T>          type parameter
+     * @return controller of the new scene loaded by the FXMLLoader
      */
     public static <T> T changeRootPane(List<ViewObserver> observerList, Scene scene, String fxml) {
         T controller = null;
@@ -73,10 +73,10 @@ public class SceneController extends ViewObservable {
      * Changes the root panel of the scene argument
      *
      * @param observerList a list of observers to be set into the scene controller
-     * @param event event which is happened into the scene
-     * @param fxml new scene fxml name
-     * @param <T>  type parameter
-     * @return  controller of the new scene loaded by the FXMLLoader
+     * @param event        event which is happened into the scene
+     * @param fxml         new scene fxml name
+     * @param <T>          type parameter
+     * @return controller of the new scene loaded by the FXMLLoader
      */
     public static <T> T changeRootPane(List<ViewObserver> observerList, Event event, String fxml) {
         Scene scene = ((Node) event.getSource()).getScene();
@@ -87,8 +87,8 @@ public class SceneController extends ViewObservable {
      * Changes the root panel of the active scene
      *
      * @param observerList a list of observers to be set into the scene controller
-     * @param fxml the new scene fxml name
-     * @param <T> this is the type parameter
+     * @param fxml         the new scene fxml name
+     * @param <T>          this is the type parameter
      * @return the controller of the new scene loaded by the FXMLLoader
      */
     public static <T> T changeRootPane(List<ViewObserver> observerList, String fxml) {
@@ -99,8 +99,8 @@ public class SceneController extends ViewObservable {
      * Changes the root panel of the scene argument
      *
      * @param controller custom controller that will be set into the FXMLLoader
-     * @param scene scene whose change the root panel. This will become the active scene
-     * @param fxml new scene fxml name
+     * @param scene      scene whose change the root panel. This will become the active scene
+     * @param fxml       new scene fxml name
      */
     public static void changeRootPane(GenericSceneController controller, Scene scene, String fxml) {
         try {
@@ -119,9 +119,9 @@ public class SceneController extends ViewObservable {
     /**
      * Changes the root panel of the scene argument
      *
-     * @param controller  custom controller that will be set into the FXMLLoader
-     * @param event event which is happened into the scene
-     * @param fxml  new scene fxml name
+     * @param controller custom controller that will be set into the FXMLLoader
+     * @param event      event which is happened into the scene
+     * @param fxml       new scene fxml name
      */
     public static void changeRootPane(GenericSceneController controller, Event event, String fxml) {
         Scene scene = ((Node) event.getSource()).getScene();
@@ -132,7 +132,7 @@ public class SceneController extends ViewObservable {
      * Changes the root panel of the active scene
      *
      * @param controller custom controller that will be set into the FXMLLoader
-     * @param fxml  new scene fxml name
+     * @param fxml       new scene fxml name
      */
     public static void changeRootPane(GenericSceneController controller, String fxml) {
         changeRootPane(controller, activeScene, fxml);
@@ -141,7 +141,7 @@ public class SceneController extends ViewObservable {
     /**
      * Shows a custom message in a popup
      *
-     * @param title title of the popup
+     * @param title   title of the popup
      * @param message message of the popup
      */
     public static void showAlert(String title, String message) {

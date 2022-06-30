@@ -1,9 +1,8 @@
 package it.polimi.ingsw.model.phases.action;
 
 import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.phase.PlanningPhase;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
-import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
+import it.polimi.ingsw.server.model.phase.action.ActionPhaseState;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,13 +18,13 @@ public class ActionPhaseStateTest {
         Game game = new Game();
         ActionPhase actionfase = new ActionPhase(game);
         ActionFaseStateInstance actionFaseState = new ActionFaseStateInstance(actionfase);
-        assertEquals(actionfase, actionFaseState.getActionFase());
+        assertEquals(actionfase, actionFaseState.getActionPhase());
     }
 
 
 }
 
-class ActionFaseStateInstance extends ActionFaseState {
+class ActionFaseStateInstance extends ActionPhaseState {
     ActionFaseStateInstance(ActionPhase actionfase){
         super(actionfase);
     }

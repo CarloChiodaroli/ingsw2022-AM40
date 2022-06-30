@@ -2,8 +2,8 @@ package it.polimi.ingsw.server.model.phase.action.states;
 
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.server.model.StudentsManager;
-import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
+import it.polimi.ingsw.server.model.phase.action.ActionPhaseState;
 import it.polimi.ingsw.server.model.player.Player;
 
 import java.util.List;
@@ -15,19 +15,15 @@ import java.util.stream.Collectors;
  * and the subsequent capturing of teachers by a player.
  */
 
-public class StudentMovement extends ActionFaseState {
+public class StudentMovement extends ActionPhaseState {
 
     public StudentMovement(ActionPhase actionPhase) {
         super(actionPhase);
     }
 
     /**
-     * The starting method for moving student from a place to another, controls the presence of
-     * the places and students
+     * {@inheritDoc}
      *
-     * @param color student color
-     * @param from  place where begin the movement
-     * @param to    place where finish the movement
      * @throws IllegalStateException if the player can't move now
      */
     @Override
@@ -46,7 +42,7 @@ public class StudentMovement extends ActionFaseState {
      * Control and manage of teachers possession
      */
     private void controlTeachers() {
-        List<Player> players = super.getActionFase().getGame().getPlayers();
+        List<Player> players = super.getActionPhase().getGame().getPlayers();
         for (TeacherColor color : TeacherColor.values()) {
 
             Optional<Player> playerWithTeacher = players.stream()

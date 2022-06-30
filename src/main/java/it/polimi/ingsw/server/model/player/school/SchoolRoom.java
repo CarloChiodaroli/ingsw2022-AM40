@@ -64,8 +64,8 @@ public class SchoolRoom extends StudentsManager {
         int old = super.howManyStudents(color);
         boolean result = super.addStudent(color);
         int actual = super.howManyStudents(color);
-        if(result){
-            this.moneyPlace = old < actual && actual!=0 && actual%3 == 0;
+        if (result) {
+            this.moneyPlace = old < actual && actual != 0 && actual % 3 == 0;
         }
         return result;
     }

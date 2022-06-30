@@ -32,6 +32,9 @@ public class WizardSceneController extends ViewObservable implements GenericScen
         this.availableWizard = new ArrayList<>();
     }
 
+    /**
+     * FXML's initialize method
+     */
     @FXML
     public void initialize() {
         magicianWizard.setDisable(!availableWizard.contains(Wizard.MAGICIAN));
@@ -68,6 +71,9 @@ public class WizardSceneController extends ViewObservable implements GenericScen
         this.availableWizard = availableWizard;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onConfirm(String what) {
 

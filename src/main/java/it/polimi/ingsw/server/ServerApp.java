@@ -14,7 +14,9 @@ public class ServerApp {
 
     private final static String port = "--port";
 
-
+    /**
+     * Server loader method, called when
+     */
     public static void server() {
         int serverPort = 16847; // default value
         GameManager gameManager = new GameManager();

@@ -243,6 +243,11 @@ public class Gui extends ViewObservable implements View {
             askPlayCustomization();
     }
 
+    /**
+     * Sends confirmations to the actual scene.
+     *
+     * @param what the argument of the confirmation.
+     */
     private static void sendConfirmation(String what) {
         Platform.runLater(() -> SceneController.sendConfirm(what));
     }

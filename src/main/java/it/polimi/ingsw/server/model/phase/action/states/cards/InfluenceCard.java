@@ -2,8 +2,8 @@ package it.polimi.ingsw.server.model.phase.action.states.cards;
 
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
-import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
+import it.polimi.ingsw.server.model.phase.action.ActionPhaseState;
 import it.polimi.ingsw.server.model.phase.action.states.CharacterCard;
 import it.polimi.ingsw.server.model.phase.action.states.Influence;
 import it.polimi.ingsw.server.model.player.Player;
@@ -61,7 +61,7 @@ public class InfluenceCard extends CharacterCard {
      * @param island chosen island
      */
     private void decoratingHandle(Player player, Island island) {
-        List<Player> players = this.getActionFase().getGame().getPlayers();
+        List<Player> players = this.getActionPhase().getGame().getPlayers();
         Map<Player, Integer> influences = new HashMap<>();
         players.forEach(x -> influences.put(x, 0));
 
@@ -82,7 +82,7 @@ public class InfluenceCard extends CharacterCard {
      * {@inheritDoc}
      */
     @Override
-    public void activator(ActionFaseState decorated, Player player) throws InvalidParameterException {
+    public void activator(ActionPhaseState decorated, Player player) throws InvalidParameterException {
         if (super.getCharacterization("Island") > 0) {
             throw new InvalidParameterException("An island Id is needed to activate this card");
         }
@@ -98,7 +98,7 @@ public class InfluenceCard extends CharacterCard {
      * {@inheritDoc}
      */
     @Override
-    public void activator(ActionFaseState decorated, Player player, TeacherColor color) throws InvalidParameterException {
+    public void activator(ActionPhaseState decorated, Player player, TeacherColor color) throws InvalidParameterException {
         if (super.getCharacterization("Island") > 0) {
             throw new InvalidParameterException("An island Id is needed to activate this card");
         }
@@ -111,7 +111,7 @@ public class InfluenceCard extends CharacterCard {
      * {@inheritDoc}
      */
     @Override
-    public void activator(ActionFaseState decorated, Player player, Island island) throws InvalidParameterException {
+    public void activator(ActionPhaseState decorated, Player player, Island island) throws InvalidParameterException {
         if (super.getCharacterization("Student") > 0) {
             throw new InvalidParameterException("A teacher color is needed to activate this card");
         }

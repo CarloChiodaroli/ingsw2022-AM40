@@ -18,6 +18,7 @@ public class MotherNature {
 
     /**
      * If mother nature hadn't been instantiated, istance it
+     *
      * @return mother nature
      */
     public static MotherNature getMotherNature() {
@@ -28,6 +29,7 @@ public class MotherNature {
 
     /**
      * Get the position of mother nature
+     *
      * @return the island where mother nature is found
      */
     public Optional<Island> getPosition() {

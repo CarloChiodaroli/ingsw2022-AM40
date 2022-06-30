@@ -347,7 +347,7 @@ public class Game {
      */
     public void skipPlayer(Player player) {
         Player actualPlayer = planningPhase.getActualPlayer();
-        if(player.equals(actualPlayer)) nextPlayer();
+        if (player.equals(actualPlayer)) nextPlayer();
         skippablePlayers.add(player);
         planningPhase.skipPlayer(player);
     }

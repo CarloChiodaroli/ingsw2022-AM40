@@ -3,8 +3,8 @@ package it.polimi.ingsw.server.model.phase.action.states;
 import it.polimi.ingsw.commons.enums.Characters;
 import it.polimi.ingsw.commons.enums.TeacherColor;
 import it.polimi.ingsw.server.model.StudentsManager;
-import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
+import it.polimi.ingsw.server.model.phase.action.ActionPhaseState;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.table.Island;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
 /**
  * Abstract Action Phase State, this class manages all common traits of character cards, like characterizations, price, activation ecc...
  */
-public abstract class CharacterCard extends ActionFaseState {
+public abstract class CharacterCard extends ActionPhaseState {
 
     private final Map<String, Integer> characterization;
     private final Characters characters;
@@ -60,7 +60,7 @@ public abstract class CharacterCard extends ActionFaseState {
      * Set if the card was already used, the interested color and activate it
      *
      * @param player player
-     * @param color chosen color
+     * @param color  chosen color
      * @return if is allowed to activate, true
      */
     protected boolean activator(Player player, TeacherColor color) {
@@ -127,8 +127,6 @@ public abstract class CharacterCard extends ActionFaseState {
     }
 
     /**
-     *
-     *
      * @param arg
      * @return
      */
@@ -196,10 +194,10 @@ public abstract class CharacterCard extends ActionFaseState {
      * Activator for character cards who need a color
      *
      * @param decorated phase state
-     * @param player player
-     * @param color chosen color
+     * @param player    player
+     * @param color     chosen color
      */
-    public void activator(ActionFaseState decorated, Player player, TeacherColor color) {
+    public void activator(ActionPhaseState decorated, Player player, TeacherColor color) {
         throw new IllegalStateException("Card cannot be activated with this activator");
     }
 
@@ -207,9 +205,9 @@ public abstract class CharacterCard extends ActionFaseState {
      * Activator for character cards
      *
      * @param decorated phase state
-     * @param player player
+     * @param player    player
      */
-    public void activator(ActionFaseState decorated, Player player) {
+    public void activator(ActionPhaseState decorated, Player player) {
         throw new IllegalStateException("Card cannot be activated with this activator");
     }
 
@@ -217,10 +215,10 @@ public abstract class CharacterCard extends ActionFaseState {
      * Activator for character cards who need an island
      *
      * @param decorated phase state
-     * @param player player
-     * @param island chosen island
+     * @param player    player
+     * @param island    chosen island
      */
-    public void activator(ActionFaseState decorated, Player player, Island island) {
+    public void activator(ActionPhaseState decorated, Player player, Island island) {
         throw new IllegalStateException("Card cannot be activated with this activator");
     }
 }

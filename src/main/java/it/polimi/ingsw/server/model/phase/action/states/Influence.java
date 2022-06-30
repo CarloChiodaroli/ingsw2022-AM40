@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server.model.phase.action.states;
 
 import it.polimi.ingsw.commons.enums.TeacherColor;
-import it.polimi.ingsw.server.model.phase.action.ActionFaseState;
 import it.polimi.ingsw.server.model.phase.action.ActionPhase;
+import it.polimi.ingsw.server.model.phase.action.ActionPhaseState;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.table.Island;
 
@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * 3rd Action phase state, this class models the game's influence calc.
  */
-public class Influence extends ActionFaseState {
+public class Influence extends ActionPhaseState {
 
     /**
      * Constructor
@@ -21,15 +21,12 @@ public class Influence extends ActionFaseState {
     }
 
     /**
-     * If there isn't a prohibition card, calculate teh influence
-     *
-     * @param player player who calls the calculation
-     * @param island computation island
+     * {@inheritDoc}
      */
     @Override
     public void handle(Player player, Island island) {
         if (noEntryTile(island)) return;
-        List<Player> players = this.getActionFase().getGame().getPlayers();
+        List<Player> players = this.getActionPhase().getGame().getPlayers();
         Map<Player, Integer> influences = new HashMap<>();
         players.forEach(x -> influences.put(x, 0));
 
@@ -41,9 +38,9 @@ public class Influence extends ActionFaseState {
     /**
      * Calls the computation of points for each color
      *
-     * @param players players
+     * @param players    players
      * @param influences influence for each player
-     * @param island computation island
+     * @param island     computation island
      */
     public void teacherColorPointAssigner(List<Player> players, Map<Player, Integer> influences, Island island) {
         Arrays.stream(TeacherColor.values()).sequential().forEach(color -> singularTeacherColorPointAssigner(players, influences, island, color));
@@ -52,10 +49,10 @@ public class Influence extends ActionFaseState {
     /**
      * Calculate the points for a color
      *
-     * @param players players
+     * @param players    players
      * @param influences influence for each player
-     * @param island computation island
-     * @param color current color
+     * @param island     computation island
+     * @param color      current color
      */
     public void singularTeacherColorPointAssigner(List<Player> players, Map<Player, Integer> influences, Island island, TeacherColor color) {
         players.stream()
@@ -67,9 +64,9 @@ public class Influence extends ActionFaseState {
     /**
      * Calculate towers points
      *
-     * @param players players
+     * @param players    players
      * @param influences influence for each player
-     * @param island computation island
+     * @param island     computation island
      */
     public void towerColorPointAssigner(List<Player> players, Map<Player, Integer> influences, Island island) {
         if (island.getTowerColor().isPresent())
@@ -81,7 +78,7 @@ public class Influence extends ActionFaseState {
     /**
      * Get the winner of the influence calculate
      *
-     * @param players players
+     * @param players    players
      * @param influences influence for each player
      * @return players who win
      */
@@ -104,8 +101,8 @@ public class Influence extends ActionFaseState {
     /**
      * Set the influence and if is necessary switch possession between old and new owner
      *
-     * @param players players
-     * @param island computation island
+     * @param players            players
+     * @param island             computation island
      * @param maxInfluencePlayer the new owner
      */
     public void influenceSetter(List<Player> players, Island island, Player maxInfluencePlayer) {
@@ -123,9 +120,9 @@ public class Influence extends ActionFaseState {
     /**
      * Switch the possession of the island from a player to another
      *
-     * @param island computation island
+     * @param island   computation island
      * @param outgoing the old owner
-     * @param ingoing the new owner
+     * @param ingoing  the new owner
      */
     private void possessionSwitcher(Island island, Optional<Player> outgoing, Player ingoing) {
         outgoing.ifPresent(x -> x.pushTower(island.howManyTowers()));
@@ -135,7 +132,7 @@ public class Influence extends ActionFaseState {
             island.setInfluence(ingoing.getTower(island.howManyEquivalents()));
         }
         if (ingoing.getNumberTowersLeft() <= 0) {
-            this.getActionFase().getGame().endGame();
+            this.getActionPhase().getGame().endGame();
         }
     }
 
@@ -146,10 +143,10 @@ public class Influence extends ActionFaseState {
      * @return true if there's the card
      */
     public boolean noEntryTile(Island island) {
-        if (!super.getActionFase().getGame().isExpertVariant()) return false;
+        if (!super.getActionPhase().getGame().isExpertVariant()) return false;
         if (island.hasNoEntryTile()) {
             island.removeNoEntryTile();
-            super.getActionFase().giveNoEntryTileBack();
+            super.getActionPhase().giveNoEntryTileBack();
             return true;
         } else return false;
     }

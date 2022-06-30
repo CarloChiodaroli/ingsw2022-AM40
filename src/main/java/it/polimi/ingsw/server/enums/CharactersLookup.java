@@ -25,6 +25,12 @@ public class CharactersLookup {
         put(Characters.THIEF, ActionPhaseStateType.STUDENT);
     }};
 
+    /**
+     * Getter
+     *
+     * @param character the character card character of which to know the type
+     * @return the type
+     */
     public static ActionPhaseStateType getType(Characters character) {
         return map.get(character);
     }

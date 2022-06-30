@@ -122,6 +122,13 @@ public class Player {
         }
     }
 
+    /**
+     * Command to execute an Expert student movement between entrance and a place
+     *
+     * @param studentA color of the student from entrance
+     * @param studentB color of the student from place
+     * @param placeId  id of the place.
+     */
     public void moveStudent(TeacherColor studentA, TeacherColor studentB, String placeId) {
         controlEnable();
         game.getActionPhase().request(this, studentA, studentB, placeId);
@@ -307,7 +314,7 @@ public class Player {
      * Play a character card who required a color
      *
      * @param characters chosen card
-     * @param color chosen color
+     * @param color      chosen color
      */
     public void playCharacterCard(Characters characters, TeacherColor color) {
         controlEnable();
@@ -318,7 +325,7 @@ public class Player {
      * Play a character card who required an island
      *
      * @param characters chosen card
-     * @param island chosen island
+     * @param island     chosen island
      */
     public void playCharacterCard(Characters characters, Island island) {
         controlEnable();
@@ -356,29 +363,6 @@ public class Player {
      */
     public void giveMoney(int howMuch) {
         money += howMuch;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Player player = (Player) o;
-        return Objects.equals(name, player.name) && Objects.equals(game, player.game);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, game);
-    }
-
-    @Override
-    public String toString() {
-        return "Player{" +
-                "name='" + name + '\'' +
-                ", personalDeck=" + personalDeck +
-                ", game=" + game +
-                ", dashboard=" + dashboard +
-                '}';
     }
 
     /**
@@ -420,5 +404,28 @@ public class Player {
      */
     private void controlEnable() throws IllegalStateException {
         if (!isEnabled()) throw new IllegalStateException("Player can't make any moves now");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return Objects.equals(name, player.name) && Objects.equals(game, player.game);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, game);
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", personalDeck=" + personalDeck +
+                ", game=" + game +
+                ", dashboard=" + dashboard +
+                '}';
     }
 }

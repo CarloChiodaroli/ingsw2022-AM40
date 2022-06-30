@@ -28,9 +28,9 @@ public interface PlayMessageReader {
      * Take the movement of student and send it to the server
      *
      * @param player player name
-     * @param color color of student
+     * @param color  color of student
      * @param fromId start of movement
-     * @param toId destination of movement
+     * @param toId   destination of movement
      */
     void moveStudent(String player, TeacherColor color, String fromId, String toId);
 
@@ -38,7 +38,7 @@ public interface PlayMessageReader {
      * Take mother nature steps and send it to the server
      *
      * @param player player name
-     * @param hops number of steps
+     * @param hops   number of steps
      */
     void moveMotherNature(String player, Integer hops);
 
@@ -53,15 +53,15 @@ public interface PlayMessageReader {
      * Take chosen cloud and send it to the server
      *
      * @param player player name
-     * @param id cloud id
+     * @param id     cloud id
      */
     void chooseCloud(String player, String id);
 
     /**
      * Take the status of students and send it to the server
      *
-     * @param sender sender
-     * @param id player
+     * @param sender   sender
+     * @param id       player
      * @param quantity a map with for each color the number of students
      */
     void statusStudent(String sender, String id, Map<TeacherColor, Integer> quantity);
@@ -70,15 +70,15 @@ public interface PlayMessageReader {
      * Take the status of teachers and send it to the server
      *
      * @param sender sender
-     * @param id player
-     * @param which a list with teachers color
+     * @param id     player
+     * @param which  a list with teachers color
      */
     void statusTeacher(String sender, String id, List<TeacherColor> which);
 
     /**
      * Take the status of towers on islands and send it to the server
      *
-     * @param sender sender
+     * @param sender    sender
      * @param conquests a map with for each island the color of the tower
      */
     void statusTower(String sender, Map<String, TowerColor> conquests);
@@ -88,7 +88,7 @@ public interface PlayMessageReader {
      *
      * @param sender sender
      * @param player player name
-     * @param color color of towers
+     * @param color  color of towers
      */
     void statusTower(String sender, String player, TowerColor color);
 
@@ -96,7 +96,7 @@ public interface PlayMessageReader {
      * Take the status of islands and send it to the server
      *
      * @param sender sender
-     * @param ids id of islands
+     * @param ids    id of islands
      */
     void statusIslandIds(String sender, List<String> ids);
 
@@ -104,14 +104,14 @@ public interface PlayMessageReader {
      * Take the status of clouds and send it to the server
      *
      * @param sender sender
-     * @param ids id of clouds
+     * @param ids    id of clouds
      */
     void statusCloudIds(String sender, List<String> ids);
 
     /**
      * Take the status of mother nature and send it to the server
      *
-     * @param sender sender
+     * @param sender   sender
      * @param islandId island with mother nature
      */
     void statusMotherNature(String sender, String islandId);
@@ -119,7 +119,7 @@ public interface PlayMessageReader {
     /**
      * Take the status of action phase and send it to the server
      *
-     * @param sender sender
+     * @param sender       sender
      * @param actualPlayer actual player in action
      */
     void statusAction(String sender, String actualPlayer);
@@ -127,7 +127,7 @@ public interface PlayMessageReader {
     /**
      * Take the status of pianification phase and send it to the server
      *
-     * @param sender sender
+     * @param sender       sender
      * @param actualPlayer actual player in pianification phase
      */
     void statusPlanning(String sender, String actualPlayer);
@@ -152,7 +152,7 @@ public interface PlayMessageReader {
     /**
      * While reconnecting, takes the personal deck status of the reconnecting client
      *
-     * @param sender sender
+     * @param sender     sender
      * @param assistants list which represents the personal deck
      */
     void statusRemainingAssistants(String sender, List<String> assistants);
@@ -162,17 +162,17 @@ public interface PlayMessageReader {
     /**
      * Take the switch of 2 students and send it to the server
      *
-     * @param player player name
+     * @param player    player name
      * @param fromColor color of student in entrance
-     * @param toColor color of student in destination
-     * @param placeId destination place
+     * @param toColor   color of student in destination
+     * @param placeId   destination place
      */
     void moveStudent(String player, TeacherColor fromColor, TeacherColor toColor, String placeId);
 
     /**
      * Take the character card and send it to the server
      *
-     * @param player player name
+     * @param player    player name
      * @param character chosen character
      */
     void playCharacterCard(String player, Characters character);
@@ -180,25 +180,25 @@ public interface PlayMessageReader {
     /**
      * Take the character card who needs an island and send it to the server
      *
-     * @param player player name
+     * @param player    player name
      * @param character chosen character
-     * @param id chosen island
+     * @param id        chosen island
      */
     void playCharacterCard(String player, Characters character, String id);
 
     /**
      * Take the character card who needs a color and send it to the server
      *
-     * @param player player name
+     * @param player    player name
      * @param character chosen character
-     * @param color chosen color
+     * @param color     chosen color
      */
     void playCharacterCard(String player, Characters character, TeacherColor color);
 
     /**
      * Take the status of a character card and send it to the server
      *
-     * @param sender sender
+     * @param sender    sender
      * @param character chosen character
      */
     void statusCharacterCard(String sender, Characters character);
@@ -207,7 +207,7 @@ public interface PlayMessageReader {
      * Take the status of coins of character cards and send it to the server
      *
      * @param sender sender
-     * @param money a map with for each character the number of coins
+     * @param money  a map with for each character the number of coins
      */
     void statusCharacterCard(String sender, Map<String, Integer> money);
 
@@ -215,23 +215,23 @@ public interface PlayMessageReader {
      * Take the status of coins of players and send it to the server
      *
      * @param sender sender
-     * @param money a map with for each player the coins he has
+     * @param money  a map with for each player the coins he has
      */
     void statusPlayerMoney(String sender, Map<String, Integer> money);
 
     /**
      * Take the status of students in character card and send it to the server
      *
-     * @param sender sender
+     * @param sender    sender
      * @param character chosen character
-     * @param quantity a map with for each color the number of students
+     * @param quantity  a map with for each color the number of students
      */
     void statusStudent(String sender, Characters character, Map<TeacherColor, Integer> quantity);
 
     /**
      * Take the status of prohibition cards and send it to the server
      *
-     * @param sender sender
+     * @param sender    sender
      * @param islandIds a list of islands with prohibition cards
      */
     void statusNoEntry(String sender, List<String> islandIds);

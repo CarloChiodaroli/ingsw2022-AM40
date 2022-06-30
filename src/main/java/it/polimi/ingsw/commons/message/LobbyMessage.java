@@ -21,7 +21,7 @@ public class LobbyMessage extends Message {
     /**
      * Constructor, sends all player names
      *
-     * @param sender sender
+     * @param sender       sender
      * @param nicknameList a list of players name
      * @param numOfPlayers number of players
      */
@@ -36,8 +36,8 @@ public class LobbyMessage extends Message {
     /**
      * Constructor, sends a player name, if is disconnected shows a disconnection, else shows the main player
      *
-     * @param sender sender
-     * @param command string with command
+     * @param sender     sender
+     * @param command    string with command
      * @param playerName player name
      */
     public LobbyMessage(String sender, String command, String playerName) {
@@ -63,9 +63,9 @@ public class LobbyMessage extends Message {
     /**
      * Constructor, sends an integer
      *
-     * @param sender sender
+     * @param sender  sender
      * @param command string with command
-     * @param number number
+     * @param number  number
      */
     public LobbyMessage(String sender, String command, int number) {
         super(sender, MessageType.LOBBY);
@@ -77,7 +77,7 @@ public class LobbyMessage extends Message {
     /**
      * Constructor
      *
-     * @param sender sender
+     * @param sender  sender
      * @param command string with command
      */
     public LobbyMessage(String sender, String command) {
@@ -90,7 +90,7 @@ public class LobbyMessage extends Message {
     /**
      * Constructor, sends a boolean
      *
-     * @param sender sender
+     * @param sender  sender
      * @param command string with command
      * @param boolArg chosen boolean
      */
@@ -105,8 +105,8 @@ public class LobbyMessage extends Message {
     /**
      * Constructor, sends list of available wizards
      *
-     * @param sender sender
-     * @param command string with command
+     * @param sender    sender
+     * @param command   string with command
      * @param available a list of available wizards
      */
     public LobbyMessage(String sender, String command, List<Wizard> available) {

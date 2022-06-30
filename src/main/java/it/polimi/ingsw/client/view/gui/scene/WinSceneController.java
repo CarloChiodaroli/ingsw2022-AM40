@@ -44,6 +44,9 @@ public class WinSceneController implements GenericSceneController {
         yOffset = 0;
     }
 
+    /**
+     * FXML's initialize method
+     */
     @FXML
     public void initialize() {
         rootPane.addEventHandler(MouseEvent.MOUSE_PRESSED, this::onRootPaneMousePressed);
@@ -105,6 +108,9 @@ public class WinSceneController implements GenericSceneController {
         stage.setScene(scene);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onConfirm(String what) {
 
