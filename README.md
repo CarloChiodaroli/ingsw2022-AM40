@@ -125,6 +125,7 @@ Sequence of commands needed to play the character cards:
 | Messenger | ![](src/main/resources/images/assets/character/Messenger.jpg) | <pre> CA, MESSENGER, SUB </pre> | | Minstrel | ![](src/main/resources/images/assets/character/Minstrel.jpg) | <pre> CA, MINSTREL, SUB </pre><pre> SM, entranceColor, roomColor, Room, SUB </pre> |
 | Sorceress | ![](src/main/resources/images/assets/character/Sorcress.jpg) | <pre> CA, SORCERESS, IslandId, SUB </pre> | | Queen | ![](src/main/resources/images/assets/character/Queen.jpg) | <pre> CA, QUEEN, SUB </pre><pre> SM, Color, QUEEN, Room, SUB </pre> |
 | Centaur | ![](src/main/resources/images/assets/character/Centaur.jpg) | <pre> CA, CENTAUR, SUB </pre> | | Thief | ![](src/main/resources/images/assets/character/Thief.jpg) | <pre> CA, THIEF, Color, SUB </pre> |
+
 In cli the commands are the same but without commas.<br>
 *(SUB stands for "Submit"; it is the green SUB button in the Gui or Enter key in the Cli)*
 ## Project progress:
