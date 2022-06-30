@@ -53,8 +53,8 @@ The server prints on screen only the log of the sent and received messages.
 
 Once started the prompt will ask for server info:
 <pre>
-* ip [address]  : to set the server's ip address (default is localhost)
-* port [number] : to set the server's listening port (default is 16847)
+ip [address]  : to set the server's ip address (default is localhost)
+port [number] : to set the server's listening port (default is 16847)
 </pre>
 Once connected you are asked to input your name:
 <pre>
@@ -125,7 +125,8 @@ Sequence of commands needed to play the character cards:
 | Messenger | ![](src/main/resources/images/assets/character/Messenger.jpg) | <pre> CA, MESSENGER, SUB </pre> | | Minstrel | ![](src/main/resources/images/assets/character/Minstrel.jpg) | <pre> CA, MINSTREL, SUB </pre><pre> SM, entranceColor, roomColor, Room, SUB </pre> |
 | Sorceress | ![](src/main/resources/images/assets/character/Sorcress.jpg) | <pre> CA, SORCERESS, IslandId, SUB </pre> | | Queen | ![](src/main/resources/images/assets/character/Queen.jpg) | <pre> CA, QUEEN, SUB </pre><pre> SM, Color, QUEEN, Room, SUB </pre> |
 | Centaur | ![](src/main/resources/images/assets/character/Centaur.jpg) | <pre> CA, CENTAUR, SUB </pre> | | Thief | ![](src/main/resources/images/assets/character/Thief.jpg) | <pre> CA, THIEF, Color, SUB </pre> |
-
+In cli the commands are the same but without commas.<br>
+*(SUB stands for "Submit"; it is the green SUB button in the Gui or Enter key in the Cli)*
 ## Project progress:
 
 |                __Phase__                 | __Status__  |
@@ -141,12 +142,10 @@ Sequence of commands needed to play the character cards:
 |                 CLI view                 |    Done     |
 |                 GUI view                 |    Done     |
 |||
-|                 Javadoc                  |  Generated  |
-|        Final Application Testing         |    Doing    |
-| Delivery of "'deliveries' folder things" |   Making    |
-|    __Final delivery__ on 27th of june    |    Doing    |
-
-*Technical Issues buffer time: 4 days*
+|                 Javadoc                  |    Done     |
+|        Final Application Testing         |    Done     |
+| Delivery of "'deliveries' folder things" |    Done     |
+|    __Final delivery__ on 30th of june    |    Done     |
 
 *Notes:*
 * *Implementation phases include singular class testing*

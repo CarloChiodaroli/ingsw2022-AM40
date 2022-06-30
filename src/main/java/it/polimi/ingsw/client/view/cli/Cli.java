@@ -136,6 +136,10 @@ public class Cli extends ViewObservable implements View {
                         
                     Expert Play commands:
                         abbreviation    command <arg> <arg> <arg>                       : description
+                        ca              character [character]   -   -   -   -   -   -   : to play a character card. 
+                        ca              character [character] [color]   -   -   -   -   : the same of ca, but for those cards who need color.
+                        ca              character [character] [island id]   -   -   -   : the same of ca, but for those cards who need island.
+                        sm              studentmove [from color] [to color] [place id]  : is a particular student move that shifts two students one from the "Entrance" (from color) the other from the place (to color).
                     
                                 
                 To send a valid command please write the command with arguments as for example:
@@ -147,7 +151,7 @@ public class Cli extends ViewObservable implements View {
                 Commands are not case sensitive so you can write:
                     sm blue entrance room
                                 
-                These three example commands do the same thing: move a blue student from the entrance to the room
+                These three example commands do the same thing: move a blue student from the entrance to the room in the user's dashboard
                 """);
     }
 
