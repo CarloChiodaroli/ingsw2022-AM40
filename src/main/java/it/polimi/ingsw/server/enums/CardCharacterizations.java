@@ -69,6 +69,7 @@ public abstract class CardCharacterizations {
 
         allCharacterizations.get(Characters.THIEF).put("Price", 3);
         allCharacterizations.get(Characters.THIEF).put("Usages", 0);
+        allCharacterizations.get(Characters.THIEF).put("Student", 1);
         allCharacterizations.get(Characters.THIEF).put("EffectAllPlayers", 1);
 
         return allCharacterizations;
