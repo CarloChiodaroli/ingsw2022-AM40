@@ -117,20 +117,14 @@ Play a character card   : CA button, if needed click on an island or a student, 
 ### Character cards commands
 Sequence of commands needed to play the character cards:
 
-| __Card Name__ | __Image__ | __Commands__ |
-|:--------------:|:-------------------------:|:----------:|
-| Friar| ![](src/main/resources/images/assets/character/Friar.jpg) | <pre> CA, FRIAR, SUB </pre><pre> SM, Color, FRIAR, IslandId, SUB</pre> |
-| Host | ![](src/main/resources/images/assets/character/Host.jpg) | <pre> CA, HOST, SUB </pre> |
-| Crier | ![](src/main/resources/images/assets/character/Crier.jpg) | <pre> CA, CRIER, IslandId, SUB </pre> |
-| Messenger | ![](src/main/resources/images/assets/character/Messenger.jpg) | <pre> CA, MESSENGER, SUB </pre> |
-| Sorceress | ![](src/main/resources/images/assets/character/Sorcress.jpg) | <pre> CA, SORCERESS, IslandId, SUB </pre> |
-| Centaur | ![](src/main/resources/images/assets/character/Centaur.jpg) | <pre> CA, CENTAUR, SUB </pre> |
-| Jester | ![](src/main/resources/images/assets/character/Jullar.jpg) | <pre> CA, JESTER, SUB </pre><pre> SM, entranceColor, jesterColor, JESTER, SUB </pre> |
-| Knight | ![](src/main/resources/images/assets/character/Knight.jpg) | <pre> CA, KNIGHT, SUB </pre> |
-| Sorcerer | ![](src/main/resources/images/assets/character/Sorcerer.jpg) | <pre> CA, SORCERER, Color, SUB </pre> |
-| Minstrel | ![](src/main/resources/images/assets/character/Minstrel.jpg) | <pre> CA, MINSTREL, SUB </pre><pre> SM, entranceColor, roomColor, Room, SUB </pre> |
-| Queen | ![](src/main/resources/images/assets/character/Queen.jpg) | <pre> CA, QUEEN, SUB </pre><pre> SM, Color, QUEEN, Room, SUB </pre> |
-| Thief | ![](src/main/resources/images/assets/character/Thief.jpg) | <pre> CA, THIEF, Color, SUB </pre> |
+| __Card Name__ | __Image__ | __Commands__ | | __Card Name__ | __Image__ | __Commands__ |
+|:---------:|:------------:|:-------:|:-------:|:--------:|:-------------:|:--------:|
+| Friar| ![](src/main/resources/images/assets/character/Friar.jpg) | <pre> CA, FRIAR, SUB </pre><pre> SM, Color, FRIAR, IslandId, SUB</pre> | | Jester | ![](src/main/resources/images/assets/character/Jullar.jpg) | <pre> CA, JESTER, SUB </pre><pre> SM, entranceColor, jesterColor, JESTER, SUB </pre> |
+| Host | ![](src/main/resources/images/assets/character/Host.jpg) | <pre> CA, HOST, SUB </pre> | | Knight | ![](src/main/resources/images/assets/character/Knight.jpg) | <pre> CA, KNIGHT, SUB </pre> |
+| Crier | ![](src/main/resources/images/assets/character/Crier.jpg) | <pre> CA, CRIER, IslandId, SUB </pre> | | Sorcerer | ![](src/main/resources/images/assets/character/Sorcerer.jpg) | <pre> CA, SORCERER, Color, SUB </pre> |
+| Messenger | ![](src/main/resources/images/assets/character/Messenger.jpg) | <pre> CA, MESSENGER, SUB </pre> | | Minstrel | ![](src/main/resources/images/assets/character/Minstrel.jpg) | <pre> CA, MINSTREL, SUB </pre><pre> SM, entranceColor, roomColor, Room, SUB </pre> |
+| Sorceress | ![](src/main/resources/images/assets/character/Sorcress.jpg) | <pre> CA, SORCERESS, IslandId, SUB </pre> | | Queen | ![](src/main/resources/images/assets/character/Queen.jpg) | <pre> CA, QUEEN, SUB </pre><pre> SM, Color, QUEEN, Room, SUB </pre> |
+| Centaur | ![](src/main/resources/images/assets/character/Centaur.jpg) | <pre> CA, CENTAUR, SUB </pre> | | Thief | ![](src/main/resources/images/assets/character/Thief.jpg) | <pre> CA, THIEF, Color, SUB </pre> |
 
 ## Project progress:
 
