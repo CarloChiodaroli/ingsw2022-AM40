@@ -160,3 +160,7 @@ In cli the commands are the same but without commas.<br>
 * *Testing phases are intended for finalizing class interaction testing*
 * *Italics phases are "if we have time" phases*
 
+## Copyright and license
+Cranio Creations owns the copyright of Eriantys board game and assets. Assets were kindly provided to us for use in this project.
+
+This software is licenced under the [MITLicence](https://github.com/CarloChiodaroli/ingsw2022-AM40/blob/master/LICENSE.md).
