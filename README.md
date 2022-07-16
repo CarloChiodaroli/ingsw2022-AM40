@@ -1,9 +1,16 @@
 # Prova finale di Ingegneria del Software -- AA 2021-2022
 
 ## AM40 Group
-### Camilla Casiraghi, Carlo Chiodaroli, Manuel Colombo
+### Group members: Camilla Casiraghi, Carlo Chiodaroli, Manuel Colombo
+### Teacher: Alessandro Margara
 
-Implementation of Eriantys board game
+This project is intended to test our cumulative skills in Software Engineering (Design, Implementation and Testing) learned in the course of three years studying the subject at Politecnico di Milano.
+
+It consists of the implementation of [*__Eriantys__*](https://craniointernational.com/products/eriantys/) board game from *Cranio Creations* as a client-server application.
+
+The application is written in Java 17 and the GUI uses the JavaFx 19-ea+7 runtime.
+
+__Final Score:__ 30/30
 
 ## Implementation
 
@@ -47,7 +54,7 @@ To run the Server on a specific port
 
 ### Server commands
 
-The server prints on screen only the log of the sent and received messages.
+The server only prints on screen the log of the sent and received messages.
 
 ### Cli commands
 
