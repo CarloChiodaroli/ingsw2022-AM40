@@ -38,7 +38,7 @@ __Final Score:__ 30/30
 
 ## Run Instructions
 
-###Run the jar file
+### Run the jar file
 
 To run the Cli Client
 <pre>java -jar AM40.jar --c</pre>
